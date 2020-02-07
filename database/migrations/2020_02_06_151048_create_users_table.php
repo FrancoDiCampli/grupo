@@ -20,6 +20,10 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->string('foto')->nullable();
             $table->unsignedBigInteger('role_id')->nullable();
+            $table->bigInteger('cliente_id')->nullable();
+            $table->bigInteger('negocio_id')->nullable();
+            $table->timestamp('email_verified_at')->nullable();
+            $table->string('code')->nullable();
             $table->timestamps();
             $table->softDeletes();
 
