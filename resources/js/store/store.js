@@ -3,6 +3,8 @@ import Vuex from "vuex";
 
 // Modules
 import auth from "./modules/auth";
+import users from "./modules/users";
+import roles from "./modules/roles";
 
 // Plugins
 import { processHandle } from "./plugins/processHandle";
@@ -20,11 +22,8 @@ export default new Vuex.Store({
             state.inProcess = value;
         },
 
-        fillErrors(state, errors) {
-            state.errors.push({
-                data: errors.data,
-                status: errors.status
-            });
+        fillErrors(state, error) {
+            state.errors.push(error);
             state.inProcess = false;
             window.scrollTo(0, 0);
         },
@@ -39,8 +38,25 @@ export default new Vuex.Store({
         }
     },
 
+    actions: {
+        errorHandle({ commit, dispatch }, errors) {
+            if (errors.status == 401) {
+                dispatch("auth/deleteAuthData", {}, { root: true });
+            } else {
+                let error = {
+                    data: errors.data,
+                    status: errors.status
+                };
+
+                commit("fillErrors", error);
+            }
+        }
+    },
+
     modules: {
-        auth: auth
+        auth: auth,
+        users: users,
+        roles: roles
     },
 
     plugins: [processHandle]

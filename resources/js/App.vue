@@ -72,10 +72,6 @@ export default {
         exit: async function() {
             this.process = true;
             await this.$store.dispatch("auth/logout");
-            this.$user.set({
-                rol: "not_authorized",
-                permissions: []
-            });
             this.process = false;
         }
     }

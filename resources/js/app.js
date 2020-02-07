@@ -17,6 +17,7 @@ Vue.use(Croppa);
 // Vue Auth
 import VueAuth from "./plugins/vue-auth";
 Vue.use(VueAuth, { router });
+
 Vue.prototype.$user.set({
     rol: "not_authorized",
     permissions: []

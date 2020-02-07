@@ -51,7 +51,6 @@ class UsersController extends Controller
                 $usuario->put('rol', $aux);
                 $data->push($usuario);
             }
-            return $data;
         } else {
             $users = User::where('id', '!=', 1)->get();
             $data = collect();
@@ -67,8 +66,12 @@ class UsersController extends Controller
                 $usuario->put('rol', $aux);
                 $data->push($usuario);
             }
-            return $data;
         }
+
+        return [
+            'users' => $data->take($request->get('limit', null)),
+            'total' => $data->count(),
+        ];
     }
 
     public function store(Request $request)
@@ -85,11 +88,6 @@ class UsersController extends Controller
             $attributes['role_id'] = $request->get('role_id', 3);
             User::create($attributes);
         }
-    }
-
-    public function show($id)
-    {
-        return $user = User::find($id);
     }
 
     public function update(Request $request, $id)
@@ -161,7 +159,9 @@ class UsersController extends Controller
 
     public function destroy($id)
     {
-        $user = User::find($id);
-        $user->delete();
+        if ($id != 1) {
+            $user = User::find($id);
+            $user->delete();
+        }
     }
 }

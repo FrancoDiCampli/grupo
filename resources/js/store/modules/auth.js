@@ -1,3 +1,5 @@
+import Vue from "vue";
+
 const state = {
     user: null,
     form: {},
@@ -23,7 +25,7 @@ const mutations = {
 };
 
 const actions = {
-    login({ state, commit }) {
+    login({ state, dispatch }) {
         return new Promise((resolve, reject) => {
             axios
                 .get("/airlock/csrf-cookie")
@@ -38,37 +40,38 @@ const actions = {
                             resolve(response.data);
                         })
                         .catch(error => {
-                            commit("fillErrors", error.response, {
+                            dispatch("errorHandle", error.response, {
                                 root: true
                             });
                             reject(error.response.data);
                         });
                 })
                 .catch(error => {
-                    commit("fillErrors", error.response, {
+                    dispatch("errorHandle", error.response, {
                         root: true
                     });
                 });
         });
     },
 
-    user({ commit }) {
+    user({ commit, dispatch }) {
         return new Promise((resolve, reject) => {
             axios
                 .get("/api/user")
                 .then(response => {
-                    console.log(response.data);
                     commit("fillUser", response.data);
                     resolve(response.data);
                 })
                 .catch(error => {
-                    commit("iterateProcess", false, { root: true });
+                    dispatch("errorHandle", error.response, {
+                        root: true
+                    });
                     reject(error.response.data);
                 });
         });
     },
 
-    updateAccount({ commit }) {
+    updateAccount({ dispatch }) {
         return new Promise((resolve, reject) => {
             axios
                 .post("/api/update_account", state.form)
@@ -76,7 +79,9 @@ const actions = {
                     resolve(response.data);
                 })
                 .catch(error => {
-                    commit("fillErrors", error.response, { root: true });
+                    dispatch("errorHandle", error.response, {
+                        root: true
+                    });
                     reject(error.response.data);
                 });
         });
@@ -101,6 +106,11 @@ const actions = {
         window.localStorage.removeItem("logged");
         commit("resetUser");
         commit("resetForm");
+
+        Vue.prototype.$user.set({
+            rol: "not_authorized",
+            permissions: []
+        });
         // location.reload();
     }
 };
