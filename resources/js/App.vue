@@ -72,6 +72,7 @@ export default {
         exit: async function() {
             this.process = true;
             await this.$store.dispatch("auth/logout");
+            this.$router.push("/"); // BORRAR CUANDO SE DEFINAN LOS PERMISOS Y ROLES EN LAS RUTAS
             this.process = false;
         }
     }

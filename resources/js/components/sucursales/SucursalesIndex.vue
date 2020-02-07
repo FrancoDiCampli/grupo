@@ -1,14 +1,9 @@
 <template>
     <div>
-        <v-card
-            v-if="$store.state.sucursales.sucursales"
-            shaped
-            outlined
-            :loading="$store.state.inProcess"
-        >
+        <v-card shaped outlined :loading="$store.state.inProcess">
             <v-card-title>Sucursales</v-card-title>
             <v-divider></v-divider>
-            <v-card-text class="px-0">
+            <v-card-text class="px-0" v-if="$store.state.sucursales.sucursales">
                 <v-data-table
                     :headers="headers"
                     :items="$store.state.sucursales.sucursales.negocios"

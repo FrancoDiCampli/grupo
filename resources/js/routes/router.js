@@ -17,6 +17,7 @@ import RolesEdit from "../views/roles/Edit";
 // Users
 import Users from "../views/users/Users";
 import UsersCreate from "../views/users/Create";
+import UsersEdit from "../views/users/Edit";
 
 Vue.use(Router);
 
@@ -91,6 +92,11 @@ export default new Router({
             path: "/users/nuevo",
             name: "users_create",
             component: UsersCreate
+        },
+        {
+            path: "/users/editar",
+            name: "users_edit",
+            component: UsersEdit
         }
     ]
 });

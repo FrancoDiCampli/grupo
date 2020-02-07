@@ -12,13 +12,13 @@
         <v-row justify="center">
             <v-col cols="10" md="8" lg="6">
                 <v-card shaped outlined>
-                    <v-card-title>Nuevo usuario</v-card-title>
+                    <v-card-title>Editar usuario</v-card-title>
                     <v-divider></v-divider>
                     <v-card-text>
                         <v-row justify="center">
                             <v-col cols="12" sm="10">
                                 <v-form ref="CreateUsers" @submit.prevent="saveUser()">
-                                    <UsersForm mode="create"></UsersForm>
+                                    <UsersForm mode="edit"></UsersForm>
                                     <v-row justify="center">
                                         <v-btn
                                             type="submit"
@@ -52,10 +52,18 @@ export default {
         UsersForm
     },
 
+    mounted() {
+        if (!this.$store.state.users.form.name) {
+            this.$router.push("/users");
+        }
+    },
+
     methods: {
         saveUser: async function() {
             if (this.$refs.CreateUsers.validate()) {
-                await this.$store.dispatch("users/save");
+                await this.$store.dispatch("users/update", {
+                    id: this.$store.state.users.form.id
+                });
                 this.updateSession();
                 this.$router.push("/users");
             }

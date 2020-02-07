@@ -39,21 +39,21 @@
                     outlined
                 ></v-text-field>
             </v-col>
-            <v-col cols="12" class="py-0 px-5">
+            <v-col cols="12" class="py-0 px-5" v-if="$store.state.roles.roles">
                 <v-select
                     v-model="$store.state.users.form.role_id"
-                    :items="$store.state.roles.roles"
+                    :items="$store.state.roles.roles.roles"
                     item-text="role"
                     item-value="id"
                     label="Rol"
                     outlined
                 ></v-select>
             </v-col>
-            <v-col cols="12" class="py-0 px-5">
+            <v-col cols="12" class="py-0 px-5" v-if="$store.state.sucursales.sucursales">
                 <v-select
                     v-model="$store.state.users.form.negocio_id"
-                    :items="$store.state.negocios.negocios.negocios"
-                    item-text="razonsocial"
+                    :items="$store.state.sucursales.sucursales.negocios"
+                    item-text="nombre"
                     item-value="id"
                     label="Sucursal"
                     outlined
@@ -102,7 +102,7 @@ export default {
 
     mounted() {
         this.$store.dispatch("roles/index");
-        this.$store.dispatch("negocios/index");
+        this.$store.dispatch("sucursales/index");
     }
 };
 </script>

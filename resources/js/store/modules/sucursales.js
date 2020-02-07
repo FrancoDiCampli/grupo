@@ -46,7 +46,6 @@ const actions = {
             axios
                 .get("/api/negocios/" + params.id, { params: params })
                 .then(response => {
-                    console.log(response.data);
                     commit("fillSucursal", response.data);
                     resolve(response.data);
                 })

@@ -12,7 +12,7 @@
         <v-row justify="center">
             <v-col cols="10" md="8" lg="6">
                 <v-card shaped outlined>
-                    <v-card-title>Nuevo rol</v-card-title>
+                    <v-card-title>Editar rol</v-card-title>
                     <v-divider></v-divider>
                     <v-card-text>
                         <v-row justify="center">
