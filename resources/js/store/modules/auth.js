@@ -23,20 +23,6 @@ const mutations = {
 };
 
 const actions = {
-    register({ state }) {
-        return new Promise((resolve, reject) => {
-            axios
-                .post("/register", state.form)
-                .then(response => {
-                    resolve(response.data);
-                })
-                .catch(error => {
-                    commit("fillErrors", error.response, { root: true });
-                    reject(error.response.data);
-                });
-        });
-    },
-
     login({ state, commit }) {
         return new Promise((resolve, reject) => {
             axios
@@ -71,11 +57,26 @@ const actions = {
             axios
                 .get("/api/user")
                 .then(response => {
+                    console.log(response.data);
                     commit("fillUser", response.data);
                     resolve(response.data);
                 })
                 .catch(error => {
                     commit("iterateProcess", false, { root: true });
+                    reject(error.response.data);
+                });
+        });
+    },
+
+    updateAccount({ commit }) {
+        return new Promise((resolve, reject) => {
+            axios
+                .post("/api/update_account", state.form)
+                .then(response => {
+                    resolve(response.data);
+                })
+                .catch(error => {
+                    commit("fillErrors", error.response, { root: true });
                     reject(error.response.data);
                 });
         });

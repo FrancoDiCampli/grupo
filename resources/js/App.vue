@@ -1,5 +1,5 @@
 <template>
-    <v-app>
+    <v-app :style="{background: $vuetify.theme.themes[theme].background}">
         <AppBar>
             <v-list-item @click="exit()">
                 <v-list-item-title>Cerrar sesión</v-list-item-title>
@@ -39,6 +39,12 @@ export default {
         Errors
     },
 
+    computed: {
+        theme() {
+            return this.$vuetify.theme.dark ? "dark" : "light";
+        }
+    },
+
     mounted() {
         if (JSON.parse(window.localStorage.getItem("logged"))) {
             this.recoverSession();
@@ -56,7 +62,6 @@ export default {
                         rol: response.rol,
                         permissions: response.permissions
                     });
-                    this.$router.push("/welcome");
                     this.process = false;
                 })
                 .catch(error => {
@@ -71,7 +76,6 @@ export default {
                 rol: "not_authorized",
                 permissions: []
             });
-            this.$router.push("/");
             this.process = false;
         }
     }

@@ -14,3 +14,10 @@ function plugin(Vue, options) {
 }
 
 export default plugin;
+
+/**
+ *
+ * BASADO EN EL REPOSITORIO anthonygore/vue-router-user-roles
+ * URL: https://github.com/anthonygore/vue-router-user-roles
+ *
+ */

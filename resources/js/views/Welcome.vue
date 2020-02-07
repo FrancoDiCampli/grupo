@@ -1,21 +1,20 @@
 <template>
     <div>
-        <br />
-        <br />
-        <v-row>
-            <v-col cols="12">
-                <v-row justify="center">
-                    <img src="img/logo.png" width="300" height="auto" />
-                </v-row>
-            </v-col>
-            <v-col cols="12">
-                <h1
-                    class="display-2 font-weight-light secondary--text text-center"
-                >
-                    Welcome
-                </h1>
-            </v-col>
+        <v-row justify="center">
+            <img src="img/logo.png" width="400" height="400" />
         </v-row>
+        <h1 class="text-center secondary--text">Bienvenido</h1>
+        <br />
+        <div v-if="$store.state.auth.user">
+            <v-row justify="center" v-if="$store.state.auth.user.rol.role == 'cliente'">
+                <v-btn
+                    tile
+                    color="secondary"
+                    class="elevation-0 mx-2"
+                    @click="$router.push('/clientes/micuenta');"
+                >Mi cuenta</v-btn>
+            </v-row>
+        </div>
     </div>
 </template>
 

@@ -4,9 +4,10 @@
             <v-col cols="12" md="10" lg="8">
                 <v-alert
                     color="error"
-                    elevation="2"
                     border="left"
                     colored-border
+                    class="alert-border"
+                    style="border: thin solid #e0e0e0; border-left: none;"
                     v-for="(error, i) in $store.state.errors"
                     :key="i"
                 >
@@ -26,6 +27,20 @@
                         </p>
                     </div>
                     <v-row justify="end">
+                        <v-tooltip bottom>
+                            <template v-slot:activator="{ on }">
+                                <v-btn
+                                    text
+                                    class="mr-5 elevation-0"
+                                    color="error"
+                                    v-on="on"
+                                    @click="notificate(error)"
+                                >
+                                    <v-icon size="medium" class="mr-3">fab fa-whatsapp</v-icon>Notificar
+                                </v-btn>
+                            </template>
+                            <span>Notificar al desarrollador</span>
+                        </v-tooltip>
                         <v-btn
                             tile
                             class="mr-5 elevation-0"
@@ -44,7 +59,41 @@
 </template>
 
 <script>
-export default {};
-</script>
+export default {
+    methods: {
+        notificate(error) {
+            let testString = `Error ${error.status}: \n${error.data.message}`;
 
-<style lang="scss"></style>
+            let errorString = `Error ${error.status}: `;
+            if (error.data.message) {
+                errorString = errorString + `${error.data.message}.\n`;
+
+                for (const key in error.data.errors) {
+                    if (error.data.errors.hasOwnProperty(key)) {
+                        for (
+                            let i = 0;
+                            i < error.data.errors[key].length;
+                            i++
+                        ) {
+                            errorString =
+                                errorString + `\n${error.data.errors[key][i]}`;
+                        }
+                    }
+                }
+            } else {
+                errorString = errorString + `${error.data}.`;
+            }
+
+            let errorURI = encodeURI(errorString);
+
+            let randomNumber = Math.floor(Math.random() * 2);
+            let phoneNumbers = ["5493735414420", "5493735527874"];
+
+            window.open(
+                `https://wa.me/${phoneNumbers[randomNumber]}?text=${errorURI}`,
+                "_blank"
+            );
+        }
+    }
+};
+</script>

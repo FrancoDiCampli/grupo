@@ -19,17 +19,16 @@ export class RouteProtect {
 
     set(user) {
         this.Vauth.user = user;
+        if (this.to) {
+            const { access, redirect } = this._accessToRoute(this.to);
+            if (!access) {
+                this.router.push({ name: redirect });
+            }
+        }
     }
 
-    accessToRoute(route) {
-        if (this.Vauth.user && route.meta.rol) {
-            const rolMatch = route.meta.rol.find(
-                rol => rol === this.Vauth.user.rol
-            );
-            if (!rolMatch) {
-                return { access: false, redirect: route.meta.redirect };
-            }
-        } else if (this.Vauth.user && route.meta.permission) {
+    _accessToRoute(route) {
+        if (this.Vauth.user && route.meta.permission) {
             const permissionMatch = this.Vauth.user.permissions.find(
                 per => per === route.meta.permission
             );
@@ -39,6 +38,13 @@ export class RouteProtect {
                     redirect: route.meta.redirect
                 };
             }
+        } else if (this.Vauth.user && route.meta.rol) {
+            const rolMatch = route.meta.rol.find(
+                rol => rol === this.Vauth.user.rol
+            );
+            if (!rolMatch) {
+                return { access: false, redirect: route.meta.redirect };
+            }
         }
 
         return { access: true };
@@ -46,7 +52,7 @@ export class RouteProtect {
 
     resolve(to, from, next) {
         this.to = to;
-        const { access, redirect } = this.accessToRoute(to);
+        const { access, redirect } = this._accessToRoute(to);
         if (access) {
             next();
         } else {

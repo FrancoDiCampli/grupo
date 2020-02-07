@@ -6,6 +6,8 @@ use App\Role;
 use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
+use Intervention\Image\Facades\Image;
 
 class UsersController extends Controller
 {
@@ -106,6 +108,55 @@ class UsersController extends Controller
             }
         }
         $user->save();
+    }
+
+    public function updateAccount(Request $request)
+    {
+        $user = User::find(auth()->user()->id);
+
+        if ($request->get('newFoto')) {
+            $eliminar = $user->foto;
+            if ($eliminar) {
+                @unlink(public_path($eliminar));
+            }
+            $image = $request->get('newFoto');
+            $name = time() . '.' . explode('/', explode(':', substr($image, 0, strpos($image, ';')))[1])[1];
+            Image::make($request->get('newFoto'))->save(public_path('img/usuarios/') . $name);
+            $foto = '/img/usuarios/' . $name;
+            $user->foto = $foto;
+        }
+
+        if ($request->current_password) {
+            if (Hash::check($request->current_password, auth()->user()->password)) {
+
+                $request->validate([
+                    'name' => 'required|string|max:255',
+                    'password' => 'required|string|min:6',
+                    'confirm_password' => 'required|same:password',
+                    'email' => 'required|string|max:255|unique:users,email,' . $user->id,
+                ]);
+
+                $user->name = $request->name;
+                $user->email = $request->email;
+                $user->password =  bcrypt($request->password);
+                $user->save();
+
+                return response()->json('ok', 200);
+            } else {
+                return response()->json('Contraseña Incorrecta', 401);
+            }
+        } else {
+            $request->validate([
+                'name' => 'required|string|max:255',
+                'email' => 'required|string|max:255|unique:users,email,' . $user->id,
+            ]);
+
+            $user->name = $request->name;
+            $user->email = $request->email;
+            $user->save();
+
+            return response()->json('ok', 200);
+        }
     }
 
     public function destroy($id)
