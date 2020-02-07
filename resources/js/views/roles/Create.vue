@@ -18,7 +18,7 @@
                         <v-row justify="center">
                             <v-col cols="12" sm="10">
                                 <v-form ref="CreateRol" @submit.prevent="saveRol()">
-                                    <RolesForm mode="create" ref="RolesForm"></RolesForm>
+                                    <RolesForm ref="RolesForm"></RolesForm>
                                     <v-row justify="center">
                                         <v-btn
                                             tile
@@ -52,9 +52,13 @@ export default {
         RolesForm
     },
 
+    mounted() {
+        this.$refs.CreateRol.reset();
+    },
+
     methods: {
         saveRol: async function() {
-            if (this.$refs.CreateRol.validate()) {
+            if (this.$refs.CreateRol.reset()) {
                 let permisos = await this.$store.dispatch("roles/permissions");
                 let selected = this.$store.state.roles.form.scope;
 

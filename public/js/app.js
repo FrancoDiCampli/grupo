@@ -2457,12 +2457,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         roles: ["superAdmin", "administrador"],
         divider: true
       }, {
-        name: "Negocios",
-        icon: "fas fa-building",
-        url: "/negocios",
-        roles: ["superAdmin", "administrador"],
-        divider: true
-      }, {
         name: "Reportes",
         icon: "fas fa-clipboard",
         url: "/reportes",
@@ -2474,6 +2468,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         url: "/movimientos",
         roles: ["superAdmin", "administrador"],
         divider: true
+      }, {
+        name: "Sucrusales",
+        icon: "fas fa-building",
+        url: "/sucursales",
+        roles: ["superAdmin", "administrador"],
+        divider: false
       }, {
         name: "Usuarios",
         icon: "fas fa-users",
@@ -3402,8 +3402,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -3440,7 +3438,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.$store.dispatch("roles/edit", {
         data: rol
       });
-      this.$router.push("roles/edit");
+      this.$router.push("roles/editar");
     },
     beforeDelete: function beforeDelete(id) {
       this.rolID = id;
@@ -3495,6 +3493,731 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         _this.process = false;
       })["catch"](function (error) {
         _this.process = false;
+      });
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/sucursales/SucursalesForm.vue?vue&type=script&lang=js&":
+/*!************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/sucursales/SucursalesForm.vue?vue&type=script&lang=js& ***!
+  \************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _utils_provincias__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../utils/provincias */ "./resources/js/utils/provincias.js");
+/* harmony import */ var _utils_localidades__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../utils/localidades */ "./resources/js/utils/localidades.js");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      contactos: [],
+      contactosEliminados: [],
+      contactDialog: false,
+      contactForm: {
+        nombre: null,
+        numero: null,
+        email: null,
+        cargo: null
+      },
+      provincias: _utils_provincias__WEBPACK_IMPORTED_MODULE_0__["default"].provincias,
+      rules: {
+        required: function required(value) {
+          return !!value || "Este campo es obligatorio";
+        },
+        max: function max(value) {
+          return value && value.length <= 190 || "Este campo no puede contener más de 190 digitos";
+        },
+        cuit: function cuit(value) {
+          return value && value.length < 12 && value.length > 10 || "Este campo debe contener 11 digitos";
+        },
+        postal: function postal(value) {
+          return value && value.length < 5 && value.length > 3 || "Este campo debe contener 4 digitos";
+        },
+        minTelefono: function minTelefono(value) {
+          return value && value.length <= 13 || "Este campo no puede contener más de 13 digitos";
+        },
+        maxTelefono: function maxTelefono(value) {
+          return value && value.length >= 6 || "Este campo debe contener al menos 6 digitos";
+        }
+      }
+    };
+  },
+  props: ["mode"],
+  computed: {
+    localidades: function localidades() {
+      var _this = this;
+
+      if (this.$store.state.sucursales.form.provincia) {
+        if (this.$store.state.sucursales.form.provincia.id) {
+          var data = _utils_localidades__WEBPACK_IMPORTED_MODULE_1__["default"].find(function (localidad) {
+            return localidad.id === _this.$store.state.sucursales.form.provincia.id;
+          });
+
+          if (data.ciudades) {
+            return data.ciudades;
+          } else {
+            return [];
+          }
+        } else {
+          return [];
+        }
+      } else {
+        return [];
+      }
+    }
+  },
+  created: function created() {
+    var _this2 = this;
+
+    if (this.mode == "edit" && this.$store.state.sucursales.form.provincia) {
+      var provincia = _utils_provincias__WEBPACK_IMPORTED_MODULE_0__["default"].provincias.find(function (provincia) {
+        return provincia.nombre == _this2.$store.state.sucursales.form.provincia;
+      });
+      this.$store.state.sucursales.form.provincia = provincia;
+      var data = _utils_localidades__WEBPACK_IMPORTED_MODULE_1__["default"].find(function (localidad) {
+        return localidad.id === provincia.id;
+      });
+      var ciudad = data.ciudades.find(function (ciudad) {
+        return ciudad.nombre == _this2.$store.state.sucursales.form.localidad;
+      });
+      this.$store.state.sucursales.form.localidad = ciudad;
+      this.contactos = this.$store.state.sucursales.form.contactos;
+    }
+  },
+  methods: {
+    getProvincia: function getProvincia() {
+      if (this.$store.state.sucursales.form.provincia) {
+        this.$store.state.sucursales.form.provincia = this.$store.state.sucursales.form.provincia.nombre;
+      } else {
+        this.$store.state.sucursales.form.provincia = null;
+      }
+    },
+    getLocalidad: function getLocalidad() {
+      if (this.$store.state.sucursales.form.localidad) {
+        this.$store.state.sucursales.form.localidad = this.$store.state.sucursales.form.localidad.nombre;
+      } else {
+        this.$store.state.sucursales.form.localidad = null;
+      }
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/sucursales/SucursalesIndex.vue?vue&type=script&lang=js&":
+/*!*************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/sucursales/SucursalesIndex.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      headers: [{
+        text: "Nombre",
+        sortable: false
+      }, {
+        text: "Dirección",
+        sortable: false
+      }, {
+        text: "Localidad",
+        sortable: false,
+        "class": "hidden-xs-only"
+      }, {
+        text: "Provincia",
+        sortable: false,
+        "class": "hidden-xs-only"
+      }, {
+        text: "",
+        sortable: false
+      }]
+    };
+  },
+  props: ["limit"]
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/sucursales/SucursalesShow.vue?vue&type=script&lang=js&":
+/*!************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/sucursales/SucursalesShow.vue?vue&type=script&lang=js& ***!
+  \************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _SucursalesForm__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./SucursalesForm */ "./resources/js/components/sucursales/SucursalesForm.vue");
+/* harmony import */ var _SucursalesShowData__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./SucursalesShowData */ "./resources/js/components/sucursales/SucursalesShowData.vue");
+/* harmony import */ var _SucursalesShowVentas__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./SucursalesShowVentas */ "./resources/js/components/sucursales/SucursalesShowVentas.vue");
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      mode: "show"
+    };
+  },
+  props: ["id"],
+  components: {
+    SucursalesForm: _SucursalesForm__WEBPACK_IMPORTED_MODULE_1__["default"],
+    SucursalesShowData: _SucursalesShowData__WEBPACK_IMPORTED_MODULE_2__["default"],
+    SucursalesShowVentas: _SucursalesShowVentas__WEBPACK_IMPORTED_MODULE_3__["default"]
+  },
+  mounted: function mounted() {
+    this.getSucursal();
+  },
+  methods: {
+    getSucursal: function getSucursal() {
+      this.$store.dispatch("sucursales/show", {
+        id: this.id
+      });
+    },
+    editSucursal: function editSucursal() {
+      var _this = this;
+
+      this.$store.dispatch("sucursales/edit", {
+        data: this.$store.state.sucursales.sucursal.negocio
+      }).then(function () {
+        _this.mode = "edit";
+      });
+    },
+    updateSucursal: function () {
+      var _updateSucursal = _asyncToGenerator(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
+        var id;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                if (!this.$refs.sucursalesEditForm.validate()) {
+                  _context.next = 9;
+                  break;
+                }
+
+                this.$refs.SucursalesForm.getProvincia();
+                this.$refs.SucursalesForm.getLocalidad();
+                id = this.$store.state.sucursales.form.id;
+                _context.next = 6;
+                return this.$store.dispatch("sucursales/update", {
+                  id: id
+                });
+
+              case 6:
+                _context.next = 8;
+                return this.$store.dispatch("sucursales/show", {
+                  id: id
+                });
+
+              case 8:
+                this.mode = "show";
+
+              case 9:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+
+      function updateSucursal() {
+        return _updateSucursal.apply(this, arguments);
+      }
+
+      return updateSucursal;
+    }(),
+    deleteSucursal: function () {
+      var _deleteSucursal = _asyncToGenerator(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                _context2.next = 2;
+                return this.$store.dispatch("sucursales/destroy", {
+                  id: this.$store.state.sucursales.sucursal.negocio.id
+                });
+
+              case 2:
+                this.mode = "show";
+                this.$router.push("/sucursales");
+
+              case 4:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2, this);
+      }));
+
+      function deleteSucursal() {
+        return _deleteSucursal.apply(this, arguments);
+      }
+
+      return deleteSucursal;
+    }()
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/sucursales/SucursalesShowData.vue?vue&type=script&lang=js&":
+/*!****************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/sucursales/SucursalesShowData.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/sucursales/SucursalesShowVentas.vue?vue&type=script&lang=js&":
+/*!******************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/sucursales/SucursalesShowVentas.vue?vue&type=script&lang=js& ***!
+  \******************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  methods: {
+    print: function print(id) {
+      axios({
+        url: "/api/ventasPDF/" + id,
+        method: "GET",
+        responseType: "blob"
+      }).then(function (response) {
+        var url = window.URL.createObjectURL(new Blob([response.data]));
+        var link = document.createElement("a");
+        link.href = url;
+        link.setAttribute("download", "venta" + id + ".pdf");
+        document.body.appendChild(link);
+        link.click();
       });
     }
   }
@@ -3627,6 +4350,8 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
 //
 //
 //
@@ -3950,6 +4675,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   components: {
     RolesForm: _components_roles_RolesForm_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
+  mounted: function mounted() {
+    this.$refs.CreateRol.reset();
+  },
   methods: {
     saveRol: function () {
       var _saveRol = _asyncToGenerator(
@@ -3961,7 +4689,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
-                if (!this.$refs.CreateRol.validate()) {
+                if (!this.$refs.CreateRol.reset()) {
                   _context2.next = 2;
                   break;
                 }
@@ -4312,6 +5040,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -4334,6 +5068,262 @@ __webpack_require__.r(__webpack_exports__);
     loadMore: function loadMore() {
       this.limit += this.limit;
       this.getRoles();
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/sucursales/Create.vue?vue&type=script&lang=js&":
+/*!***********************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/sucursales/Create.vue?vue&type=script&lang=js& ***!
+  \***********************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _components_sucursales_SucursalesForm__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../components/sucursales/SucursalesForm */ "./resources/js/components/sucursales/SucursalesForm.vue");
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  components: {
+    SucursalesForm: _components_sucursales_SucursalesForm__WEBPACK_IMPORTED_MODULE_1__["default"]
+  },
+  mounted: function mounted() {
+    this.$refs.CreateSucursal.reset();
+  },
+  methods: {
+    saveSucursal: function () {
+      var _saveSucursal = _asyncToGenerator(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                if (!this.$refs.CreateSucursal.validate()) {
+                  _context.next = 8;
+                  break;
+                }
+
+                _context.next = 3;
+                return this.$refs.SucursalesForm.getProvincia();
+
+              case 3:
+                _context.next = 5;
+                return this.$refs.SucursalesForm.getLocalidad();
+
+              case 5:
+                _context.next = 7;
+                return this.$store.dispatch("sucursales/save");
+
+              case 7:
+                this.$router.push("/sucursales");
+
+              case 8:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+
+      function saveSucursal() {
+        return _saveSucursal.apply(this, arguments);
+      }
+
+      return saveSucursal;
+    }()
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/sucursales/Show.vue?vue&type=script&lang=js&":
+/*!*********************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/sucursales/Show.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _components_sucursales_SucursalesShow__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../components/sucursales/SucursalesShow */ "./resources/js/components/sucursales/SucursalesShow.vue");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: ["id"],
+  components: {
+    SucursalesShow: _components_sucursales_SucursalesShow__WEBPACK_IMPORTED_MODULE_0__["default"]
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/sucursales/Sucursales.vue?vue&type=script&lang=js&":
+/*!***************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/sucursales/Sucursales.vue?vue&type=script&lang=js& ***!
+  \***************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _components_sucursales_SucursalesIndex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../components/sucursales/SucursalesIndex */ "./resources/js/components/sucursales/SucursalesIndex.vue");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      limit: 10
+    };
+  },
+  components: {
+    SucursalesIndex: _components_sucursales_SucursalesIndex__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
+  mounted: function mounted() {
+    this.getSucursales();
+  },
+  methods: {
+    getSucursales: function getSucursales() {
+      this.$store.dispatch("sucursales/index", {
+        limit: this.limit
+      });
+    },
+    loadMore: function loadMore() {
+      this.limit += this.limit;
+      this.getNegocios();
     }
   }
 });
@@ -4463,6 +5453,25 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/dist/cjs.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/App.vue?vue&type=style&index=0&lang=scss&":
+/*!**************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/sass-loader/dist/cjs.js??ref--6-3!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/App.vue?vue&type=style&index=0&lang=scss& ***!
+  \**************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(/*! ../../node_modules/css-loader/lib/css-base.js */ "./node_modules/css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "body::-webkit-scrollbar {\n  width: 6px;\n}\nbody::-webkit-scrollbar-thumb {\n  background-color: #44c2f7;\n}", ""]);
+
+// exports
+
+
+/***/ }),
+
 /***/ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/dist/cjs.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/auth/Account.vue?vue&type=style&index=0&lang=scss&":
 /*!**********************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/css-loader!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/sass-loader/dist/cjs.js??ref--6-3!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/auth/Account.vue?vue&type=style&index=0&lang=scss& ***!
@@ -4476,6 +5485,25 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 // module
 exports.push([module.i, ".croppa-account .foto-buttons {\n  height: 100px;\n  width: 50px;\n  display: block;\n  position: absolute;\n  right: 25px;\n  top: 200px;\n  z-index: 9;\n}\n.croppa-account .croppa-container {\n  width: 300px;\n  height: 300px;\n  border-radius: 50%;\n}\n.croppa-account .croppa-container canvas {\n  margin-top: 0px;\n  border-radius: 50%;\n}", ""]);
+
+// exports
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/dist/cjs.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/sucursales/SucursalesShow.vue?vue&type=style&index=0&lang=scss&":
+/*!***********************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/sass-loader/dist/cjs.js??ref--6-3!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/sucursales/SucursalesShow.vue?vue&type=style&index=0&lang=scss& ***!
+  \***********************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-loader/lib/css-base.js */ "./node_modules/css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, ".sucursal-delete {\n  padding-top: 32px;\n  border-bottom-right-radius: 24px;\n  background-color: #f44336;\n}", ""]);
 
 // exports
 
@@ -4553,25 +5581,6 @@ exports = module.exports = __webpack_require__(/*! ../../css-loader/lib/css-base
 
 // module
 exports.push([module.i, "@charset \"UTF-8\";\n/*!\n* Vuetify v2.2.11\n* Forged by John Leider\n* Released under the MIT License.\n*/@-webkit-keyframes v-shake{59%{margin-left:0}60%,80%{margin-left:2px}70%,90%{margin-left:-2px}}@keyframes v-shake{59%{margin-left:0}60%,80%{margin-left:2px}70%,90%{margin-left:-2px}}.v-application .black{background-color:#000!important;border-color:#000!important}.v-application .black--text{color:#000!important;caret-color:#000!important}.v-application .white{background-color:#fff!important;border-color:#fff!important}.v-application .white--text{color:#fff!important;caret-color:#fff!important}.v-application .transparent{background-color:transparent!important;border-color:transparent!important}.v-application .transparent--text{color:transparent!important;caret-color:transparent!important}.v-application .red{background-color:#f44336!important;border-color:#f44336!important}.v-application .red--text{color:#f44336!important;caret-color:#f44336!important}.v-application .red.lighten-5{background-color:#ffebee!important;border-color:#ffebee!important}.v-application .red--text.text--lighten-5{color:#ffebee!important;caret-color:#ffebee!important}.v-application .red.lighten-4{background-color:#ffcdd2!important;border-color:#ffcdd2!important}.v-application .red--text.text--lighten-4{color:#ffcdd2!important;caret-color:#ffcdd2!important}.v-application .red.lighten-3{background-color:#ef9a9a!important;border-color:#ef9a9a!important}.v-application .red--text.text--lighten-3{color:#ef9a9a!important;caret-color:#ef9a9a!important}.v-application .red.lighten-2{background-color:#e57373!important;border-color:#e57373!important}.v-application .red--text.text--lighten-2{color:#e57373!important;caret-color:#e57373!important}.v-application .red.lighten-1{background-color:#ef5350!important;border-color:#ef5350!important}.v-application .red--text.text--lighten-1{color:#ef5350!important;caret-color:#ef5350!important}.v-application .red.darken-1{background-color:#e53935!important;border-color:#e53935!important}.v-application .red--text.text--darken-1{color:#e53935!important;caret-color:#e53935!important}.v-application .red.darken-2{background-color:#d32f2f!important;border-color:#d32f2f!important}.v-application .red--text.text--darken-2{color:#d32f2f!important;caret-color:#d32f2f!important}.v-application .red.darken-3{background-color:#c62828!important;border-color:#c62828!important}.v-application .red--text.text--darken-3{color:#c62828!important;caret-color:#c62828!important}.v-application .red.darken-4{background-color:#b71c1c!important;border-color:#b71c1c!important}.v-application .red--text.text--darken-4{color:#b71c1c!important;caret-color:#b71c1c!important}.v-application .red.accent-1{background-color:#ff8a80!important;border-color:#ff8a80!important}.v-application .red--text.text--accent-1{color:#ff8a80!important;caret-color:#ff8a80!important}.v-application .red.accent-2{background-color:#ff5252!important;border-color:#ff5252!important}.v-application .red--text.text--accent-2{color:#ff5252!important;caret-color:#ff5252!important}.v-application .red.accent-3{background-color:#ff1744!important;border-color:#ff1744!important}.v-application .red--text.text--accent-3{color:#ff1744!important;caret-color:#ff1744!important}.v-application .red.accent-4{background-color:#d50000!important;border-color:#d50000!important}.v-application .red--text.text--accent-4{color:#d50000!important;caret-color:#d50000!important}.v-application .pink{background-color:#e91e63!important;border-color:#e91e63!important}.v-application .pink--text{color:#e91e63!important;caret-color:#e91e63!important}.v-application .pink.lighten-5{background-color:#fce4ec!important;border-color:#fce4ec!important}.v-application .pink--text.text--lighten-5{color:#fce4ec!important;caret-color:#fce4ec!important}.v-application .pink.lighten-4{background-color:#f8bbd0!important;border-color:#f8bbd0!important}.v-application .pink--text.text--lighten-4{color:#f8bbd0!important;caret-color:#f8bbd0!important}.v-application .pink.lighten-3{background-color:#f48fb1!important;border-color:#f48fb1!important}.v-application .pink--text.text--lighten-3{color:#f48fb1!important;caret-color:#f48fb1!important}.v-application .pink.lighten-2{background-color:#f06292!important;border-color:#f06292!important}.v-application .pink--text.text--lighten-2{color:#f06292!important;caret-color:#f06292!important}.v-application .pink.lighten-1{background-color:#ec407a!important;border-color:#ec407a!important}.v-application .pink--text.text--lighten-1{color:#ec407a!important;caret-color:#ec407a!important}.v-application .pink.darken-1{background-color:#d81b60!important;border-color:#d81b60!important}.v-application .pink--text.text--darken-1{color:#d81b60!important;caret-color:#d81b60!important}.v-application .pink.darken-2{background-color:#c2185b!important;border-color:#c2185b!important}.v-application .pink--text.text--darken-2{color:#c2185b!important;caret-color:#c2185b!important}.v-application .pink.darken-3{background-color:#ad1457!important;border-color:#ad1457!important}.v-application .pink--text.text--darken-3{color:#ad1457!important;caret-color:#ad1457!important}.v-application .pink.darken-4{background-color:#880e4f!important;border-color:#880e4f!important}.v-application .pink--text.text--darken-4{color:#880e4f!important;caret-color:#880e4f!important}.v-application .pink.accent-1{background-color:#ff80ab!important;border-color:#ff80ab!important}.v-application .pink--text.text--accent-1{color:#ff80ab!important;caret-color:#ff80ab!important}.v-application .pink.accent-2{background-color:#ff4081!important;border-color:#ff4081!important}.v-application .pink--text.text--accent-2{color:#ff4081!important;caret-color:#ff4081!important}.v-application .pink.accent-3{background-color:#f50057!important;border-color:#f50057!important}.v-application .pink--text.text--accent-3{color:#f50057!important;caret-color:#f50057!important}.v-application .pink.accent-4{background-color:#c51162!important;border-color:#c51162!important}.v-application .pink--text.text--accent-4{color:#c51162!important;caret-color:#c51162!important}.v-application .purple{background-color:#9c27b0!important;border-color:#9c27b0!important}.v-application .purple--text{color:#9c27b0!important;caret-color:#9c27b0!important}.v-application .purple.lighten-5{background-color:#f3e5f5!important;border-color:#f3e5f5!important}.v-application .purple--text.text--lighten-5{color:#f3e5f5!important;caret-color:#f3e5f5!important}.v-application .purple.lighten-4{background-color:#e1bee7!important;border-color:#e1bee7!important}.v-application .purple--text.text--lighten-4{color:#e1bee7!important;caret-color:#e1bee7!important}.v-application .purple.lighten-3{background-color:#ce93d8!important;border-color:#ce93d8!important}.v-application .purple--text.text--lighten-3{color:#ce93d8!important;caret-color:#ce93d8!important}.v-application .purple.lighten-2{background-color:#ba68c8!important;border-color:#ba68c8!important}.v-application .purple--text.text--lighten-2{color:#ba68c8!important;caret-color:#ba68c8!important}.v-application .purple.lighten-1{background-color:#ab47bc!important;border-color:#ab47bc!important}.v-application .purple--text.text--lighten-1{color:#ab47bc!important;caret-color:#ab47bc!important}.v-application .purple.darken-1{background-color:#8e24aa!important;border-color:#8e24aa!important}.v-application .purple--text.text--darken-1{color:#8e24aa!important;caret-color:#8e24aa!important}.v-application .purple.darken-2{background-color:#7b1fa2!important;border-color:#7b1fa2!important}.v-application .purple--text.text--darken-2{color:#7b1fa2!important;caret-color:#7b1fa2!important}.v-application .purple.darken-3{background-color:#6a1b9a!important;border-color:#6a1b9a!important}.v-application .purple--text.text--darken-3{color:#6a1b9a!important;caret-color:#6a1b9a!important}.v-application .purple.darken-4{background-color:#4a148c!important;border-color:#4a148c!important}.v-application .purple--text.text--darken-4{color:#4a148c!important;caret-color:#4a148c!important}.v-application .purple.accent-1{background-color:#ea80fc!important;border-color:#ea80fc!important}.v-application .purple--text.text--accent-1{color:#ea80fc!important;caret-color:#ea80fc!important}.v-application .purple.accent-2{background-color:#e040fb!important;border-color:#e040fb!important}.v-application .purple--text.text--accent-2{color:#e040fb!important;caret-color:#e040fb!important}.v-application .purple.accent-3{background-color:#d500f9!important;border-color:#d500f9!important}.v-application .purple--text.text--accent-3{color:#d500f9!important;caret-color:#d500f9!important}.v-application .purple.accent-4{background-color:#a0f!important;border-color:#a0f!important}.v-application .purple--text.text--accent-4{color:#a0f!important;caret-color:#a0f!important}.v-application .deep-purple{background-color:#673ab7!important;border-color:#673ab7!important}.v-application .deep-purple--text{color:#673ab7!important;caret-color:#673ab7!important}.v-application .deep-purple.lighten-5{background-color:#ede7f6!important;border-color:#ede7f6!important}.v-application .deep-purple--text.text--lighten-5{color:#ede7f6!important;caret-color:#ede7f6!important}.v-application .deep-purple.lighten-4{background-color:#d1c4e9!important;border-color:#d1c4e9!important}.v-application .deep-purple--text.text--lighten-4{color:#d1c4e9!important;caret-color:#d1c4e9!important}.v-application .deep-purple.lighten-3{background-color:#b39ddb!important;border-color:#b39ddb!important}.v-application .deep-purple--text.text--lighten-3{color:#b39ddb!important;caret-color:#b39ddb!important}.v-application .deep-purple.lighten-2{background-color:#9575cd!important;border-color:#9575cd!important}.v-application .deep-purple--text.text--lighten-2{color:#9575cd!important;caret-color:#9575cd!important}.v-application .deep-purple.lighten-1{background-color:#7e57c2!important;border-color:#7e57c2!important}.v-application .deep-purple--text.text--lighten-1{color:#7e57c2!important;caret-color:#7e57c2!important}.v-application .deep-purple.darken-1{background-color:#5e35b1!important;border-color:#5e35b1!important}.v-application .deep-purple--text.text--darken-1{color:#5e35b1!important;caret-color:#5e35b1!important}.v-application .deep-purple.darken-2{background-color:#512da8!important;border-color:#512da8!important}.v-application .deep-purple--text.text--darken-2{color:#512da8!important;caret-color:#512da8!important}.v-application .deep-purple.darken-3{background-color:#4527a0!important;border-color:#4527a0!important}.v-application .deep-purple--text.text--darken-3{color:#4527a0!important;caret-color:#4527a0!important}.v-application .deep-purple.darken-4{background-color:#311b92!important;border-color:#311b92!important}.v-application .deep-purple--text.text--darken-4{color:#311b92!important;caret-color:#311b92!important}.v-application .deep-purple.accent-1{background-color:#b388ff!important;border-color:#b388ff!important}.v-application .deep-purple--text.text--accent-1{color:#b388ff!important;caret-color:#b388ff!important}.v-application .deep-purple.accent-2{background-color:#7c4dff!important;border-color:#7c4dff!important}.v-application .deep-purple--text.text--accent-2{color:#7c4dff!important;caret-color:#7c4dff!important}.v-application .deep-purple.accent-3{background-color:#651fff!important;border-color:#651fff!important}.v-application .deep-purple--text.text--accent-3{color:#651fff!important;caret-color:#651fff!important}.v-application .deep-purple.accent-4{background-color:#6200ea!important;border-color:#6200ea!important}.v-application .deep-purple--text.text--accent-4{color:#6200ea!important;caret-color:#6200ea!important}.v-application .indigo{background-color:#3f51b5!important;border-color:#3f51b5!important}.v-application .indigo--text{color:#3f51b5!important;caret-color:#3f51b5!important}.v-application .indigo.lighten-5{background-color:#e8eaf6!important;border-color:#e8eaf6!important}.v-application .indigo--text.text--lighten-5{color:#e8eaf6!important;caret-color:#e8eaf6!important}.v-application .indigo.lighten-4{background-color:#c5cae9!important;border-color:#c5cae9!important}.v-application .indigo--text.text--lighten-4{color:#c5cae9!important;caret-color:#c5cae9!important}.v-application .indigo.lighten-3{background-color:#9fa8da!important;border-color:#9fa8da!important}.v-application .indigo--text.text--lighten-3{color:#9fa8da!important;caret-color:#9fa8da!important}.v-application .indigo.lighten-2{background-color:#7986cb!important;border-color:#7986cb!important}.v-application .indigo--text.text--lighten-2{color:#7986cb!important;caret-color:#7986cb!important}.v-application .indigo.lighten-1{background-color:#5c6bc0!important;border-color:#5c6bc0!important}.v-application .indigo--text.text--lighten-1{color:#5c6bc0!important;caret-color:#5c6bc0!important}.v-application .indigo.darken-1{background-color:#3949ab!important;border-color:#3949ab!important}.v-application .indigo--text.text--darken-1{color:#3949ab!important;caret-color:#3949ab!important}.v-application .indigo.darken-2{background-color:#303f9f!important;border-color:#303f9f!important}.v-application .indigo--text.text--darken-2{color:#303f9f!important;caret-color:#303f9f!important}.v-application .indigo.darken-3{background-color:#283593!important;border-color:#283593!important}.v-application .indigo--text.text--darken-3{color:#283593!important;caret-color:#283593!important}.v-application .indigo.darken-4{background-color:#1a237e!important;border-color:#1a237e!important}.v-application .indigo--text.text--darken-4{color:#1a237e!important;caret-color:#1a237e!important}.v-application .indigo.accent-1{background-color:#8c9eff!important;border-color:#8c9eff!important}.v-application .indigo--text.text--accent-1{color:#8c9eff!important;caret-color:#8c9eff!important}.v-application .indigo.accent-2{background-color:#536dfe!important;border-color:#536dfe!important}.v-application .indigo--text.text--accent-2{color:#536dfe!important;caret-color:#536dfe!important}.v-application .indigo.accent-3{background-color:#3d5afe!important;border-color:#3d5afe!important}.v-application .indigo--text.text--accent-3{color:#3d5afe!important;caret-color:#3d5afe!important}.v-application .indigo.accent-4{background-color:#304ffe!important;border-color:#304ffe!important}.v-application .indigo--text.text--accent-4{color:#304ffe!important;caret-color:#304ffe!important}.v-application .blue{background-color:#2196f3!important;border-color:#2196f3!important}.v-application .blue--text{color:#2196f3!important;caret-color:#2196f3!important}.v-application .blue.lighten-5{background-color:#e3f2fd!important;border-color:#e3f2fd!important}.v-application .blue--text.text--lighten-5{color:#e3f2fd!important;caret-color:#e3f2fd!important}.v-application .blue.lighten-4{background-color:#bbdefb!important;border-color:#bbdefb!important}.v-application .blue--text.text--lighten-4{color:#bbdefb!important;caret-color:#bbdefb!important}.v-application .blue.lighten-3{background-color:#90caf9!important;border-color:#90caf9!important}.v-application .blue--text.text--lighten-3{color:#90caf9!important;caret-color:#90caf9!important}.v-application .blue.lighten-2{background-color:#64b5f6!important;border-color:#64b5f6!important}.v-application .blue--text.text--lighten-2{color:#64b5f6!important;caret-color:#64b5f6!important}.v-application .blue.lighten-1{background-color:#42a5f5!important;border-color:#42a5f5!important}.v-application .blue--text.text--lighten-1{color:#42a5f5!important;caret-color:#42a5f5!important}.v-application .blue.darken-1{background-color:#1e88e5!important;border-color:#1e88e5!important}.v-application .blue--text.text--darken-1{color:#1e88e5!important;caret-color:#1e88e5!important}.v-application .blue.darken-2{background-color:#1976d2!important;border-color:#1976d2!important}.v-application .blue--text.text--darken-2{color:#1976d2!important;caret-color:#1976d2!important}.v-application .blue.darken-3{background-color:#1565c0!important;border-color:#1565c0!important}.v-application .blue--text.text--darken-3{color:#1565c0!important;caret-color:#1565c0!important}.v-application .blue.darken-4{background-color:#0d47a1!important;border-color:#0d47a1!important}.v-application .blue--text.text--darken-4{color:#0d47a1!important;caret-color:#0d47a1!important}.v-application .blue.accent-1{background-color:#82b1ff!important;border-color:#82b1ff!important}.v-application .blue--text.text--accent-1{color:#82b1ff!important;caret-color:#82b1ff!important}.v-application .blue.accent-2{background-color:#448aff!important;border-color:#448aff!important}.v-application .blue--text.text--accent-2{color:#448aff!important;caret-color:#448aff!important}.v-application .blue.accent-3{background-color:#2979ff!important;border-color:#2979ff!important}.v-application .blue--text.text--accent-3{color:#2979ff!important;caret-color:#2979ff!important}.v-application .blue.accent-4{background-color:#2962ff!important;border-color:#2962ff!important}.v-application .blue--text.text--accent-4{color:#2962ff!important;caret-color:#2962ff!important}.v-application .light-blue{background-color:#03a9f4!important;border-color:#03a9f4!important}.v-application .light-blue--text{color:#03a9f4!important;caret-color:#03a9f4!important}.v-application .light-blue.lighten-5{background-color:#e1f5fe!important;border-color:#e1f5fe!important}.v-application .light-blue--text.text--lighten-5{color:#e1f5fe!important;caret-color:#e1f5fe!important}.v-application .light-blue.lighten-4{background-color:#b3e5fc!important;border-color:#b3e5fc!important}.v-application .light-blue--text.text--lighten-4{color:#b3e5fc!important;caret-color:#b3e5fc!important}.v-application .light-blue.lighten-3{background-color:#81d4fa!important;border-color:#81d4fa!important}.v-application .light-blue--text.text--lighten-3{color:#81d4fa!important;caret-color:#81d4fa!important}.v-application .light-blue.lighten-2{background-color:#4fc3f7!important;border-color:#4fc3f7!important}.v-application .light-blue--text.text--lighten-2{color:#4fc3f7!important;caret-color:#4fc3f7!important}.v-application .light-blue.lighten-1{background-color:#29b6f6!important;border-color:#29b6f6!important}.v-application .light-blue--text.text--lighten-1{color:#29b6f6!important;caret-color:#29b6f6!important}.v-application .light-blue.darken-1{background-color:#039be5!important;border-color:#039be5!important}.v-application .light-blue--text.text--darken-1{color:#039be5!important;caret-color:#039be5!important}.v-application .light-blue.darken-2{background-color:#0288d1!important;border-color:#0288d1!important}.v-application .light-blue--text.text--darken-2{color:#0288d1!important;caret-color:#0288d1!important}.v-application .light-blue.darken-3{background-color:#0277bd!important;border-color:#0277bd!important}.v-application .light-blue--text.text--darken-3{color:#0277bd!important;caret-color:#0277bd!important}.v-application .light-blue.darken-4{background-color:#01579b!important;border-color:#01579b!important}.v-application .light-blue--text.text--darken-4{color:#01579b!important;caret-color:#01579b!important}.v-application .light-blue.accent-1{background-color:#80d8ff!important;border-color:#80d8ff!important}.v-application .light-blue--text.text--accent-1{color:#80d8ff!important;caret-color:#80d8ff!important}.v-application .light-blue.accent-2{background-color:#40c4ff!important;border-color:#40c4ff!important}.v-application .light-blue--text.text--accent-2{color:#40c4ff!important;caret-color:#40c4ff!important}.v-application .light-blue.accent-3{background-color:#00b0ff!important;border-color:#00b0ff!important}.v-application .light-blue--text.text--accent-3{color:#00b0ff!important;caret-color:#00b0ff!important}.v-application .light-blue.accent-4{background-color:#0091ea!important;border-color:#0091ea!important}.v-application .light-blue--text.text--accent-4{color:#0091ea!important;caret-color:#0091ea!important}.v-application .cyan{background-color:#00bcd4!important;border-color:#00bcd4!important}.v-application .cyan--text{color:#00bcd4!important;caret-color:#00bcd4!important}.v-application .cyan.lighten-5{background-color:#e0f7fa!important;border-color:#e0f7fa!important}.v-application .cyan--text.text--lighten-5{color:#e0f7fa!important;caret-color:#e0f7fa!important}.v-application .cyan.lighten-4{background-color:#b2ebf2!important;border-color:#b2ebf2!important}.v-application .cyan--text.text--lighten-4{color:#b2ebf2!important;caret-color:#b2ebf2!important}.v-application .cyan.lighten-3{background-color:#80deea!important;border-color:#80deea!important}.v-application .cyan--text.text--lighten-3{color:#80deea!important;caret-color:#80deea!important}.v-application .cyan.lighten-2{background-color:#4dd0e1!important;border-color:#4dd0e1!important}.v-application .cyan--text.text--lighten-2{color:#4dd0e1!important;caret-color:#4dd0e1!important}.v-application .cyan.lighten-1{background-color:#26c6da!important;border-color:#26c6da!important}.v-application .cyan--text.text--lighten-1{color:#26c6da!important;caret-color:#26c6da!important}.v-application .cyan.darken-1{background-color:#00acc1!important;border-color:#00acc1!important}.v-application .cyan--text.text--darken-1{color:#00acc1!important;caret-color:#00acc1!important}.v-application .cyan.darken-2{background-color:#0097a7!important;border-color:#0097a7!important}.v-application .cyan--text.text--darken-2{color:#0097a7!important;caret-color:#0097a7!important}.v-application .cyan.darken-3{background-color:#00838f!important;border-color:#00838f!important}.v-application .cyan--text.text--darken-3{color:#00838f!important;caret-color:#00838f!important}.v-application .cyan.darken-4{background-color:#006064!important;border-color:#006064!important}.v-application .cyan--text.text--darken-4{color:#006064!important;caret-color:#006064!important}.v-application .cyan.accent-1{background-color:#84ffff!important;border-color:#84ffff!important}.v-application .cyan--text.text--accent-1{color:#84ffff!important;caret-color:#84ffff!important}.v-application .cyan.accent-2{background-color:#18ffff!important;border-color:#18ffff!important}.v-application .cyan--text.text--accent-2{color:#18ffff!important;caret-color:#18ffff!important}.v-application .cyan.accent-3{background-color:#00e5ff!important;border-color:#00e5ff!important}.v-application .cyan--text.text--accent-3{color:#00e5ff!important;caret-color:#00e5ff!important}.v-application .cyan.accent-4{background-color:#00b8d4!important;border-color:#00b8d4!important}.v-application .cyan--text.text--accent-4{color:#00b8d4!important;caret-color:#00b8d4!important}.v-application .teal{background-color:#009688!important;border-color:#009688!important}.v-application .teal--text{color:#009688!important;caret-color:#009688!important}.v-application .teal.lighten-5{background-color:#e0f2f1!important;border-color:#e0f2f1!important}.v-application .teal--text.text--lighten-5{color:#e0f2f1!important;caret-color:#e0f2f1!important}.v-application .teal.lighten-4{background-color:#b2dfdb!important;border-color:#b2dfdb!important}.v-application .teal--text.text--lighten-4{color:#b2dfdb!important;caret-color:#b2dfdb!important}.v-application .teal.lighten-3{background-color:#80cbc4!important;border-color:#80cbc4!important}.v-application .teal--text.text--lighten-3{color:#80cbc4!important;caret-color:#80cbc4!important}.v-application .teal.lighten-2{background-color:#4db6ac!important;border-color:#4db6ac!important}.v-application .teal--text.text--lighten-2{color:#4db6ac!important;caret-color:#4db6ac!important}.v-application .teal.lighten-1{background-color:#26a69a!important;border-color:#26a69a!important}.v-application .teal--text.text--lighten-1{color:#26a69a!important;caret-color:#26a69a!important}.v-application .teal.darken-1{background-color:#00897b!important;border-color:#00897b!important}.v-application .teal--text.text--darken-1{color:#00897b!important;caret-color:#00897b!important}.v-application .teal.darken-2{background-color:#00796b!important;border-color:#00796b!important}.v-application .teal--text.text--darken-2{color:#00796b!important;caret-color:#00796b!important}.v-application .teal.darken-3{background-color:#00695c!important;border-color:#00695c!important}.v-application .teal--text.text--darken-3{color:#00695c!important;caret-color:#00695c!important}.v-application .teal.darken-4{background-color:#004d40!important;border-color:#004d40!important}.v-application .teal--text.text--darken-4{color:#004d40!important;caret-color:#004d40!important}.v-application .teal.accent-1{background-color:#a7ffeb!important;border-color:#a7ffeb!important}.v-application .teal--text.text--accent-1{color:#a7ffeb!important;caret-color:#a7ffeb!important}.v-application .teal.accent-2{background-color:#64ffda!important;border-color:#64ffda!important}.v-application .teal--text.text--accent-2{color:#64ffda!important;caret-color:#64ffda!important}.v-application .teal.accent-3{background-color:#1de9b6!important;border-color:#1de9b6!important}.v-application .teal--text.text--accent-3{color:#1de9b6!important;caret-color:#1de9b6!important}.v-application .teal.accent-4{background-color:#00bfa5!important;border-color:#00bfa5!important}.v-application .teal--text.text--accent-4{color:#00bfa5!important;caret-color:#00bfa5!important}.v-application .green{background-color:#4caf50!important;border-color:#4caf50!important}.v-application .green--text{color:#4caf50!important;caret-color:#4caf50!important}.v-application .green.lighten-5{background-color:#e8f5e9!important;border-color:#e8f5e9!important}.v-application .green--text.text--lighten-5{color:#e8f5e9!important;caret-color:#e8f5e9!important}.v-application .green.lighten-4{background-color:#c8e6c9!important;border-color:#c8e6c9!important}.v-application .green--text.text--lighten-4{color:#c8e6c9!important;caret-color:#c8e6c9!important}.v-application .green.lighten-3{background-color:#a5d6a7!important;border-color:#a5d6a7!important}.v-application .green--text.text--lighten-3{color:#a5d6a7!important;caret-color:#a5d6a7!important}.v-application .green.lighten-2{background-color:#81c784!important;border-color:#81c784!important}.v-application .green--text.text--lighten-2{color:#81c784!important;caret-color:#81c784!important}.v-application .green.lighten-1{background-color:#66bb6a!important;border-color:#66bb6a!important}.v-application .green--text.text--lighten-1{color:#66bb6a!important;caret-color:#66bb6a!important}.v-application .green.darken-1{background-color:#43a047!important;border-color:#43a047!important}.v-application .green--text.text--darken-1{color:#43a047!important;caret-color:#43a047!important}.v-application .green.darken-2{background-color:#388e3c!important;border-color:#388e3c!important}.v-application .green--text.text--darken-2{color:#388e3c!important;caret-color:#388e3c!important}.v-application .green.darken-3{background-color:#2e7d32!important;border-color:#2e7d32!important}.v-application .green--text.text--darken-3{color:#2e7d32!important;caret-color:#2e7d32!important}.v-application .green.darken-4{background-color:#1b5e20!important;border-color:#1b5e20!important}.v-application .green--text.text--darken-4{color:#1b5e20!important;caret-color:#1b5e20!important}.v-application .green.accent-1{background-color:#b9f6ca!important;border-color:#b9f6ca!important}.v-application .green--text.text--accent-1{color:#b9f6ca!important;caret-color:#b9f6ca!important}.v-application .green.accent-2{background-color:#69f0ae!important;border-color:#69f0ae!important}.v-application .green--text.text--accent-2{color:#69f0ae!important;caret-color:#69f0ae!important}.v-application .green.accent-3{background-color:#00e676!important;border-color:#00e676!important}.v-application .green--text.text--accent-3{color:#00e676!important;caret-color:#00e676!important}.v-application .green.accent-4{background-color:#00c853!important;border-color:#00c853!important}.v-application .green--text.text--accent-4{color:#00c853!important;caret-color:#00c853!important}.v-application .light-green{background-color:#8bc34a!important;border-color:#8bc34a!important}.v-application .light-green--text{color:#8bc34a!important;caret-color:#8bc34a!important}.v-application .light-green.lighten-5{background-color:#f1f8e9!important;border-color:#f1f8e9!important}.v-application .light-green--text.text--lighten-5{color:#f1f8e9!important;caret-color:#f1f8e9!important}.v-application .light-green.lighten-4{background-color:#dcedc8!important;border-color:#dcedc8!important}.v-application .light-green--text.text--lighten-4{color:#dcedc8!important;caret-color:#dcedc8!important}.v-application .light-green.lighten-3{background-color:#c5e1a5!important;border-color:#c5e1a5!important}.v-application .light-green--text.text--lighten-3{color:#c5e1a5!important;caret-color:#c5e1a5!important}.v-application .light-green.lighten-2{background-color:#aed581!important;border-color:#aed581!important}.v-application .light-green--text.text--lighten-2{color:#aed581!important;caret-color:#aed581!important}.v-application .light-green.lighten-1{background-color:#9ccc65!important;border-color:#9ccc65!important}.v-application .light-green--text.text--lighten-1{color:#9ccc65!important;caret-color:#9ccc65!important}.v-application .light-green.darken-1{background-color:#7cb342!important;border-color:#7cb342!important}.v-application .light-green--text.text--darken-1{color:#7cb342!important;caret-color:#7cb342!important}.v-application .light-green.darken-2{background-color:#689f38!important;border-color:#689f38!important}.v-application .light-green--text.text--darken-2{color:#689f38!important;caret-color:#689f38!important}.v-application .light-green.darken-3{background-color:#558b2f!important;border-color:#558b2f!important}.v-application .light-green--text.text--darken-3{color:#558b2f!important;caret-color:#558b2f!important}.v-application .light-green.darken-4{background-color:#33691e!important;border-color:#33691e!important}.v-application .light-green--text.text--darken-4{color:#33691e!important;caret-color:#33691e!important}.v-application .light-green.accent-1{background-color:#ccff90!important;border-color:#ccff90!important}.v-application .light-green--text.text--accent-1{color:#ccff90!important;caret-color:#ccff90!important}.v-application .light-green.accent-2{background-color:#b2ff59!important;border-color:#b2ff59!important}.v-application .light-green--text.text--accent-2{color:#b2ff59!important;caret-color:#b2ff59!important}.v-application .light-green.accent-3{background-color:#76ff03!important;border-color:#76ff03!important}.v-application .light-green--text.text--accent-3{color:#76ff03!important;caret-color:#76ff03!important}.v-application .light-green.accent-4{background-color:#64dd17!important;border-color:#64dd17!important}.v-application .light-green--text.text--accent-4{color:#64dd17!important;caret-color:#64dd17!important}.v-application .lime{background-color:#cddc39!important;border-color:#cddc39!important}.v-application .lime--text{color:#cddc39!important;caret-color:#cddc39!important}.v-application .lime.lighten-5{background-color:#f9fbe7!important;border-color:#f9fbe7!important}.v-application .lime--text.text--lighten-5{color:#f9fbe7!important;caret-color:#f9fbe7!important}.v-application .lime.lighten-4{background-color:#f0f4c3!important;border-color:#f0f4c3!important}.v-application .lime--text.text--lighten-4{color:#f0f4c3!important;caret-color:#f0f4c3!important}.v-application .lime.lighten-3{background-color:#e6ee9c!important;border-color:#e6ee9c!important}.v-application .lime--text.text--lighten-3{color:#e6ee9c!important;caret-color:#e6ee9c!important}.v-application .lime.lighten-2{background-color:#dce775!important;border-color:#dce775!important}.v-application .lime--text.text--lighten-2{color:#dce775!important;caret-color:#dce775!important}.v-application .lime.lighten-1{background-color:#d4e157!important;border-color:#d4e157!important}.v-application .lime--text.text--lighten-1{color:#d4e157!important;caret-color:#d4e157!important}.v-application .lime.darken-1{background-color:#c0ca33!important;border-color:#c0ca33!important}.v-application .lime--text.text--darken-1{color:#c0ca33!important;caret-color:#c0ca33!important}.v-application .lime.darken-2{background-color:#afb42b!important;border-color:#afb42b!important}.v-application .lime--text.text--darken-2{color:#afb42b!important;caret-color:#afb42b!important}.v-application .lime.darken-3{background-color:#9e9d24!important;border-color:#9e9d24!important}.v-application .lime--text.text--darken-3{color:#9e9d24!important;caret-color:#9e9d24!important}.v-application .lime.darken-4{background-color:#827717!important;border-color:#827717!important}.v-application .lime--text.text--darken-4{color:#827717!important;caret-color:#827717!important}.v-application .lime.accent-1{background-color:#f4ff81!important;border-color:#f4ff81!important}.v-application .lime--text.text--accent-1{color:#f4ff81!important;caret-color:#f4ff81!important}.v-application .lime.accent-2{background-color:#eeff41!important;border-color:#eeff41!important}.v-application .lime--text.text--accent-2{color:#eeff41!important;caret-color:#eeff41!important}.v-application .lime.accent-3{background-color:#c6ff00!important;border-color:#c6ff00!important}.v-application .lime--text.text--accent-3{color:#c6ff00!important;caret-color:#c6ff00!important}.v-application .lime.accent-4{background-color:#aeea00!important;border-color:#aeea00!important}.v-application .lime--text.text--accent-4{color:#aeea00!important;caret-color:#aeea00!important}.v-application .yellow{background-color:#ffeb3b!important;border-color:#ffeb3b!important}.v-application .yellow--text{color:#ffeb3b!important;caret-color:#ffeb3b!important}.v-application .yellow.lighten-5{background-color:#fffde7!important;border-color:#fffde7!important}.v-application .yellow--text.text--lighten-5{color:#fffde7!important;caret-color:#fffde7!important}.v-application .yellow.lighten-4{background-color:#fff9c4!important;border-color:#fff9c4!important}.v-application .yellow--text.text--lighten-4{color:#fff9c4!important;caret-color:#fff9c4!important}.v-application .yellow.lighten-3{background-color:#fff59d!important;border-color:#fff59d!important}.v-application .yellow--text.text--lighten-3{color:#fff59d!important;caret-color:#fff59d!important}.v-application .yellow.lighten-2{background-color:#fff176!important;border-color:#fff176!important}.v-application .yellow--text.text--lighten-2{color:#fff176!important;caret-color:#fff176!important}.v-application .yellow.lighten-1{background-color:#ffee58!important;border-color:#ffee58!important}.v-application .yellow--text.text--lighten-1{color:#ffee58!important;caret-color:#ffee58!important}.v-application .yellow.darken-1{background-color:#fdd835!important;border-color:#fdd835!important}.v-application .yellow--text.text--darken-1{color:#fdd835!important;caret-color:#fdd835!important}.v-application .yellow.darken-2{background-color:#fbc02d!important;border-color:#fbc02d!important}.v-application .yellow--text.text--darken-2{color:#fbc02d!important;caret-color:#fbc02d!important}.v-application .yellow.darken-3{background-color:#f9a825!important;border-color:#f9a825!important}.v-application .yellow--text.text--darken-3{color:#f9a825!important;caret-color:#f9a825!important}.v-application .yellow.darken-4{background-color:#f57f17!important;border-color:#f57f17!important}.v-application .yellow--text.text--darken-4{color:#f57f17!important;caret-color:#f57f17!important}.v-application .yellow.accent-1{background-color:#ffff8d!important;border-color:#ffff8d!important}.v-application .yellow--text.text--accent-1{color:#ffff8d!important;caret-color:#ffff8d!important}.v-application .yellow.accent-2{background-color:#ff0!important;border-color:#ff0!important}.v-application .yellow--text.text--accent-2{color:#ff0!important;caret-color:#ff0!important}.v-application .yellow.accent-3{background-color:#ffea00!important;border-color:#ffea00!important}.v-application .yellow--text.text--accent-3{color:#ffea00!important;caret-color:#ffea00!important}.v-application .yellow.accent-4{background-color:#ffd600!important;border-color:#ffd600!important}.v-application .yellow--text.text--accent-4{color:#ffd600!important;caret-color:#ffd600!important}.v-application .amber{background-color:#ffc107!important;border-color:#ffc107!important}.v-application .amber--text{color:#ffc107!important;caret-color:#ffc107!important}.v-application .amber.lighten-5{background-color:#fff8e1!important;border-color:#fff8e1!important}.v-application .amber--text.text--lighten-5{color:#fff8e1!important;caret-color:#fff8e1!important}.v-application .amber.lighten-4{background-color:#ffecb3!important;border-color:#ffecb3!important}.v-application .amber--text.text--lighten-4{color:#ffecb3!important;caret-color:#ffecb3!important}.v-application .amber.lighten-3{background-color:#ffe082!important;border-color:#ffe082!important}.v-application .amber--text.text--lighten-3{color:#ffe082!important;caret-color:#ffe082!important}.v-application .amber.lighten-2{background-color:#ffd54f!important;border-color:#ffd54f!important}.v-application .amber--text.text--lighten-2{color:#ffd54f!important;caret-color:#ffd54f!important}.v-application .amber.lighten-1{background-color:#ffca28!important;border-color:#ffca28!important}.v-application .amber--text.text--lighten-1{color:#ffca28!important;caret-color:#ffca28!important}.v-application .amber.darken-1{background-color:#ffb300!important;border-color:#ffb300!important}.v-application .amber--text.text--darken-1{color:#ffb300!important;caret-color:#ffb300!important}.v-application .amber.darken-2{background-color:#ffa000!important;border-color:#ffa000!important}.v-application .amber--text.text--darken-2{color:#ffa000!important;caret-color:#ffa000!important}.v-application .amber.darken-3{background-color:#ff8f00!important;border-color:#ff8f00!important}.v-application .amber--text.text--darken-3{color:#ff8f00!important;caret-color:#ff8f00!important}.v-application .amber.darken-4{background-color:#ff6f00!important;border-color:#ff6f00!important}.v-application .amber--text.text--darken-4{color:#ff6f00!important;caret-color:#ff6f00!important}.v-application .amber.accent-1{background-color:#ffe57f!important;border-color:#ffe57f!important}.v-application .amber--text.text--accent-1{color:#ffe57f!important;caret-color:#ffe57f!important}.v-application .amber.accent-2{background-color:#ffd740!important;border-color:#ffd740!important}.v-application .amber--text.text--accent-2{color:#ffd740!important;caret-color:#ffd740!important}.v-application .amber.accent-3{background-color:#ffc400!important;border-color:#ffc400!important}.v-application .amber--text.text--accent-3{color:#ffc400!important;caret-color:#ffc400!important}.v-application .amber.accent-4{background-color:#ffab00!important;border-color:#ffab00!important}.v-application .amber--text.text--accent-4{color:#ffab00!important;caret-color:#ffab00!important}.v-application .orange{background-color:#ff9800!important;border-color:#ff9800!important}.v-application .orange--text{color:#ff9800!important;caret-color:#ff9800!important}.v-application .orange.lighten-5{background-color:#fff3e0!important;border-color:#fff3e0!important}.v-application .orange--text.text--lighten-5{color:#fff3e0!important;caret-color:#fff3e0!important}.v-application .orange.lighten-4{background-color:#ffe0b2!important;border-color:#ffe0b2!important}.v-application .orange--text.text--lighten-4{color:#ffe0b2!important;caret-color:#ffe0b2!important}.v-application .orange.lighten-3{background-color:#ffcc80!important;border-color:#ffcc80!important}.v-application .orange--text.text--lighten-3{color:#ffcc80!important;caret-color:#ffcc80!important}.v-application .orange.lighten-2{background-color:#ffb74d!important;border-color:#ffb74d!important}.v-application .orange--text.text--lighten-2{color:#ffb74d!important;caret-color:#ffb74d!important}.v-application .orange.lighten-1{background-color:#ffa726!important;border-color:#ffa726!important}.v-application .orange--text.text--lighten-1{color:#ffa726!important;caret-color:#ffa726!important}.v-application .orange.darken-1{background-color:#fb8c00!important;border-color:#fb8c00!important}.v-application .orange--text.text--darken-1{color:#fb8c00!important;caret-color:#fb8c00!important}.v-application .orange.darken-2{background-color:#f57c00!important;border-color:#f57c00!important}.v-application .orange--text.text--darken-2{color:#f57c00!important;caret-color:#f57c00!important}.v-application .orange.darken-3{background-color:#ef6c00!important;border-color:#ef6c00!important}.v-application .orange--text.text--darken-3{color:#ef6c00!important;caret-color:#ef6c00!important}.v-application .orange.darken-4{background-color:#e65100!important;border-color:#e65100!important}.v-application .orange--text.text--darken-4{color:#e65100!important;caret-color:#e65100!important}.v-application .orange.accent-1{background-color:#ffd180!important;border-color:#ffd180!important}.v-application .orange--text.text--accent-1{color:#ffd180!important;caret-color:#ffd180!important}.v-application .orange.accent-2{background-color:#ffab40!important;border-color:#ffab40!important}.v-application .orange--text.text--accent-2{color:#ffab40!important;caret-color:#ffab40!important}.v-application .orange.accent-3{background-color:#ff9100!important;border-color:#ff9100!important}.v-application .orange--text.text--accent-3{color:#ff9100!important;caret-color:#ff9100!important}.v-application .orange.accent-4{background-color:#ff6d00!important;border-color:#ff6d00!important}.v-application .orange--text.text--accent-4{color:#ff6d00!important;caret-color:#ff6d00!important}.v-application .deep-orange{background-color:#ff5722!important;border-color:#ff5722!important}.v-application .deep-orange--text{color:#ff5722!important;caret-color:#ff5722!important}.v-application .deep-orange.lighten-5{background-color:#fbe9e7!important;border-color:#fbe9e7!important}.v-application .deep-orange--text.text--lighten-5{color:#fbe9e7!important;caret-color:#fbe9e7!important}.v-application .deep-orange.lighten-4{background-color:#ffccbc!important;border-color:#ffccbc!important}.v-application .deep-orange--text.text--lighten-4{color:#ffccbc!important;caret-color:#ffccbc!important}.v-application .deep-orange.lighten-3{background-color:#ffab91!important;border-color:#ffab91!important}.v-application .deep-orange--text.text--lighten-3{color:#ffab91!important;caret-color:#ffab91!important}.v-application .deep-orange.lighten-2{background-color:#ff8a65!important;border-color:#ff8a65!important}.v-application .deep-orange--text.text--lighten-2{color:#ff8a65!important;caret-color:#ff8a65!important}.v-application .deep-orange.lighten-1{background-color:#ff7043!important;border-color:#ff7043!important}.v-application .deep-orange--text.text--lighten-1{color:#ff7043!important;caret-color:#ff7043!important}.v-application .deep-orange.darken-1{background-color:#f4511e!important;border-color:#f4511e!important}.v-application .deep-orange--text.text--darken-1{color:#f4511e!important;caret-color:#f4511e!important}.v-application .deep-orange.darken-2{background-color:#e64a19!important;border-color:#e64a19!important}.v-application .deep-orange--text.text--darken-2{color:#e64a19!important;caret-color:#e64a19!important}.v-application .deep-orange.darken-3{background-color:#d84315!important;border-color:#d84315!important}.v-application .deep-orange--text.text--darken-3{color:#d84315!important;caret-color:#d84315!important}.v-application .deep-orange.darken-4{background-color:#bf360c!important;border-color:#bf360c!important}.v-application .deep-orange--text.text--darken-4{color:#bf360c!important;caret-color:#bf360c!important}.v-application .deep-orange.accent-1{background-color:#ff9e80!important;border-color:#ff9e80!important}.v-application .deep-orange--text.text--accent-1{color:#ff9e80!important;caret-color:#ff9e80!important}.v-application .deep-orange.accent-2{background-color:#ff6e40!important;border-color:#ff6e40!important}.v-application .deep-orange--text.text--accent-2{color:#ff6e40!important;caret-color:#ff6e40!important}.v-application .deep-orange.accent-3{background-color:#ff3d00!important;border-color:#ff3d00!important}.v-application .deep-orange--text.text--accent-3{color:#ff3d00!important;caret-color:#ff3d00!important}.v-application .deep-orange.accent-4{background-color:#dd2c00!important;border-color:#dd2c00!important}.v-application .deep-orange--text.text--accent-4{color:#dd2c00!important;caret-color:#dd2c00!important}.v-application .brown{background-color:#795548!important;border-color:#795548!important}.v-application .brown--text{color:#795548!important;caret-color:#795548!important}.v-application .brown.lighten-5{background-color:#efebe9!important;border-color:#efebe9!important}.v-application .brown--text.text--lighten-5{color:#efebe9!important;caret-color:#efebe9!important}.v-application .brown.lighten-4{background-color:#d7ccc8!important;border-color:#d7ccc8!important}.v-application .brown--text.text--lighten-4{color:#d7ccc8!important;caret-color:#d7ccc8!important}.v-application .brown.lighten-3{background-color:#bcaaa4!important;border-color:#bcaaa4!important}.v-application .brown--text.text--lighten-3{color:#bcaaa4!important;caret-color:#bcaaa4!important}.v-application .brown.lighten-2{background-color:#a1887f!important;border-color:#a1887f!important}.v-application .brown--text.text--lighten-2{color:#a1887f!important;caret-color:#a1887f!important}.v-application .brown.lighten-1{background-color:#8d6e63!important;border-color:#8d6e63!important}.v-application .brown--text.text--lighten-1{color:#8d6e63!important;caret-color:#8d6e63!important}.v-application .brown.darken-1{background-color:#6d4c41!important;border-color:#6d4c41!important}.v-application .brown--text.text--darken-1{color:#6d4c41!important;caret-color:#6d4c41!important}.v-application .brown.darken-2{background-color:#5d4037!important;border-color:#5d4037!important}.v-application .brown--text.text--darken-2{color:#5d4037!important;caret-color:#5d4037!important}.v-application .brown.darken-3{background-color:#4e342e!important;border-color:#4e342e!important}.v-application .brown--text.text--darken-3{color:#4e342e!important;caret-color:#4e342e!important}.v-application .brown.darken-4{background-color:#3e2723!important;border-color:#3e2723!important}.v-application .brown--text.text--darken-4{color:#3e2723!important;caret-color:#3e2723!important}.v-application .blue-grey{background-color:#607d8b!important;border-color:#607d8b!important}.v-application .blue-grey--text{color:#607d8b!important;caret-color:#607d8b!important}.v-application .blue-grey.lighten-5{background-color:#eceff1!important;border-color:#eceff1!important}.v-application .blue-grey--text.text--lighten-5{color:#eceff1!important;caret-color:#eceff1!important}.v-application .blue-grey.lighten-4{background-color:#cfd8dc!important;border-color:#cfd8dc!important}.v-application .blue-grey--text.text--lighten-4{color:#cfd8dc!important;caret-color:#cfd8dc!important}.v-application .blue-grey.lighten-3{background-color:#b0bec5!important;border-color:#b0bec5!important}.v-application .blue-grey--text.text--lighten-3{color:#b0bec5!important;caret-color:#b0bec5!important}.v-application .blue-grey.lighten-2{background-color:#90a4ae!important;border-color:#90a4ae!important}.v-application .blue-grey--text.text--lighten-2{color:#90a4ae!important;caret-color:#90a4ae!important}.v-application .blue-grey.lighten-1{background-color:#78909c!important;border-color:#78909c!important}.v-application .blue-grey--text.text--lighten-1{color:#78909c!important;caret-color:#78909c!important}.v-application .blue-grey.darken-1{background-color:#546e7a!important;border-color:#546e7a!important}.v-application .blue-grey--text.text--darken-1{color:#546e7a!important;caret-color:#546e7a!important}.v-application .blue-grey.darken-2{background-color:#455a64!important;border-color:#455a64!important}.v-application .blue-grey--text.text--darken-2{color:#455a64!important;caret-color:#455a64!important}.v-application .blue-grey.darken-3{background-color:#37474f!important;border-color:#37474f!important}.v-application .blue-grey--text.text--darken-3{color:#37474f!important;caret-color:#37474f!important}.v-application .blue-grey.darken-4{background-color:#263238!important;border-color:#263238!important}.v-application .blue-grey--text.text--darken-4{color:#263238!important;caret-color:#263238!important}.v-application .grey{background-color:#9e9e9e!important;border-color:#9e9e9e!important}.v-application .grey--text{color:#9e9e9e!important;caret-color:#9e9e9e!important}.v-application .grey.lighten-5{background-color:#fafafa!important;border-color:#fafafa!important}.v-application .grey--text.text--lighten-5{color:#fafafa!important;caret-color:#fafafa!important}.v-application .grey.lighten-4{background-color:#f5f5f5!important;border-color:#f5f5f5!important}.v-application .grey--text.text--lighten-4{color:#f5f5f5!important;caret-color:#f5f5f5!important}.v-application .grey.lighten-3{background-color:#eee!important;border-color:#eee!important}.v-application .grey--text.text--lighten-3{color:#eee!important;caret-color:#eee!important}.v-application .grey.lighten-2{background-color:#e0e0e0!important;border-color:#e0e0e0!important}.v-application .grey--text.text--lighten-2{color:#e0e0e0!important;caret-color:#e0e0e0!important}.v-application .grey.lighten-1{background-color:#bdbdbd!important;border-color:#bdbdbd!important}.v-application .grey--text.text--lighten-1{color:#bdbdbd!important;caret-color:#bdbdbd!important}.v-application .grey.darken-1{background-color:#757575!important;border-color:#757575!important}.v-application .grey--text.text--darken-1{color:#757575!important;caret-color:#757575!important}.v-application .grey.darken-2{background-color:#616161!important;border-color:#616161!important}.v-application .grey--text.text--darken-2{color:#616161!important;caret-color:#616161!important}.v-application .grey.darken-3{background-color:#424242!important;border-color:#424242!important}.v-application .grey--text.text--darken-3{color:#424242!important;caret-color:#424242!important}.v-application .grey.darken-4{background-color:#212121!important;border-color:#212121!important}.v-application .grey--text.text--darken-4{color:#212121!important;caret-color:#212121!important}.v-application .shades.black{background-color:#000!important;border-color:#000!important}.v-application .shades--text.text--black{color:#000!important;caret-color:#000!important}.v-application .shades.white{background-color:#fff!important;border-color:#fff!important}.v-application .shades--text.text--white{color:#fff!important;caret-color:#fff!important}.v-application .shades.transparent{background-color:transparent!important;border-color:transparent!important}.v-application .shades--text.text--transparent{color:transparent!important;caret-color:transparent!important}\n\n/* ! ress.css • v1.1.1 - MIT License - github.com/filipelinhares/ress */html{box-sizing:border-box;overflow-y:scroll;-webkit-text-size-adjust:100%}*,:after,:before{box-sizing:inherit}:after,:before{text-decoration:inherit;vertical-align:inherit}*{background-repeat:no-repeat;padding:0;margin:0}audio:not([controls]){display:none;height:0}hr{overflow:visible}article,aside,details,figcaption,figure,footer,header,main,menu,nav,section,summary{display:block}summary{display:list-item}small{font-size:80%}[hidden],template{display:none}abbr[title]{border-bottom:1px dotted;text-decoration:none}a{background-color:transparent;-webkit-text-decoration-skip:objects}a:active,a:hover{outline-width:0}code,kbd,pre,samp{font-family:monospace,monospace}b,strong{font-weight:bolder}dfn{font-style:italic}mark{background-color:#ff0;color:#000}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}input{border-radius:0}[role=button],[type=button],[type=reset],[type=submit],button{cursor:pointer}[disabled]{cursor:default}[type=number]{width:auto}[type=search]::-webkit-search-cancel-button,[type=search]::-webkit-search-decoration{-webkit-appearance:none}textarea{overflow:auto;resize:vertical}button,input,optgroup,select,textarea{font:inherit}optgroup{font-weight:700}button{overflow:visible}[type=button]::-moz-focus-inner,[type=reset]::-moz-focus-inner,[type=submit]::-moz-focus-inner,button::-moz-focus-inner{border-style:0;padding:0}[type=button]::-moz-focus-inner,[type=reset]::-moz-focus-inner,[type=submit]::-moz-focus-inner{outline:0;border:0}[type=reset],[type=submit],button,html [type=button]{-webkit-appearance:button}button,select{text-transform:none}button,input,select,textarea{background-color:transparent;border-style:none;color:inherit}select{-moz-appearance:none;-webkit-appearance:none}select::-ms-expand{display:none}select::-ms-value{color:currentColor}legend{border:0;color:inherit;display:table;max-width:100%;white-space:normal}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}img{border-style:none}progress{vertical-align:baseline}svg:not(:root){overflow:hidden}audio,canvas,progress,video{display:inline-block}@media screen{[hidden~=screen]{display:inherit}[hidden~=screen]:not(:active):not(:focus):not(:target){position:absolute!important;clip:rect(0 0 0 0)!important}}[aria-busy=true]{cursor:progress}[aria-controls]{cursor:pointer}[aria-disabled]{cursor:default}::-moz-selection{background-color:#b3d4fc;color:#000;text-shadow:none}::selection{background-color:#b3d4fc;color:#000;text-shadow:none}.v-application .elevation-24{box-shadow:0 11px 15px -7px rgba(0,0,0,.2),0 24px 38px 3px rgba(0,0,0,.14),0 9px 46px 8px rgba(0,0,0,.12)!important}.v-application .elevation-23{box-shadow:0 11px 14px -7px rgba(0,0,0,.2),0 23px 36px 3px rgba(0,0,0,.14),0 9px 44px 8px rgba(0,0,0,.12)!important}.v-application .elevation-22{box-shadow:0 10px 14px -6px rgba(0,0,0,.2),0 22px 35px 3px rgba(0,0,0,.14),0 8px 42px 7px rgba(0,0,0,.12)!important}.v-application .elevation-21{box-shadow:0 10px 13px -6px rgba(0,0,0,.2),0 21px 33px 3px rgba(0,0,0,.14),0 8px 40px 7px rgba(0,0,0,.12)!important}.v-application .elevation-20{box-shadow:0 10px 13px -6px rgba(0,0,0,.2),0 20px 31px 3px rgba(0,0,0,.14),0 8px 38px 7px rgba(0,0,0,.12)!important}.v-application .elevation-19{box-shadow:0 9px 12px -6px rgba(0,0,0,.2),0 19px 29px 2px rgba(0,0,0,.14),0 7px 36px 6px rgba(0,0,0,.12)!important}.v-application .elevation-18{box-shadow:0 9px 11px -5px rgba(0,0,0,.2),0 18px 28px 2px rgba(0,0,0,.14),0 7px 34px 6px rgba(0,0,0,.12)!important}.v-application .elevation-17{box-shadow:0 8px 11px -5px rgba(0,0,0,.2),0 17px 26px 2px rgba(0,0,0,.14),0 6px 32px 5px rgba(0,0,0,.12)!important}.v-application .elevation-16{box-shadow:0 8px 10px -5px rgba(0,0,0,.2),0 16px 24px 2px rgba(0,0,0,.14),0 6px 30px 5px rgba(0,0,0,.12)!important}.v-application .elevation-15{box-shadow:0 8px 9px -5px rgba(0,0,0,.2),0 15px 22px 2px rgba(0,0,0,.14),0 6px 28px 5px rgba(0,0,0,.12)!important}.v-application .elevation-14{box-shadow:0 7px 9px -4px rgba(0,0,0,.2),0 14px 21px 2px rgba(0,0,0,.14),0 5px 26px 4px rgba(0,0,0,.12)!important}.v-application .elevation-13{box-shadow:0 7px 8px -4px rgba(0,0,0,.2),0 13px 19px 2px rgba(0,0,0,.14),0 5px 24px 4px rgba(0,0,0,.12)!important}.v-application .elevation-12{box-shadow:0 7px 8px -4px rgba(0,0,0,.2),0 12px 17px 2px rgba(0,0,0,.14),0 5px 22px 4px rgba(0,0,0,.12)!important}.v-application .elevation-11{box-shadow:0 6px 7px -4px rgba(0,0,0,.2),0 11px 15px 1px rgba(0,0,0,.14),0 4px 20px 3px rgba(0,0,0,.12)!important}.v-application .elevation-10{box-shadow:0 6px 6px -3px rgba(0,0,0,.2),0 10px 14px 1px rgba(0,0,0,.14),0 4px 18px 3px rgba(0,0,0,.12)!important}.v-application .elevation-9{box-shadow:0 5px 6px -3px rgba(0,0,0,.2),0 9px 12px 1px rgba(0,0,0,.14),0 3px 16px 2px rgba(0,0,0,.12)!important}.v-application .elevation-8{box-shadow:0 5px 5px -3px rgba(0,0,0,.2),0 8px 10px 1px rgba(0,0,0,.14),0 3px 14px 2px rgba(0,0,0,.12)!important}.v-application .elevation-7{box-shadow:0 4px 5px -2px rgba(0,0,0,.2),0 7px 10px 1px rgba(0,0,0,.14),0 2px 16px 1px rgba(0,0,0,.12)!important}.v-application .elevation-6{box-shadow:0 3px 5px -1px rgba(0,0,0,.2),0 6px 10px 0 rgba(0,0,0,.14),0 1px 18px 0 rgba(0,0,0,.12)!important}.v-application .elevation-5{box-shadow:0 3px 5px -1px rgba(0,0,0,.2),0 5px 8px 0 rgba(0,0,0,.14),0 1px 14px 0 rgba(0,0,0,.12)!important}.v-application .elevation-4{box-shadow:0 2px 4px -1px rgba(0,0,0,.2),0 4px 5px 0 rgba(0,0,0,.14),0 1px 10px 0 rgba(0,0,0,.12)!important}.v-application .elevation-3{box-shadow:0 3px 3px -2px rgba(0,0,0,.2),0 3px 4px 0 rgba(0,0,0,.14),0 1px 8px 0 rgba(0,0,0,.12)!important}.v-application .elevation-2{box-shadow:0 3px 1px -2px rgba(0,0,0,.2),0 2px 2px 0 rgba(0,0,0,.14),0 1px 5px 0 rgba(0,0,0,.12)!important}.v-application .elevation-1{box-shadow:0 2px 1px -1px rgba(0,0,0,.2),0 1px 1px 0 rgba(0,0,0,.14),0 1px 3px 0 rgba(0,0,0,.12)!important}.v-application .elevation-0{box-shadow:0 0 0 0 rgba(0,0,0,.2),0 0 0 0 rgba(0,0,0,.14),0 0 0 0 rgba(0,0,0,.12)!important}.v-application .carousel-transition-enter{transform:translate(100%)}.v-application .carousel-transition-leave,.v-application .carousel-transition-leave-to{position:absolute;top:0;transform:translate(-100%)}.carousel-reverse-transition-enter{transform:translate(-100%)}.carousel-reverse-transition-leave,.carousel-reverse-transition-leave-to{position:absolute;top:0;transform:translate(100%)}.dialog-transition-enter,.dialog-transition-leave-to{transform:scale(.5);opacity:0}.dialog-transition-enter-to,.dialog-transition-leave{opacity:1}.dialog-bottom-transition-enter,.dialog-bottom-transition-leave-to{transform:translateY(100%)}.picker-reverse-transition-enter-active,.picker-reverse-transition-leave-active,.picker-transition-enter-active,.picker-transition-leave-active{transition:.3s cubic-bezier(0,0,.2,1)}.picker-reverse-transition-enter,.picker-reverse-transition-leave-to,.picker-transition-enter,.picker-transition-leave-to{opacity:0}.picker-reverse-transition-leave,.picker-reverse-transition-leave-active,.picker-reverse-transition-leave-to,.picker-transition-leave,.picker-transition-leave-active,.picker-transition-leave-to{position:absolute!important}.picker-transition-enter{transform:translateY(100%)}.picker-reverse-transition-enter,.picker-transition-leave-to{transform:translateY(-100%)}.picker-reverse-transition-leave-to{transform:translateY(100%)}.picker-title-transition-enter-to,.picker-title-transition-leave{transform:translate(0)}.picker-title-transition-enter{transform:translate(-100%)}.picker-title-transition-leave-to{opacity:0;transform:translate(100%)}.picker-title-transition-leave,.picker-title-transition-leave-active,.picker-title-transition-leave-to{position:absolute!important}.tab-transition-enter{transform:translate(100%)}.tab-transition-leave,.tab-transition-leave-active{position:absolute;top:0}.tab-transition-leave-to{position:absolute}.tab-reverse-transition-enter,.tab-transition-leave-to{transform:translate(-100%)}.tab-reverse-transition-leave,.tab-reverse-transition-leave-to{top:0;position:absolute;transform:translate(100%)}.expand-transition-enter-active,.expand-transition-leave-active{transition:.3s cubic-bezier(.25,.8,.5,1)}.expand-transition-move{transition:transform .6s}.expand-x-transition-enter-active,.expand-x-transition-leave-active{transition:.3s cubic-bezier(.25,.8,.5,1)}.expand-x-transition-move{transition:transform .6s}.scale-transition-enter-active,.scale-transition-leave-active{transition:.3s cubic-bezier(.25,.8,.5,1)}.scale-transition-move{transition:transform .6s}.scale-transition-enter,.scale-transition-leave,.scale-transition-leave-to{opacity:0;transform:scale(0)}.scale-rotate-transition-enter-active,.scale-rotate-transition-leave-active{transition:.3s cubic-bezier(.25,.8,.5,1)}.scale-rotate-transition-move{transition:transform .6s}.scale-rotate-transition-enter,.scale-rotate-transition-leave,.scale-rotate-transition-leave-to{opacity:0;transform:scale(0) rotate(-45deg)}.scale-rotate-reverse-transition-enter-active,.scale-rotate-reverse-transition-leave-active{transition:.3s cubic-bezier(.25,.8,.5,1)}.scale-rotate-reverse-transition-move{transition:transform .6s}.scale-rotate-reverse-transition-enter,.scale-rotate-reverse-transition-leave,.scale-rotate-reverse-transition-leave-to{opacity:0;transform:scale(0) rotate(45deg)}.message-transition-enter-active,.message-transition-leave-active{transition:.3s cubic-bezier(.25,.8,.5,1)}.message-transition-move{transition:transform .6s}.message-transition-enter,.message-transition-leave-to{opacity:0;transform:translateY(-15px)}.message-transition-leave,.message-transition-leave-active{position:absolute}.slide-y-transition-enter-active,.slide-y-transition-leave-active{transition:.3s cubic-bezier(.25,.8,.5,1)}.slide-y-transition-move{transition:transform .6s}.slide-y-transition-enter,.slide-y-transition-leave-to{opacity:0;transform:translateY(-15px)}.slide-y-reverse-transition-enter-active,.slide-y-reverse-transition-leave-active{transition:.3s cubic-bezier(.25,.8,.5,1)}.slide-y-reverse-transition-move{transition:transform .6s}.slide-y-reverse-transition-enter,.slide-y-reverse-transition-leave-to{opacity:0;transform:translateY(15px)}.scroll-y-transition-enter-active,.scroll-y-transition-leave-active{transition:.3s cubic-bezier(.25,.8,.5,1)}.scroll-y-transition-move{transition:transform .6s}.scroll-y-transition-enter,.scroll-y-transition-leave-to{opacity:0}.scroll-y-transition-enter{transform:translateY(-15px)}.scroll-y-transition-leave-to{transform:translateY(15px)}.scroll-y-reverse-transition-enter-active,.scroll-y-reverse-transition-leave-active{transition:.3s cubic-bezier(.25,.8,.5,1)}.scroll-y-reverse-transition-move{transition:transform .6s}.scroll-y-reverse-transition-enter,.scroll-y-reverse-transition-leave-to{opacity:0}.scroll-y-reverse-transition-enter{transform:translateY(15px)}.scroll-y-reverse-transition-leave-to{transform:translateY(-15px)}.scroll-x-transition-enter-active,.scroll-x-transition-leave-active{transition:.3s cubic-bezier(.25,.8,.5,1)}.scroll-x-transition-move{transition:transform .6s}.scroll-x-transition-enter,.scroll-x-transition-leave-to{opacity:0}.scroll-x-transition-enter{transform:translateX(-15px)}.scroll-x-transition-leave-to{transform:translateX(15px)}.scroll-x-reverse-transition-enter-active,.scroll-x-reverse-transition-leave-active{transition:.3s cubic-bezier(.25,.8,.5,1)}.scroll-x-reverse-transition-move{transition:transform .6s}.scroll-x-reverse-transition-enter,.scroll-x-reverse-transition-leave-to{opacity:0}.scroll-x-reverse-transition-enter{transform:translateX(15px)}.scroll-x-reverse-transition-leave-to{transform:translateX(-15px)}.slide-x-transition-enter-active,.slide-x-transition-leave-active{transition:.3s cubic-bezier(.25,.8,.5,1)}.slide-x-transition-move{transition:transform .6s}.slide-x-transition-enter,.slide-x-transition-leave-to{opacity:0;transform:translateX(-15px)}.slide-x-reverse-transition-enter-active,.slide-x-reverse-transition-leave-active{transition:.3s cubic-bezier(.25,.8,.5,1)}.slide-x-reverse-transition-move{transition:transform .6s}.slide-x-reverse-transition-enter,.slide-x-reverse-transition-leave-to{opacity:0;transform:translateX(15px)}.fade-transition-enter-active,.fade-transition-leave-active{transition:.3s cubic-bezier(.25,.8,.5,1)}.fade-transition-move{transition:transform .6s}.fade-transition-enter,.fade-transition-leave-to{opacity:0!important}.fab-transition-enter-active,.fab-transition-leave-active{transition:.3s cubic-bezier(.25,.8,.5,1)}.fab-transition-move{transition:transform .6s}.fab-transition-enter,.fab-transition-leave-to{transform:scale(0) rotate(-45deg)}.v-application .blockquote{padding:16px 0 16px 24px;font-size:18px;font-weight:300}.v-application code,.v-application kbd{display:inline-block;border-radius:3px;white-space:pre-wrap;font-size:85%;font-weight:900}.v-application code:after,.v-application code:before,.v-application kbd:after,.v-application kbd:before{content:\"\\A0\";letter-spacing:-1px}.v-application code{background-color:#f5f5f5;color:#bd4147;box-shadow:0 2px 1px -1px rgba(0,0,0,.2),0 1px 1px 0 rgba(0,0,0,.14),0 1px 3px 0 rgba(0,0,0,.12)}.v-application kbd{background:#616161;color:#fff}html{font-size:16px;overflow-x:hidden;text-rendering:optimizeLegibility;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;-webkit-tap-highlight-color:rgba(0,0,0,0)}html.overflow-y-hidden{overflow-y:hidden!important}.v-application{font-family:Roboto,sans-serif;line-height:1.5}.v-application ::-ms-clear,.v-application ::-ms-reveal{display:none}.v-application .theme--light.heading{color:rgba(0,0,0,.87)}.v-application .theme--dark.heading{color:#fff}.v-application ol,.v-application ul{padding-left:24px}.v-application .display-4{font-size:6rem!important;line-height:6rem;letter-spacing:-.015625em!important}.v-application .display-3,.v-application .display-4{font-weight:300;font-family:Roboto,sans-serif!important}.v-application .display-3{font-size:3.75rem!important;line-height:3.75rem;letter-spacing:-.0083333333em!important}.v-application .display-2{font-size:3rem!important;line-height:3.125rem;letter-spacing:normal!important}.v-application .display-1,.v-application .display-2{font-weight:400;font-family:Roboto,sans-serif!important}.v-application .display-1{font-size:2.125rem!important;line-height:2.5rem;letter-spacing:.0073529412em!important}.v-application .headline{font-size:1.5rem!important;font-weight:400;letter-spacing:normal!important}.v-application .headline,.v-application .title{line-height:2rem;font-family:Roboto,sans-serif!important}.v-application .title{font-size:1.25rem!important;font-weight:500;letter-spacing:.0125em!important}.v-application .subtitle-1{font-size:1rem!important;font-weight:400;letter-spacing:.009375em!important;line-height:1.75rem;font-family:Roboto,sans-serif!important}.v-application .subtitle-2{font-weight:500;letter-spacing:.0071428571em!important;line-height:1.375rem}.v-application .body-2,.v-application .subtitle-2{font-size:.875rem!important;font-family:Roboto,sans-serif!important}.v-application .body-2{font-weight:400;letter-spacing:.0178571429em!important;line-height:1.25rem}.v-application .body-1{font-size:1rem!important;letter-spacing:.03125em!important;line-height:1.5rem}.v-application .body-1,.v-application .caption{font-weight:400;font-family:Roboto,sans-serif!important}.v-application .caption{font-size:.75rem!important;letter-spacing:.0333333333em!important;line-height:1.25rem}.v-application .overline{font-size:.625rem!important;font-weight:400;letter-spacing:.1666666667em!important;line-height:1rem;text-transform:uppercase;font-family:Roboto,sans-serif!important}.v-application p{margin-bottom:16px}@media only print{.v-application .hidden-print-only{display:none!important}}@media only screen{.v-application .hidden-screen-only{display:none!important}}@media only screen and (max-width:599px){.v-application .hidden-xs-only{display:none!important}}@media only screen and (min-width:600px) and (max-width:959px){.v-application .hidden-sm-only{display:none!important}}@media only screen and (max-width:959px){.v-application .hidden-sm-and-down{display:none!important}}@media only screen and (min-width:600px){.v-application .hidden-sm-and-up{display:none!important}}@media only screen and (min-width:960px) and (max-width:1263px){.v-application .hidden-md-only{display:none!important}}@media only screen and (max-width:1263px){.v-application .hidden-md-and-down{display:none!important}}@media only screen and (min-width:960px){.v-application .hidden-md-and-up{display:none!important}}@media only screen and (min-width:1264px) and (max-width:1903px){.v-application .hidden-lg-only{display:none!important}}@media only screen and (max-width:1903px){.v-application .hidden-lg-and-down{display:none!important}}@media only screen and (min-width:1264px){.v-application .hidden-lg-and-up{display:none!important}}@media only screen and (min-width:1904px){.v-application .hidden-xl-only{display:none!important}}.v-application .font-weight-thin{font-weight:100!important}.v-application .font-weight-light{font-weight:300!important}.v-application .font-weight-regular{font-weight:400!important}.v-application .font-weight-medium{font-weight:500!important}.v-application .font-weight-bold{font-weight:700!important}.v-application .font-weight-black{font-weight:900!important}.v-application .font-italic{font-style:italic!important}.v-application .transition-fast-out-slow-in{transition:.3s cubic-bezier(.4,0,.2,1)!important}.v-application .transition-linear-out-slow-in{transition:.3s cubic-bezier(0,0,.2,1)!important}.v-application .transition-fast-out-linear-in{transition:.3s cubic-bezier(.4,0,1,1)!important}.v-application .transition-ease-in-out{transition:.3s cubic-bezier(.4,0,.6,1)!important}.v-application .transition-fast-in-fast-out{transition:.3s cubic-bezier(.25,.8,.25,1)!important}.v-application .transition-swing{transition:.3s cubic-bezier(.25,.8,.5,1)!important}.v-application .overflow-auto{overflow:auto!important}.v-application .overflow-hidden{overflow:hidden!important}.v-application .overflow-visible{overflow:visible!important}.v-application .overflow-x-auto{overflow-x:auto!important}.v-application .overflow-x-hidden{overflow-x:hidden!important}.v-application .overflow-y-auto{overflow-y:auto!important}.v-application .overflow-y-hidden{overflow-y:hidden!important}.v-application .d-none{display:none!important}.v-application .d-inline{display:inline!important}.v-application .d-inline-block{display:inline-block!important}.v-application .d-block{display:block!important}.v-application .d-table{display:table!important}.v-application .d-table-row{display:table-row!important}.v-application .d-table-cell{display:table-cell!important}.v-application .d-flex{display:flex!important}.v-application .d-inline-flex{display:inline-flex!important}.v-application .float-none{float:none!important}.v-application .float-left{float:left!important}.v-application .float-right{float:right!important}.v-application .flex-fill{flex:1 1 auto!important}.v-application .flex-row{flex-direction:row!important}.v-application .flex-column{flex-direction:column!important}.v-application .flex-row-reverse{flex-direction:row-reverse!important}.v-application .flex-column-reverse{flex-direction:column-reverse!important}.v-application .flex-grow-0{flex-grow:0!important}.v-application .flex-grow-1{flex-grow:1!important}.v-application .flex-shrink-0{flex-shrink:0!important}.v-application .flex-shrink-1{flex-shrink:1!important}.v-application .flex-wrap{flex-wrap:wrap!important}.v-application .flex-nowrap{flex-wrap:nowrap!important}.v-application .flex-wrap-reverse{flex-wrap:wrap-reverse!important}.v-application .justify-start{justify-content:flex-start!important}.v-application .justify-end{justify-content:flex-end!important}.v-application .justify-center{justify-content:center!important}.v-application .justify-space-between{justify-content:space-between!important}.v-application .justify-space-around{justify-content:space-around!important}.v-application .align-start{align-items:flex-start!important}.v-application .align-end{align-items:flex-end!important}.v-application .align-center{align-items:center!important}.v-application .align-baseline{align-items:baseline!important}.v-application .align-stretch{align-items:stretch!important}.v-application .align-content-start{align-content:flex-start!important}.v-application .align-content-end{align-content:flex-end!important}.v-application .align-content-center{align-content:center!important}.v-application .align-content-space-between{align-content:space-between!important}.v-application .align-content-space-around{align-content:space-around!important}.v-application .align-content-stretch{align-content:stretch!important}.v-application .align-self-auto{align-self:auto!important}.v-application .align-self-start{align-self:flex-start!important}.v-application .align-self-end{align-self:flex-end!important}.v-application .align-self-center{align-self:center!important}.v-application .align-self-baseline{align-self:baseline!important}.v-application .align-self-stretch{align-self:stretch!important}.v-application .order-first{order:-1!important}.v-application .order-0{order:0!important}.v-application .order-1{order:1!important}.v-application .order-2{order:2!important}.v-application .order-3{order:3!important}.v-application .order-4{order:4!important}.v-application .order-5{order:5!important}.v-application .order-6{order:6!important}.v-application .order-7{order:7!important}.v-application .order-8{order:8!important}.v-application .order-9{order:9!important}.v-application .order-10{order:10!important}.v-application .order-11{order:11!important}.v-application .order-12{order:12!important}.v-application .order-last{order:13!important}.v-application .ma-0{margin:0!important}.v-application .ma-1{margin:4px!important}.v-application .ma-2{margin:8px!important}.v-application .ma-3{margin:12px!important}.v-application .ma-4{margin:16px!important}.v-application .ma-5{margin:20px!important}.v-application .ma-6{margin:24px!important}.v-application .ma-7{margin:28px!important}.v-application .ma-8{margin:32px!important}.v-application .ma-9{margin:36px!important}.v-application .ma-10{margin:40px!important}.v-application .ma-11{margin:44px!important}.v-application .ma-12{margin:48px!important}.v-application .ma-auto{margin:auto!important}.v-application .mx-0{margin-right:0!important;margin-left:0!important}.v-application .mx-1{margin-right:4px!important;margin-left:4px!important}.v-application .mx-2{margin-right:8px!important;margin-left:8px!important}.v-application .mx-3{margin-right:12px!important;margin-left:12px!important}.v-application .mx-4{margin-right:16px!important;margin-left:16px!important}.v-application .mx-5{margin-right:20px!important;margin-left:20px!important}.v-application .mx-6{margin-right:24px!important;margin-left:24px!important}.v-application .mx-7{margin-right:28px!important;margin-left:28px!important}.v-application .mx-8{margin-right:32px!important;margin-left:32px!important}.v-application .mx-9{margin-right:36px!important;margin-left:36px!important}.v-application .mx-10{margin-right:40px!important;margin-left:40px!important}.v-application .mx-11{margin-right:44px!important;margin-left:44px!important}.v-application .mx-12{margin-right:48px!important;margin-left:48px!important}.v-application .mx-auto{margin-right:auto!important;margin-left:auto!important}.v-application .my-0{margin-top:0!important;margin-bottom:0!important}.v-application .my-1{margin-top:4px!important;margin-bottom:4px!important}.v-application .my-2{margin-top:8px!important;margin-bottom:8px!important}.v-application .my-3{margin-top:12px!important;margin-bottom:12px!important}.v-application .my-4{margin-top:16px!important;margin-bottom:16px!important}.v-application .my-5{margin-top:20px!important;margin-bottom:20px!important}.v-application .my-6{margin-top:24px!important;margin-bottom:24px!important}.v-application .my-7{margin-top:28px!important;margin-bottom:28px!important}.v-application .my-8{margin-top:32px!important;margin-bottom:32px!important}.v-application .my-9{margin-top:36px!important;margin-bottom:36px!important}.v-application .my-10{margin-top:40px!important;margin-bottom:40px!important}.v-application .my-11{margin-top:44px!important;margin-bottom:44px!important}.v-application .my-12{margin-top:48px!important;margin-bottom:48px!important}.v-application .my-auto{margin-top:auto!important;margin-bottom:auto!important}.v-application .mt-0{margin-top:0!important}.v-application .mt-1{margin-top:4px!important}.v-application .mt-2{margin-top:8px!important}.v-application .mt-3{margin-top:12px!important}.v-application .mt-4{margin-top:16px!important}.v-application .mt-5{margin-top:20px!important}.v-application .mt-6{margin-top:24px!important}.v-application .mt-7{margin-top:28px!important}.v-application .mt-8{margin-top:32px!important}.v-application .mt-9{margin-top:36px!important}.v-application .mt-10{margin-top:40px!important}.v-application .mt-11{margin-top:44px!important}.v-application .mt-12{margin-top:48px!important}.v-application .mt-auto{margin-top:auto!important}.v-application .mr-0{margin-right:0!important}.v-application .mr-1{margin-right:4px!important}.v-application .mr-2{margin-right:8px!important}.v-application .mr-3{margin-right:12px!important}.v-application .mr-4{margin-right:16px!important}.v-application .mr-5{margin-right:20px!important}.v-application .mr-6{margin-right:24px!important}.v-application .mr-7{margin-right:28px!important}.v-application .mr-8{margin-right:32px!important}.v-application .mr-9{margin-right:36px!important}.v-application .mr-10{margin-right:40px!important}.v-application .mr-11{margin-right:44px!important}.v-application .mr-12{margin-right:48px!important}.v-application .mr-auto{margin-right:auto!important}.v-application .mb-0{margin-bottom:0!important}.v-application .mb-1{margin-bottom:4px!important}.v-application .mb-2{margin-bottom:8px!important}.v-application .mb-3{margin-bottom:12px!important}.v-application .mb-4{margin-bottom:16px!important}.v-application .mb-5{margin-bottom:20px!important}.v-application .mb-6{margin-bottom:24px!important}.v-application .mb-7{margin-bottom:28px!important}.v-application .mb-8{margin-bottom:32px!important}.v-application .mb-9{margin-bottom:36px!important}.v-application .mb-10{margin-bottom:40px!important}.v-application .mb-11{margin-bottom:44px!important}.v-application .mb-12{margin-bottom:48px!important}.v-application .mb-auto{margin-bottom:auto!important}.v-application .ml-0{margin-left:0!important}.v-application .ml-1{margin-left:4px!important}.v-application .ml-2{margin-left:8px!important}.v-application .ml-3{margin-left:12px!important}.v-application .ml-4{margin-left:16px!important}.v-application .ml-5{margin-left:20px!important}.v-application .ml-6{margin-left:24px!important}.v-application .ml-7{margin-left:28px!important}.v-application .ml-8{margin-left:32px!important}.v-application .ml-9{margin-left:36px!important}.v-application .ml-10{margin-left:40px!important}.v-application .ml-11{margin-left:44px!important}.v-application .ml-12{margin-left:48px!important}.v-application .ml-auto{margin-left:auto!important}.v-application--is-ltr .ms-0{margin-left:0!important}.v-application--is-rtl .ms-0{margin-right:0!important}.v-application--is-ltr .ms-1{margin-left:4px!important}.v-application--is-rtl .ms-1{margin-right:4px!important}.v-application--is-ltr .ms-2{margin-left:8px!important}.v-application--is-rtl .ms-2{margin-right:8px!important}.v-application--is-ltr .ms-3{margin-left:12px!important}.v-application--is-rtl .ms-3{margin-right:12px!important}.v-application--is-ltr .ms-4{margin-left:16px!important}.v-application--is-rtl .ms-4{margin-right:16px!important}.v-application--is-ltr .ms-5{margin-left:20px!important}.v-application--is-rtl .ms-5{margin-right:20px!important}.v-application--is-ltr .ms-6{margin-left:24px!important}.v-application--is-rtl .ms-6{margin-right:24px!important}.v-application--is-ltr .ms-7{margin-left:28px!important}.v-application--is-rtl .ms-7{margin-right:28px!important}.v-application--is-ltr .ms-8{margin-left:32px!important}.v-application--is-rtl .ms-8{margin-right:32px!important}.v-application--is-ltr .ms-9{margin-left:36px!important}.v-application--is-rtl .ms-9{margin-right:36px!important}.v-application--is-ltr .ms-10{margin-left:40px!important}.v-application--is-rtl .ms-10{margin-right:40px!important}.v-application--is-ltr .ms-11{margin-left:44px!important}.v-application--is-rtl .ms-11{margin-right:44px!important}.v-application--is-ltr .ms-12{margin-left:48px!important}.v-application--is-rtl .ms-12{margin-right:48px!important}.v-application--is-ltr .ms-auto{margin-left:auto!important}.v-application--is-rtl .ms-auto{margin-right:auto!important}.v-application--is-ltr .me-0{margin-right:0!important}.v-application--is-rtl .me-0{margin-left:0!important}.v-application--is-ltr .me-1{margin-right:4px!important}.v-application--is-rtl .me-1{margin-left:4px!important}.v-application--is-ltr .me-2{margin-right:8px!important}.v-application--is-rtl .me-2{margin-left:8px!important}.v-application--is-ltr .me-3{margin-right:12px!important}.v-application--is-rtl .me-3{margin-left:12px!important}.v-application--is-ltr .me-4{margin-right:16px!important}.v-application--is-rtl .me-4{margin-left:16px!important}.v-application--is-ltr .me-5{margin-right:20px!important}.v-application--is-rtl .me-5{margin-left:20px!important}.v-application--is-ltr .me-6{margin-right:24px!important}.v-application--is-rtl .me-6{margin-left:24px!important}.v-application--is-ltr .me-7{margin-right:28px!important}.v-application--is-rtl .me-7{margin-left:28px!important}.v-application--is-ltr .me-8{margin-right:32px!important}.v-application--is-rtl .me-8{margin-left:32px!important}.v-application--is-ltr .me-9{margin-right:36px!important}.v-application--is-rtl .me-9{margin-left:36px!important}.v-application--is-ltr .me-10{margin-right:40px!important}.v-application--is-rtl .me-10{margin-left:40px!important}.v-application--is-ltr .me-11{margin-right:44px!important}.v-application--is-rtl .me-11{margin-left:44px!important}.v-application--is-ltr .me-12{margin-right:48px!important}.v-application--is-rtl .me-12{margin-left:48px!important}.v-application--is-ltr .me-auto{margin-right:auto!important}.v-application--is-rtl .me-auto{margin-left:auto!important}.v-application .ma-n1{margin:-4px!important}.v-application .ma-n2{margin:-8px!important}.v-application .ma-n3{margin:-12px!important}.v-application .ma-n4{margin:-16px!important}.v-application .ma-n5{margin:-20px!important}.v-application .ma-n6{margin:-24px!important}.v-application .ma-n7{margin:-28px!important}.v-application .ma-n8{margin:-32px!important}.v-application .ma-n9{margin:-36px!important}.v-application .ma-n10{margin:-40px!important}.v-application .ma-n11{margin:-44px!important}.v-application .ma-n12{margin:-48px!important}.v-application .mx-n1{margin-right:-4px!important;margin-left:-4px!important}.v-application .mx-n2{margin-right:-8px!important;margin-left:-8px!important}.v-application .mx-n3{margin-right:-12px!important;margin-left:-12px!important}.v-application .mx-n4{margin-right:-16px!important;margin-left:-16px!important}.v-application .mx-n5{margin-right:-20px!important;margin-left:-20px!important}.v-application .mx-n6{margin-right:-24px!important;margin-left:-24px!important}.v-application .mx-n7{margin-right:-28px!important;margin-left:-28px!important}.v-application .mx-n8{margin-right:-32px!important;margin-left:-32px!important}.v-application .mx-n9{margin-right:-36px!important;margin-left:-36px!important}.v-application .mx-n10{margin-right:-40px!important;margin-left:-40px!important}.v-application .mx-n11{margin-right:-44px!important;margin-left:-44px!important}.v-application .mx-n12{margin-right:-48px!important;margin-left:-48px!important}.v-application .my-n1{margin-top:-4px!important;margin-bottom:-4px!important}.v-application .my-n2{margin-top:-8px!important;margin-bottom:-8px!important}.v-application .my-n3{margin-top:-12px!important;margin-bottom:-12px!important}.v-application .my-n4{margin-top:-16px!important;margin-bottom:-16px!important}.v-application .my-n5{margin-top:-20px!important;margin-bottom:-20px!important}.v-application .my-n6{margin-top:-24px!important;margin-bottom:-24px!important}.v-application .my-n7{margin-top:-28px!important;margin-bottom:-28px!important}.v-application .my-n8{margin-top:-32px!important;margin-bottom:-32px!important}.v-application .my-n9{margin-top:-36px!important;margin-bottom:-36px!important}.v-application .my-n10{margin-top:-40px!important;margin-bottom:-40px!important}.v-application .my-n11{margin-top:-44px!important;margin-bottom:-44px!important}.v-application .my-n12{margin-top:-48px!important;margin-bottom:-48px!important}.v-application .mt-n1{margin-top:-4px!important}.v-application .mt-n2{margin-top:-8px!important}.v-application .mt-n3{margin-top:-12px!important}.v-application .mt-n4{margin-top:-16px!important}.v-application .mt-n5{margin-top:-20px!important}.v-application .mt-n6{margin-top:-24px!important}.v-application .mt-n7{margin-top:-28px!important}.v-application .mt-n8{margin-top:-32px!important}.v-application .mt-n9{margin-top:-36px!important}.v-application .mt-n10{margin-top:-40px!important}.v-application .mt-n11{margin-top:-44px!important}.v-application .mt-n12{margin-top:-48px!important}.v-application .mr-n1{margin-right:-4px!important}.v-application .mr-n2{margin-right:-8px!important}.v-application .mr-n3{margin-right:-12px!important}.v-application .mr-n4{margin-right:-16px!important}.v-application .mr-n5{margin-right:-20px!important}.v-application .mr-n6{margin-right:-24px!important}.v-application .mr-n7{margin-right:-28px!important}.v-application .mr-n8{margin-right:-32px!important}.v-application .mr-n9{margin-right:-36px!important}.v-application .mr-n10{margin-right:-40px!important}.v-application .mr-n11{margin-right:-44px!important}.v-application .mr-n12{margin-right:-48px!important}.v-application .mb-n1{margin-bottom:-4px!important}.v-application .mb-n2{margin-bottom:-8px!important}.v-application .mb-n3{margin-bottom:-12px!important}.v-application .mb-n4{margin-bottom:-16px!important}.v-application .mb-n5{margin-bottom:-20px!important}.v-application .mb-n6{margin-bottom:-24px!important}.v-application .mb-n7{margin-bottom:-28px!important}.v-application .mb-n8{margin-bottom:-32px!important}.v-application .mb-n9{margin-bottom:-36px!important}.v-application .mb-n10{margin-bottom:-40px!important}.v-application .mb-n11{margin-bottom:-44px!important}.v-application .mb-n12{margin-bottom:-48px!important}.v-application .ml-n1{margin-left:-4px!important}.v-application .ml-n2{margin-left:-8px!important}.v-application .ml-n3{margin-left:-12px!important}.v-application .ml-n4{margin-left:-16px!important}.v-application .ml-n5{margin-left:-20px!important}.v-application .ml-n6{margin-left:-24px!important}.v-application .ml-n7{margin-left:-28px!important}.v-application .ml-n8{margin-left:-32px!important}.v-application .ml-n9{margin-left:-36px!important}.v-application .ml-n10{margin-left:-40px!important}.v-application .ml-n11{margin-left:-44px!important}.v-application .ml-n12{margin-left:-48px!important}.v-application--is-ltr .ms-n1{margin-left:-4px!important}.v-application--is-rtl .ms-n1{margin-right:-4px!important}.v-application--is-ltr .ms-n2{margin-left:-8px!important}.v-application--is-rtl .ms-n2{margin-right:-8px!important}.v-application--is-ltr .ms-n3{margin-left:-12px!important}.v-application--is-rtl .ms-n3{margin-right:-12px!important}.v-application--is-ltr .ms-n4{margin-left:-16px!important}.v-application--is-rtl .ms-n4{margin-right:-16px!important}.v-application--is-ltr .ms-n5{margin-left:-20px!important}.v-application--is-rtl .ms-n5{margin-right:-20px!important}.v-application--is-ltr .ms-n6{margin-left:-24px!important}.v-application--is-rtl .ms-n6{margin-right:-24px!important}.v-application--is-ltr .ms-n7{margin-left:-28px!important}.v-application--is-rtl .ms-n7{margin-right:-28px!important}.v-application--is-ltr .ms-n8{margin-left:-32px!important}.v-application--is-rtl .ms-n8{margin-right:-32px!important}.v-application--is-ltr .ms-n9{margin-left:-36px!important}.v-application--is-rtl .ms-n9{margin-right:-36px!important}.v-application--is-ltr .ms-n10{margin-left:-40px!important}.v-application--is-rtl .ms-n10{margin-right:-40px!important}.v-application--is-ltr .ms-n11{margin-left:-44px!important}.v-application--is-rtl .ms-n11{margin-right:-44px!important}.v-application--is-ltr .ms-n12{margin-left:-48px!important}.v-application--is-rtl .ms-n12{margin-right:-48px!important}.v-application--is-ltr .me-n1{margin-right:-4px!important}.v-application--is-rtl .me-n1{margin-left:-4px!important}.v-application--is-ltr .me-n2{margin-right:-8px!important}.v-application--is-rtl .me-n2{margin-left:-8px!important}.v-application--is-ltr .me-n3{margin-right:-12px!important}.v-application--is-rtl .me-n3{margin-left:-12px!important}.v-application--is-ltr .me-n4{margin-right:-16px!important}.v-application--is-rtl .me-n4{margin-left:-16px!important}.v-application--is-ltr .me-n5{margin-right:-20px!important}.v-application--is-rtl .me-n5{margin-left:-20px!important}.v-application--is-ltr .me-n6{margin-right:-24px!important}.v-application--is-rtl .me-n6{margin-left:-24px!important}.v-application--is-ltr .me-n7{margin-right:-28px!important}.v-application--is-rtl .me-n7{margin-left:-28px!important}.v-application--is-ltr .me-n8{margin-right:-32px!important}.v-application--is-rtl .me-n8{margin-left:-32px!important}.v-application--is-ltr .me-n9{margin-right:-36px!important}.v-application--is-rtl .me-n9{margin-left:-36px!important}.v-application--is-ltr .me-n10{margin-right:-40px!important}.v-application--is-rtl .me-n10{margin-left:-40px!important}.v-application--is-ltr .me-n11{margin-right:-44px!important}.v-application--is-rtl .me-n11{margin-left:-44px!important}.v-application--is-ltr .me-n12{margin-right:-48px!important}.v-application--is-rtl .me-n12{margin-left:-48px!important}.v-application .pa-0{padding:0!important}.v-application .pa-1{padding:4px!important}.v-application .pa-2{padding:8px!important}.v-application .pa-3{padding:12px!important}.v-application .pa-4{padding:16px!important}.v-application .pa-5{padding:20px!important}.v-application .pa-6{padding:24px!important}.v-application .pa-7{padding:28px!important}.v-application .pa-8{padding:32px!important}.v-application .pa-9{padding:36px!important}.v-application .pa-10{padding:40px!important}.v-application .pa-11{padding:44px!important}.v-application .pa-12{padding:48px!important}.v-application .px-0{padding-right:0!important;padding-left:0!important}.v-application .px-1{padding-right:4px!important;padding-left:4px!important}.v-application .px-2{padding-right:8px!important;padding-left:8px!important}.v-application .px-3{padding-right:12px!important;padding-left:12px!important}.v-application .px-4{padding-right:16px!important;padding-left:16px!important}.v-application .px-5{padding-right:20px!important;padding-left:20px!important}.v-application .px-6{padding-right:24px!important;padding-left:24px!important}.v-application .px-7{padding-right:28px!important;padding-left:28px!important}.v-application .px-8{padding-right:32px!important;padding-left:32px!important}.v-application .px-9{padding-right:36px!important;padding-left:36px!important}.v-application .px-10{padding-right:40px!important;padding-left:40px!important}.v-application .px-11{padding-right:44px!important;padding-left:44px!important}.v-application .px-12{padding-right:48px!important;padding-left:48px!important}.v-application .py-0{padding-top:0!important;padding-bottom:0!important}.v-application .py-1{padding-top:4px!important;padding-bottom:4px!important}.v-application .py-2{padding-top:8px!important;padding-bottom:8px!important}.v-application .py-3{padding-top:12px!important;padding-bottom:12px!important}.v-application .py-4{padding-top:16px!important;padding-bottom:16px!important}.v-application .py-5{padding-top:20px!important;padding-bottom:20px!important}.v-application .py-6{padding-top:24px!important;padding-bottom:24px!important}.v-application .py-7{padding-top:28px!important;padding-bottom:28px!important}.v-application .py-8{padding-top:32px!important;padding-bottom:32px!important}.v-application .py-9{padding-top:36px!important;padding-bottom:36px!important}.v-application .py-10{padding-top:40px!important;padding-bottom:40px!important}.v-application .py-11{padding-top:44px!important;padding-bottom:44px!important}.v-application .py-12{padding-top:48px!important;padding-bottom:48px!important}.v-application .pt-0{padding-top:0!important}.v-application .pt-1{padding-top:4px!important}.v-application .pt-2{padding-top:8px!important}.v-application .pt-3{padding-top:12px!important}.v-application .pt-4{padding-top:16px!important}.v-application .pt-5{padding-top:20px!important}.v-application .pt-6{padding-top:24px!important}.v-application .pt-7{padding-top:28px!important}.v-application .pt-8{padding-top:32px!important}.v-application .pt-9{padding-top:36px!important}.v-application .pt-10{padding-top:40px!important}.v-application .pt-11{padding-top:44px!important}.v-application .pt-12{padding-top:48px!important}.v-application .pr-0{padding-right:0!important}.v-application .pr-1{padding-right:4px!important}.v-application .pr-2{padding-right:8px!important}.v-application .pr-3{padding-right:12px!important}.v-application .pr-4{padding-right:16px!important}.v-application .pr-5{padding-right:20px!important}.v-application .pr-6{padding-right:24px!important}.v-application .pr-7{padding-right:28px!important}.v-application .pr-8{padding-right:32px!important}.v-application .pr-9{padding-right:36px!important}.v-application .pr-10{padding-right:40px!important}.v-application .pr-11{padding-right:44px!important}.v-application .pr-12{padding-right:48px!important}.v-application .pb-0{padding-bottom:0!important}.v-application .pb-1{padding-bottom:4px!important}.v-application .pb-2{padding-bottom:8px!important}.v-application .pb-3{padding-bottom:12px!important}.v-application .pb-4{padding-bottom:16px!important}.v-application .pb-5{padding-bottom:20px!important}.v-application .pb-6{padding-bottom:24px!important}.v-application .pb-7{padding-bottom:28px!important}.v-application .pb-8{padding-bottom:32px!important}.v-application .pb-9{padding-bottom:36px!important}.v-application .pb-10{padding-bottom:40px!important}.v-application .pb-11{padding-bottom:44px!important}.v-application .pb-12{padding-bottom:48px!important}.v-application .pl-0{padding-left:0!important}.v-application .pl-1{padding-left:4px!important}.v-application .pl-2{padding-left:8px!important}.v-application .pl-3{padding-left:12px!important}.v-application .pl-4{padding-left:16px!important}.v-application .pl-5{padding-left:20px!important}.v-application .pl-6{padding-left:24px!important}.v-application .pl-7{padding-left:28px!important}.v-application .pl-8{padding-left:32px!important}.v-application .pl-9{padding-left:36px!important}.v-application .pl-10{padding-left:40px!important}.v-application .pl-11{padding-left:44px!important}.v-application .pl-12{padding-left:48px!important}.v-application--is-ltr .ps-0{padding-left:0!important}.v-application--is-rtl .ps-0{padding-right:0!important}.v-application--is-ltr .ps-1{padding-left:4px!important}.v-application--is-rtl .ps-1{padding-right:4px!important}.v-application--is-ltr .ps-2{padding-left:8px!important}.v-application--is-rtl .ps-2{padding-right:8px!important}.v-application--is-ltr .ps-3{padding-left:12px!important}.v-application--is-rtl .ps-3{padding-right:12px!important}.v-application--is-ltr .ps-4{padding-left:16px!important}.v-application--is-rtl .ps-4{padding-right:16px!important}.v-application--is-ltr .ps-5{padding-left:20px!important}.v-application--is-rtl .ps-5{padding-right:20px!important}.v-application--is-ltr .ps-6{padding-left:24px!important}.v-application--is-rtl .ps-6{padding-right:24px!important}.v-application--is-ltr .ps-7{padding-left:28px!important}.v-application--is-rtl .ps-7{padding-right:28px!important}.v-application--is-ltr .ps-8{padding-left:32px!important}.v-application--is-rtl .ps-8{padding-right:32px!important}.v-application--is-ltr .ps-9{padding-left:36px!important}.v-application--is-rtl .ps-9{padding-right:36px!important}.v-application--is-ltr .ps-10{padding-left:40px!important}.v-application--is-rtl .ps-10{padding-right:40px!important}.v-application--is-ltr .ps-11{padding-left:44px!important}.v-application--is-rtl .ps-11{padding-right:44px!important}.v-application--is-ltr .ps-12{padding-left:48px!important}.v-application--is-rtl .ps-12{padding-right:48px!important}.v-application--is-ltr .pe-0{padding-right:0!important}.v-application--is-rtl .pe-0{padding-left:0!important}.v-application--is-ltr .pe-1{padding-right:4px!important}.v-application--is-rtl .pe-1{padding-left:4px!important}.v-application--is-ltr .pe-2{padding-right:8px!important}.v-application--is-rtl .pe-2{padding-left:8px!important}.v-application--is-ltr .pe-3{padding-right:12px!important}.v-application--is-rtl .pe-3{padding-left:12px!important}.v-application--is-ltr .pe-4{padding-right:16px!important}.v-application--is-rtl .pe-4{padding-left:16px!important}.v-application--is-ltr .pe-5{padding-right:20px!important}.v-application--is-rtl .pe-5{padding-left:20px!important}.v-application--is-ltr .pe-6{padding-right:24px!important}.v-application--is-rtl .pe-6{padding-left:24px!important}.v-application--is-ltr .pe-7{padding-right:28px!important}.v-application--is-rtl .pe-7{padding-left:28px!important}.v-application--is-ltr .pe-8{padding-right:32px!important}.v-application--is-rtl .pe-8{padding-left:32px!important}.v-application--is-ltr .pe-9{padding-right:36px!important}.v-application--is-rtl .pe-9{padding-left:36px!important}.v-application--is-ltr .pe-10{padding-right:40px!important}.v-application--is-rtl .pe-10{padding-left:40px!important}.v-application--is-ltr .pe-11{padding-right:44px!important}.v-application--is-rtl .pe-11{padding-left:44px!important}.v-application--is-ltr .pe-12{padding-right:48px!important}.v-application--is-rtl .pe-12{padding-left:48px!important}.v-application .text-left{text-align:left!important}.v-application .text-right{text-align:right!important}.v-application .text-center{text-align:center!important}.v-application .text-justify{text-align:justify!important}.v-application .text-start{text-align:start!important}.v-application .text-end{text-align:end!important}.v-application .text-wrap{white-space:normal!important}.v-application .text-no-wrap{white-space:nowrap!important}.v-application .text-break{overflow-wrap:break-word!important;word-break:break-word!important}.v-application .text-truncate{white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important}.v-application .text-none{text-transform:none!important}.v-application .text-capitalize{text-transform:capitalize!important}.v-application .text-lowercase{text-transform:lowercase!important}.v-application .text-uppercase{text-transform:uppercase!important}@media (min-width:600px){.v-application .d-sm-none{display:none!important}.v-application .d-sm-inline{display:inline!important}.v-application .d-sm-inline-block{display:inline-block!important}.v-application .d-sm-block{display:block!important}.v-application .d-sm-table{display:table!important}.v-application .d-sm-table-row{display:table-row!important}.v-application .d-sm-table-cell{display:table-cell!important}.v-application .d-sm-flex{display:flex!important}.v-application .d-sm-inline-flex{display:inline-flex!important}.v-application .float-sm-none{float:none!important}.v-application .float-sm-left{float:left!important}.v-application .float-sm-right{float:right!important}.v-application .flex-sm-fill{flex:1 1 auto!important}.v-application .flex-sm-row{flex-direction:row!important}.v-application .flex-sm-column{flex-direction:column!important}.v-application .flex-sm-row-reverse{flex-direction:row-reverse!important}.v-application .flex-sm-column-reverse{flex-direction:column-reverse!important}.v-application .flex-sm-grow-0{flex-grow:0!important}.v-application .flex-sm-grow-1{flex-grow:1!important}.v-application .flex-sm-shrink-0{flex-shrink:0!important}.v-application .flex-sm-shrink-1{flex-shrink:1!important}.v-application .flex-sm-wrap{flex-wrap:wrap!important}.v-application .flex-sm-nowrap{flex-wrap:nowrap!important}.v-application .flex-sm-wrap-reverse{flex-wrap:wrap-reverse!important}.v-application .justify-sm-start{justify-content:flex-start!important}.v-application .justify-sm-end{justify-content:flex-end!important}.v-application .justify-sm-center{justify-content:center!important}.v-application .justify-sm-space-between{justify-content:space-between!important}.v-application .justify-sm-space-around{justify-content:space-around!important}.v-application .align-sm-start{align-items:flex-start!important}.v-application .align-sm-end{align-items:flex-end!important}.v-application .align-sm-center{align-items:center!important}.v-application .align-sm-baseline{align-items:baseline!important}.v-application .align-sm-stretch{align-items:stretch!important}.v-application .align-content-sm-start{align-content:flex-start!important}.v-application .align-content-sm-end{align-content:flex-end!important}.v-application .align-content-sm-center{align-content:center!important}.v-application .align-content-sm-space-between{align-content:space-between!important}.v-application .align-content-sm-space-around{align-content:space-around!important}.v-application .align-content-sm-stretch{align-content:stretch!important}.v-application .align-self-sm-auto{align-self:auto!important}.v-application .align-self-sm-start{align-self:flex-start!important}.v-application .align-self-sm-end{align-self:flex-end!important}.v-application .align-self-sm-center{align-self:center!important}.v-application .align-self-sm-baseline{align-self:baseline!important}.v-application .align-self-sm-stretch{align-self:stretch!important}.v-application .order-sm-first{order:-1!important}.v-application .order-sm-0{order:0!important}.v-application .order-sm-1{order:1!important}.v-application .order-sm-2{order:2!important}.v-application .order-sm-3{order:3!important}.v-application .order-sm-4{order:4!important}.v-application .order-sm-5{order:5!important}.v-application .order-sm-6{order:6!important}.v-application .order-sm-7{order:7!important}.v-application .order-sm-8{order:8!important}.v-application .order-sm-9{order:9!important}.v-application .order-sm-10{order:10!important}.v-application .order-sm-11{order:11!important}.v-application .order-sm-12{order:12!important}.v-application .order-sm-last{order:13!important}.v-application .ma-sm-0{margin:0!important}.v-application .ma-sm-1{margin:4px!important}.v-application .ma-sm-2{margin:8px!important}.v-application .ma-sm-3{margin:12px!important}.v-application .ma-sm-4{margin:16px!important}.v-application .ma-sm-5{margin:20px!important}.v-application .ma-sm-6{margin:24px!important}.v-application .ma-sm-7{margin:28px!important}.v-application .ma-sm-8{margin:32px!important}.v-application .ma-sm-9{margin:36px!important}.v-application .ma-sm-10{margin:40px!important}.v-application .ma-sm-11{margin:44px!important}.v-application .ma-sm-12{margin:48px!important}.v-application .ma-sm-auto{margin:auto!important}.v-application .mx-sm-0{margin-right:0!important;margin-left:0!important}.v-application .mx-sm-1{margin-right:4px!important;margin-left:4px!important}.v-application .mx-sm-2{margin-right:8px!important;margin-left:8px!important}.v-application .mx-sm-3{margin-right:12px!important;margin-left:12px!important}.v-application .mx-sm-4{margin-right:16px!important;margin-left:16px!important}.v-application .mx-sm-5{margin-right:20px!important;margin-left:20px!important}.v-application .mx-sm-6{margin-right:24px!important;margin-left:24px!important}.v-application .mx-sm-7{margin-right:28px!important;margin-left:28px!important}.v-application .mx-sm-8{margin-right:32px!important;margin-left:32px!important}.v-application .mx-sm-9{margin-right:36px!important;margin-left:36px!important}.v-application .mx-sm-10{margin-right:40px!important;margin-left:40px!important}.v-application .mx-sm-11{margin-right:44px!important;margin-left:44px!important}.v-application .mx-sm-12{margin-right:48px!important;margin-left:48px!important}.v-application .mx-sm-auto{margin-right:auto!important;margin-left:auto!important}.v-application .my-sm-0{margin-top:0!important;margin-bottom:0!important}.v-application .my-sm-1{margin-top:4px!important;margin-bottom:4px!important}.v-application .my-sm-2{margin-top:8px!important;margin-bottom:8px!important}.v-application .my-sm-3{margin-top:12px!important;margin-bottom:12px!important}.v-application .my-sm-4{margin-top:16px!important;margin-bottom:16px!important}.v-application .my-sm-5{margin-top:20px!important;margin-bottom:20px!important}.v-application .my-sm-6{margin-top:24px!important;margin-bottom:24px!important}.v-application .my-sm-7{margin-top:28px!important;margin-bottom:28px!important}.v-application .my-sm-8{margin-top:32px!important;margin-bottom:32px!important}.v-application .my-sm-9{margin-top:36px!important;margin-bottom:36px!important}.v-application .my-sm-10{margin-top:40px!important;margin-bottom:40px!important}.v-application .my-sm-11{margin-top:44px!important;margin-bottom:44px!important}.v-application .my-sm-12{margin-top:48px!important;margin-bottom:48px!important}.v-application .my-sm-auto{margin-top:auto!important;margin-bottom:auto!important}.v-application .mt-sm-0{margin-top:0!important}.v-application .mt-sm-1{margin-top:4px!important}.v-application .mt-sm-2{margin-top:8px!important}.v-application .mt-sm-3{margin-top:12px!important}.v-application .mt-sm-4{margin-top:16px!important}.v-application .mt-sm-5{margin-top:20px!important}.v-application .mt-sm-6{margin-top:24px!important}.v-application .mt-sm-7{margin-top:28px!important}.v-application .mt-sm-8{margin-top:32px!important}.v-application .mt-sm-9{margin-top:36px!important}.v-application .mt-sm-10{margin-top:40px!important}.v-application .mt-sm-11{margin-top:44px!important}.v-application .mt-sm-12{margin-top:48px!important}.v-application .mt-sm-auto{margin-top:auto!important}.v-application .mr-sm-0{margin-right:0!important}.v-application .mr-sm-1{margin-right:4px!important}.v-application .mr-sm-2{margin-right:8px!important}.v-application .mr-sm-3{margin-right:12px!important}.v-application .mr-sm-4{margin-right:16px!important}.v-application .mr-sm-5{margin-right:20px!important}.v-application .mr-sm-6{margin-right:24px!important}.v-application .mr-sm-7{margin-right:28px!important}.v-application .mr-sm-8{margin-right:32px!important}.v-application .mr-sm-9{margin-right:36px!important}.v-application .mr-sm-10{margin-right:40px!important}.v-application .mr-sm-11{margin-right:44px!important}.v-application .mr-sm-12{margin-right:48px!important}.v-application .mr-sm-auto{margin-right:auto!important}.v-application .mb-sm-0{margin-bottom:0!important}.v-application .mb-sm-1{margin-bottom:4px!important}.v-application .mb-sm-2{margin-bottom:8px!important}.v-application .mb-sm-3{margin-bottom:12px!important}.v-application .mb-sm-4{margin-bottom:16px!important}.v-application .mb-sm-5{margin-bottom:20px!important}.v-application .mb-sm-6{margin-bottom:24px!important}.v-application .mb-sm-7{margin-bottom:28px!important}.v-application .mb-sm-8{margin-bottom:32px!important}.v-application .mb-sm-9{margin-bottom:36px!important}.v-application .mb-sm-10{margin-bottom:40px!important}.v-application .mb-sm-11{margin-bottom:44px!important}.v-application .mb-sm-12{margin-bottom:48px!important}.v-application .mb-sm-auto{margin-bottom:auto!important}.v-application .ml-sm-0{margin-left:0!important}.v-application .ml-sm-1{margin-left:4px!important}.v-application .ml-sm-2{margin-left:8px!important}.v-application .ml-sm-3{margin-left:12px!important}.v-application .ml-sm-4{margin-left:16px!important}.v-application .ml-sm-5{margin-left:20px!important}.v-application .ml-sm-6{margin-left:24px!important}.v-application .ml-sm-7{margin-left:28px!important}.v-application .ml-sm-8{margin-left:32px!important}.v-application .ml-sm-9{margin-left:36px!important}.v-application .ml-sm-10{margin-left:40px!important}.v-application .ml-sm-11{margin-left:44px!important}.v-application .ml-sm-12{margin-left:48px!important}.v-application .ml-sm-auto{margin-left:auto!important}.v-application--is-ltr .ms-sm-0{margin-left:0!important}.v-application--is-rtl .ms-sm-0{margin-right:0!important}.v-application--is-ltr .ms-sm-1{margin-left:4px!important}.v-application--is-rtl .ms-sm-1{margin-right:4px!important}.v-application--is-ltr .ms-sm-2{margin-left:8px!important}.v-application--is-rtl .ms-sm-2{margin-right:8px!important}.v-application--is-ltr .ms-sm-3{margin-left:12px!important}.v-application--is-rtl .ms-sm-3{margin-right:12px!important}.v-application--is-ltr .ms-sm-4{margin-left:16px!important}.v-application--is-rtl .ms-sm-4{margin-right:16px!important}.v-application--is-ltr .ms-sm-5{margin-left:20px!important}.v-application--is-rtl .ms-sm-5{margin-right:20px!important}.v-application--is-ltr .ms-sm-6{margin-left:24px!important}.v-application--is-rtl .ms-sm-6{margin-right:24px!important}.v-application--is-ltr .ms-sm-7{margin-left:28px!important}.v-application--is-rtl .ms-sm-7{margin-right:28px!important}.v-application--is-ltr .ms-sm-8{margin-left:32px!important}.v-application--is-rtl .ms-sm-8{margin-right:32px!important}.v-application--is-ltr .ms-sm-9{margin-left:36px!important}.v-application--is-rtl .ms-sm-9{margin-right:36px!important}.v-application--is-ltr .ms-sm-10{margin-left:40px!important}.v-application--is-rtl .ms-sm-10{margin-right:40px!important}.v-application--is-ltr .ms-sm-11{margin-left:44px!important}.v-application--is-rtl .ms-sm-11{margin-right:44px!important}.v-application--is-ltr .ms-sm-12{margin-left:48px!important}.v-application--is-rtl .ms-sm-12{margin-right:48px!important}.v-application--is-ltr .ms-sm-auto{margin-left:auto!important}.v-application--is-rtl .ms-sm-auto{margin-right:auto!important}.v-application--is-ltr .me-sm-0{margin-right:0!important}.v-application--is-rtl .me-sm-0{margin-left:0!important}.v-application--is-ltr .me-sm-1{margin-right:4px!important}.v-application--is-rtl .me-sm-1{margin-left:4px!important}.v-application--is-ltr .me-sm-2{margin-right:8px!important}.v-application--is-rtl .me-sm-2{margin-left:8px!important}.v-application--is-ltr .me-sm-3{margin-right:12px!important}.v-application--is-rtl .me-sm-3{margin-left:12px!important}.v-application--is-ltr .me-sm-4{margin-right:16px!important}.v-application--is-rtl .me-sm-4{margin-left:16px!important}.v-application--is-ltr .me-sm-5{margin-right:20px!important}.v-application--is-rtl .me-sm-5{margin-left:20px!important}.v-application--is-ltr .me-sm-6{margin-right:24px!important}.v-application--is-rtl .me-sm-6{margin-left:24px!important}.v-application--is-ltr .me-sm-7{margin-right:28px!important}.v-application--is-rtl .me-sm-7{margin-left:28px!important}.v-application--is-ltr .me-sm-8{margin-right:32px!important}.v-application--is-rtl .me-sm-8{margin-left:32px!important}.v-application--is-ltr .me-sm-9{margin-right:36px!important}.v-application--is-rtl .me-sm-9{margin-left:36px!important}.v-application--is-ltr .me-sm-10{margin-right:40px!important}.v-application--is-rtl .me-sm-10{margin-left:40px!important}.v-application--is-ltr .me-sm-11{margin-right:44px!important}.v-application--is-rtl .me-sm-11{margin-left:44px!important}.v-application--is-ltr .me-sm-12{margin-right:48px!important}.v-application--is-rtl .me-sm-12{margin-left:48px!important}.v-application--is-ltr .me-sm-auto{margin-right:auto!important}.v-application--is-rtl .me-sm-auto{margin-left:auto!important}.v-application .ma-sm-n1{margin:-4px!important}.v-application .ma-sm-n2{margin:-8px!important}.v-application .ma-sm-n3{margin:-12px!important}.v-application .ma-sm-n4{margin:-16px!important}.v-application .ma-sm-n5{margin:-20px!important}.v-application .ma-sm-n6{margin:-24px!important}.v-application .ma-sm-n7{margin:-28px!important}.v-application .ma-sm-n8{margin:-32px!important}.v-application .ma-sm-n9{margin:-36px!important}.v-application .ma-sm-n10{margin:-40px!important}.v-application .ma-sm-n11{margin:-44px!important}.v-application .ma-sm-n12{margin:-48px!important}.v-application .mx-sm-n1{margin-right:-4px!important;margin-left:-4px!important}.v-application .mx-sm-n2{margin-right:-8px!important;margin-left:-8px!important}.v-application .mx-sm-n3{margin-right:-12px!important;margin-left:-12px!important}.v-application .mx-sm-n4{margin-right:-16px!important;margin-left:-16px!important}.v-application .mx-sm-n5{margin-right:-20px!important;margin-left:-20px!important}.v-application .mx-sm-n6{margin-right:-24px!important;margin-left:-24px!important}.v-application .mx-sm-n7{margin-right:-28px!important;margin-left:-28px!important}.v-application .mx-sm-n8{margin-right:-32px!important;margin-left:-32px!important}.v-application .mx-sm-n9{margin-right:-36px!important;margin-left:-36px!important}.v-application .mx-sm-n10{margin-right:-40px!important;margin-left:-40px!important}.v-application .mx-sm-n11{margin-right:-44px!important;margin-left:-44px!important}.v-application .mx-sm-n12{margin-right:-48px!important;margin-left:-48px!important}.v-application .my-sm-n1{margin-top:-4px!important;margin-bottom:-4px!important}.v-application .my-sm-n2{margin-top:-8px!important;margin-bottom:-8px!important}.v-application .my-sm-n3{margin-top:-12px!important;margin-bottom:-12px!important}.v-application .my-sm-n4{margin-top:-16px!important;margin-bottom:-16px!important}.v-application .my-sm-n5{margin-top:-20px!important;margin-bottom:-20px!important}.v-application .my-sm-n6{margin-top:-24px!important;margin-bottom:-24px!important}.v-application .my-sm-n7{margin-top:-28px!important;margin-bottom:-28px!important}.v-application .my-sm-n8{margin-top:-32px!important;margin-bottom:-32px!important}.v-application .my-sm-n9{margin-top:-36px!important;margin-bottom:-36px!important}.v-application .my-sm-n10{margin-top:-40px!important;margin-bottom:-40px!important}.v-application .my-sm-n11{margin-top:-44px!important;margin-bottom:-44px!important}.v-application .my-sm-n12{margin-top:-48px!important;margin-bottom:-48px!important}.v-application .mt-sm-n1{margin-top:-4px!important}.v-application .mt-sm-n2{margin-top:-8px!important}.v-application .mt-sm-n3{margin-top:-12px!important}.v-application .mt-sm-n4{margin-top:-16px!important}.v-application .mt-sm-n5{margin-top:-20px!important}.v-application .mt-sm-n6{margin-top:-24px!important}.v-application .mt-sm-n7{margin-top:-28px!important}.v-application .mt-sm-n8{margin-top:-32px!important}.v-application .mt-sm-n9{margin-top:-36px!important}.v-application .mt-sm-n10{margin-top:-40px!important}.v-application .mt-sm-n11{margin-top:-44px!important}.v-application .mt-sm-n12{margin-top:-48px!important}.v-application .mr-sm-n1{margin-right:-4px!important}.v-application .mr-sm-n2{margin-right:-8px!important}.v-application .mr-sm-n3{margin-right:-12px!important}.v-application .mr-sm-n4{margin-right:-16px!important}.v-application .mr-sm-n5{margin-right:-20px!important}.v-application .mr-sm-n6{margin-right:-24px!important}.v-application .mr-sm-n7{margin-right:-28px!important}.v-application .mr-sm-n8{margin-right:-32px!important}.v-application .mr-sm-n9{margin-right:-36px!important}.v-application .mr-sm-n10{margin-right:-40px!important}.v-application .mr-sm-n11{margin-right:-44px!important}.v-application .mr-sm-n12{margin-right:-48px!important}.v-application .mb-sm-n1{margin-bottom:-4px!important}.v-application .mb-sm-n2{margin-bottom:-8px!important}.v-application .mb-sm-n3{margin-bottom:-12px!important}.v-application .mb-sm-n4{margin-bottom:-16px!important}.v-application .mb-sm-n5{margin-bottom:-20px!important}.v-application .mb-sm-n6{margin-bottom:-24px!important}.v-application .mb-sm-n7{margin-bottom:-28px!important}.v-application .mb-sm-n8{margin-bottom:-32px!important}.v-application .mb-sm-n9{margin-bottom:-36px!important}.v-application .mb-sm-n10{margin-bottom:-40px!important}.v-application .mb-sm-n11{margin-bottom:-44px!important}.v-application .mb-sm-n12{margin-bottom:-48px!important}.v-application .ml-sm-n1{margin-left:-4px!important}.v-application .ml-sm-n2{margin-left:-8px!important}.v-application .ml-sm-n3{margin-left:-12px!important}.v-application .ml-sm-n4{margin-left:-16px!important}.v-application .ml-sm-n5{margin-left:-20px!important}.v-application .ml-sm-n6{margin-left:-24px!important}.v-application .ml-sm-n7{margin-left:-28px!important}.v-application .ml-sm-n8{margin-left:-32px!important}.v-application .ml-sm-n9{margin-left:-36px!important}.v-application .ml-sm-n10{margin-left:-40px!important}.v-application .ml-sm-n11{margin-left:-44px!important}.v-application .ml-sm-n12{margin-left:-48px!important}.v-application--is-ltr .ms-sm-n1{margin-left:-4px!important}.v-application--is-rtl .ms-sm-n1{margin-right:-4px!important}.v-application--is-ltr .ms-sm-n2{margin-left:-8px!important}.v-application--is-rtl .ms-sm-n2{margin-right:-8px!important}.v-application--is-ltr .ms-sm-n3{margin-left:-12px!important}.v-application--is-rtl .ms-sm-n3{margin-right:-12px!important}.v-application--is-ltr .ms-sm-n4{margin-left:-16px!important}.v-application--is-rtl .ms-sm-n4{margin-right:-16px!important}.v-application--is-ltr .ms-sm-n5{margin-left:-20px!important}.v-application--is-rtl .ms-sm-n5{margin-right:-20px!important}.v-application--is-ltr .ms-sm-n6{margin-left:-24px!important}.v-application--is-rtl .ms-sm-n6{margin-right:-24px!important}.v-application--is-ltr .ms-sm-n7{margin-left:-28px!important}.v-application--is-rtl .ms-sm-n7{margin-right:-28px!important}.v-application--is-ltr .ms-sm-n8{margin-left:-32px!important}.v-application--is-rtl .ms-sm-n8{margin-right:-32px!important}.v-application--is-ltr .ms-sm-n9{margin-left:-36px!important}.v-application--is-rtl .ms-sm-n9{margin-right:-36px!important}.v-application--is-ltr .ms-sm-n10{margin-left:-40px!important}.v-application--is-rtl .ms-sm-n10{margin-right:-40px!important}.v-application--is-ltr .ms-sm-n11{margin-left:-44px!important}.v-application--is-rtl .ms-sm-n11{margin-right:-44px!important}.v-application--is-ltr .ms-sm-n12{margin-left:-48px!important}.v-application--is-rtl .ms-sm-n12{margin-right:-48px!important}.v-application--is-ltr .me-sm-n1{margin-right:-4px!important}.v-application--is-rtl .me-sm-n1{margin-left:-4px!important}.v-application--is-ltr .me-sm-n2{margin-right:-8px!important}.v-application--is-rtl .me-sm-n2{margin-left:-8px!important}.v-application--is-ltr .me-sm-n3{margin-right:-12px!important}.v-application--is-rtl .me-sm-n3{margin-left:-12px!important}.v-application--is-ltr .me-sm-n4{margin-right:-16px!important}.v-application--is-rtl .me-sm-n4{margin-left:-16px!important}.v-application--is-ltr .me-sm-n5{margin-right:-20px!important}.v-application--is-rtl .me-sm-n5{margin-left:-20px!important}.v-application--is-ltr .me-sm-n6{margin-right:-24px!important}.v-application--is-rtl .me-sm-n6{margin-left:-24px!important}.v-application--is-ltr .me-sm-n7{margin-right:-28px!important}.v-application--is-rtl .me-sm-n7{margin-left:-28px!important}.v-application--is-ltr .me-sm-n8{margin-right:-32px!important}.v-application--is-rtl .me-sm-n8{margin-left:-32px!important}.v-application--is-ltr .me-sm-n9{margin-right:-36px!important}.v-application--is-rtl .me-sm-n9{margin-left:-36px!important}.v-application--is-ltr .me-sm-n10{margin-right:-40px!important}.v-application--is-rtl .me-sm-n10{margin-left:-40px!important}.v-application--is-ltr .me-sm-n11{margin-right:-44px!important}.v-application--is-rtl .me-sm-n11{margin-left:-44px!important}.v-application--is-ltr .me-sm-n12{margin-right:-48px!important}.v-application--is-rtl .me-sm-n12{margin-left:-48px!important}.v-application .pa-sm-0{padding:0!important}.v-application .pa-sm-1{padding:4px!important}.v-application .pa-sm-2{padding:8px!important}.v-application .pa-sm-3{padding:12px!important}.v-application .pa-sm-4{padding:16px!important}.v-application .pa-sm-5{padding:20px!important}.v-application .pa-sm-6{padding:24px!important}.v-application .pa-sm-7{padding:28px!important}.v-application .pa-sm-8{padding:32px!important}.v-application .pa-sm-9{padding:36px!important}.v-application .pa-sm-10{padding:40px!important}.v-application .pa-sm-11{padding:44px!important}.v-application .pa-sm-12{padding:48px!important}.v-application .px-sm-0{padding-right:0!important;padding-left:0!important}.v-application .px-sm-1{padding-right:4px!important;padding-left:4px!important}.v-application .px-sm-2{padding-right:8px!important;padding-left:8px!important}.v-application .px-sm-3{padding-right:12px!important;padding-left:12px!important}.v-application .px-sm-4{padding-right:16px!important;padding-left:16px!important}.v-application .px-sm-5{padding-right:20px!important;padding-left:20px!important}.v-application .px-sm-6{padding-right:24px!important;padding-left:24px!important}.v-application .px-sm-7{padding-right:28px!important;padding-left:28px!important}.v-application .px-sm-8{padding-right:32px!important;padding-left:32px!important}.v-application .px-sm-9{padding-right:36px!important;padding-left:36px!important}.v-application .px-sm-10{padding-right:40px!important;padding-left:40px!important}.v-application .px-sm-11{padding-right:44px!important;padding-left:44px!important}.v-application .px-sm-12{padding-right:48px!important;padding-left:48px!important}.v-application .py-sm-0{padding-top:0!important;padding-bottom:0!important}.v-application .py-sm-1{padding-top:4px!important;padding-bottom:4px!important}.v-application .py-sm-2{padding-top:8px!important;padding-bottom:8px!important}.v-application .py-sm-3{padding-top:12px!important;padding-bottom:12px!important}.v-application .py-sm-4{padding-top:16px!important;padding-bottom:16px!important}.v-application .py-sm-5{padding-top:20px!important;padding-bottom:20px!important}.v-application .py-sm-6{padding-top:24px!important;padding-bottom:24px!important}.v-application .py-sm-7{padding-top:28px!important;padding-bottom:28px!important}.v-application .py-sm-8{padding-top:32px!important;padding-bottom:32px!important}.v-application .py-sm-9{padding-top:36px!important;padding-bottom:36px!important}.v-application .py-sm-10{padding-top:40px!important;padding-bottom:40px!important}.v-application .py-sm-11{padding-top:44px!important;padding-bottom:44px!important}.v-application .py-sm-12{padding-top:48px!important;padding-bottom:48px!important}.v-application .pt-sm-0{padding-top:0!important}.v-application .pt-sm-1{padding-top:4px!important}.v-application .pt-sm-2{padding-top:8px!important}.v-application .pt-sm-3{padding-top:12px!important}.v-application .pt-sm-4{padding-top:16px!important}.v-application .pt-sm-5{padding-top:20px!important}.v-application .pt-sm-6{padding-top:24px!important}.v-application .pt-sm-7{padding-top:28px!important}.v-application .pt-sm-8{padding-top:32px!important}.v-application .pt-sm-9{padding-top:36px!important}.v-application .pt-sm-10{padding-top:40px!important}.v-application .pt-sm-11{padding-top:44px!important}.v-application .pt-sm-12{padding-top:48px!important}.v-application .pr-sm-0{padding-right:0!important}.v-application .pr-sm-1{padding-right:4px!important}.v-application .pr-sm-2{padding-right:8px!important}.v-application .pr-sm-3{padding-right:12px!important}.v-application .pr-sm-4{padding-right:16px!important}.v-application .pr-sm-5{padding-right:20px!important}.v-application .pr-sm-6{padding-right:24px!important}.v-application .pr-sm-7{padding-right:28px!important}.v-application .pr-sm-8{padding-right:32px!important}.v-application .pr-sm-9{padding-right:36px!important}.v-application .pr-sm-10{padding-right:40px!important}.v-application .pr-sm-11{padding-right:44px!important}.v-application .pr-sm-12{padding-right:48px!important}.v-application .pb-sm-0{padding-bottom:0!important}.v-application .pb-sm-1{padding-bottom:4px!important}.v-application .pb-sm-2{padding-bottom:8px!important}.v-application .pb-sm-3{padding-bottom:12px!important}.v-application .pb-sm-4{padding-bottom:16px!important}.v-application .pb-sm-5{padding-bottom:20px!important}.v-application .pb-sm-6{padding-bottom:24px!important}.v-application .pb-sm-7{padding-bottom:28px!important}.v-application .pb-sm-8{padding-bottom:32px!important}.v-application .pb-sm-9{padding-bottom:36px!important}.v-application .pb-sm-10{padding-bottom:40px!important}.v-application .pb-sm-11{padding-bottom:44px!important}.v-application .pb-sm-12{padding-bottom:48px!important}.v-application .pl-sm-0{padding-left:0!important}.v-application .pl-sm-1{padding-left:4px!important}.v-application .pl-sm-2{padding-left:8px!important}.v-application .pl-sm-3{padding-left:12px!important}.v-application .pl-sm-4{padding-left:16px!important}.v-application .pl-sm-5{padding-left:20px!important}.v-application .pl-sm-6{padding-left:24px!important}.v-application .pl-sm-7{padding-left:28px!important}.v-application .pl-sm-8{padding-left:32px!important}.v-application .pl-sm-9{padding-left:36px!important}.v-application .pl-sm-10{padding-left:40px!important}.v-application .pl-sm-11{padding-left:44px!important}.v-application .pl-sm-12{padding-left:48px!important}.v-application--is-ltr .ps-sm-0{padding-left:0!important}.v-application--is-rtl .ps-sm-0{padding-right:0!important}.v-application--is-ltr .ps-sm-1{padding-left:4px!important}.v-application--is-rtl .ps-sm-1{padding-right:4px!important}.v-application--is-ltr .ps-sm-2{padding-left:8px!important}.v-application--is-rtl .ps-sm-2{padding-right:8px!important}.v-application--is-ltr .ps-sm-3{padding-left:12px!important}.v-application--is-rtl .ps-sm-3{padding-right:12px!important}.v-application--is-ltr .ps-sm-4{padding-left:16px!important}.v-application--is-rtl .ps-sm-4{padding-right:16px!important}.v-application--is-ltr .ps-sm-5{padding-left:20px!important}.v-application--is-rtl .ps-sm-5{padding-right:20px!important}.v-application--is-ltr .ps-sm-6{padding-left:24px!important}.v-application--is-rtl .ps-sm-6{padding-right:24px!important}.v-application--is-ltr .ps-sm-7{padding-left:28px!important}.v-application--is-rtl .ps-sm-7{padding-right:28px!important}.v-application--is-ltr .ps-sm-8{padding-left:32px!important}.v-application--is-rtl .ps-sm-8{padding-right:32px!important}.v-application--is-ltr .ps-sm-9{padding-left:36px!important}.v-application--is-rtl .ps-sm-9{padding-right:36px!important}.v-application--is-ltr .ps-sm-10{padding-left:40px!important}.v-application--is-rtl .ps-sm-10{padding-right:40px!important}.v-application--is-ltr .ps-sm-11{padding-left:44px!important}.v-application--is-rtl .ps-sm-11{padding-right:44px!important}.v-application--is-ltr .ps-sm-12{padding-left:48px!important}.v-application--is-rtl .ps-sm-12{padding-right:48px!important}.v-application--is-ltr .pe-sm-0{padding-right:0!important}.v-application--is-rtl .pe-sm-0{padding-left:0!important}.v-application--is-ltr .pe-sm-1{padding-right:4px!important}.v-application--is-rtl .pe-sm-1{padding-left:4px!important}.v-application--is-ltr .pe-sm-2{padding-right:8px!important}.v-application--is-rtl .pe-sm-2{padding-left:8px!important}.v-application--is-ltr .pe-sm-3{padding-right:12px!important}.v-application--is-rtl .pe-sm-3{padding-left:12px!important}.v-application--is-ltr .pe-sm-4{padding-right:16px!important}.v-application--is-rtl .pe-sm-4{padding-left:16px!important}.v-application--is-ltr .pe-sm-5{padding-right:20px!important}.v-application--is-rtl .pe-sm-5{padding-left:20px!important}.v-application--is-ltr .pe-sm-6{padding-right:24px!important}.v-application--is-rtl .pe-sm-6{padding-left:24px!important}.v-application--is-ltr .pe-sm-7{padding-right:28px!important}.v-application--is-rtl .pe-sm-7{padding-left:28px!important}.v-application--is-ltr .pe-sm-8{padding-right:32px!important}.v-application--is-rtl .pe-sm-8{padding-left:32px!important}.v-application--is-ltr .pe-sm-9{padding-right:36px!important}.v-application--is-rtl .pe-sm-9{padding-left:36px!important}.v-application--is-ltr .pe-sm-10{padding-right:40px!important}.v-application--is-rtl .pe-sm-10{padding-left:40px!important}.v-application--is-ltr .pe-sm-11{padding-right:44px!important}.v-application--is-rtl .pe-sm-11{padding-left:44px!important}.v-application--is-ltr .pe-sm-12{padding-right:48px!important}.v-application--is-rtl .pe-sm-12{padding-left:48px!important}.v-application .text-sm-left{text-align:left!important}.v-application .text-sm-right{text-align:right!important}.v-application .text-sm-center{text-align:center!important}.v-application .text-sm-justify{text-align:justify!important}.v-application .text-sm-start{text-align:start!important}.v-application .text-sm-end{text-align:end!important}}@media (min-width:960px){.v-application .d-md-none{display:none!important}.v-application .d-md-inline{display:inline!important}.v-application .d-md-inline-block{display:inline-block!important}.v-application .d-md-block{display:block!important}.v-application .d-md-table{display:table!important}.v-application .d-md-table-row{display:table-row!important}.v-application .d-md-table-cell{display:table-cell!important}.v-application .d-md-flex{display:flex!important}.v-application .d-md-inline-flex{display:inline-flex!important}.v-application .float-md-none{float:none!important}.v-application .float-md-left{float:left!important}.v-application .float-md-right{float:right!important}.v-application .flex-md-fill{flex:1 1 auto!important}.v-application .flex-md-row{flex-direction:row!important}.v-application .flex-md-column{flex-direction:column!important}.v-application .flex-md-row-reverse{flex-direction:row-reverse!important}.v-application .flex-md-column-reverse{flex-direction:column-reverse!important}.v-application .flex-md-grow-0{flex-grow:0!important}.v-application .flex-md-grow-1{flex-grow:1!important}.v-application .flex-md-shrink-0{flex-shrink:0!important}.v-application .flex-md-shrink-1{flex-shrink:1!important}.v-application .flex-md-wrap{flex-wrap:wrap!important}.v-application .flex-md-nowrap{flex-wrap:nowrap!important}.v-application .flex-md-wrap-reverse{flex-wrap:wrap-reverse!important}.v-application .justify-md-start{justify-content:flex-start!important}.v-application .justify-md-end{justify-content:flex-end!important}.v-application .justify-md-center{justify-content:center!important}.v-application .justify-md-space-between{justify-content:space-between!important}.v-application .justify-md-space-around{justify-content:space-around!important}.v-application .align-md-start{align-items:flex-start!important}.v-application .align-md-end{align-items:flex-end!important}.v-application .align-md-center{align-items:center!important}.v-application .align-md-baseline{align-items:baseline!important}.v-application .align-md-stretch{align-items:stretch!important}.v-application .align-content-md-start{align-content:flex-start!important}.v-application .align-content-md-end{align-content:flex-end!important}.v-application .align-content-md-center{align-content:center!important}.v-application .align-content-md-space-between{align-content:space-between!important}.v-application .align-content-md-space-around{align-content:space-around!important}.v-application .align-content-md-stretch{align-content:stretch!important}.v-application .align-self-md-auto{align-self:auto!important}.v-application .align-self-md-start{align-self:flex-start!important}.v-application .align-self-md-end{align-self:flex-end!important}.v-application .align-self-md-center{align-self:center!important}.v-application .align-self-md-baseline{align-self:baseline!important}.v-application .align-self-md-stretch{align-self:stretch!important}.v-application .order-md-first{order:-1!important}.v-application .order-md-0{order:0!important}.v-application .order-md-1{order:1!important}.v-application .order-md-2{order:2!important}.v-application .order-md-3{order:3!important}.v-application .order-md-4{order:4!important}.v-application .order-md-5{order:5!important}.v-application .order-md-6{order:6!important}.v-application .order-md-7{order:7!important}.v-application .order-md-8{order:8!important}.v-application .order-md-9{order:9!important}.v-application .order-md-10{order:10!important}.v-application .order-md-11{order:11!important}.v-application .order-md-12{order:12!important}.v-application .order-md-last{order:13!important}.v-application .ma-md-0{margin:0!important}.v-application .ma-md-1{margin:4px!important}.v-application .ma-md-2{margin:8px!important}.v-application .ma-md-3{margin:12px!important}.v-application .ma-md-4{margin:16px!important}.v-application .ma-md-5{margin:20px!important}.v-application .ma-md-6{margin:24px!important}.v-application .ma-md-7{margin:28px!important}.v-application .ma-md-8{margin:32px!important}.v-application .ma-md-9{margin:36px!important}.v-application .ma-md-10{margin:40px!important}.v-application .ma-md-11{margin:44px!important}.v-application .ma-md-12{margin:48px!important}.v-application .ma-md-auto{margin:auto!important}.v-application .mx-md-0{margin-right:0!important;margin-left:0!important}.v-application .mx-md-1{margin-right:4px!important;margin-left:4px!important}.v-application .mx-md-2{margin-right:8px!important;margin-left:8px!important}.v-application .mx-md-3{margin-right:12px!important;margin-left:12px!important}.v-application .mx-md-4{margin-right:16px!important;margin-left:16px!important}.v-application .mx-md-5{margin-right:20px!important;margin-left:20px!important}.v-application .mx-md-6{margin-right:24px!important;margin-left:24px!important}.v-application .mx-md-7{margin-right:28px!important;margin-left:28px!important}.v-application .mx-md-8{margin-right:32px!important;margin-left:32px!important}.v-application .mx-md-9{margin-right:36px!important;margin-left:36px!important}.v-application .mx-md-10{margin-right:40px!important;margin-left:40px!important}.v-application .mx-md-11{margin-right:44px!important;margin-left:44px!important}.v-application .mx-md-12{margin-right:48px!important;margin-left:48px!important}.v-application .mx-md-auto{margin-right:auto!important;margin-left:auto!important}.v-application .my-md-0{margin-top:0!important;margin-bottom:0!important}.v-application .my-md-1{margin-top:4px!important;margin-bottom:4px!important}.v-application .my-md-2{margin-top:8px!important;margin-bottom:8px!important}.v-application .my-md-3{margin-top:12px!important;margin-bottom:12px!important}.v-application .my-md-4{margin-top:16px!important;margin-bottom:16px!important}.v-application .my-md-5{margin-top:20px!important;margin-bottom:20px!important}.v-application .my-md-6{margin-top:24px!important;margin-bottom:24px!important}.v-application .my-md-7{margin-top:28px!important;margin-bottom:28px!important}.v-application .my-md-8{margin-top:32px!important;margin-bottom:32px!important}.v-application .my-md-9{margin-top:36px!important;margin-bottom:36px!important}.v-application .my-md-10{margin-top:40px!important;margin-bottom:40px!important}.v-application .my-md-11{margin-top:44px!important;margin-bottom:44px!important}.v-application .my-md-12{margin-top:48px!important;margin-bottom:48px!important}.v-application .my-md-auto{margin-top:auto!important;margin-bottom:auto!important}.v-application .mt-md-0{margin-top:0!important}.v-application .mt-md-1{margin-top:4px!important}.v-application .mt-md-2{margin-top:8px!important}.v-application .mt-md-3{margin-top:12px!important}.v-application .mt-md-4{margin-top:16px!important}.v-application .mt-md-5{margin-top:20px!important}.v-application .mt-md-6{margin-top:24px!important}.v-application .mt-md-7{margin-top:28px!important}.v-application .mt-md-8{margin-top:32px!important}.v-application .mt-md-9{margin-top:36px!important}.v-application .mt-md-10{margin-top:40px!important}.v-application .mt-md-11{margin-top:44px!important}.v-application .mt-md-12{margin-top:48px!important}.v-application .mt-md-auto{margin-top:auto!important}.v-application .mr-md-0{margin-right:0!important}.v-application .mr-md-1{margin-right:4px!important}.v-application .mr-md-2{margin-right:8px!important}.v-application .mr-md-3{margin-right:12px!important}.v-application .mr-md-4{margin-right:16px!important}.v-application .mr-md-5{margin-right:20px!important}.v-application .mr-md-6{margin-right:24px!important}.v-application .mr-md-7{margin-right:28px!important}.v-application .mr-md-8{margin-right:32px!important}.v-application .mr-md-9{margin-right:36px!important}.v-application .mr-md-10{margin-right:40px!important}.v-application .mr-md-11{margin-right:44px!important}.v-application .mr-md-12{margin-right:48px!important}.v-application .mr-md-auto{margin-right:auto!important}.v-application .mb-md-0{margin-bottom:0!important}.v-application .mb-md-1{margin-bottom:4px!important}.v-application .mb-md-2{margin-bottom:8px!important}.v-application .mb-md-3{margin-bottom:12px!important}.v-application .mb-md-4{margin-bottom:16px!important}.v-application .mb-md-5{margin-bottom:20px!important}.v-application .mb-md-6{margin-bottom:24px!important}.v-application .mb-md-7{margin-bottom:28px!important}.v-application .mb-md-8{margin-bottom:32px!important}.v-application .mb-md-9{margin-bottom:36px!important}.v-application .mb-md-10{margin-bottom:40px!important}.v-application .mb-md-11{margin-bottom:44px!important}.v-application .mb-md-12{margin-bottom:48px!important}.v-application .mb-md-auto{margin-bottom:auto!important}.v-application .ml-md-0{margin-left:0!important}.v-application .ml-md-1{margin-left:4px!important}.v-application .ml-md-2{margin-left:8px!important}.v-application .ml-md-3{margin-left:12px!important}.v-application .ml-md-4{margin-left:16px!important}.v-application .ml-md-5{margin-left:20px!important}.v-application .ml-md-6{margin-left:24px!important}.v-application .ml-md-7{margin-left:28px!important}.v-application .ml-md-8{margin-left:32px!important}.v-application .ml-md-9{margin-left:36px!important}.v-application .ml-md-10{margin-left:40px!important}.v-application .ml-md-11{margin-left:44px!important}.v-application .ml-md-12{margin-left:48px!important}.v-application .ml-md-auto{margin-left:auto!important}.v-application--is-ltr .ms-md-0{margin-left:0!important}.v-application--is-rtl .ms-md-0{margin-right:0!important}.v-application--is-ltr .ms-md-1{margin-left:4px!important}.v-application--is-rtl .ms-md-1{margin-right:4px!important}.v-application--is-ltr .ms-md-2{margin-left:8px!important}.v-application--is-rtl .ms-md-2{margin-right:8px!important}.v-application--is-ltr .ms-md-3{margin-left:12px!important}.v-application--is-rtl .ms-md-3{margin-right:12px!important}.v-application--is-ltr .ms-md-4{margin-left:16px!important}.v-application--is-rtl .ms-md-4{margin-right:16px!important}.v-application--is-ltr .ms-md-5{margin-left:20px!important}.v-application--is-rtl .ms-md-5{margin-right:20px!important}.v-application--is-ltr .ms-md-6{margin-left:24px!important}.v-application--is-rtl .ms-md-6{margin-right:24px!important}.v-application--is-ltr .ms-md-7{margin-left:28px!important}.v-application--is-rtl .ms-md-7{margin-right:28px!important}.v-application--is-ltr .ms-md-8{margin-left:32px!important}.v-application--is-rtl .ms-md-8{margin-right:32px!important}.v-application--is-ltr .ms-md-9{margin-left:36px!important}.v-application--is-rtl .ms-md-9{margin-right:36px!important}.v-application--is-ltr .ms-md-10{margin-left:40px!important}.v-application--is-rtl .ms-md-10{margin-right:40px!important}.v-application--is-ltr .ms-md-11{margin-left:44px!important}.v-application--is-rtl .ms-md-11{margin-right:44px!important}.v-application--is-ltr .ms-md-12{margin-left:48px!important}.v-application--is-rtl .ms-md-12{margin-right:48px!important}.v-application--is-ltr .ms-md-auto{margin-left:auto!important}.v-application--is-rtl .ms-md-auto{margin-right:auto!important}.v-application--is-ltr .me-md-0{margin-right:0!important}.v-application--is-rtl .me-md-0{margin-left:0!important}.v-application--is-ltr .me-md-1{margin-right:4px!important}.v-application--is-rtl .me-md-1{margin-left:4px!important}.v-application--is-ltr .me-md-2{margin-right:8px!important}.v-application--is-rtl .me-md-2{margin-left:8px!important}.v-application--is-ltr .me-md-3{margin-right:12px!important}.v-application--is-rtl .me-md-3{margin-left:12px!important}.v-application--is-ltr .me-md-4{margin-right:16px!important}.v-application--is-rtl .me-md-4{margin-left:16px!important}.v-application--is-ltr .me-md-5{margin-right:20px!important}.v-application--is-rtl .me-md-5{margin-left:20px!important}.v-application--is-ltr .me-md-6{margin-right:24px!important}.v-application--is-rtl .me-md-6{margin-left:24px!important}.v-application--is-ltr .me-md-7{margin-right:28px!important}.v-application--is-rtl .me-md-7{margin-left:28px!important}.v-application--is-ltr .me-md-8{margin-right:32px!important}.v-application--is-rtl .me-md-8{margin-left:32px!important}.v-application--is-ltr .me-md-9{margin-right:36px!important}.v-application--is-rtl .me-md-9{margin-left:36px!important}.v-application--is-ltr .me-md-10{margin-right:40px!important}.v-application--is-rtl .me-md-10{margin-left:40px!important}.v-application--is-ltr .me-md-11{margin-right:44px!important}.v-application--is-rtl .me-md-11{margin-left:44px!important}.v-application--is-ltr .me-md-12{margin-right:48px!important}.v-application--is-rtl .me-md-12{margin-left:48px!important}.v-application--is-ltr .me-md-auto{margin-right:auto!important}.v-application--is-rtl .me-md-auto{margin-left:auto!important}.v-application .ma-md-n1{margin:-4px!important}.v-application .ma-md-n2{margin:-8px!important}.v-application .ma-md-n3{margin:-12px!important}.v-application .ma-md-n4{margin:-16px!important}.v-application .ma-md-n5{margin:-20px!important}.v-application .ma-md-n6{margin:-24px!important}.v-application .ma-md-n7{margin:-28px!important}.v-application .ma-md-n8{margin:-32px!important}.v-application .ma-md-n9{margin:-36px!important}.v-application .ma-md-n10{margin:-40px!important}.v-application .ma-md-n11{margin:-44px!important}.v-application .ma-md-n12{margin:-48px!important}.v-application .mx-md-n1{margin-right:-4px!important;margin-left:-4px!important}.v-application .mx-md-n2{margin-right:-8px!important;margin-left:-8px!important}.v-application .mx-md-n3{margin-right:-12px!important;margin-left:-12px!important}.v-application .mx-md-n4{margin-right:-16px!important;margin-left:-16px!important}.v-application .mx-md-n5{margin-right:-20px!important;margin-left:-20px!important}.v-application .mx-md-n6{margin-right:-24px!important;margin-left:-24px!important}.v-application .mx-md-n7{margin-right:-28px!important;margin-left:-28px!important}.v-application .mx-md-n8{margin-right:-32px!important;margin-left:-32px!important}.v-application .mx-md-n9{margin-right:-36px!important;margin-left:-36px!important}.v-application .mx-md-n10{margin-right:-40px!important;margin-left:-40px!important}.v-application .mx-md-n11{margin-right:-44px!important;margin-left:-44px!important}.v-application .mx-md-n12{margin-right:-48px!important;margin-left:-48px!important}.v-application .my-md-n1{margin-top:-4px!important;margin-bottom:-4px!important}.v-application .my-md-n2{margin-top:-8px!important;margin-bottom:-8px!important}.v-application .my-md-n3{margin-top:-12px!important;margin-bottom:-12px!important}.v-application .my-md-n4{margin-top:-16px!important;margin-bottom:-16px!important}.v-application .my-md-n5{margin-top:-20px!important;margin-bottom:-20px!important}.v-application .my-md-n6{margin-top:-24px!important;margin-bottom:-24px!important}.v-application .my-md-n7{margin-top:-28px!important;margin-bottom:-28px!important}.v-application .my-md-n8{margin-top:-32px!important;margin-bottom:-32px!important}.v-application .my-md-n9{margin-top:-36px!important;margin-bottom:-36px!important}.v-application .my-md-n10{margin-top:-40px!important;margin-bottom:-40px!important}.v-application .my-md-n11{margin-top:-44px!important;margin-bottom:-44px!important}.v-application .my-md-n12{margin-top:-48px!important;margin-bottom:-48px!important}.v-application .mt-md-n1{margin-top:-4px!important}.v-application .mt-md-n2{margin-top:-8px!important}.v-application .mt-md-n3{margin-top:-12px!important}.v-application .mt-md-n4{margin-top:-16px!important}.v-application .mt-md-n5{margin-top:-20px!important}.v-application .mt-md-n6{margin-top:-24px!important}.v-application .mt-md-n7{margin-top:-28px!important}.v-application .mt-md-n8{margin-top:-32px!important}.v-application .mt-md-n9{margin-top:-36px!important}.v-application .mt-md-n10{margin-top:-40px!important}.v-application .mt-md-n11{margin-top:-44px!important}.v-application .mt-md-n12{margin-top:-48px!important}.v-application .mr-md-n1{margin-right:-4px!important}.v-application .mr-md-n2{margin-right:-8px!important}.v-application .mr-md-n3{margin-right:-12px!important}.v-application .mr-md-n4{margin-right:-16px!important}.v-application .mr-md-n5{margin-right:-20px!important}.v-application .mr-md-n6{margin-right:-24px!important}.v-application .mr-md-n7{margin-right:-28px!important}.v-application .mr-md-n8{margin-right:-32px!important}.v-application .mr-md-n9{margin-right:-36px!important}.v-application .mr-md-n10{margin-right:-40px!important}.v-application .mr-md-n11{margin-right:-44px!important}.v-application .mr-md-n12{margin-right:-48px!important}.v-application .mb-md-n1{margin-bottom:-4px!important}.v-application .mb-md-n2{margin-bottom:-8px!important}.v-application .mb-md-n3{margin-bottom:-12px!important}.v-application .mb-md-n4{margin-bottom:-16px!important}.v-application .mb-md-n5{margin-bottom:-20px!important}.v-application .mb-md-n6{margin-bottom:-24px!important}.v-application .mb-md-n7{margin-bottom:-28px!important}.v-application .mb-md-n8{margin-bottom:-32px!important}.v-application .mb-md-n9{margin-bottom:-36px!important}.v-application .mb-md-n10{margin-bottom:-40px!important}.v-application .mb-md-n11{margin-bottom:-44px!important}.v-application .mb-md-n12{margin-bottom:-48px!important}.v-application .ml-md-n1{margin-left:-4px!important}.v-application .ml-md-n2{margin-left:-8px!important}.v-application .ml-md-n3{margin-left:-12px!important}.v-application .ml-md-n4{margin-left:-16px!important}.v-application .ml-md-n5{margin-left:-20px!important}.v-application .ml-md-n6{margin-left:-24px!important}.v-application .ml-md-n7{margin-left:-28px!important}.v-application .ml-md-n8{margin-left:-32px!important}.v-application .ml-md-n9{margin-left:-36px!important}.v-application .ml-md-n10{margin-left:-40px!important}.v-application .ml-md-n11{margin-left:-44px!important}.v-application .ml-md-n12{margin-left:-48px!important}.v-application--is-ltr .ms-md-n1{margin-left:-4px!important}.v-application--is-rtl .ms-md-n1{margin-right:-4px!important}.v-application--is-ltr .ms-md-n2{margin-left:-8px!important}.v-application--is-rtl .ms-md-n2{margin-right:-8px!important}.v-application--is-ltr .ms-md-n3{margin-left:-12px!important}.v-application--is-rtl .ms-md-n3{margin-right:-12px!important}.v-application--is-ltr .ms-md-n4{margin-left:-16px!important}.v-application--is-rtl .ms-md-n4{margin-right:-16px!important}.v-application--is-ltr .ms-md-n5{margin-left:-20px!important}.v-application--is-rtl .ms-md-n5{margin-right:-20px!important}.v-application--is-ltr .ms-md-n6{margin-left:-24px!important}.v-application--is-rtl .ms-md-n6{margin-right:-24px!important}.v-application--is-ltr .ms-md-n7{margin-left:-28px!important}.v-application--is-rtl .ms-md-n7{margin-right:-28px!important}.v-application--is-ltr .ms-md-n8{margin-left:-32px!important}.v-application--is-rtl .ms-md-n8{margin-right:-32px!important}.v-application--is-ltr .ms-md-n9{margin-left:-36px!important}.v-application--is-rtl .ms-md-n9{margin-right:-36px!important}.v-application--is-ltr .ms-md-n10{margin-left:-40px!important}.v-application--is-rtl .ms-md-n10{margin-right:-40px!important}.v-application--is-ltr .ms-md-n11{margin-left:-44px!important}.v-application--is-rtl .ms-md-n11{margin-right:-44px!important}.v-application--is-ltr .ms-md-n12{margin-left:-48px!important}.v-application--is-rtl .ms-md-n12{margin-right:-48px!important}.v-application--is-ltr .me-md-n1{margin-right:-4px!important}.v-application--is-rtl .me-md-n1{margin-left:-4px!important}.v-application--is-ltr .me-md-n2{margin-right:-8px!important}.v-application--is-rtl .me-md-n2{margin-left:-8px!important}.v-application--is-ltr .me-md-n3{margin-right:-12px!important}.v-application--is-rtl .me-md-n3{margin-left:-12px!important}.v-application--is-ltr .me-md-n4{margin-right:-16px!important}.v-application--is-rtl .me-md-n4{margin-left:-16px!important}.v-application--is-ltr .me-md-n5{margin-right:-20px!important}.v-application--is-rtl .me-md-n5{margin-left:-20px!important}.v-application--is-ltr .me-md-n6{margin-right:-24px!important}.v-application--is-rtl .me-md-n6{margin-left:-24px!important}.v-application--is-ltr .me-md-n7{margin-right:-28px!important}.v-application--is-rtl .me-md-n7{margin-left:-28px!important}.v-application--is-ltr .me-md-n8{margin-right:-32px!important}.v-application--is-rtl .me-md-n8{margin-left:-32px!important}.v-application--is-ltr .me-md-n9{margin-right:-36px!important}.v-application--is-rtl .me-md-n9{margin-left:-36px!important}.v-application--is-ltr .me-md-n10{margin-right:-40px!important}.v-application--is-rtl .me-md-n10{margin-left:-40px!important}.v-application--is-ltr .me-md-n11{margin-right:-44px!important}.v-application--is-rtl .me-md-n11{margin-left:-44px!important}.v-application--is-ltr .me-md-n12{margin-right:-48px!important}.v-application--is-rtl .me-md-n12{margin-left:-48px!important}.v-application .pa-md-0{padding:0!important}.v-application .pa-md-1{padding:4px!important}.v-application .pa-md-2{padding:8px!important}.v-application .pa-md-3{padding:12px!important}.v-application .pa-md-4{padding:16px!important}.v-application .pa-md-5{padding:20px!important}.v-application .pa-md-6{padding:24px!important}.v-application .pa-md-7{padding:28px!important}.v-application .pa-md-8{padding:32px!important}.v-application .pa-md-9{padding:36px!important}.v-application .pa-md-10{padding:40px!important}.v-application .pa-md-11{padding:44px!important}.v-application .pa-md-12{padding:48px!important}.v-application .px-md-0{padding-right:0!important;padding-left:0!important}.v-application .px-md-1{padding-right:4px!important;padding-left:4px!important}.v-application .px-md-2{padding-right:8px!important;padding-left:8px!important}.v-application .px-md-3{padding-right:12px!important;padding-left:12px!important}.v-application .px-md-4{padding-right:16px!important;padding-left:16px!important}.v-application .px-md-5{padding-right:20px!important;padding-left:20px!important}.v-application .px-md-6{padding-right:24px!important;padding-left:24px!important}.v-application .px-md-7{padding-right:28px!important;padding-left:28px!important}.v-application .px-md-8{padding-right:32px!important;padding-left:32px!important}.v-application .px-md-9{padding-right:36px!important;padding-left:36px!important}.v-application .px-md-10{padding-right:40px!important;padding-left:40px!important}.v-application .px-md-11{padding-right:44px!important;padding-left:44px!important}.v-application .px-md-12{padding-right:48px!important;padding-left:48px!important}.v-application .py-md-0{padding-top:0!important;padding-bottom:0!important}.v-application .py-md-1{padding-top:4px!important;padding-bottom:4px!important}.v-application .py-md-2{padding-top:8px!important;padding-bottom:8px!important}.v-application .py-md-3{padding-top:12px!important;padding-bottom:12px!important}.v-application .py-md-4{padding-top:16px!important;padding-bottom:16px!important}.v-application .py-md-5{padding-top:20px!important;padding-bottom:20px!important}.v-application .py-md-6{padding-top:24px!important;padding-bottom:24px!important}.v-application .py-md-7{padding-top:28px!important;padding-bottom:28px!important}.v-application .py-md-8{padding-top:32px!important;padding-bottom:32px!important}.v-application .py-md-9{padding-top:36px!important;padding-bottom:36px!important}.v-application .py-md-10{padding-top:40px!important;padding-bottom:40px!important}.v-application .py-md-11{padding-top:44px!important;padding-bottom:44px!important}.v-application .py-md-12{padding-top:48px!important;padding-bottom:48px!important}.v-application .pt-md-0{padding-top:0!important}.v-application .pt-md-1{padding-top:4px!important}.v-application .pt-md-2{padding-top:8px!important}.v-application .pt-md-3{padding-top:12px!important}.v-application .pt-md-4{padding-top:16px!important}.v-application .pt-md-5{padding-top:20px!important}.v-application .pt-md-6{padding-top:24px!important}.v-application .pt-md-7{padding-top:28px!important}.v-application .pt-md-8{padding-top:32px!important}.v-application .pt-md-9{padding-top:36px!important}.v-application .pt-md-10{padding-top:40px!important}.v-application .pt-md-11{padding-top:44px!important}.v-application .pt-md-12{padding-top:48px!important}.v-application .pr-md-0{padding-right:0!important}.v-application .pr-md-1{padding-right:4px!important}.v-application .pr-md-2{padding-right:8px!important}.v-application .pr-md-3{padding-right:12px!important}.v-application .pr-md-4{padding-right:16px!important}.v-application .pr-md-5{padding-right:20px!important}.v-application .pr-md-6{padding-right:24px!important}.v-application .pr-md-7{padding-right:28px!important}.v-application .pr-md-8{padding-right:32px!important}.v-application .pr-md-9{padding-right:36px!important}.v-application .pr-md-10{padding-right:40px!important}.v-application .pr-md-11{padding-right:44px!important}.v-application .pr-md-12{padding-right:48px!important}.v-application .pb-md-0{padding-bottom:0!important}.v-application .pb-md-1{padding-bottom:4px!important}.v-application .pb-md-2{padding-bottom:8px!important}.v-application .pb-md-3{padding-bottom:12px!important}.v-application .pb-md-4{padding-bottom:16px!important}.v-application .pb-md-5{padding-bottom:20px!important}.v-application .pb-md-6{padding-bottom:24px!important}.v-application .pb-md-7{padding-bottom:28px!important}.v-application .pb-md-8{padding-bottom:32px!important}.v-application .pb-md-9{padding-bottom:36px!important}.v-application .pb-md-10{padding-bottom:40px!important}.v-application .pb-md-11{padding-bottom:44px!important}.v-application .pb-md-12{padding-bottom:48px!important}.v-application .pl-md-0{padding-left:0!important}.v-application .pl-md-1{padding-left:4px!important}.v-application .pl-md-2{padding-left:8px!important}.v-application .pl-md-3{padding-left:12px!important}.v-application .pl-md-4{padding-left:16px!important}.v-application .pl-md-5{padding-left:20px!important}.v-application .pl-md-6{padding-left:24px!important}.v-application .pl-md-7{padding-left:28px!important}.v-application .pl-md-8{padding-left:32px!important}.v-application .pl-md-9{padding-left:36px!important}.v-application .pl-md-10{padding-left:40px!important}.v-application .pl-md-11{padding-left:44px!important}.v-application .pl-md-12{padding-left:48px!important}.v-application--is-ltr .ps-md-0{padding-left:0!important}.v-application--is-rtl .ps-md-0{padding-right:0!important}.v-application--is-ltr .ps-md-1{padding-left:4px!important}.v-application--is-rtl .ps-md-1{padding-right:4px!important}.v-application--is-ltr .ps-md-2{padding-left:8px!important}.v-application--is-rtl .ps-md-2{padding-right:8px!important}.v-application--is-ltr .ps-md-3{padding-left:12px!important}.v-application--is-rtl .ps-md-3{padding-right:12px!important}.v-application--is-ltr .ps-md-4{padding-left:16px!important}.v-application--is-rtl .ps-md-4{padding-right:16px!important}.v-application--is-ltr .ps-md-5{padding-left:20px!important}.v-application--is-rtl .ps-md-5{padding-right:20px!important}.v-application--is-ltr .ps-md-6{padding-left:24px!important}.v-application--is-rtl .ps-md-6{padding-right:24px!important}.v-application--is-ltr .ps-md-7{padding-left:28px!important}.v-application--is-rtl .ps-md-7{padding-right:28px!important}.v-application--is-ltr .ps-md-8{padding-left:32px!important}.v-application--is-rtl .ps-md-8{padding-right:32px!important}.v-application--is-ltr .ps-md-9{padding-left:36px!important}.v-application--is-rtl .ps-md-9{padding-right:36px!important}.v-application--is-ltr .ps-md-10{padding-left:40px!important}.v-application--is-rtl .ps-md-10{padding-right:40px!important}.v-application--is-ltr .ps-md-11{padding-left:44px!important}.v-application--is-rtl .ps-md-11{padding-right:44px!important}.v-application--is-ltr .ps-md-12{padding-left:48px!important}.v-application--is-rtl .ps-md-12{padding-right:48px!important}.v-application--is-ltr .pe-md-0{padding-right:0!important}.v-application--is-rtl .pe-md-0{padding-left:0!important}.v-application--is-ltr .pe-md-1{padding-right:4px!important}.v-application--is-rtl .pe-md-1{padding-left:4px!important}.v-application--is-ltr .pe-md-2{padding-right:8px!important}.v-application--is-rtl .pe-md-2{padding-left:8px!important}.v-application--is-ltr .pe-md-3{padding-right:12px!important}.v-application--is-rtl .pe-md-3{padding-left:12px!important}.v-application--is-ltr .pe-md-4{padding-right:16px!important}.v-application--is-rtl .pe-md-4{padding-left:16px!important}.v-application--is-ltr .pe-md-5{padding-right:20px!important}.v-application--is-rtl .pe-md-5{padding-left:20px!important}.v-application--is-ltr .pe-md-6{padding-right:24px!important}.v-application--is-rtl .pe-md-6{padding-left:24px!important}.v-application--is-ltr .pe-md-7{padding-right:28px!important}.v-application--is-rtl .pe-md-7{padding-left:28px!important}.v-application--is-ltr .pe-md-8{padding-right:32px!important}.v-application--is-rtl .pe-md-8{padding-left:32px!important}.v-application--is-ltr .pe-md-9{padding-right:36px!important}.v-application--is-rtl .pe-md-9{padding-left:36px!important}.v-application--is-ltr .pe-md-10{padding-right:40px!important}.v-application--is-rtl .pe-md-10{padding-left:40px!important}.v-application--is-ltr .pe-md-11{padding-right:44px!important}.v-application--is-rtl .pe-md-11{padding-left:44px!important}.v-application--is-ltr .pe-md-12{padding-right:48px!important}.v-application--is-rtl .pe-md-12{padding-left:48px!important}.v-application .text-md-left{text-align:left!important}.v-application .text-md-right{text-align:right!important}.v-application .text-md-center{text-align:center!important}.v-application .text-md-justify{text-align:justify!important}.v-application .text-md-start{text-align:start!important}.v-application .text-md-end{text-align:end!important}}@media (min-width:1264px){.v-application .d-lg-none{display:none!important}.v-application .d-lg-inline{display:inline!important}.v-application .d-lg-inline-block{display:inline-block!important}.v-application .d-lg-block{display:block!important}.v-application .d-lg-table{display:table!important}.v-application .d-lg-table-row{display:table-row!important}.v-application .d-lg-table-cell{display:table-cell!important}.v-application .d-lg-flex{display:flex!important}.v-application .d-lg-inline-flex{display:inline-flex!important}.v-application .float-lg-none{float:none!important}.v-application .float-lg-left{float:left!important}.v-application .float-lg-right{float:right!important}.v-application .flex-lg-fill{flex:1 1 auto!important}.v-application .flex-lg-row{flex-direction:row!important}.v-application .flex-lg-column{flex-direction:column!important}.v-application .flex-lg-row-reverse{flex-direction:row-reverse!important}.v-application .flex-lg-column-reverse{flex-direction:column-reverse!important}.v-application .flex-lg-grow-0{flex-grow:0!important}.v-application .flex-lg-grow-1{flex-grow:1!important}.v-application .flex-lg-shrink-0{flex-shrink:0!important}.v-application .flex-lg-shrink-1{flex-shrink:1!important}.v-application .flex-lg-wrap{flex-wrap:wrap!important}.v-application .flex-lg-nowrap{flex-wrap:nowrap!important}.v-application .flex-lg-wrap-reverse{flex-wrap:wrap-reverse!important}.v-application .justify-lg-start{justify-content:flex-start!important}.v-application .justify-lg-end{justify-content:flex-end!important}.v-application .justify-lg-center{justify-content:center!important}.v-application .justify-lg-space-between{justify-content:space-between!important}.v-application .justify-lg-space-around{justify-content:space-around!important}.v-application .align-lg-start{align-items:flex-start!important}.v-application .align-lg-end{align-items:flex-end!important}.v-application .align-lg-center{align-items:center!important}.v-application .align-lg-baseline{align-items:baseline!important}.v-application .align-lg-stretch{align-items:stretch!important}.v-application .align-content-lg-start{align-content:flex-start!important}.v-application .align-content-lg-end{align-content:flex-end!important}.v-application .align-content-lg-center{align-content:center!important}.v-application .align-content-lg-space-between{align-content:space-between!important}.v-application .align-content-lg-space-around{align-content:space-around!important}.v-application .align-content-lg-stretch{align-content:stretch!important}.v-application .align-self-lg-auto{align-self:auto!important}.v-application .align-self-lg-start{align-self:flex-start!important}.v-application .align-self-lg-end{align-self:flex-end!important}.v-application .align-self-lg-center{align-self:center!important}.v-application .align-self-lg-baseline{align-self:baseline!important}.v-application .align-self-lg-stretch{align-self:stretch!important}.v-application .order-lg-first{order:-1!important}.v-application .order-lg-0{order:0!important}.v-application .order-lg-1{order:1!important}.v-application .order-lg-2{order:2!important}.v-application .order-lg-3{order:3!important}.v-application .order-lg-4{order:4!important}.v-application .order-lg-5{order:5!important}.v-application .order-lg-6{order:6!important}.v-application .order-lg-7{order:7!important}.v-application .order-lg-8{order:8!important}.v-application .order-lg-9{order:9!important}.v-application .order-lg-10{order:10!important}.v-application .order-lg-11{order:11!important}.v-application .order-lg-12{order:12!important}.v-application .order-lg-last{order:13!important}.v-application .ma-lg-0{margin:0!important}.v-application .ma-lg-1{margin:4px!important}.v-application .ma-lg-2{margin:8px!important}.v-application .ma-lg-3{margin:12px!important}.v-application .ma-lg-4{margin:16px!important}.v-application .ma-lg-5{margin:20px!important}.v-application .ma-lg-6{margin:24px!important}.v-application .ma-lg-7{margin:28px!important}.v-application .ma-lg-8{margin:32px!important}.v-application .ma-lg-9{margin:36px!important}.v-application .ma-lg-10{margin:40px!important}.v-application .ma-lg-11{margin:44px!important}.v-application .ma-lg-12{margin:48px!important}.v-application .ma-lg-auto{margin:auto!important}.v-application .mx-lg-0{margin-right:0!important;margin-left:0!important}.v-application .mx-lg-1{margin-right:4px!important;margin-left:4px!important}.v-application .mx-lg-2{margin-right:8px!important;margin-left:8px!important}.v-application .mx-lg-3{margin-right:12px!important;margin-left:12px!important}.v-application .mx-lg-4{margin-right:16px!important;margin-left:16px!important}.v-application .mx-lg-5{margin-right:20px!important;margin-left:20px!important}.v-application .mx-lg-6{margin-right:24px!important;margin-left:24px!important}.v-application .mx-lg-7{margin-right:28px!important;margin-left:28px!important}.v-application .mx-lg-8{margin-right:32px!important;margin-left:32px!important}.v-application .mx-lg-9{margin-right:36px!important;margin-left:36px!important}.v-application .mx-lg-10{margin-right:40px!important;margin-left:40px!important}.v-application .mx-lg-11{margin-right:44px!important;margin-left:44px!important}.v-application .mx-lg-12{margin-right:48px!important;margin-left:48px!important}.v-application .mx-lg-auto{margin-right:auto!important;margin-left:auto!important}.v-application .my-lg-0{margin-top:0!important;margin-bottom:0!important}.v-application .my-lg-1{margin-top:4px!important;margin-bottom:4px!important}.v-application .my-lg-2{margin-top:8px!important;margin-bottom:8px!important}.v-application .my-lg-3{margin-top:12px!important;margin-bottom:12px!important}.v-application .my-lg-4{margin-top:16px!important;margin-bottom:16px!important}.v-application .my-lg-5{margin-top:20px!important;margin-bottom:20px!important}.v-application .my-lg-6{margin-top:24px!important;margin-bottom:24px!important}.v-application .my-lg-7{margin-top:28px!important;margin-bottom:28px!important}.v-application .my-lg-8{margin-top:32px!important;margin-bottom:32px!important}.v-application .my-lg-9{margin-top:36px!important;margin-bottom:36px!important}.v-application .my-lg-10{margin-top:40px!important;margin-bottom:40px!important}.v-application .my-lg-11{margin-top:44px!important;margin-bottom:44px!important}.v-application .my-lg-12{margin-top:48px!important;margin-bottom:48px!important}.v-application .my-lg-auto{margin-top:auto!important;margin-bottom:auto!important}.v-application .mt-lg-0{margin-top:0!important}.v-application .mt-lg-1{margin-top:4px!important}.v-application .mt-lg-2{margin-top:8px!important}.v-application .mt-lg-3{margin-top:12px!important}.v-application .mt-lg-4{margin-top:16px!important}.v-application .mt-lg-5{margin-top:20px!important}.v-application .mt-lg-6{margin-top:24px!important}.v-application .mt-lg-7{margin-top:28px!important}.v-application .mt-lg-8{margin-top:32px!important}.v-application .mt-lg-9{margin-top:36px!important}.v-application .mt-lg-10{margin-top:40px!important}.v-application .mt-lg-11{margin-top:44px!important}.v-application .mt-lg-12{margin-top:48px!important}.v-application .mt-lg-auto{margin-top:auto!important}.v-application .mr-lg-0{margin-right:0!important}.v-application .mr-lg-1{margin-right:4px!important}.v-application .mr-lg-2{margin-right:8px!important}.v-application .mr-lg-3{margin-right:12px!important}.v-application .mr-lg-4{margin-right:16px!important}.v-application .mr-lg-5{margin-right:20px!important}.v-application .mr-lg-6{margin-right:24px!important}.v-application .mr-lg-7{margin-right:28px!important}.v-application .mr-lg-8{margin-right:32px!important}.v-application .mr-lg-9{margin-right:36px!important}.v-application .mr-lg-10{margin-right:40px!important}.v-application .mr-lg-11{margin-right:44px!important}.v-application .mr-lg-12{margin-right:48px!important}.v-application .mr-lg-auto{margin-right:auto!important}.v-application .mb-lg-0{margin-bottom:0!important}.v-application .mb-lg-1{margin-bottom:4px!important}.v-application .mb-lg-2{margin-bottom:8px!important}.v-application .mb-lg-3{margin-bottom:12px!important}.v-application .mb-lg-4{margin-bottom:16px!important}.v-application .mb-lg-5{margin-bottom:20px!important}.v-application .mb-lg-6{margin-bottom:24px!important}.v-application .mb-lg-7{margin-bottom:28px!important}.v-application .mb-lg-8{margin-bottom:32px!important}.v-application .mb-lg-9{margin-bottom:36px!important}.v-application .mb-lg-10{margin-bottom:40px!important}.v-application .mb-lg-11{margin-bottom:44px!important}.v-application .mb-lg-12{margin-bottom:48px!important}.v-application .mb-lg-auto{margin-bottom:auto!important}.v-application .ml-lg-0{margin-left:0!important}.v-application .ml-lg-1{margin-left:4px!important}.v-application .ml-lg-2{margin-left:8px!important}.v-application .ml-lg-3{margin-left:12px!important}.v-application .ml-lg-4{margin-left:16px!important}.v-application .ml-lg-5{margin-left:20px!important}.v-application .ml-lg-6{margin-left:24px!important}.v-application .ml-lg-7{margin-left:28px!important}.v-application .ml-lg-8{margin-left:32px!important}.v-application .ml-lg-9{margin-left:36px!important}.v-application .ml-lg-10{margin-left:40px!important}.v-application .ml-lg-11{margin-left:44px!important}.v-application .ml-lg-12{margin-left:48px!important}.v-application .ml-lg-auto{margin-left:auto!important}.v-application--is-ltr .ms-lg-0{margin-left:0!important}.v-application--is-rtl .ms-lg-0{margin-right:0!important}.v-application--is-ltr .ms-lg-1{margin-left:4px!important}.v-application--is-rtl .ms-lg-1{margin-right:4px!important}.v-application--is-ltr .ms-lg-2{margin-left:8px!important}.v-application--is-rtl .ms-lg-2{margin-right:8px!important}.v-application--is-ltr .ms-lg-3{margin-left:12px!important}.v-application--is-rtl .ms-lg-3{margin-right:12px!important}.v-application--is-ltr .ms-lg-4{margin-left:16px!important}.v-application--is-rtl .ms-lg-4{margin-right:16px!important}.v-application--is-ltr .ms-lg-5{margin-left:20px!important}.v-application--is-rtl .ms-lg-5{margin-right:20px!important}.v-application--is-ltr .ms-lg-6{margin-left:24px!important}.v-application--is-rtl .ms-lg-6{margin-right:24px!important}.v-application--is-ltr .ms-lg-7{margin-left:28px!important}.v-application--is-rtl .ms-lg-7{margin-right:28px!important}.v-application--is-ltr .ms-lg-8{margin-left:32px!important}.v-application--is-rtl .ms-lg-8{margin-right:32px!important}.v-application--is-ltr .ms-lg-9{margin-left:36px!important}.v-application--is-rtl .ms-lg-9{margin-right:36px!important}.v-application--is-ltr .ms-lg-10{margin-left:40px!important}.v-application--is-rtl .ms-lg-10{margin-right:40px!important}.v-application--is-ltr .ms-lg-11{margin-left:44px!important}.v-application--is-rtl .ms-lg-11{margin-right:44px!important}.v-application--is-ltr .ms-lg-12{margin-left:48px!important}.v-application--is-rtl .ms-lg-12{margin-right:48px!important}.v-application--is-ltr .ms-lg-auto{margin-left:auto!important}.v-application--is-rtl .ms-lg-auto{margin-right:auto!important}.v-application--is-ltr .me-lg-0{margin-right:0!important}.v-application--is-rtl .me-lg-0{margin-left:0!important}.v-application--is-ltr .me-lg-1{margin-right:4px!important}.v-application--is-rtl .me-lg-1{margin-left:4px!important}.v-application--is-ltr .me-lg-2{margin-right:8px!important}.v-application--is-rtl .me-lg-2{margin-left:8px!important}.v-application--is-ltr .me-lg-3{margin-right:12px!important}.v-application--is-rtl .me-lg-3{margin-left:12px!important}.v-application--is-ltr .me-lg-4{margin-right:16px!important}.v-application--is-rtl .me-lg-4{margin-left:16px!important}.v-application--is-ltr .me-lg-5{margin-right:20px!important}.v-application--is-rtl .me-lg-5{margin-left:20px!important}.v-application--is-ltr .me-lg-6{margin-right:24px!important}.v-application--is-rtl .me-lg-6{margin-left:24px!important}.v-application--is-ltr .me-lg-7{margin-right:28px!important}.v-application--is-rtl .me-lg-7{margin-left:28px!important}.v-application--is-ltr .me-lg-8{margin-right:32px!important}.v-application--is-rtl .me-lg-8{margin-left:32px!important}.v-application--is-ltr .me-lg-9{margin-right:36px!important}.v-application--is-rtl .me-lg-9{margin-left:36px!important}.v-application--is-ltr .me-lg-10{margin-right:40px!important}.v-application--is-rtl .me-lg-10{margin-left:40px!important}.v-application--is-ltr .me-lg-11{margin-right:44px!important}.v-application--is-rtl .me-lg-11{margin-left:44px!important}.v-application--is-ltr .me-lg-12{margin-right:48px!important}.v-application--is-rtl .me-lg-12{margin-left:48px!important}.v-application--is-ltr .me-lg-auto{margin-right:auto!important}.v-application--is-rtl .me-lg-auto{margin-left:auto!important}.v-application .ma-lg-n1{margin:-4px!important}.v-application .ma-lg-n2{margin:-8px!important}.v-application .ma-lg-n3{margin:-12px!important}.v-application .ma-lg-n4{margin:-16px!important}.v-application .ma-lg-n5{margin:-20px!important}.v-application .ma-lg-n6{margin:-24px!important}.v-application .ma-lg-n7{margin:-28px!important}.v-application .ma-lg-n8{margin:-32px!important}.v-application .ma-lg-n9{margin:-36px!important}.v-application .ma-lg-n10{margin:-40px!important}.v-application .ma-lg-n11{margin:-44px!important}.v-application .ma-lg-n12{margin:-48px!important}.v-application .mx-lg-n1{margin-right:-4px!important;margin-left:-4px!important}.v-application .mx-lg-n2{margin-right:-8px!important;margin-left:-8px!important}.v-application .mx-lg-n3{margin-right:-12px!important;margin-left:-12px!important}.v-application .mx-lg-n4{margin-right:-16px!important;margin-left:-16px!important}.v-application .mx-lg-n5{margin-right:-20px!important;margin-left:-20px!important}.v-application .mx-lg-n6{margin-right:-24px!important;margin-left:-24px!important}.v-application .mx-lg-n7{margin-right:-28px!important;margin-left:-28px!important}.v-application .mx-lg-n8{margin-right:-32px!important;margin-left:-32px!important}.v-application .mx-lg-n9{margin-right:-36px!important;margin-left:-36px!important}.v-application .mx-lg-n10{margin-right:-40px!important;margin-left:-40px!important}.v-application .mx-lg-n11{margin-right:-44px!important;margin-left:-44px!important}.v-application .mx-lg-n12{margin-right:-48px!important;margin-left:-48px!important}.v-application .my-lg-n1{margin-top:-4px!important;margin-bottom:-4px!important}.v-application .my-lg-n2{margin-top:-8px!important;margin-bottom:-8px!important}.v-application .my-lg-n3{margin-top:-12px!important;margin-bottom:-12px!important}.v-application .my-lg-n4{margin-top:-16px!important;margin-bottom:-16px!important}.v-application .my-lg-n5{margin-top:-20px!important;margin-bottom:-20px!important}.v-application .my-lg-n6{margin-top:-24px!important;margin-bottom:-24px!important}.v-application .my-lg-n7{margin-top:-28px!important;margin-bottom:-28px!important}.v-application .my-lg-n8{margin-top:-32px!important;margin-bottom:-32px!important}.v-application .my-lg-n9{margin-top:-36px!important;margin-bottom:-36px!important}.v-application .my-lg-n10{margin-top:-40px!important;margin-bottom:-40px!important}.v-application .my-lg-n11{margin-top:-44px!important;margin-bottom:-44px!important}.v-application .my-lg-n12{margin-top:-48px!important;margin-bottom:-48px!important}.v-application .mt-lg-n1{margin-top:-4px!important}.v-application .mt-lg-n2{margin-top:-8px!important}.v-application .mt-lg-n3{margin-top:-12px!important}.v-application .mt-lg-n4{margin-top:-16px!important}.v-application .mt-lg-n5{margin-top:-20px!important}.v-application .mt-lg-n6{margin-top:-24px!important}.v-application .mt-lg-n7{margin-top:-28px!important}.v-application .mt-lg-n8{margin-top:-32px!important}.v-application .mt-lg-n9{margin-top:-36px!important}.v-application .mt-lg-n10{margin-top:-40px!important}.v-application .mt-lg-n11{margin-top:-44px!important}.v-application .mt-lg-n12{margin-top:-48px!important}.v-application .mr-lg-n1{margin-right:-4px!important}.v-application .mr-lg-n2{margin-right:-8px!important}.v-application .mr-lg-n3{margin-right:-12px!important}.v-application .mr-lg-n4{margin-right:-16px!important}.v-application .mr-lg-n5{margin-right:-20px!important}.v-application .mr-lg-n6{margin-right:-24px!important}.v-application .mr-lg-n7{margin-right:-28px!important}.v-application .mr-lg-n8{margin-right:-32px!important}.v-application .mr-lg-n9{margin-right:-36px!important}.v-application .mr-lg-n10{margin-right:-40px!important}.v-application .mr-lg-n11{margin-right:-44px!important}.v-application .mr-lg-n12{margin-right:-48px!important}.v-application .mb-lg-n1{margin-bottom:-4px!important}.v-application .mb-lg-n2{margin-bottom:-8px!important}.v-application .mb-lg-n3{margin-bottom:-12px!important}.v-application .mb-lg-n4{margin-bottom:-16px!important}.v-application .mb-lg-n5{margin-bottom:-20px!important}.v-application .mb-lg-n6{margin-bottom:-24px!important}.v-application .mb-lg-n7{margin-bottom:-28px!important}.v-application .mb-lg-n8{margin-bottom:-32px!important}.v-application .mb-lg-n9{margin-bottom:-36px!important}.v-application .mb-lg-n10{margin-bottom:-40px!important}.v-application .mb-lg-n11{margin-bottom:-44px!important}.v-application .mb-lg-n12{margin-bottom:-48px!important}.v-application .ml-lg-n1{margin-left:-4px!important}.v-application .ml-lg-n2{margin-left:-8px!important}.v-application .ml-lg-n3{margin-left:-12px!important}.v-application .ml-lg-n4{margin-left:-16px!important}.v-application .ml-lg-n5{margin-left:-20px!important}.v-application .ml-lg-n6{margin-left:-24px!important}.v-application .ml-lg-n7{margin-left:-28px!important}.v-application .ml-lg-n8{margin-left:-32px!important}.v-application .ml-lg-n9{margin-left:-36px!important}.v-application .ml-lg-n10{margin-left:-40px!important}.v-application .ml-lg-n11{margin-left:-44px!important}.v-application .ml-lg-n12{margin-left:-48px!important}.v-application--is-ltr .ms-lg-n1{margin-left:-4px!important}.v-application--is-rtl .ms-lg-n1{margin-right:-4px!important}.v-application--is-ltr .ms-lg-n2{margin-left:-8px!important}.v-application--is-rtl .ms-lg-n2{margin-right:-8px!important}.v-application--is-ltr .ms-lg-n3{margin-left:-12px!important}.v-application--is-rtl .ms-lg-n3{margin-right:-12px!important}.v-application--is-ltr .ms-lg-n4{margin-left:-16px!important}.v-application--is-rtl .ms-lg-n4{margin-right:-16px!important}.v-application--is-ltr .ms-lg-n5{margin-left:-20px!important}.v-application--is-rtl .ms-lg-n5{margin-right:-20px!important}.v-application--is-ltr .ms-lg-n6{margin-left:-24px!important}.v-application--is-rtl .ms-lg-n6{margin-right:-24px!important}.v-application--is-ltr .ms-lg-n7{margin-left:-28px!important}.v-application--is-rtl .ms-lg-n7{margin-right:-28px!important}.v-application--is-ltr .ms-lg-n8{margin-left:-32px!important}.v-application--is-rtl .ms-lg-n8{margin-right:-32px!important}.v-application--is-ltr .ms-lg-n9{margin-left:-36px!important}.v-application--is-rtl .ms-lg-n9{margin-right:-36px!important}.v-application--is-ltr .ms-lg-n10{margin-left:-40px!important}.v-application--is-rtl .ms-lg-n10{margin-right:-40px!important}.v-application--is-ltr .ms-lg-n11{margin-left:-44px!important}.v-application--is-rtl .ms-lg-n11{margin-right:-44px!important}.v-application--is-ltr .ms-lg-n12{margin-left:-48px!important}.v-application--is-rtl .ms-lg-n12{margin-right:-48px!important}.v-application--is-ltr .me-lg-n1{margin-right:-4px!important}.v-application--is-rtl .me-lg-n1{margin-left:-4px!important}.v-application--is-ltr .me-lg-n2{margin-right:-8px!important}.v-application--is-rtl .me-lg-n2{margin-left:-8px!important}.v-application--is-ltr .me-lg-n3{margin-right:-12px!important}.v-application--is-rtl .me-lg-n3{margin-left:-12px!important}.v-application--is-ltr .me-lg-n4{margin-right:-16px!important}.v-application--is-rtl .me-lg-n4{margin-left:-16px!important}.v-application--is-ltr .me-lg-n5{margin-right:-20px!important}.v-application--is-rtl .me-lg-n5{margin-left:-20px!important}.v-application--is-ltr .me-lg-n6{margin-right:-24px!important}.v-application--is-rtl .me-lg-n6{margin-left:-24px!important}.v-application--is-ltr .me-lg-n7{margin-right:-28px!important}.v-application--is-rtl .me-lg-n7{margin-left:-28px!important}.v-application--is-ltr .me-lg-n8{margin-right:-32px!important}.v-application--is-rtl .me-lg-n8{margin-left:-32px!important}.v-application--is-ltr .me-lg-n9{margin-right:-36px!important}.v-application--is-rtl .me-lg-n9{margin-left:-36px!important}.v-application--is-ltr .me-lg-n10{margin-right:-40px!important}.v-application--is-rtl .me-lg-n10{margin-left:-40px!important}.v-application--is-ltr .me-lg-n11{margin-right:-44px!important}.v-application--is-rtl .me-lg-n11{margin-left:-44px!important}.v-application--is-ltr .me-lg-n12{margin-right:-48px!important}.v-application--is-rtl .me-lg-n12{margin-left:-48px!important}.v-application .pa-lg-0{padding:0!important}.v-application .pa-lg-1{padding:4px!important}.v-application .pa-lg-2{padding:8px!important}.v-application .pa-lg-3{padding:12px!important}.v-application .pa-lg-4{padding:16px!important}.v-application .pa-lg-5{padding:20px!important}.v-application .pa-lg-6{padding:24px!important}.v-application .pa-lg-7{padding:28px!important}.v-application .pa-lg-8{padding:32px!important}.v-application .pa-lg-9{padding:36px!important}.v-application .pa-lg-10{padding:40px!important}.v-application .pa-lg-11{padding:44px!important}.v-application .pa-lg-12{padding:48px!important}.v-application .px-lg-0{padding-right:0!important;padding-left:0!important}.v-application .px-lg-1{padding-right:4px!important;padding-left:4px!important}.v-application .px-lg-2{padding-right:8px!important;padding-left:8px!important}.v-application .px-lg-3{padding-right:12px!important;padding-left:12px!important}.v-application .px-lg-4{padding-right:16px!important;padding-left:16px!important}.v-application .px-lg-5{padding-right:20px!important;padding-left:20px!important}.v-application .px-lg-6{padding-right:24px!important;padding-left:24px!important}.v-application .px-lg-7{padding-right:28px!important;padding-left:28px!important}.v-application .px-lg-8{padding-right:32px!important;padding-left:32px!important}.v-application .px-lg-9{padding-right:36px!important;padding-left:36px!important}.v-application .px-lg-10{padding-right:40px!important;padding-left:40px!important}.v-application .px-lg-11{padding-right:44px!important;padding-left:44px!important}.v-application .px-lg-12{padding-right:48px!important;padding-left:48px!important}.v-application .py-lg-0{padding-top:0!important;padding-bottom:0!important}.v-application .py-lg-1{padding-top:4px!important;padding-bottom:4px!important}.v-application .py-lg-2{padding-top:8px!important;padding-bottom:8px!important}.v-application .py-lg-3{padding-top:12px!important;padding-bottom:12px!important}.v-application .py-lg-4{padding-top:16px!important;padding-bottom:16px!important}.v-application .py-lg-5{padding-top:20px!important;padding-bottom:20px!important}.v-application .py-lg-6{padding-top:24px!important;padding-bottom:24px!important}.v-application .py-lg-7{padding-top:28px!important;padding-bottom:28px!important}.v-application .py-lg-8{padding-top:32px!important;padding-bottom:32px!important}.v-application .py-lg-9{padding-top:36px!important;padding-bottom:36px!important}.v-application .py-lg-10{padding-top:40px!important;padding-bottom:40px!important}.v-application .py-lg-11{padding-top:44px!important;padding-bottom:44px!important}.v-application .py-lg-12{padding-top:48px!important;padding-bottom:48px!important}.v-application .pt-lg-0{padding-top:0!important}.v-application .pt-lg-1{padding-top:4px!important}.v-application .pt-lg-2{padding-top:8px!important}.v-application .pt-lg-3{padding-top:12px!important}.v-application .pt-lg-4{padding-top:16px!important}.v-application .pt-lg-5{padding-top:20px!important}.v-application .pt-lg-6{padding-top:24px!important}.v-application .pt-lg-7{padding-top:28px!important}.v-application .pt-lg-8{padding-top:32px!important}.v-application .pt-lg-9{padding-top:36px!important}.v-application .pt-lg-10{padding-top:40px!important}.v-application .pt-lg-11{padding-top:44px!important}.v-application .pt-lg-12{padding-top:48px!important}.v-application .pr-lg-0{padding-right:0!important}.v-application .pr-lg-1{padding-right:4px!important}.v-application .pr-lg-2{padding-right:8px!important}.v-application .pr-lg-3{padding-right:12px!important}.v-application .pr-lg-4{padding-right:16px!important}.v-application .pr-lg-5{padding-right:20px!important}.v-application .pr-lg-6{padding-right:24px!important}.v-application .pr-lg-7{padding-right:28px!important}.v-application .pr-lg-8{padding-right:32px!important}.v-application .pr-lg-9{padding-right:36px!important}.v-application .pr-lg-10{padding-right:40px!important}.v-application .pr-lg-11{padding-right:44px!important}.v-application .pr-lg-12{padding-right:48px!important}.v-application .pb-lg-0{padding-bottom:0!important}.v-application .pb-lg-1{padding-bottom:4px!important}.v-application .pb-lg-2{padding-bottom:8px!important}.v-application .pb-lg-3{padding-bottom:12px!important}.v-application .pb-lg-4{padding-bottom:16px!important}.v-application .pb-lg-5{padding-bottom:20px!important}.v-application .pb-lg-6{padding-bottom:24px!important}.v-application .pb-lg-7{padding-bottom:28px!important}.v-application .pb-lg-8{padding-bottom:32px!important}.v-application .pb-lg-9{padding-bottom:36px!important}.v-application .pb-lg-10{padding-bottom:40px!important}.v-application .pb-lg-11{padding-bottom:44px!important}.v-application .pb-lg-12{padding-bottom:48px!important}.v-application .pl-lg-0{padding-left:0!important}.v-application .pl-lg-1{padding-left:4px!important}.v-application .pl-lg-2{padding-left:8px!important}.v-application .pl-lg-3{padding-left:12px!important}.v-application .pl-lg-4{padding-left:16px!important}.v-application .pl-lg-5{padding-left:20px!important}.v-application .pl-lg-6{padding-left:24px!important}.v-application .pl-lg-7{padding-left:28px!important}.v-application .pl-lg-8{padding-left:32px!important}.v-application .pl-lg-9{padding-left:36px!important}.v-application .pl-lg-10{padding-left:40px!important}.v-application .pl-lg-11{padding-left:44px!important}.v-application .pl-lg-12{padding-left:48px!important}.v-application--is-ltr .ps-lg-0{padding-left:0!important}.v-application--is-rtl .ps-lg-0{padding-right:0!important}.v-application--is-ltr .ps-lg-1{padding-left:4px!important}.v-application--is-rtl .ps-lg-1{padding-right:4px!important}.v-application--is-ltr .ps-lg-2{padding-left:8px!important}.v-application--is-rtl .ps-lg-2{padding-right:8px!important}.v-application--is-ltr .ps-lg-3{padding-left:12px!important}.v-application--is-rtl .ps-lg-3{padding-right:12px!important}.v-application--is-ltr .ps-lg-4{padding-left:16px!important}.v-application--is-rtl .ps-lg-4{padding-right:16px!important}.v-application--is-ltr .ps-lg-5{padding-left:20px!important}.v-application--is-rtl .ps-lg-5{padding-right:20px!important}.v-application--is-ltr .ps-lg-6{padding-left:24px!important}.v-application--is-rtl .ps-lg-6{padding-right:24px!important}.v-application--is-ltr .ps-lg-7{padding-left:28px!important}.v-application--is-rtl .ps-lg-7{padding-right:28px!important}.v-application--is-ltr .ps-lg-8{padding-left:32px!important}.v-application--is-rtl .ps-lg-8{padding-right:32px!important}.v-application--is-ltr .ps-lg-9{padding-left:36px!important}.v-application--is-rtl .ps-lg-9{padding-right:36px!important}.v-application--is-ltr .ps-lg-10{padding-left:40px!important}.v-application--is-rtl .ps-lg-10{padding-right:40px!important}.v-application--is-ltr .ps-lg-11{padding-left:44px!important}.v-application--is-rtl .ps-lg-11{padding-right:44px!important}.v-application--is-ltr .ps-lg-12{padding-left:48px!important}.v-application--is-rtl .ps-lg-12{padding-right:48px!important}.v-application--is-ltr .pe-lg-0{padding-right:0!important}.v-application--is-rtl .pe-lg-0{padding-left:0!important}.v-application--is-ltr .pe-lg-1{padding-right:4px!important}.v-application--is-rtl .pe-lg-1{padding-left:4px!important}.v-application--is-ltr .pe-lg-2{padding-right:8px!important}.v-application--is-rtl .pe-lg-2{padding-left:8px!important}.v-application--is-ltr .pe-lg-3{padding-right:12px!important}.v-application--is-rtl .pe-lg-3{padding-left:12px!important}.v-application--is-ltr .pe-lg-4{padding-right:16px!important}.v-application--is-rtl .pe-lg-4{padding-left:16px!important}.v-application--is-ltr .pe-lg-5{padding-right:20px!important}.v-application--is-rtl .pe-lg-5{padding-left:20px!important}.v-application--is-ltr .pe-lg-6{padding-right:24px!important}.v-application--is-rtl .pe-lg-6{padding-left:24px!important}.v-application--is-ltr .pe-lg-7{padding-right:28px!important}.v-application--is-rtl .pe-lg-7{padding-left:28px!important}.v-application--is-ltr .pe-lg-8{padding-right:32px!important}.v-application--is-rtl .pe-lg-8{padding-left:32px!important}.v-application--is-ltr .pe-lg-9{padding-right:36px!important}.v-application--is-rtl .pe-lg-9{padding-left:36px!important}.v-application--is-ltr .pe-lg-10{padding-right:40px!important}.v-application--is-rtl .pe-lg-10{padding-left:40px!important}.v-application--is-ltr .pe-lg-11{padding-right:44px!important}.v-application--is-rtl .pe-lg-11{padding-left:44px!important}.v-application--is-ltr .pe-lg-12{padding-right:48px!important}.v-application--is-rtl .pe-lg-12{padding-left:48px!important}.v-application .text-lg-left{text-align:left!important}.v-application .text-lg-right{text-align:right!important}.v-application .text-lg-center{text-align:center!important}.v-application .text-lg-justify{text-align:justify!important}.v-application .text-lg-start{text-align:start!important}.v-application .text-lg-end{text-align:end!important}}@media (min-width:1904px){.v-application .d-xl-none{display:none!important}.v-application .d-xl-inline{display:inline!important}.v-application .d-xl-inline-block{display:inline-block!important}.v-application .d-xl-block{display:block!important}.v-application .d-xl-table{display:table!important}.v-application .d-xl-table-row{display:table-row!important}.v-application .d-xl-table-cell{display:table-cell!important}.v-application .d-xl-flex{display:flex!important}.v-application .d-xl-inline-flex{display:inline-flex!important}.v-application .float-xl-none{float:none!important}.v-application .float-xl-left{float:left!important}.v-application .float-xl-right{float:right!important}.v-application .flex-xl-fill{flex:1 1 auto!important}.v-application .flex-xl-row{flex-direction:row!important}.v-application .flex-xl-column{flex-direction:column!important}.v-application .flex-xl-row-reverse{flex-direction:row-reverse!important}.v-application .flex-xl-column-reverse{flex-direction:column-reverse!important}.v-application .flex-xl-grow-0{flex-grow:0!important}.v-application .flex-xl-grow-1{flex-grow:1!important}.v-application .flex-xl-shrink-0{flex-shrink:0!important}.v-application .flex-xl-shrink-1{flex-shrink:1!important}.v-application .flex-xl-wrap{flex-wrap:wrap!important}.v-application .flex-xl-nowrap{flex-wrap:nowrap!important}.v-application .flex-xl-wrap-reverse{flex-wrap:wrap-reverse!important}.v-application .justify-xl-start{justify-content:flex-start!important}.v-application .justify-xl-end{justify-content:flex-end!important}.v-application .justify-xl-center{justify-content:center!important}.v-application .justify-xl-space-between{justify-content:space-between!important}.v-application .justify-xl-space-around{justify-content:space-around!important}.v-application .align-xl-start{align-items:flex-start!important}.v-application .align-xl-end{align-items:flex-end!important}.v-application .align-xl-center{align-items:center!important}.v-application .align-xl-baseline{align-items:baseline!important}.v-application .align-xl-stretch{align-items:stretch!important}.v-application .align-content-xl-start{align-content:flex-start!important}.v-application .align-content-xl-end{align-content:flex-end!important}.v-application .align-content-xl-center{align-content:center!important}.v-application .align-content-xl-space-between{align-content:space-between!important}.v-application .align-content-xl-space-around{align-content:space-around!important}.v-application .align-content-xl-stretch{align-content:stretch!important}.v-application .align-self-xl-auto{align-self:auto!important}.v-application .align-self-xl-start{align-self:flex-start!important}.v-application .align-self-xl-end{align-self:flex-end!important}.v-application .align-self-xl-center{align-self:center!important}.v-application .align-self-xl-baseline{align-self:baseline!important}.v-application .align-self-xl-stretch{align-self:stretch!important}.v-application .order-xl-first{order:-1!important}.v-application .order-xl-0{order:0!important}.v-application .order-xl-1{order:1!important}.v-application .order-xl-2{order:2!important}.v-application .order-xl-3{order:3!important}.v-application .order-xl-4{order:4!important}.v-application .order-xl-5{order:5!important}.v-application .order-xl-6{order:6!important}.v-application .order-xl-7{order:7!important}.v-application .order-xl-8{order:8!important}.v-application .order-xl-9{order:9!important}.v-application .order-xl-10{order:10!important}.v-application .order-xl-11{order:11!important}.v-application .order-xl-12{order:12!important}.v-application .order-xl-last{order:13!important}.v-application .ma-xl-0{margin:0!important}.v-application .ma-xl-1{margin:4px!important}.v-application .ma-xl-2{margin:8px!important}.v-application .ma-xl-3{margin:12px!important}.v-application .ma-xl-4{margin:16px!important}.v-application .ma-xl-5{margin:20px!important}.v-application .ma-xl-6{margin:24px!important}.v-application .ma-xl-7{margin:28px!important}.v-application .ma-xl-8{margin:32px!important}.v-application .ma-xl-9{margin:36px!important}.v-application .ma-xl-10{margin:40px!important}.v-application .ma-xl-11{margin:44px!important}.v-application .ma-xl-12{margin:48px!important}.v-application .ma-xl-auto{margin:auto!important}.v-application .mx-xl-0{margin-right:0!important;margin-left:0!important}.v-application .mx-xl-1{margin-right:4px!important;margin-left:4px!important}.v-application .mx-xl-2{margin-right:8px!important;margin-left:8px!important}.v-application .mx-xl-3{margin-right:12px!important;margin-left:12px!important}.v-application .mx-xl-4{margin-right:16px!important;margin-left:16px!important}.v-application .mx-xl-5{margin-right:20px!important;margin-left:20px!important}.v-application .mx-xl-6{margin-right:24px!important;margin-left:24px!important}.v-application .mx-xl-7{margin-right:28px!important;margin-left:28px!important}.v-application .mx-xl-8{margin-right:32px!important;margin-left:32px!important}.v-application .mx-xl-9{margin-right:36px!important;margin-left:36px!important}.v-application .mx-xl-10{margin-right:40px!important;margin-left:40px!important}.v-application .mx-xl-11{margin-right:44px!important;margin-left:44px!important}.v-application .mx-xl-12{margin-right:48px!important;margin-left:48px!important}.v-application .mx-xl-auto{margin-right:auto!important;margin-left:auto!important}.v-application .my-xl-0{margin-top:0!important;margin-bottom:0!important}.v-application .my-xl-1{margin-top:4px!important;margin-bottom:4px!important}.v-application .my-xl-2{margin-top:8px!important;margin-bottom:8px!important}.v-application .my-xl-3{margin-top:12px!important;margin-bottom:12px!important}.v-application .my-xl-4{margin-top:16px!important;margin-bottom:16px!important}.v-application .my-xl-5{margin-top:20px!important;margin-bottom:20px!important}.v-application .my-xl-6{margin-top:24px!important;margin-bottom:24px!important}.v-application .my-xl-7{margin-top:28px!important;margin-bottom:28px!important}.v-application .my-xl-8{margin-top:32px!important;margin-bottom:32px!important}.v-application .my-xl-9{margin-top:36px!important;margin-bottom:36px!important}.v-application .my-xl-10{margin-top:40px!important;margin-bottom:40px!important}.v-application .my-xl-11{margin-top:44px!important;margin-bottom:44px!important}.v-application .my-xl-12{margin-top:48px!important;margin-bottom:48px!important}.v-application .my-xl-auto{margin-top:auto!important;margin-bottom:auto!important}.v-application .mt-xl-0{margin-top:0!important}.v-application .mt-xl-1{margin-top:4px!important}.v-application .mt-xl-2{margin-top:8px!important}.v-application .mt-xl-3{margin-top:12px!important}.v-application .mt-xl-4{margin-top:16px!important}.v-application .mt-xl-5{margin-top:20px!important}.v-application .mt-xl-6{margin-top:24px!important}.v-application .mt-xl-7{margin-top:28px!important}.v-application .mt-xl-8{margin-top:32px!important}.v-application .mt-xl-9{margin-top:36px!important}.v-application .mt-xl-10{margin-top:40px!important}.v-application .mt-xl-11{margin-top:44px!important}.v-application .mt-xl-12{margin-top:48px!important}.v-application .mt-xl-auto{margin-top:auto!important}.v-application .mr-xl-0{margin-right:0!important}.v-application .mr-xl-1{margin-right:4px!important}.v-application .mr-xl-2{margin-right:8px!important}.v-application .mr-xl-3{margin-right:12px!important}.v-application .mr-xl-4{margin-right:16px!important}.v-application .mr-xl-5{margin-right:20px!important}.v-application .mr-xl-6{margin-right:24px!important}.v-application .mr-xl-7{margin-right:28px!important}.v-application .mr-xl-8{margin-right:32px!important}.v-application .mr-xl-9{margin-right:36px!important}.v-application .mr-xl-10{margin-right:40px!important}.v-application .mr-xl-11{margin-right:44px!important}.v-application .mr-xl-12{margin-right:48px!important}.v-application .mr-xl-auto{margin-right:auto!important}.v-application .mb-xl-0{margin-bottom:0!important}.v-application .mb-xl-1{margin-bottom:4px!important}.v-application .mb-xl-2{margin-bottom:8px!important}.v-application .mb-xl-3{margin-bottom:12px!important}.v-application .mb-xl-4{margin-bottom:16px!important}.v-application .mb-xl-5{margin-bottom:20px!important}.v-application .mb-xl-6{margin-bottom:24px!important}.v-application .mb-xl-7{margin-bottom:28px!important}.v-application .mb-xl-8{margin-bottom:32px!important}.v-application .mb-xl-9{margin-bottom:36px!important}.v-application .mb-xl-10{margin-bottom:40px!important}.v-application .mb-xl-11{margin-bottom:44px!important}.v-application .mb-xl-12{margin-bottom:48px!important}.v-application .mb-xl-auto{margin-bottom:auto!important}.v-application .ml-xl-0{margin-left:0!important}.v-application .ml-xl-1{margin-left:4px!important}.v-application .ml-xl-2{margin-left:8px!important}.v-application .ml-xl-3{margin-left:12px!important}.v-application .ml-xl-4{margin-left:16px!important}.v-application .ml-xl-5{margin-left:20px!important}.v-application .ml-xl-6{margin-left:24px!important}.v-application .ml-xl-7{margin-left:28px!important}.v-application .ml-xl-8{margin-left:32px!important}.v-application .ml-xl-9{margin-left:36px!important}.v-application .ml-xl-10{margin-left:40px!important}.v-application .ml-xl-11{margin-left:44px!important}.v-application .ml-xl-12{margin-left:48px!important}.v-application .ml-xl-auto{margin-left:auto!important}.v-application--is-ltr .ms-xl-0{margin-left:0!important}.v-application--is-rtl .ms-xl-0{margin-right:0!important}.v-application--is-ltr .ms-xl-1{margin-left:4px!important}.v-application--is-rtl .ms-xl-1{margin-right:4px!important}.v-application--is-ltr .ms-xl-2{margin-left:8px!important}.v-application--is-rtl .ms-xl-2{margin-right:8px!important}.v-application--is-ltr .ms-xl-3{margin-left:12px!important}.v-application--is-rtl .ms-xl-3{margin-right:12px!important}.v-application--is-ltr .ms-xl-4{margin-left:16px!important}.v-application--is-rtl .ms-xl-4{margin-right:16px!important}.v-application--is-ltr .ms-xl-5{margin-left:20px!important}.v-application--is-rtl .ms-xl-5{margin-right:20px!important}.v-application--is-ltr .ms-xl-6{margin-left:24px!important}.v-application--is-rtl .ms-xl-6{margin-right:24px!important}.v-application--is-ltr .ms-xl-7{margin-left:28px!important}.v-application--is-rtl .ms-xl-7{margin-right:28px!important}.v-application--is-ltr .ms-xl-8{margin-left:32px!important}.v-application--is-rtl .ms-xl-8{margin-right:32px!important}.v-application--is-ltr .ms-xl-9{margin-left:36px!important}.v-application--is-rtl .ms-xl-9{margin-right:36px!important}.v-application--is-ltr .ms-xl-10{margin-left:40px!important}.v-application--is-rtl .ms-xl-10{margin-right:40px!important}.v-application--is-ltr .ms-xl-11{margin-left:44px!important}.v-application--is-rtl .ms-xl-11{margin-right:44px!important}.v-application--is-ltr .ms-xl-12{margin-left:48px!important}.v-application--is-rtl .ms-xl-12{margin-right:48px!important}.v-application--is-ltr .ms-xl-auto{margin-left:auto!important}.v-application--is-rtl .ms-xl-auto{margin-right:auto!important}.v-application--is-ltr .me-xl-0{margin-right:0!important}.v-application--is-rtl .me-xl-0{margin-left:0!important}.v-application--is-ltr .me-xl-1{margin-right:4px!important}.v-application--is-rtl .me-xl-1{margin-left:4px!important}.v-application--is-ltr .me-xl-2{margin-right:8px!important}.v-application--is-rtl .me-xl-2{margin-left:8px!important}.v-application--is-ltr .me-xl-3{margin-right:12px!important}.v-application--is-rtl .me-xl-3{margin-left:12px!important}.v-application--is-ltr .me-xl-4{margin-right:16px!important}.v-application--is-rtl .me-xl-4{margin-left:16px!important}.v-application--is-ltr .me-xl-5{margin-right:20px!important}.v-application--is-rtl .me-xl-5{margin-left:20px!important}.v-application--is-ltr .me-xl-6{margin-right:24px!important}.v-application--is-rtl .me-xl-6{margin-left:24px!important}.v-application--is-ltr .me-xl-7{margin-right:28px!important}.v-application--is-rtl .me-xl-7{margin-left:28px!important}.v-application--is-ltr .me-xl-8{margin-right:32px!important}.v-application--is-rtl .me-xl-8{margin-left:32px!important}.v-application--is-ltr .me-xl-9{margin-right:36px!important}.v-application--is-rtl .me-xl-9{margin-left:36px!important}.v-application--is-ltr .me-xl-10{margin-right:40px!important}.v-application--is-rtl .me-xl-10{margin-left:40px!important}.v-application--is-ltr .me-xl-11{margin-right:44px!important}.v-application--is-rtl .me-xl-11{margin-left:44px!important}.v-application--is-ltr .me-xl-12{margin-right:48px!important}.v-application--is-rtl .me-xl-12{margin-left:48px!important}.v-application--is-ltr .me-xl-auto{margin-right:auto!important}.v-application--is-rtl .me-xl-auto{margin-left:auto!important}.v-application .ma-xl-n1{margin:-4px!important}.v-application .ma-xl-n2{margin:-8px!important}.v-application .ma-xl-n3{margin:-12px!important}.v-application .ma-xl-n4{margin:-16px!important}.v-application .ma-xl-n5{margin:-20px!important}.v-application .ma-xl-n6{margin:-24px!important}.v-application .ma-xl-n7{margin:-28px!important}.v-application .ma-xl-n8{margin:-32px!important}.v-application .ma-xl-n9{margin:-36px!important}.v-application .ma-xl-n10{margin:-40px!important}.v-application .ma-xl-n11{margin:-44px!important}.v-application .ma-xl-n12{margin:-48px!important}.v-application .mx-xl-n1{margin-right:-4px!important;margin-left:-4px!important}.v-application .mx-xl-n2{margin-right:-8px!important;margin-left:-8px!important}.v-application .mx-xl-n3{margin-right:-12px!important;margin-left:-12px!important}.v-application .mx-xl-n4{margin-right:-16px!important;margin-left:-16px!important}.v-application .mx-xl-n5{margin-right:-20px!important;margin-left:-20px!important}.v-application .mx-xl-n6{margin-right:-24px!important;margin-left:-24px!important}.v-application .mx-xl-n7{margin-right:-28px!important;margin-left:-28px!important}.v-application .mx-xl-n8{margin-right:-32px!important;margin-left:-32px!important}.v-application .mx-xl-n9{margin-right:-36px!important;margin-left:-36px!important}.v-application .mx-xl-n10{margin-right:-40px!important;margin-left:-40px!important}.v-application .mx-xl-n11{margin-right:-44px!important;margin-left:-44px!important}.v-application .mx-xl-n12{margin-right:-48px!important;margin-left:-48px!important}.v-application .my-xl-n1{margin-top:-4px!important;margin-bottom:-4px!important}.v-application .my-xl-n2{margin-top:-8px!important;margin-bottom:-8px!important}.v-application .my-xl-n3{margin-top:-12px!important;margin-bottom:-12px!important}.v-application .my-xl-n4{margin-top:-16px!important;margin-bottom:-16px!important}.v-application .my-xl-n5{margin-top:-20px!important;margin-bottom:-20px!important}.v-application .my-xl-n6{margin-top:-24px!important;margin-bottom:-24px!important}.v-application .my-xl-n7{margin-top:-28px!important;margin-bottom:-28px!important}.v-application .my-xl-n8{margin-top:-32px!important;margin-bottom:-32px!important}.v-application .my-xl-n9{margin-top:-36px!important;margin-bottom:-36px!important}.v-application .my-xl-n10{margin-top:-40px!important;margin-bottom:-40px!important}.v-application .my-xl-n11{margin-top:-44px!important;margin-bottom:-44px!important}.v-application .my-xl-n12{margin-top:-48px!important;margin-bottom:-48px!important}.v-application .mt-xl-n1{margin-top:-4px!important}.v-application .mt-xl-n2{margin-top:-8px!important}.v-application .mt-xl-n3{margin-top:-12px!important}.v-application .mt-xl-n4{margin-top:-16px!important}.v-application .mt-xl-n5{margin-top:-20px!important}.v-application .mt-xl-n6{margin-top:-24px!important}.v-application .mt-xl-n7{margin-top:-28px!important}.v-application .mt-xl-n8{margin-top:-32px!important}.v-application .mt-xl-n9{margin-top:-36px!important}.v-application .mt-xl-n10{margin-top:-40px!important}.v-application .mt-xl-n11{margin-top:-44px!important}.v-application .mt-xl-n12{margin-top:-48px!important}.v-application .mr-xl-n1{margin-right:-4px!important}.v-application .mr-xl-n2{margin-right:-8px!important}.v-application .mr-xl-n3{margin-right:-12px!important}.v-application .mr-xl-n4{margin-right:-16px!important}.v-application .mr-xl-n5{margin-right:-20px!important}.v-application .mr-xl-n6{margin-right:-24px!important}.v-application .mr-xl-n7{margin-right:-28px!important}.v-application .mr-xl-n8{margin-right:-32px!important}.v-application .mr-xl-n9{margin-right:-36px!important}.v-application .mr-xl-n10{margin-right:-40px!important}.v-application .mr-xl-n11{margin-right:-44px!important}.v-application .mr-xl-n12{margin-right:-48px!important}.v-application .mb-xl-n1{margin-bottom:-4px!important}.v-application .mb-xl-n2{margin-bottom:-8px!important}.v-application .mb-xl-n3{margin-bottom:-12px!important}.v-application .mb-xl-n4{margin-bottom:-16px!important}.v-application .mb-xl-n5{margin-bottom:-20px!important}.v-application .mb-xl-n6{margin-bottom:-24px!important}.v-application .mb-xl-n7{margin-bottom:-28px!important}.v-application .mb-xl-n8{margin-bottom:-32px!important}.v-application .mb-xl-n9{margin-bottom:-36px!important}.v-application .mb-xl-n10{margin-bottom:-40px!important}.v-application .mb-xl-n11{margin-bottom:-44px!important}.v-application .mb-xl-n12{margin-bottom:-48px!important}.v-application .ml-xl-n1{margin-left:-4px!important}.v-application .ml-xl-n2{margin-left:-8px!important}.v-application .ml-xl-n3{margin-left:-12px!important}.v-application .ml-xl-n4{margin-left:-16px!important}.v-application .ml-xl-n5{margin-left:-20px!important}.v-application .ml-xl-n6{margin-left:-24px!important}.v-application .ml-xl-n7{margin-left:-28px!important}.v-application .ml-xl-n8{margin-left:-32px!important}.v-application .ml-xl-n9{margin-left:-36px!important}.v-application .ml-xl-n10{margin-left:-40px!important}.v-application .ml-xl-n11{margin-left:-44px!important}.v-application .ml-xl-n12{margin-left:-48px!important}.v-application--is-ltr .ms-xl-n1{margin-left:-4px!important}.v-application--is-rtl .ms-xl-n1{margin-right:-4px!important}.v-application--is-ltr .ms-xl-n2{margin-left:-8px!important}.v-application--is-rtl .ms-xl-n2{margin-right:-8px!important}.v-application--is-ltr .ms-xl-n3{margin-left:-12px!important}.v-application--is-rtl .ms-xl-n3{margin-right:-12px!important}.v-application--is-ltr .ms-xl-n4{margin-left:-16px!important}.v-application--is-rtl .ms-xl-n4{margin-right:-16px!important}.v-application--is-ltr .ms-xl-n5{margin-left:-20px!important}.v-application--is-rtl .ms-xl-n5{margin-right:-20px!important}.v-application--is-ltr .ms-xl-n6{margin-left:-24px!important}.v-application--is-rtl .ms-xl-n6{margin-right:-24px!important}.v-application--is-ltr .ms-xl-n7{margin-left:-28px!important}.v-application--is-rtl .ms-xl-n7{margin-right:-28px!important}.v-application--is-ltr .ms-xl-n8{margin-left:-32px!important}.v-application--is-rtl .ms-xl-n8{margin-right:-32px!important}.v-application--is-ltr .ms-xl-n9{margin-left:-36px!important}.v-application--is-rtl .ms-xl-n9{margin-right:-36px!important}.v-application--is-ltr .ms-xl-n10{margin-left:-40px!important}.v-application--is-rtl .ms-xl-n10{margin-right:-40px!important}.v-application--is-ltr .ms-xl-n11{margin-left:-44px!important}.v-application--is-rtl .ms-xl-n11{margin-right:-44px!important}.v-application--is-ltr .ms-xl-n12{margin-left:-48px!important}.v-application--is-rtl .ms-xl-n12{margin-right:-48px!important}.v-application--is-ltr .me-xl-n1{margin-right:-4px!important}.v-application--is-rtl .me-xl-n1{margin-left:-4px!important}.v-application--is-ltr .me-xl-n2{margin-right:-8px!important}.v-application--is-rtl .me-xl-n2{margin-left:-8px!important}.v-application--is-ltr .me-xl-n3{margin-right:-12px!important}.v-application--is-rtl .me-xl-n3{margin-left:-12px!important}.v-application--is-ltr .me-xl-n4{margin-right:-16px!important}.v-application--is-rtl .me-xl-n4{margin-left:-16px!important}.v-application--is-ltr .me-xl-n5{margin-right:-20px!important}.v-application--is-rtl .me-xl-n5{margin-left:-20px!important}.v-application--is-ltr .me-xl-n6{margin-right:-24px!important}.v-application--is-rtl .me-xl-n6{margin-left:-24px!important}.v-application--is-ltr .me-xl-n7{margin-right:-28px!important}.v-application--is-rtl .me-xl-n7{margin-left:-28px!important}.v-application--is-ltr .me-xl-n8{margin-right:-32px!important}.v-application--is-rtl .me-xl-n8{margin-left:-32px!important}.v-application--is-ltr .me-xl-n9{margin-right:-36px!important}.v-application--is-rtl .me-xl-n9{margin-left:-36px!important}.v-application--is-ltr .me-xl-n10{margin-right:-40px!important}.v-application--is-rtl .me-xl-n10{margin-left:-40px!important}.v-application--is-ltr .me-xl-n11{margin-right:-44px!important}.v-application--is-rtl .me-xl-n11{margin-left:-44px!important}.v-application--is-ltr .me-xl-n12{margin-right:-48px!important}.v-application--is-rtl .me-xl-n12{margin-left:-48px!important}.v-application .pa-xl-0{padding:0!important}.v-application .pa-xl-1{padding:4px!important}.v-application .pa-xl-2{padding:8px!important}.v-application .pa-xl-3{padding:12px!important}.v-application .pa-xl-4{padding:16px!important}.v-application .pa-xl-5{padding:20px!important}.v-application .pa-xl-6{padding:24px!important}.v-application .pa-xl-7{padding:28px!important}.v-application .pa-xl-8{padding:32px!important}.v-application .pa-xl-9{padding:36px!important}.v-application .pa-xl-10{padding:40px!important}.v-application .pa-xl-11{padding:44px!important}.v-application .pa-xl-12{padding:48px!important}.v-application .px-xl-0{padding-right:0!important;padding-left:0!important}.v-application .px-xl-1{padding-right:4px!important;padding-left:4px!important}.v-application .px-xl-2{padding-right:8px!important;padding-left:8px!important}.v-application .px-xl-3{padding-right:12px!important;padding-left:12px!important}.v-application .px-xl-4{padding-right:16px!important;padding-left:16px!important}.v-application .px-xl-5{padding-right:20px!important;padding-left:20px!important}.v-application .px-xl-6{padding-right:24px!important;padding-left:24px!important}.v-application .px-xl-7{padding-right:28px!important;padding-left:28px!important}.v-application .px-xl-8{padding-right:32px!important;padding-left:32px!important}.v-application .px-xl-9{padding-right:36px!important;padding-left:36px!important}.v-application .px-xl-10{padding-right:40px!important;padding-left:40px!important}.v-application .px-xl-11{padding-right:44px!important;padding-left:44px!important}.v-application .px-xl-12{padding-right:48px!important;padding-left:48px!important}.v-application .py-xl-0{padding-top:0!important;padding-bottom:0!important}.v-application .py-xl-1{padding-top:4px!important;padding-bottom:4px!important}.v-application .py-xl-2{padding-top:8px!important;padding-bottom:8px!important}.v-application .py-xl-3{padding-top:12px!important;padding-bottom:12px!important}.v-application .py-xl-4{padding-top:16px!important;padding-bottom:16px!important}.v-application .py-xl-5{padding-top:20px!important;padding-bottom:20px!important}.v-application .py-xl-6{padding-top:24px!important;padding-bottom:24px!important}.v-application .py-xl-7{padding-top:28px!important;padding-bottom:28px!important}.v-application .py-xl-8{padding-top:32px!important;padding-bottom:32px!important}.v-application .py-xl-9{padding-top:36px!important;padding-bottom:36px!important}.v-application .py-xl-10{padding-top:40px!important;padding-bottom:40px!important}.v-application .py-xl-11{padding-top:44px!important;padding-bottom:44px!important}.v-application .py-xl-12{padding-top:48px!important;padding-bottom:48px!important}.v-application .pt-xl-0{padding-top:0!important}.v-application .pt-xl-1{padding-top:4px!important}.v-application .pt-xl-2{padding-top:8px!important}.v-application .pt-xl-3{padding-top:12px!important}.v-application .pt-xl-4{padding-top:16px!important}.v-application .pt-xl-5{padding-top:20px!important}.v-application .pt-xl-6{padding-top:24px!important}.v-application .pt-xl-7{padding-top:28px!important}.v-application .pt-xl-8{padding-top:32px!important}.v-application .pt-xl-9{padding-top:36px!important}.v-application .pt-xl-10{padding-top:40px!important}.v-application .pt-xl-11{padding-top:44px!important}.v-application .pt-xl-12{padding-top:48px!important}.v-application .pr-xl-0{padding-right:0!important}.v-application .pr-xl-1{padding-right:4px!important}.v-application .pr-xl-2{padding-right:8px!important}.v-application .pr-xl-3{padding-right:12px!important}.v-application .pr-xl-4{padding-right:16px!important}.v-application .pr-xl-5{padding-right:20px!important}.v-application .pr-xl-6{padding-right:24px!important}.v-application .pr-xl-7{padding-right:28px!important}.v-application .pr-xl-8{padding-right:32px!important}.v-application .pr-xl-9{padding-right:36px!important}.v-application .pr-xl-10{padding-right:40px!important}.v-application .pr-xl-11{padding-right:44px!important}.v-application .pr-xl-12{padding-right:48px!important}.v-application .pb-xl-0{padding-bottom:0!important}.v-application .pb-xl-1{padding-bottom:4px!important}.v-application .pb-xl-2{padding-bottom:8px!important}.v-application .pb-xl-3{padding-bottom:12px!important}.v-application .pb-xl-4{padding-bottom:16px!important}.v-application .pb-xl-5{padding-bottom:20px!important}.v-application .pb-xl-6{padding-bottom:24px!important}.v-application .pb-xl-7{padding-bottom:28px!important}.v-application .pb-xl-8{padding-bottom:32px!important}.v-application .pb-xl-9{padding-bottom:36px!important}.v-application .pb-xl-10{padding-bottom:40px!important}.v-application .pb-xl-11{padding-bottom:44px!important}.v-application .pb-xl-12{padding-bottom:48px!important}.v-application .pl-xl-0{padding-left:0!important}.v-application .pl-xl-1{padding-left:4px!important}.v-application .pl-xl-2{padding-left:8px!important}.v-application .pl-xl-3{padding-left:12px!important}.v-application .pl-xl-4{padding-left:16px!important}.v-application .pl-xl-5{padding-left:20px!important}.v-application .pl-xl-6{padding-left:24px!important}.v-application .pl-xl-7{padding-left:28px!important}.v-application .pl-xl-8{padding-left:32px!important}.v-application .pl-xl-9{padding-left:36px!important}.v-application .pl-xl-10{padding-left:40px!important}.v-application .pl-xl-11{padding-left:44px!important}.v-application .pl-xl-12{padding-left:48px!important}.v-application--is-ltr .ps-xl-0{padding-left:0!important}.v-application--is-rtl .ps-xl-0{padding-right:0!important}.v-application--is-ltr .ps-xl-1{padding-left:4px!important}.v-application--is-rtl .ps-xl-1{padding-right:4px!important}.v-application--is-ltr .ps-xl-2{padding-left:8px!important}.v-application--is-rtl .ps-xl-2{padding-right:8px!important}.v-application--is-ltr .ps-xl-3{padding-left:12px!important}.v-application--is-rtl .ps-xl-3{padding-right:12px!important}.v-application--is-ltr .ps-xl-4{padding-left:16px!important}.v-application--is-rtl .ps-xl-4{padding-right:16px!important}.v-application--is-ltr .ps-xl-5{padding-left:20px!important}.v-application--is-rtl .ps-xl-5{padding-right:20px!important}.v-application--is-ltr .ps-xl-6{padding-left:24px!important}.v-application--is-rtl .ps-xl-6{padding-right:24px!important}.v-application--is-ltr .ps-xl-7{padding-left:28px!important}.v-application--is-rtl .ps-xl-7{padding-right:28px!important}.v-application--is-ltr .ps-xl-8{padding-left:32px!important}.v-application--is-rtl .ps-xl-8{padding-right:32px!important}.v-application--is-ltr .ps-xl-9{padding-left:36px!important}.v-application--is-rtl .ps-xl-9{padding-right:36px!important}.v-application--is-ltr .ps-xl-10{padding-left:40px!important}.v-application--is-rtl .ps-xl-10{padding-right:40px!important}.v-application--is-ltr .ps-xl-11{padding-left:44px!important}.v-application--is-rtl .ps-xl-11{padding-right:44px!important}.v-application--is-ltr .ps-xl-12{padding-left:48px!important}.v-application--is-rtl .ps-xl-12{padding-right:48px!important}.v-application--is-ltr .pe-xl-0{padding-right:0!important}.v-application--is-rtl .pe-xl-0{padding-left:0!important}.v-application--is-ltr .pe-xl-1{padding-right:4px!important}.v-application--is-rtl .pe-xl-1{padding-left:4px!important}.v-application--is-ltr .pe-xl-2{padding-right:8px!important}.v-application--is-rtl .pe-xl-2{padding-left:8px!important}.v-application--is-ltr .pe-xl-3{padding-right:12px!important}.v-application--is-rtl .pe-xl-3{padding-left:12px!important}.v-application--is-ltr .pe-xl-4{padding-right:16px!important}.v-application--is-rtl .pe-xl-4{padding-left:16px!important}.v-application--is-ltr .pe-xl-5{padding-right:20px!important}.v-application--is-rtl .pe-xl-5{padding-left:20px!important}.v-application--is-ltr .pe-xl-6{padding-right:24px!important}.v-application--is-rtl .pe-xl-6{padding-left:24px!important}.v-application--is-ltr .pe-xl-7{padding-right:28px!important}.v-application--is-rtl .pe-xl-7{padding-left:28px!important}.v-application--is-ltr .pe-xl-8{padding-right:32px!important}.v-application--is-rtl .pe-xl-8{padding-left:32px!important}.v-application--is-ltr .pe-xl-9{padding-right:36px!important}.v-application--is-rtl .pe-xl-9{padding-left:36px!important}.v-application--is-ltr .pe-xl-10{padding-right:40px!important}.v-application--is-rtl .pe-xl-10{padding-left:40px!important}.v-application--is-ltr .pe-xl-11{padding-right:44px!important}.v-application--is-rtl .pe-xl-11{padding-left:44px!important}.v-application--is-ltr .pe-xl-12{padding-right:48px!important}.v-application--is-rtl .pe-xl-12{padding-left:48px!important}.v-application .text-xl-left{text-align:left!important}.v-application .text-xl-right{text-align:right!important}.v-application .text-xl-center{text-align:center!important}.v-application .text-xl-justify{text-align:justify!important}.v-application .text-xl-start{text-align:start!important}.v-application .text-xl-end{text-align:end!important}}@media print{.v-application .d-print-none{display:none!important}.v-application .d-print-inline{display:inline!important}.v-application .d-print-inline-block{display:inline-block!important}.v-application .d-print-block{display:block!important}.v-application .d-print-table{display:table!important}.v-application .d-print-table-row{display:table-row!important}.v-application .d-print-table-cell{display:table-cell!important}.v-application .d-print-flex{display:flex!important}.v-application .d-print-inline-flex{display:inline-flex!important}.v-application .float-print-none{float:none!important}.v-application .float-print-left{float:left!important}.v-application .float-print-right{float:right!important}}.theme--light.v-application{background:#fff;color:rgba(0,0,0,.87)}.theme--light.v-application .text--primary{color:rgba(0,0,0,.87)!important}.theme--light.v-application .text--secondary{color:rgba(0,0,0,.6)!important}.theme--light.v-application .text--disabled{color:rgba(0,0,0,.38)!important}.theme--dark.v-application{background:#121212;color:#fff}.theme--dark.v-application .text--primary{color:#fff!important}.theme--dark.v-application .text--secondary{color:hsla(0,0%,100%,.7)!important}.theme--dark.v-application .text--disabled{color:hsla(0,0%,100%,.5)!important}.v-application{display:flex}.v-application a{cursor:pointer}.v-application--is-rtl{direction:rtl}.v-application--wrap{flex:1 1 auto;-webkit-backface-visibility:hidden;backface-visibility:hidden;display:flex;flex-direction:column;min-height:100vh;max-width:100%;position:relative}@-moz-document url-prefix(){@media print{.v-application,.v-application--wrap{display:block}}}.theme--light.v-app-bar.v-toolbar.v-sheet{background-color:#f5f5f5}.theme--dark.v-app-bar.v-toolbar.v-sheet{background-color:#272727}.v-app-bar:not([data-booted=true]){transition:none!important}.v-app-bar.v-app-bar--fixed{position:fixed;top:0;z-index:5}.v-app-bar.v-app-bar--hide-shadow{box-shadow:0 0 0 0 rgba(0,0,0,.2),0 0 0 0 rgba(0,0,0,.14),0 0 0 0 rgba(0,0,0,.12)}.v-app-bar--fade-img-on-scroll .v-toolbar__image .v-image__image{transition:opacity .4s cubic-bezier(.4,0,.2,1)}.v-app-bar.v-toolbar--prominent.v-app-bar--shrink-on-scroll .v-toolbar__content{will-change:height}.v-app-bar.v-toolbar--prominent.v-app-bar--shrink-on-scroll .v-toolbar__image{will-change:opacity}.v-app-bar.v-toolbar--prominent.v-app-bar--shrink-on-scroll.v-app-bar--collapse-on-scroll .v-toolbar__extension{display:none}.v-app-bar.v-toolbar--prominent.v-app-bar--shrink-on-scroll.v-app-bar--is-scrolled .v-toolbar__title{padding-top:9px}.v-app-bar.v-toolbar--prominent.v-app-bar--shrink-on-scroll.v-app-bar--is-scrolled:not(.v-app-bar--bottom) .v-toolbar__title{padding-bottom:9px}.v-app-bar.v-app-bar--shrink-on-scroll .v-toolbar__title{font-size:inherit}.theme--light.v-toolbar.v-sheet{background-color:#fff}.theme--dark.v-toolbar.v-sheet{background-color:#272727}.v-toolbar{contain:layout;display:block;flex:1 1 auto;max-width:100%;transition:transform .2s cubic-bezier(.4,0,.2,1),background-color .2s cubic-bezier(.4,0,.2,1),left .2s cubic-bezier(.4,0,.2,1),right .2s cubic-bezier(.4,0,.2,1),box-shadow .28s cubic-bezier(.4,0,.2,1),max-width .25s cubic-bezier(.4,0,.2,1),width .25s cubic-bezier(.4,0,.2,1);box-shadow:0 2px 4px -1px rgba(0,0,0,.2),0 4px 5px 0 rgba(0,0,0,.14),0 1px 10px 0 rgba(0,0,0,.12)}.v-toolbar .v-input{padding-top:0;margin-top:0}.v-toolbar__content,.v-toolbar__extension{padding:4px 16px}.v-toolbar__content .v-btn.v-btn--icon.v-size--default,.v-toolbar__extension .v-btn.v-btn--icon.v-size--default{height:48px;width:48px}.v-application--is-ltr .v-toolbar__content>.v-btn.v-btn--icon:first-child,.v-application--is-ltr .v-toolbar__extension>.v-btn.v-btn--icon:first-child{margin-left:-12px}.v-application--is-rtl .v-toolbar__content>.v-btn.v-btn--icon:first-child,.v-application--is-rtl .v-toolbar__extension>.v-btn.v-btn--icon:first-child{margin-right:-12px}.v-application--is-ltr .v-toolbar__content>.v-btn.v-btn--icon:first-child+.v-toolbar__title,.v-application--is-ltr .v-toolbar__extension>.v-btn.v-btn--icon:first-child+.v-toolbar__title{padding-left:20px}.v-application--is-rtl .v-toolbar__content>.v-btn.v-btn--icon:first-child+.v-toolbar__title,.v-application--is-rtl .v-toolbar__extension>.v-btn.v-btn--icon:first-child+.v-toolbar__title{padding-right:20px}.v-application--is-ltr .v-toolbar__content>.v-btn.v-btn--icon:last-child,.v-application--is-ltr .v-toolbar__extension>.v-btn.v-btn--icon:last-child{margin-right:-12px}.v-application--is-rtl .v-toolbar__content>.v-btn.v-btn--icon:last-child,.v-application--is-rtl .v-toolbar__extension>.v-btn.v-btn--icon:last-child{margin-left:-12px}.v-toolbar__content>.v-tabs,.v-toolbar__extension>.v-tabs{height:inherit;margin-top:-4px;margin-bottom:-4px}.v-toolbar__content>.v-tabs>.v-slide-group.v-tabs-bar,.v-toolbar__extension>.v-tabs>.v-slide-group.v-tabs-bar{background-color:inherit;height:inherit}.v-toolbar__content>.v-tabs:first-child,.v-toolbar__extension>.v-tabs:first-child{margin-left:-16px}.v-toolbar__content>.v-tabs:last-child,.v-toolbar__extension>.v-tabs:last-child{margin-right:-16px}.v-toolbar__content,.v-toolbar__extension{align-items:center;display:flex;position:relative;z-index:0}.v-toolbar__image{position:absolute;top:0;bottom:0;width:100%;z-index:0;contain:strict}.v-toolbar__image,.v-toolbar__image .v-image{border-radius:inherit}.v-toolbar__items{display:flex;height:inherit}.v-toolbar__items>.v-btn{border-radius:0;height:100%!important;max-height:none}.v-toolbar__title{font-size:1.25rem;line-height:1.5;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.v-toolbar.v-toolbar--absolute{position:absolute;top:0;z-index:1}.v-toolbar.v-toolbar--bottom{top:auto;bottom:0}.v-toolbar.v-toolbar--collapse .v-toolbar__title{white-space:nowrap}.v-toolbar.v-toolbar--collapsed{max-width:112px;overflow:hidden}.v-application--is-ltr .v-toolbar.v-toolbar--collapsed{border-bottom-right-radius:24px}.v-application--is-rtl .v-toolbar.v-toolbar--collapsed{border-bottom-left-radius:24px}.v-toolbar.v-toolbar--collapsed .v-toolbar__extension,.v-toolbar.v-toolbar--collapsed .v-toolbar__title{display:none}.v-toolbar--dense .v-toolbar__content,.v-toolbar--dense .v-toolbar__extension{padding-top:0;padding-bottom:0}.v-toolbar--flat{box-shadow:0 0 0 0 rgba(0,0,0,.2),0 0 0 0 rgba(0,0,0,.14),0 0 0 0 rgba(0,0,0,.12)}.v-toolbar--floating{display:inline-flex}.v-toolbar--prominent .v-toolbar__content{align-items:flex-start}.v-toolbar--prominent .v-toolbar__title{font-size:1.5rem;padding-top:6px}.v-toolbar--prominent:not(.v-toolbar--bottom) .v-toolbar__title{align-self:flex-end;padding-bottom:6px;padding-top:0}.theme--light.v-sheet{background-color:#fff;border-color:#fff;color:rgba(0,0,0,.87)}.theme--dark.v-sheet{background-color:#1e1e1e;border-color:#1e1e1e;color:#fff}.v-sheet{border-radius:4px}.v-sheet--tile{border-radius:0}.v-image{z-index:0}.v-image__image,.v-image__placeholder{z-index:-1;position:absolute;top:0;left:0;width:100%;height:100%}.v-image__image{background-repeat:no-repeat}.v-image__image--preload{-webkit-filter:blur(2px);filter:blur(2px)}.v-image__image--contain{background-size:contain}.v-image__image--cover{background-size:cover}.v-responsive{position:relative;overflow:hidden;flex:1 0 auto;max-width:100%;display:flex}.v-responsive__content{flex:1 0 0px;max-width:100%}.v-application--is-ltr .v-responsive__sizer~.v-responsive__content{margin-left:-100%}.v-application--is-rtl .v-responsive__sizer~.v-responsive__content{margin-right:-100%}.v-responsive__sizer{transition:padding-bottom .2s cubic-bezier(.25,.8,.5,1);flex:1 0 0px}.v-btn:not(.v-btn--outlined).accent,.v-btn:not(.v-btn--outlined).error,.v-btn:not(.v-btn--outlined).info,.v-btn:not(.v-btn--outlined).primary,.v-btn:not(.v-btn--outlined).secondary,.v-btn:not(.v-btn--outlined).success,.v-btn:not(.v-btn--outlined).warning{color:#fff}.theme--light.v-btn{color:rgba(0,0,0,.87)}.theme--light.v-btn.v-btn--disabled,.theme--light.v-btn.v-btn--disabled .v-btn__loading,.theme--light.v-btn.v-btn--disabled .v-icon{color:rgba(0,0,0,.26)!important}.theme--light.v-btn.v-btn--disabled:not(.v-btn--flat):not(.v-btn--text):not(.v-btn--outlined){background-color:rgba(0,0,0,.12)!important}.theme--light.v-btn:not(.v-btn--flat):not(.v-btn--text):not(.v-btn--outlined){background-color:#f5f5f5}.theme--light.v-btn.v-btn--outlined.v-btn--text{border-color:rgba(0,0,0,.12)}.theme--light.v-btn.v-btn--icon{color:rgba(0,0,0,.54)}.theme--light.v-btn:hover:before{opacity:.04}.theme--light.v-btn--active:before,.theme--light.v-btn--active:hover:before,.theme--light.v-btn:focus:before{opacity:.12}.theme--light.v-btn--active:focus:before{opacity:.16}.theme--dark.v-btn{color:#fff}.theme--dark.v-btn.v-btn--disabled,.theme--dark.v-btn.v-btn--disabled .v-btn__loading,.theme--dark.v-btn.v-btn--disabled .v-icon{color:hsla(0,0%,100%,.3)!important}.theme--dark.v-btn.v-btn--disabled:not(.v-btn--flat):not(.v-btn--text):not(.v-btn--outlined){background-color:hsla(0,0%,100%,.12)!important}.theme--dark.v-btn:not(.v-btn--flat):not(.v-btn--text):not(.v-btn--outlined){background-color:#272727}.theme--dark.v-btn.v-btn--outlined.v-btn--text{border-color:hsla(0,0%,100%,.12)}.theme--dark.v-btn.v-btn--icon{color:#fff}.theme--dark.v-btn:hover:before{opacity:.08}.theme--dark.v-btn--active:before,.theme--dark.v-btn--active:hover:before,.theme--dark.v-btn:focus:before{opacity:.24}.theme--dark.v-btn--active:focus:before{opacity:.32}.v-btn{align-items:center;border-radius:4px;display:inline-flex;flex:0 0 auto;font-weight:500;letter-spacing:.0892857143em;justify-content:center;outline:0;position:relative;text-decoration:none;text-indent:.0892857143em;text-transform:uppercase;transition-duration:.28s;transition-property:box-shadow,transform,opacity;transition-timing-function:cubic-bezier(.4,0,.2,1);-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;vertical-align:middle;white-space:nowrap}.v-btn.v-size--x-small{font-size:.625rem}.v-btn.v-size--small{font-size:.75rem}.v-btn.v-size--default,.v-btn.v-size--large{font-size:.875rem}.v-btn.v-size--x-large{font-size:1rem}.v-btn:before{border-radius:inherit;bottom:0;color:inherit;content:\"\";left:0;opacity:0;pointer-events:none;position:absolute;right:0;top:0;transition:opacity .2s cubic-bezier(.4,0,.6,1);background-color:currentColor}.v-btn:not(.v-btn--disabled){will-change:box-shadow}.v-btn:not(.v-btn--round).v-size--x-small{height:20px;min-width:36px;padding:0 8.8888888889px}.v-btn:not(.v-btn--round).v-size--small{height:28px;min-width:50px;padding:0 12.4444444444px}.v-btn:not(.v-btn--round).v-size--default{height:36px;min-width:64px;padding:0 16px}.v-btn:not(.v-btn--round).v-size--large{height:44px;min-width:78px;padding:0 19.5555555556px}.v-btn:not(.v-btn--round).v-size--x-large{height:52px;min-width:92px;padding:0 23.1111111111px}.v-btn>.v-btn__content .v-icon{color:inherit}.v-btn__content{align-items:center;color:inherit;display:flex;flex:1 0 auto;justify-content:inherit;line-height:normal;position:relative}.v-btn__content .v-icon--left,.v-btn__content .v-icon--right{font-size:18px;height:18px;width:18px}.v-application--is-ltr .v-btn__content .v-icon--left{margin-left:-4px;margin-right:8px}.v-application--is-ltr .v-btn__content .v-icon--right,.v-application--is-rtl .v-btn__content .v-icon--left{margin-left:8px;margin-right:-4px}.v-application--is-rtl .v-btn__content .v-icon--right{margin-left:-4px;margin-right:8px}.v-btn__loader{align-items:center;display:flex;height:100%;justify-content:center;left:0;position:absolute;top:0;width:100%}.v-btn:not(.v-btn--text):not(.v-btn--outlined).v-btn--active:before{opacity:.18}.v-btn:not(.v-btn--text):not(.v-btn--outlined):hover:before{opacity:.08}.v-btn:not(.v-btn--text):not(.v-btn--outlined):focus:before{opacity:.24}.v-btn--absolute,.v-btn--fixed{position:absolute}.v-btn--absolute.v-btn--right,.v-btn--fixed.v-btn--right{right:16px}.v-btn--absolute.v-btn--left,.v-btn--fixed.v-btn--left{left:16px}.v-btn--absolute.v-btn--top,.v-btn--fixed.v-btn--top{top:16px}.v-btn--absolute.v-btn--bottom,.v-btn--fixed.v-btn--bottom{bottom:16px}.v-btn--block{display:flex;flex:1 0 auto;min-width:100%!important;max-width:auto}.v-btn--contained{box-shadow:0 3px 1px -2px rgba(0,0,0,.2),0 2px 2px 0 rgba(0,0,0,.14),0 1px 5px 0 rgba(0,0,0,.12)}.v-btn--contained:after{box-shadow:0 2px 4px -1px rgba(0,0,0,.2),0 4px 5px 0 rgba(0,0,0,.14),0 1px 10px 0 rgba(0,0,0,.12)}.v-btn--contained:active{box-shadow:0 5px 5px -3px rgba(0,0,0,.2),0 8px 10px 1px rgba(0,0,0,.14),0 3px 14px 2px rgba(0,0,0,.12)}.v-btn--depressed{box-shadow:none!important}.v-btn--disabled{box-shadow:none;pointer-events:none}.v-btn--fab,.v-btn--icon{min-height:0;min-width:0;padding:0}.v-btn--fab.v-size--x-small .v-icon,.v-btn--icon.v-size--x-small .v-icon{height:18px;font-size:18px;width:18px}.v-btn--fab.v-size--default .v-icon,.v-btn--fab.v-size--small .v-icon,.v-btn--icon.v-size--default .v-icon,.v-btn--icon.v-size--small .v-icon{height:24px;font-size:24px;width:24px}.v-btn--fab.v-size--large .v-icon,.v-btn--icon.v-size--large .v-icon{height:28px;font-size:28px;width:28px}.v-btn--fab.v-size--x-large .v-icon,.v-btn--icon.v-size--x-large .v-icon{height:32px;font-size:32px;width:32px}.v-btn--icon.v-size--x-small{height:20px;width:20px}.v-btn--icon.v-size--small{height:28px;width:28px}.v-btn--icon.v-size--default{height:36px;width:36px}.v-btn--icon.v-size--large{height:44px;width:44px}.v-btn--icon.v-size--x-large{height:52px;width:52px}.v-btn--fab.v-btn--contained{box-shadow:0 3px 5px -1px rgba(0,0,0,.2),0 6px 10px 0 rgba(0,0,0,.14),0 1px 18px 0 rgba(0,0,0,.12)}.v-btn--fab.v-btn--contained:after{box-shadow:0 5px 5px -3px rgba(0,0,0,.2),0 8px 10px 1px rgba(0,0,0,.14),0 3px 14px 2px rgba(0,0,0,.12)}.v-btn--fab.v-btn--contained:active{box-shadow:0 7px 8px -4px rgba(0,0,0,.2),0 12px 17px 2px rgba(0,0,0,.14),0 5px 22px 4px rgba(0,0,0,.12)}.v-btn--fab.v-btn--absolute,.v-btn--fab.v-btn--fixed{z-index:4}.v-btn--fab.v-size--x-small{height:32px;width:32px}.v-btn--fab.v-size--x-small.v-btn--absolute.v-btn--bottom{bottom:-16px}.v-btn--fab.v-size--x-small.v-btn--absolute.v-btn--top{top:-16px}.v-btn--fab.v-size--small{height:40px;width:40px}.v-btn--fab.v-size--small.v-btn--absolute.v-btn--bottom{bottom:-20px}.v-btn--fab.v-size--small.v-btn--absolute.v-btn--top{top:-20px}.v-btn--fab.v-size--default{height:56px;width:56px}.v-btn--fab.v-size--default.v-btn--absolute.v-btn--bottom{bottom:-28px}.v-btn--fab.v-size--default.v-btn--absolute.v-btn--top{top:-28px}.v-btn--fab.v-size--large{height:64px;width:64px}.v-btn--fab.v-size--large.v-btn--absolute.v-btn--bottom{bottom:-32px}.v-btn--fab.v-size--large.v-btn--absolute.v-btn--top{top:-32px}.v-btn--fab.v-size--x-large{height:72px;width:72px}.v-btn--fab.v-size--x-large.v-btn--absolute.v-btn--bottom{bottom:-36px}.v-btn--fab.v-size--x-large.v-btn--absolute.v-btn--top{top:-36px}.v-btn--fixed{position:fixed}.v-btn--loading{pointer-events:none;transition:none}.v-btn--loading .v-btn__content{opacity:0}.v-btn--outlined{border:thin solid}.v-btn--outlined:before{border-radius:0}.v-btn--outlined .v-btn__content .v-icon,.v-btn--round .v-btn__content .v-icon{color:currentColor}.v-btn--flat,.v-btn--outlined,.v-btn--text{background-color:transparent}.v-btn--round:before,.v-btn--rounded:before{border-radius:inherit}.v-btn--round{border-radius:50%}.v-btn--rounded{border-radius:28px}.v-btn--tile{border-radius:0}.v-ripple__container{border-radius:inherit;width:100%;height:100%;z-index:0;contain:strict}.v-ripple__animation,.v-ripple__container{color:inherit;position:absolute;left:0;top:0;overflow:hidden;pointer-events:none}.v-ripple__animation{border-radius:50%;background:currentColor;opacity:0;will-change:transform,opacity}.v-ripple__animation--enter{transition:none}.v-ripple__animation--in{transition:transform .25s cubic-bezier(.4,0,.2,1),opacity .1s cubic-bezier(.4,0,.2,1)}.v-ripple__animation--out{transition:opacity .3s cubic-bezier(.4,0,.2,1)}.v-progress-circular{position:relative;display:inline-flex;vertical-align:middle;justify-content:center;align-items:center}.v-progress-circular svg{width:100%;height:100%;margin:auto;position:absolute;top:0;bottom:0;left:0;right:0;z-index:0}.v-progress-circular--indeterminate svg{-webkit-animation:progress-circular-rotate 1.4s linear infinite;animation:progress-circular-rotate 1.4s linear infinite;transform-origin:center center;transition:all .2s ease-in-out}.v-progress-circular--indeterminate .v-progress-circular__overlay{-webkit-animation:progress-circular-dash 1.4s ease-in-out infinite;animation:progress-circular-dash 1.4s ease-in-out infinite;stroke-linecap:round;stroke-dasharray:80,200;stroke-dashoffset:0px}.v-progress-circular__info{align-items:center;display:flex;justify-content:center}.v-progress-circular__underlay{stroke:rgba(0,0,0,.1);z-index:1}.v-progress-circular__overlay{stroke:currentColor;z-index:2;transition:all .6s ease-in-out}@-webkit-keyframes progress-circular-dash{0%{stroke-dasharray:1,200;stroke-dashoffset:0px}50%{stroke-dasharray:100,200;stroke-dashoffset:-15px}to{stroke-dasharray:100,200;stroke-dashoffset:-125px}}@keyframes progress-circular-dash{0%{stroke-dasharray:1,200;stroke-dashoffset:0px}50%{stroke-dasharray:100,200;stroke-dashoffset:-15px}to{stroke-dasharray:100,200;stroke-dashoffset:-125px}}@-webkit-keyframes progress-circular-rotate{to{transform:rotate(1turn)}}@keyframes progress-circular-rotate{to{transform:rotate(1turn)}}.theme--light.v-icon{color:rgba(0,0,0,.54)}.theme--light.v-icon:focus:after{opacity:.12}.theme--light.v-icon.v-icon.v-icon--disabled{color:rgba(0,0,0,.38)!important}.theme--dark.v-icon{color:#fff}.theme--dark.v-icon:focus:after{opacity:.24}.theme--dark.v-icon.v-icon.v-icon--disabled{color:hsla(0,0%,100%,.5)!important}.v-icon.v-icon{align-items:center;display:inline-flex;-webkit-font-feature-settings:\"liga\";font-feature-settings:\"liga\";font-size:24px;justify-content:center;letter-spacing:normal;line-height:1;position:relative;text-indent:0;transition:.3s cubic-bezier(.25,.8,.5,1),visibility 0s;vertical-align:middle;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.v-icon.v-icon:after{background-color:currentColor;border-radius:50%;content:\"\";display:inline-block;height:100%;opacity:0;pointer-events:none;position:absolute;transform:scale(1.3);width:100%;transition:opacity .2s cubic-bezier(.4,0,.6,1)}.v-icon.v-icon--dense{font-size:20px}.v-icon--right{margin-left:8px}.v-icon--left{margin-right:8px}.v-icon.v-icon.v-icon--link{cursor:pointer;outline:none}.v-icon--disabled{pointer-events:none}.v-icon--is-component,.v-icon--svg{height:24px;width:24px}.v-icon--svg{fill:currentColor}.v-icon--dense--is-component{height:20px}.theme--light.v-alert .v-alert--prominent .v-alert__icon:after{background:rgba(0,0,0,.12)}.theme--dark.v-alert .v-alert--prominent .v-alert__icon:after{background:hsla(0,0%,100%,.12)}.v-alert{display:block;font-size:16px;margin-bottom:16px;padding:16px;position:relative;transition:.3s cubic-bezier(.25,.8,.5,1)}.v-alert:not(.v-sheet--tile){border-radius:4px}.v-application--is-ltr .v-alert>.v-alert__content,.v-application--is-ltr .v-alert>.v-icon{margin-right:16px}.v-application--is-rtl .v-alert>.v-alert__content,.v-application--is-rtl .v-alert>.v-icon{margin-left:16px}.v-application--is-ltr .v-alert>.v-icon+.v-alert__content{margin-right:0}.v-application--is-rtl .v-alert>.v-icon+.v-alert__content{margin-left:0}.v-application--is-ltr .v-alert>.v-alert__content+.v-icon{margin-right:0}.v-application--is-rtl .v-alert>.v-alert__content+.v-icon{margin-left:0}.v-alert__border{border-style:solid;border-width:4px;content:\"\";position:absolute}.v-alert__border:not(.v-alert__border--has-color){opacity:.26}.v-alert__border--left,.v-alert__border--right{bottom:0;top:0}.v-alert__border--bottom,.v-alert__border--top{left:0;right:0}.v-alert__border--bottom{border-bottom-left-radius:inherit;border-bottom-right-radius:inherit;bottom:0}.v-application--is-ltr .v-alert__border--left{border-top-left-radius:inherit;border-bottom-left-radius:inherit;left:0}.v-application--is-ltr .v-alert__border--right,.v-application--is-rtl .v-alert__border--left{border-top-right-radius:inherit;border-bottom-right-radius:inherit;right:0}.v-application--is-rtl .v-alert__border--right{border-top-left-radius:inherit;border-bottom-left-radius:inherit;left:0}.v-alert__border--top{border-top-left-radius:inherit;border-top-right-radius:inherit;top:0}.v-alert__content{flex:1 1 auto}.v-application--is-ltr .v-alert__dismissible{margin:-16px -8px -16px 8px}.v-application--is-rtl .v-alert__dismissible{margin:-16px 8px -16px -8px}.v-alert__icon{align-self:flex-start;border-radius:50%;height:24px;min-width:24px;position:relative}.v-application--is-ltr .v-alert__icon{margin-right:16px}.v-application--is-rtl .v-alert__icon{margin-left:16px}.v-alert__icon.v-icon{font-size:24px}.v-alert__wrapper{align-items:center;border-radius:inherit;display:flex}.v-alert--dense{padding-top:8px;padding-bottom:8px}.v-alert--dense .v-alert__border{border-width:medium}.v-alert--outlined{background:transparent!important;border:thin solid!important}.v-alert--outlined .v-alert__icon{color:inherit!important}.v-alert--prominent .v-alert__icon{align-self:center;height:48px;min-width:48px}.v-alert--prominent .v-alert__icon:after{background:currentColor!important;border-radius:50%;bottom:0;content:\"\";left:0;opacity:.16;position:absolute;right:0;top:0}.v-alert--prominent .v-alert__icon.v-icon{font-size:32px}.v-alert--text{background:transparent!important}.v-alert--text:before{background-color:currentColor;border-radius:inherit;bottom:0;content:\"\";left:0;opacity:.12;position:absolute;pointer-events:none;right:0;top:0}.v-autocomplete.v-input>.v-input__control>.v-input__slot{cursor:text}.v-autocomplete input{align-self:center}.v-autocomplete--is-selecting-index input{opacity:0}.v-autocomplete.v-text-field--enclosed:not(.v-text-field--solo):not(.v-text-field--single-line):not(.v-text-field--outlined) .v-select__slot>input{margin-top:24px}.v-autocomplete.v-text-field--enclosed:not(.v-text-field--solo):not(.v-text-field--single-line):not(.v-text-field--outlined).v-input--dense .v-select__slot>input{margin-top:20px}.v-autocomplete:not(.v-input--is-disabled).v-select.v-text-field input{pointer-events:inherit}.v-autocomplete__content.v-menu__content,.v-autocomplete__content.v-menu__content .v-card{border-radius:0}.theme--light.v-text-field>.v-input__control>.v-input__slot:before{border-color:rgba(0,0,0,.42)}.theme--light.v-text-field:not(.v-input--has-state):hover>.v-input__control>.v-input__slot:before{border-color:rgba(0,0,0,.87)}.theme--light.v-text-field.v-input--is-disabled .v-input__slot:before{border-image:repeating-linear-gradient(90deg,rgba(0,0,0,.38) 0,rgba(0,0,0,.38) 2px,transparent 0,transparent 4px) 1 repeat}.theme--light.v-text-field--filled>.v-input__control>.v-input__slot{background:rgba(0,0,0,.06)}.theme--light.v-text-field--filled:not(.v-input--is-focused):not(.v-input--has-state)>.v-input__control>.v-input__slot:hover{background:rgba(0,0,0,.12)}.theme--light.v-text-field--solo>.v-input__control>.v-input__slot{background:#fff}.theme--light.v-text-field--solo-inverted>.v-input__control>.v-input__slot{background:rgba(0,0,0,.06)}.theme--light.v-text-field--solo-inverted.v-input--is-focused>.v-input__control>.v-input__slot{background:#424242}.theme--light.v-text-field--solo-inverted.v-input--is-focused>.v-input__control>.v-input__slot input{color:#fff}.theme--light.v-text-field--solo-inverted.v-input--is-focused>.v-input__control>.v-input__slot input::-webkit-input-placeholder{color:hsla(0,0%,100%,.5)}.theme--light.v-text-field--solo-inverted.v-input--is-focused>.v-input__control>.v-input__slot input::-moz-placeholder{color:hsla(0,0%,100%,.5)}.theme--light.v-text-field--solo-inverted.v-input--is-focused>.v-input__control>.v-input__slot input:-ms-input-placeholder{color:hsla(0,0%,100%,.5)}.theme--light.v-text-field--solo-inverted.v-input--is-focused>.v-input__control>.v-input__slot input::-ms-input-placeholder{color:hsla(0,0%,100%,.5)}.theme--light.v-text-field--solo-inverted.v-input--is-focused>.v-input__control>.v-input__slot input::placeholder{color:hsla(0,0%,100%,.5)}.theme--light.v-text-field--solo-inverted.v-input--is-focused>.v-input__control>.v-input__slot .v-label{color:hsla(0,0%,100%,.7)}.theme--light.v-text-field--outlined:not(.v-input--is-focused):not(.v-input--has-state)>.v-input__control>.v-input__slot fieldset{color:rgba(0,0,0,.38)}.theme--light.v-text-field--outlined:not(.v-input--is-focused):not(.v-input--has-state)>.v-input__control>.v-input__slot:hover fieldset{color:rgba(0,0,0,.86)}.theme--light.v-text-field--outlined:not(.v-input--is-focused).v-input--is-disabled>.v-input__control>.v-input__slot fieldset{color:rgba(0,0,0,.26)}.theme--dark.v-text-field>.v-input__control>.v-input__slot:before{border-color:hsla(0,0%,100%,.7)}.theme--dark.v-text-field:not(.v-input--has-state):hover>.v-input__control>.v-input__slot:before{border-color:#fff}.theme--dark.v-text-field.v-input--is-disabled .v-input__slot:before{border-image:repeating-linear-gradient(90deg,hsla(0,0%,100%,.5) 0,hsla(0,0%,100%,.5) 2px,transparent 0,transparent 4px) 1 repeat}.theme--dark.v-text-field--filled>.v-input__control>.v-input__slot{background:hsla(0,0%,100%,.08)}.theme--dark.v-text-field--filled:not(.v-input--is-focused):not(.v-input--has-state)>.v-input__control>.v-input__slot:hover{background:hsla(0,0%,100%,.16)}.theme--dark.v-text-field--solo>.v-input__control>.v-input__slot{background:#1e1e1e}.theme--dark.v-text-field--solo-inverted>.v-input__control>.v-input__slot{background:hsla(0,0%,100%,.16)}.theme--dark.v-text-field--solo-inverted.v-input--is-focused>.v-input__control>.v-input__slot{background:#fff}.theme--dark.v-text-field--solo-inverted.v-input--is-focused>.v-input__control>.v-input__slot input{color:rgba(0,0,0,.87)}.theme--dark.v-text-field--solo-inverted.v-input--is-focused>.v-input__control>.v-input__slot input::-webkit-input-placeholder{color:rgba(0,0,0,.38)}.theme--dark.v-text-field--solo-inverted.v-input--is-focused>.v-input__control>.v-input__slot input::-moz-placeholder{color:rgba(0,0,0,.38)}.theme--dark.v-text-field--solo-inverted.v-input--is-focused>.v-input__control>.v-input__slot input:-ms-input-placeholder{color:rgba(0,0,0,.38)}.theme--dark.v-text-field--solo-inverted.v-input--is-focused>.v-input__control>.v-input__slot input::-ms-input-placeholder{color:rgba(0,0,0,.38)}.theme--dark.v-text-field--solo-inverted.v-input--is-focused>.v-input__control>.v-input__slot input::placeholder{color:rgba(0,0,0,.38)}.theme--dark.v-text-field--solo-inverted.v-input--is-focused>.v-input__control>.v-input__slot .v-label{color:rgba(0,0,0,.6)}.theme--dark.v-text-field--outlined:not(.v-input--is-focused):not(.v-input--has-state)>.v-input__control>.v-input__slot fieldset{color:hsla(0,0%,100%,.24)}.theme--dark.v-text-field--outlined:not(.v-input--is-focused):not(.v-input--has-state)>.v-input__control>.v-input__slot:hover fieldset{color:#fff}.theme--dark.v-text-field--outlined:not(.v-input--is-focused).v-input--is-disabled>.v-input__control>.v-input__slot fieldset{color:hsla(0,0%,100%,.16)}.v-text-field{padding-top:12px;margin-top:4px}.v-text-field input{flex:1 1 auto;line-height:20px;padding:8px 0;max-width:100%;min-width:0;width:100%}.v-text-field .v-input__control,.v-text-field .v-input__slot,.v-text-field fieldset{border-radius:inherit}.v-text-field.v-input--has-state .v-input__control>.v-text-field__details>.v-counter,.v-text-field.v-input--is-disabled .v-input__control>.v-text-field__details>.v-counter,.v-text-field.v-input--is-disabled .v-input__control>.v-text-field__details>.v-messages,.v-text-field .v-input__control,.v-text-field fieldset{color:inherit}.v-text-field.v-input--dense{padding-top:0}.v-text-field.v-input--dense:not(.v-text-field--outlined):not(.v-text-field--single-line) input{padding:4px 0 2px}.v-text-field.v-input--dense[type=text]::-ms-clear{display:none}.v-text-field .v-input__append-inner,.v-text-field .v-input__prepend-inner{align-self:flex-start;display:inline-flex;margin-top:4px;line-height:1;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.v-application--is-ltr .v-text-field .v-input__prepend-inner{margin-right:auto;padding-right:4px}.v-application--is-ltr .v-text-field .v-input__append-inner,.v-application--is-rtl .v-text-field .v-input__prepend-inner{margin-left:auto;padding-left:4px}.v-application--is-rtl .v-text-field .v-input__append-inner{margin-right:auto;padding-right:4px}.v-text-field .v-counter{white-space:nowrap}.v-application--is-ltr .v-text-field .v-counter{margin-left:8px}.v-application--is-rtl .v-text-field .v-counter{margin-right:8px}.v-text-field .v-label{max-width:90%;overflow:hidden;text-overflow:ellipsis;top:6px;white-space:nowrap;pointer-events:none}.v-application--is-ltr .v-text-field .v-label{transform-origin:top left}.v-application--is-rtl .v-text-field .v-label{transform-origin:top right}.v-text-field .v-label--active{max-width:133%;transform:translateY(-18px) scale(.75)}.v-text-field>.v-input__control>.v-input__slot{cursor:text;transition:background .3s cubic-bezier(.25,.8,.5,1)}.v-text-field>.v-input__control>.v-input__slot:after,.v-text-field>.v-input__control>.v-input__slot:before{bottom:-1px;content:\"\";left:0;position:absolute;transition:.3s cubic-bezier(.25,.8,.5,1);width:100%}.v-text-field>.v-input__control>.v-input__slot:before{border-color:inherit;border-style:solid;border-width:thin 0 0}.v-text-field>.v-input__control>.v-input__slot:after{border-color:currentcolor;border-style:solid;border-width:thin 0;transform:scaleX(0)}.v-text-field__details{display:flex;flex:1 0 auto;max-width:100%;min-height:14px;overflow:hidden}.v-text-field__prefix,.v-text-field__suffix{align-self:center;cursor:default;transition:color .3s cubic-bezier(.25,.8,.5,1);white-space:nowrap}.v-application--is-ltr .v-text-field__prefix{text-align:right;padding-right:4px}.v-application--is-rtl .v-text-field__prefix{text-align:left;padding-left:4px}.v-text-field__suffix{white-space:nowrap}.v-application--is-ltr .v-text-field__suffix{padding-left:4px}.v-application--is-rtl .v-text-field__suffix{padding-right:4px}.v-application--is-ltr .v-text-field--reverse .v-text-field__prefix{text-align:left;padding-right:0;padding-left:4px}.v-application--is-rtl .v-text-field--reverse .v-text-field__prefix{text-align:right;padding-right:4px;padding-left:0}.v-application--is-ltr .v-text-field--reverse .v-text-field__suffix{padding-left:0;padding-right:4px}.v-application--is-rtl .v-text-field--reverse .v-text-field__suffix{padding-left:4px;padding-right:0}.v-text-field>.v-input__control>.v-input__slot>.v-text-field__slot{display:flex;flex:1 1 auto;position:relative}.v-text-field:not(.v-text-field--is-booted) .v-label,.v-text-field:not(.v-text-field--is-booted) legend{transition:none}.v-text-field--filled,.v-text-field--full-width,.v-text-field--outlined{position:relative}.v-text-field--filled>.v-input__control>.v-input__slot,.v-text-field--full-width>.v-input__control>.v-input__slot,.v-text-field--outlined>.v-input__control>.v-input__slot{align-items:stretch;min-height:56px}.v-text-field--filled.v-input--dense>.v-input__control>.v-input__slot,.v-text-field--full-width.v-input--dense>.v-input__control>.v-input__slot,.v-text-field--outlined.v-input--dense>.v-input__control>.v-input__slot{min-height:52px}.v-text-field--filled.v-input--dense.v-text-field--outlined.v-text-field--filled>.v-input__control>.v-input__slot,.v-text-field--filled.v-input--dense.v-text-field--outlined>.v-input__control>.v-input__slot,.v-text-field--filled.v-input--dense.v-text-field--single-line>.v-input__control>.v-input__slot,.v-text-field--full-width.v-input--dense.v-text-field--outlined.v-text-field--filled>.v-input__control>.v-input__slot,.v-text-field--full-width.v-input--dense.v-text-field--outlined>.v-input__control>.v-input__slot,.v-text-field--full-width.v-input--dense.v-text-field--single-line>.v-input__control>.v-input__slot,.v-text-field--outlined.v-input--dense.v-text-field--outlined.v-text-field--filled>.v-input__control>.v-input__slot,.v-text-field--outlined.v-input--dense.v-text-field--outlined>.v-input__control>.v-input__slot,.v-text-field--outlined.v-input--dense.v-text-field--single-line>.v-input__control>.v-input__slot{min-height:40px}.v-text-field--outlined{border-radius:4px}.v-text-field--enclosed .v-input__append-inner,.v-text-field--enclosed .v-input__append-outer,.v-text-field--enclosed .v-input__prepend-inner,.v-text-field--enclosed .v-input__prepend-outer,.v-text-field--full-width .v-input__append-inner,.v-text-field--full-width .v-input__append-outer,.v-text-field--full-width .v-input__prepend-inner,.v-text-field--full-width .v-input__prepend-outer{margin-top:17px}.v-text-field--enclosed.v-input--dense:not(.v-text-field--solo) .v-input__append-inner,.v-text-field--enclosed.v-input--dense:not(.v-text-field--solo) .v-input__append-outer,.v-text-field--enclosed.v-input--dense:not(.v-text-field--solo) .v-input__prepend-inner,.v-text-field--enclosed.v-input--dense:not(.v-text-field--solo) .v-input__prepend-outer,.v-text-field--full-width.v-input--dense:not(.v-text-field--solo) .v-input__append-inner,.v-text-field--full-width.v-input--dense:not(.v-text-field--solo) .v-input__append-outer,.v-text-field--full-width.v-input--dense:not(.v-text-field--solo) .v-input__prepend-inner,.v-text-field--full-width.v-input--dense:not(.v-text-field--solo) .v-input__prepend-outer{margin-top:14px}.v-text-field--enclosed.v-input--dense:not(.v-text-field--solo).v-text-field--single-line .v-input__append-inner,.v-text-field--enclosed.v-input--dense:not(.v-text-field--solo).v-text-field--single-line .v-input__append-outer,.v-text-field--enclosed.v-input--dense:not(.v-text-field--solo).v-text-field--single-line .v-input__prepend-inner,.v-text-field--enclosed.v-input--dense:not(.v-text-field--solo).v-text-field--single-line .v-input__prepend-outer,.v-text-field--full-width.v-input--dense:not(.v-text-field--solo).v-text-field--single-line .v-input__append-inner,.v-text-field--full-width.v-input--dense:not(.v-text-field--solo).v-text-field--single-line .v-input__append-outer,.v-text-field--full-width.v-input--dense:not(.v-text-field--solo).v-text-field--single-line .v-input__prepend-inner,.v-text-field--full-width.v-input--dense:not(.v-text-field--solo).v-text-field--single-line .v-input__prepend-outer{margin-top:9px}.v-text-field--enclosed.v-input--dense:not(.v-text-field--solo).v-text-field--outlined .v-input__append-inner,.v-text-field--enclosed.v-input--dense:not(.v-text-field--solo).v-text-field--outlined .v-input__append-outer,.v-text-field--enclosed.v-input--dense:not(.v-text-field--solo).v-text-field--outlined .v-input__prepend-inner,.v-text-field--enclosed.v-input--dense:not(.v-text-field--solo).v-text-field--outlined .v-input__prepend-outer,.v-text-field--full-width.v-input--dense:not(.v-text-field--solo).v-text-field--outlined .v-input__append-inner,.v-text-field--full-width.v-input--dense:not(.v-text-field--solo).v-text-field--outlined .v-input__append-outer,.v-text-field--full-width.v-input--dense:not(.v-text-field--solo).v-text-field--outlined .v-input__prepend-inner,.v-text-field--full-width.v-input--dense:not(.v-text-field--solo).v-text-field--outlined .v-input__prepend-outer{margin-top:7px}.v-text-field--filled .v-label,.v-text-field--full-width .v-label{top:18px}.v-text-field--filled .v-label--active,.v-text-field--full-width .v-label--active{transform:translateY(-6px) scale(.75)}.v-text-field--filled.v-input--dense .v-label,.v-text-field--full-width.v-input--dense .v-label{top:17px}.v-text-field--filled.v-input--dense .v-label--active,.v-text-field--full-width.v-input--dense .v-label--active{transform:translateY(-10px) scale(.75)}.v-text-field--filled.v-input--dense.v-text-field--single-line .v-label,.v-text-field--full-width.v-input--dense.v-text-field--single-line .v-label{top:11px}.v-text-field--filled{border-radius:4px 4px 0 0}.v-text-field--filled:not(.v-text-field--single-line) input{margin-top:22px}.v-text-field--filled.v-input--dense:not(.v-text-field--single-line).v-text-field--outlined input{margin-top:0}.v-text-field--filled .v-text-field__prefix,.v-text-field--filled .v-text-field__suffix{max-height:32px;margin-top:20px}.v-text-field--full-width{border-radius:0}.v-text-field--outlined .v-text-field__slot,.v-text-field--single-line .v-text-field__slot{align-items:center}.v-text-field.v-text-field--enclosed{margin:0;padding:0}.v-text-field.v-text-field--enclosed.v-text-field--single-line .v-text-field__prefix,.v-text-field.v-text-field--enclosed.v-text-field--single-line .v-text-field__suffix{margin-top:0}.v-text-field.v-text-field--enclosed:not(.v-text-field--filled) .v-progress-linear__background{display:none}.v-text-field.v-text-field--enclosed .v-text-field__details,.v-text-field.v-text-field--enclosed:not(.v-text-field--rounded)>.v-input__control>.v-input__slot{padding:0 12px}.v-text-field.v-text-field--enclosed .v-text-field__details{margin-bottom:8px}.v-application--is-ltr .v-text-field--reverse input{text-align:right}.v-application--is-rtl .v-text-field--reverse input{text-align:left}.v-application--is-ltr .v-text-field--reverse .v-label{transform-origin:top right}.v-application--is-rtl .v-text-field--reverse .v-label{transform-origin:top left}.v-text-field--reverse .v-text-field__slot,.v-text-field--reverse>.v-input__control>.v-input__slot{flex-direction:row-reverse}.v-text-field--outlined>.v-input__control>.v-input__slot:after,.v-text-field--outlined>.v-input__control>.v-input__slot:before,.v-text-field--rounded>.v-input__control>.v-input__slot:after,.v-text-field--rounded>.v-input__control>.v-input__slot:before,.v-text-field--solo>.v-input__control>.v-input__slot:after,.v-text-field--solo>.v-input__control>.v-input__slot:before{display:none}.v-text-field--outlined,.v-text-field--solo{border-radius:4px}.v-text-field--outlined{margin-bottom:16px;transition:border .3s cubic-bezier(.25,.8,.5,1)}.v-text-field--outlined .v-label{top:18px}.v-text-field--outlined .v-label--active{transform:translateY(-24px) scale(.75)}.v-text-field--outlined.v-input--dense .v-label{top:10px}.v-text-field--outlined.v-input--dense .v-label--active{transform:translateY(-16px) scale(.75)}.v-text-field--outlined fieldset{border-collapse:collapse;border:1px solid;bottom:0;left:0;pointer-events:none;position:absolute;right:0;top:-5px;transition-duration:.3s;transition-property:color,border-width;transition-timing-function:cubic-bezier(.25,.8,.25,1)}.v-application--is-ltr .v-text-field--outlined fieldset{padding-left:8px}.v-application--is-ltr .v-text-field--outlined.v-text-field--reverse fieldset,.v-application--is-rtl .v-text-field--outlined fieldset{padding-right:8px}.v-application--is-rtl .v-text-field--outlined.v-text-field--reverse fieldset{padding-left:8px}.v-text-field--outlined legend{line-height:11px;padding:0;transition:width .3s cubic-bezier(.25,.8,.5,1)}.v-application--is-ltr .v-text-field--outlined legend{text-align:left}.v-application--is-ltr .v-text-field--outlined.v-text-field--reverse legend,.v-application--is-rtl .v-text-field--outlined legend{text-align:right}.v-application--is-rtl .v-text-field--outlined.v-text-field--reverse legend{text-align:left}.v-application--is-ltr .v-text-field--outlined.v-text-field--rounded legend{margin-left:12px}.v-application--is-rtl .v-text-field--outlined.v-text-field--rounded legend{margin-right:12px}.v-text-field--outlined>.v-input__control>.v-input__slot{background:transparent}.v-text-field--outlined .v-text-field__prefix{max-height:32px}.v-text-field--outlined .v-input__append-outer,.v-text-field--outlined .v-input__prepend-outer{margin-top:18px}.v-text-field--outlined.v-input--has-state fieldset,.v-text-field--outlined.v-input--is-focused fieldset{border:2px solid}.v-text-field--rounded{border-radius:28px}.v-text-field--rounded>.v-input__control>.v-input__slot{padding:0 24px}.v-text-field--shaped{border-radius:16px 16px 0 0}.v-text-field.v-text-field--solo .v-label{top:calc(50% - 10px)}.v-text-field.v-text-field--solo .v-input__control{min-height:48px;padding:0}.v-text-field.v-text-field--solo .v-input__control input{caret-color:auto}.v-text-field.v-text-field--solo.v-input--dense>.v-input__control{min-height:38px}.v-text-field.v-text-field--solo:not(.v-text-field--solo-flat)>.v-input__control>.v-input__slot{box-shadow:0 3px 1px -2px rgba(0,0,0,.2),0 2px 2px 0 rgba(0,0,0,.14),0 1px 5px 0 rgba(0,0,0,.12)}.v-text-field.v-text-field--solo .v-input__append-inner,.v-text-field.v-text-field--solo .v-input__prepend-inner{align-self:center;margin-top:0}.v-text-field.v-text-field--solo .v-input__append-outer,.v-text-field.v-text-field--solo .v-input__prepend-outer{margin-top:12px}.v-text-field.v-text-field--solo.v-input--dense .v-input__append-outer,.v-text-field.v-text-field--solo.v-input--dense .v-input__prepend-outer{margin-top:7px}.v-text-field.v-input--is-focused>.v-input__control>.v-input__slot:after{transform:scaleX(1)}.v-text-field.v-input--has-state>.v-input__control>.v-input__slot:before{border-color:currentColor}.theme--light.v-select .v-select__selection--comma{color:rgba(0,0,0,.87)}.theme--light.v-select .v-select__selection--disabled{color:rgba(0,0,0,.38)}.theme--dark.v-select .v-select__selection--comma{color:#fff}.theme--dark.v-select .v-select__selection--disabled{color:hsla(0,0%,100%,.5)}.v-select{position:relative}.v-select:not(.v-select--is-multi).v-text-field--single-line .v-select__selections{flex-wrap:nowrap}.v-select>.v-input__control>.v-input__slot{cursor:pointer}.v-select .v-chip{flex:0 1 auto;margin:4px}.v-select .v-chip--selected:after{opacity:.22}.v-select .fade-transition-leave-active{position:absolute;left:0}.v-select.v-input--is-dirty ::-webkit-input-placeholder{color:transparent!important}.v-select.v-input--is-dirty ::-moz-placeholder{color:transparent!important}.v-select.v-input--is-dirty :-ms-input-placeholder{color:transparent!important}.v-select.v-input--is-dirty ::-ms-input-placeholder{color:transparent!important}.v-select.v-input--is-dirty ::placeholder{color:transparent!important}.v-select:not(.v-input--is-dirty):not(.v-input--is-focused) .v-text-field__prefix{line-height:20px;position:absolute;top:7px;transition:.3s cubic-bezier(.25,.8,.5,1)}.v-select.v-text-field--enclosed:not(.v-text-field--single-line):not(.v-text-field--outlined) .v-select__selections{padding-top:20px}.v-select.v-text-field--outlined:not(.v-text-field--single-line) .v-select__selections{padding:8px 0}.v-select.v-text-field--outlined:not(.v-text-field--single-line).v-input--dense .v-select__selections{padding:4px 0}.v-select.v-text-field input{flex:1 1;margin-top:0;min-width:0;pointer-events:none;position:relative}.v-select.v-select--is-menu-active .v-input__icon--append .v-icon{transform:rotate(180deg)}.v-select.v-select--chips input{margin:0}.v-select.v-select--chips .v-select__selections{min-height:42px}.v-select.v-select--chips.v-input--dense .v-select__selections{min-height:40px}.v-select.v-select--chips .v-chip--select.v-chip--active:before{opacity:.2}.v-select.v-select--chips.v-select--chips--small .v-select__selections{min-height:32px}.v-select.v-select--chips:not(.v-text-field--single-line).v-text-field--box .v-select__selections,.v-select.v-select--chips:not(.v-text-field--single-line).v-text-field--enclosed .v-select__selections{min-height:68px}.v-select.v-select--chips:not(.v-text-field--single-line).v-text-field--box.v-input--dense .v-select__selections,.v-select.v-select--chips:not(.v-text-field--single-line).v-text-field--enclosed.v-input--dense .v-select__selections{min-height:40px}.v-select.v-select--chips:not(.v-text-field--single-line).v-text-field--box.v-select--chips--small .v-select__selections,.v-select.v-select--chips:not(.v-text-field--single-line).v-text-field--enclosed.v-select--chips--small .v-select__selections{min-height:32px}.v-select.v-select--chips:not(.v-text-field--single-line).v-text-field--box.v-select--chips--small.v-input--dense .v-select__selections,.v-select.v-select--chips:not(.v-text-field--single-line).v-text-field--enclosed.v-select--chips--small.v-input--dense .v-select__selections{min-height:38px}.v-select.v-text-field--reverse .v-select__selections,.v-select.v-text-field--reverse .v-select__slot{flex-direction:row-reverse}.v-select__selections{align-items:center;display:flex;flex:1 1;flex-wrap:wrap;line-height:18px;max-width:100%;min-width:0}.v-select__selection{max-width:90%}.v-select__selection--comma{margin:7px 4px 7px 0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.v-select__slot{position:relative;align-items:center;display:flex;max-width:100%;width:100%}.v-select:not(.v-text-field--single-line):not(.v-text-field--outlined) .v-select__slot>input{align-self:flex-end}.theme--light.v-input,.theme--light.v-input input,.theme--light.v-input textarea{color:rgba(0,0,0,.87)}.theme--light.v-input input::-webkit-input-placeholder,.theme--light.v-input textarea::-webkit-input-placeholder{color:rgba(0,0,0,.38)}.theme--light.v-input input::-moz-placeholder,.theme--light.v-input textarea::-moz-placeholder{color:rgba(0,0,0,.38)}.theme--light.v-input input:-ms-input-placeholder,.theme--light.v-input textarea:-ms-input-placeholder{color:rgba(0,0,0,.38)}.theme--light.v-input input::-ms-input-placeholder,.theme--light.v-input textarea::-ms-input-placeholder{color:rgba(0,0,0,.38)}.theme--light.v-input input::placeholder,.theme--light.v-input textarea::placeholder{color:rgba(0,0,0,.38)}.theme--light.v-input--is-disabled,.theme--light.v-input--is-disabled input,.theme--light.v-input--is-disabled textarea{color:rgba(0,0,0,.38)}.theme--dark.v-input,.theme--dark.v-input input,.theme--dark.v-input textarea{color:#fff}.theme--dark.v-input input::-webkit-input-placeholder,.theme--dark.v-input textarea::-webkit-input-placeholder{color:hsla(0,0%,100%,.5)}.theme--dark.v-input input::-moz-placeholder,.theme--dark.v-input textarea::-moz-placeholder{color:hsla(0,0%,100%,.5)}.theme--dark.v-input input:-ms-input-placeholder,.theme--dark.v-input textarea:-ms-input-placeholder{color:hsla(0,0%,100%,.5)}.theme--dark.v-input input::-ms-input-placeholder,.theme--dark.v-input textarea::-ms-input-placeholder{color:hsla(0,0%,100%,.5)}.theme--dark.v-input input::placeholder,.theme--dark.v-input textarea::placeholder{color:hsla(0,0%,100%,.5)}.theme--dark.v-input--is-disabled,.theme--dark.v-input--is-disabled input,.theme--dark.v-input--is-disabled textarea{color:hsla(0,0%,100%,.5)}.v-input{align-items:flex-start;display:flex;flex:1 1 auto;font-size:16px;letter-spacing:normal;max-width:100%;text-align:left}.v-input .v-progress-linear{top:calc(100% - 1px);left:0}.v-input input{max-height:32px}.v-input input:invalid,.v-input textarea:invalid{box-shadow:none}.v-input input:active,.v-input input:focus,.v-input textarea:active,.v-input textarea:focus{outline:none}.v-input .v-label{height:20px;line-height:20px}.v-input__append-outer,.v-input__prepend-outer{display:inline-flex;margin-bottom:4px;margin-top:4px;line-height:1}.v-input__append-outer .v-icon,.v-input__prepend-outer .v-icon{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.v-application--is-ltr .v-input__append-outer{margin-left:9px}.v-application--is-ltr .v-input__prepend-outer,.v-application--is-rtl .v-input__append-outer{margin-right:9px}.v-application--is-rtl .v-input__prepend-outer{margin-left:9px}.v-input__control{display:flex;flex-direction:column;height:auto;flex-grow:1;flex-wrap:wrap;min-width:0;width:100%}.v-input__icon{align-items:center;display:inline-flex;height:24px;flex:1 0 auto;justify-content:center;min-width:24px;width:24px}.v-input__icon--clear{border-radius:50%}.v-input__icon--clear .v-icon--disabled{visibility:hidden}.v-input__slot{align-items:center;color:inherit;display:flex;margin-bottom:8px;min-height:inherit;position:relative;transition:.3s cubic-bezier(.25,.8,.5,1);width:100%}.v-input--dense>.v-input__control>.v-input__slot{margin-bottom:4px}.v-input--is-disabled:not(.v-input--is-readonly){pointer-events:none}.v-input--is-loading>.v-input__control>.v-input__slot:after,.v-input--is-loading>.v-input__control>.v-input__slot:before{display:none}.v-input--hide-details>.v-input__control>.v-input__slot{margin-bottom:0}.v-input--has-state.error--text .v-label{-webkit-animation:v-shake .6s cubic-bezier(.25,.8,.5,1);animation:v-shake .6s cubic-bezier(.25,.8,.5,1)}.theme--light.v-label{color:rgba(0,0,0,.6)}.theme--light.v-label--is-disabled{color:rgba(0,0,0,.38)}.theme--dark.v-label{color:hsla(0,0%,100%,.7)}.theme--dark.v-label--is-disabled{color:hsla(0,0%,100%,.5)}.v-label{font-size:16px;line-height:1;min-height:8px;transition:.3s cubic-bezier(.25,.8,.5,1)}.theme--light.v-messages{color:rgba(0,0,0,.6)}.theme--dark.v-messages{color:hsla(0,0%,100%,.7)}.v-messages{flex:1 1 auto;font-size:12px;min-height:14px;min-width:1px;position:relative}.v-application--is-ltr .v-messages{text-align:left}.v-application--is-rtl .v-messages{text-align:right}.v-messages__message{line-height:12px;word-break:break-word;overflow-wrap:break-word;word-wrap:break-word;-webkit-hyphens:auto;-ms-hyphens:auto;hyphens:auto}.theme--light.v-progress-linear{color:rgba(0,0,0,.87)}.theme--dark.v-progress-linear{color:#fff}.v-progress-linear{background:transparent;overflow:hidden;position:relative;transition:.2s cubic-bezier(.4,0,.6,1);width:100%}.v-progress-linear__buffer{height:inherit;left:0;position:absolute;top:0;transition:inherit;width:100%;z-index:1}.v-progress-linear__background{bottom:0;left:0;position:absolute;top:0;transition:inherit}.v-progress-linear__content{align-items:center;display:flex;height:100%;left:0;justify-content:center;position:absolute;top:0;width:100%;z-index:2}.v-progress-linear__determinate{height:inherit;transition:inherit}.v-progress-linear__indeterminate .long,.v-progress-linear__indeterminate .short{background-color:inherit;bottom:0;height:inherit;left:0;position:absolute;top:0;width:auto;will-change:left,right}.v-progress-linear__indeterminate--active .long{-webkit-animation:indeterminate;animation:indeterminate;-webkit-animation-duration:2.2s;animation-duration:2.2s;-webkit-animation-iteration-count:infinite;animation-iteration-count:infinite}.v-progress-linear__indeterminate--active .short{-webkit-animation:indeterminate-short;animation:indeterminate-short;-webkit-animation-duration:2.2s;animation-duration:2.2s;-webkit-animation-iteration-count:infinite;animation-iteration-count:infinite}.v-progress-linear__stream{-webkit-animation:stream .25s linear infinite;animation:stream .25s linear infinite;border-color:currentColor;border-top:4px dotted;bottom:0;opacity:.3;pointer-events:none;position:absolute;right:-8px;top:calc(50% - 2px);transition:inherit}.v-progress-linear__wrapper{overflow:hidden;position:relative;transition:inherit}.v-progress-linear--absolute,.v-progress-linear--fixed{left:0;z-index:1}.v-progress-linear--absolute{position:absolute}.v-progress-linear--fixed{position:fixed}.v-progress-linear--reactive .v-progress-linear__content{pointer-events:none}.v-progress-linear--rounded{border-radius:4px}.v-progress-linear--striped .v-progress-linear__determinate{background-image:linear-gradient(135deg,hsla(0,0%,100%,.25) 25%,transparent 0,transparent 50%,hsla(0,0%,100%,.25) 0,hsla(0,0%,100%,.25) 75%,transparent 0,transparent);background-size:40px 40px;background-repeat:repeat-x}.v-progress-linear--query .v-progress-linear__indeterminate--active .long{-webkit-animation:query;animation:query;-webkit-animation-duration:2s;animation-duration:2s;-webkit-animation-iteration-count:infinite;animation-iteration-count:infinite}.v-progress-linear--query .v-progress-linear__indeterminate--active .short{-webkit-animation:query-short;animation:query-short;-webkit-animation-duration:2s;animation-duration:2s;-webkit-animation-iteration-count:infinite;animation-iteration-count:infinite}@-webkit-keyframes indeterminate{0%{left:-90%;right:100%}60%{left:-90%;right:100%}to{left:100%;right:-35%}}@keyframes indeterminate{0%{left:-90%;right:100%}60%{left:-90%;right:100%}to{left:100%;right:-35%}}@-webkit-keyframes indeterminate-short{0%{left:-200%;right:100%}60%{left:107%;right:-8%}to{left:107%;right:-8%}}@keyframes indeterminate-short{0%{left:-200%;right:100%}60%{left:107%;right:-8%}to{left:107%;right:-8%}}@-webkit-keyframes query{0%{right:-90%;left:100%}60%{right:-90%;left:100%}to{right:100%;left:-35%}}@keyframes query{0%{right:-90%;left:100%}60%{right:-90%;left:100%}to{right:100%;left:-35%}}@-webkit-keyframes query-short{0%{right:-200%;left:100%}60%{right:107%;left:-8%}to{right:107%;left:-8%}}@keyframes query-short{0%{right:-200%;left:100%}60%{right:107%;left:-8%}to{right:107%;left:-8%}}@-webkit-keyframes stream{to{transform:translateX(-8px)}}@keyframes stream{to{transform:translateX(-8px)}}.theme--light.v-counter{color:rgba(0,0,0,.6)}.theme--dark.v-counter{color:hsla(0,0%,100%,.7)}.v-counter{flex:0 1 auto;font-size:12px;min-height:12px;line-height:12px}.theme--light.v-list-item--disabled{color:rgba(0,0,0,.38)}.theme--light.v-list-item:not(.v-list-item--active):not(.v-list-item--disabled){color:rgba(0,0,0,.87)!important}.theme--light.v-list-item .v-list-item__mask{color:rgba(0,0,0,.38);background:#eee}.theme--light.v-list-item .v-list-item__action-text,.theme--light.v-list-item .v-list-item__subtitle{color:rgba(0,0,0,.6)}.theme--light.v-list-item:hover:before{opacity:.04}.theme--light.v-list-item--active:before,.theme--light.v-list-item--active:hover:before,.theme--light.v-list-item:focus:before{opacity:.12}.theme--light.v-list-item--active:focus:before,.theme--light.v-list-item.v-list-item--highlighted:before{opacity:.16}.theme--dark.v-list-item--disabled{color:hsla(0,0%,100%,.5)}.theme--dark.v-list-item:not(.v-list-item--active):not(.v-list-item--disabled){color:#fff!important}.theme--dark.v-list-item .v-list-item__mask{color:hsla(0,0%,100%,.5);background:#494949}.theme--dark.v-list-item .v-list-item__action-text,.theme--dark.v-list-item .v-list-item__subtitle{color:hsla(0,0%,100%,.7)}.theme--dark.v-list-item:hover:before{opacity:.08}.theme--dark.v-list-item--active:before,.theme--dark.v-list-item--active:hover:before,.theme--dark.v-list-item:focus:before{opacity:.24}.theme--dark.v-list-item--active:focus:before,.theme--dark.v-list-item.v-list-item--highlighted:before{opacity:.32}.v-list-item{align-items:center;display:flex;flex:1 1 100%;letter-spacing:normal;min-height:48px;outline:none;padding:0 16px;position:relative;text-decoration:none}.v-list-item--disabled{pointer-events:none}.v-list-item--selectable{-webkit-user-select:auto;-moz-user-select:auto;-ms-user-select:auto;user-select:auto}.v-list-item__action{align-self:center;margin:12px 0}.v-list-item__action .v-input,.v-list-item__action .v-input--selection-controls__input,.v-list-item__action .v-input__control,.v-list-item__action .v-input__slot{margin:0!important}.v-list-item__action .v-input{padding:0}.v-list-item__action .v-input .v-messages{display:none}.v-list-item__action-text{font-size:.75rem}.v-list-item__avatar{align-self:center;justify-content:flex-start}.v-list-item__avatar,.v-list-item__avatar.v-list-item__avatar--horizontal{margin-bottom:8px;margin-top:8px}.v-application--is-ltr .v-list-item__avatar.v-list-item__avatar--horizontal:first-child{margin-left:-16px}.v-application--is-rtl .v-list-item__avatar.v-list-item__avatar--horizontal:first-child{margin-right:-16px}.v-application--is-ltr .v-list-item__avatar.v-list-item__avatar--horizontal:last-child{margin-left:-16px}.v-application--is-rtl .v-list-item__avatar.v-list-item__avatar--horizontal:last-child{margin-right:-16px}.v-list-item__content{align-items:center;align-self:center;display:flex;flex-wrap:wrap;flex:1 1;overflow:hidden;padding:12px 0}.v-list-item__content>*{line-height:1.1;flex:1 0 100%}.v-list-item__content>:not(:last-child){margin-bottom:2px}.v-list-item__icon{align-self:flex-start;margin:16px 0}.v-application--is-ltr .v-list-item__action:last-of-type:not(:only-child),.v-application--is-ltr .v-list-item__avatar:last-of-type:not(:only-child),.v-application--is-ltr .v-list-item__icon:last-of-type:not(:only-child){margin-left:16px}.v-application--is-ltr .v-list-item__avatar:first-child,.v-application--is-rtl .v-list-item__action:last-of-type:not(:only-child),.v-application--is-rtl .v-list-item__avatar:last-of-type:not(:only-child),.v-application--is-rtl .v-list-item__icon:last-of-type:not(:only-child){margin-right:16px}.v-application--is-rtl .v-list-item__avatar:first-child{margin-left:16px}.v-application--is-ltr .v-list-item__action:first-child,.v-application--is-ltr .v-list-item__icon:first-child{margin-right:32px}.v-application--is-rtl .v-list-item__action:first-child,.v-application--is-rtl .v-list-item__icon:first-child{margin-left:32px}.v-list-item__action,.v-list-item__avatar,.v-list-item__icon{display:inline-flex;min-width:24px}.v-list-item .v-list-item__subtitle,.v-list-item .v-list-item__title{line-height:1.2}.v-list-item__subtitle,.v-list-item__title{flex:1 1 100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.v-list-item__title{align-self:center;font-size:1rem}.v-list-item__title>.v-badge{margin-top:16px}.v-list-item__subtitle{font-size:.875rem}.v-list--dense .v-list-item,.v-list-item--dense{min-height:40px}.v-list--dense .v-list-item .v-list-item__icon,.v-list-item--dense .v-list-item__icon{height:24px;margin-top:8px;margin-bottom:8px}.v-list--dense .v-list-item .v-list-item__content,.v-list-item--dense .v-list-item__content{padding:8px 0}.v-list--dense .v-list-item .v-list-item__subtitle,.v-list--dense .v-list-item .v-list-item__title,.v-list-item--dense .v-list-item__subtitle,.v-list-item--dense .v-list-item__title{font-size:.8125rem;font-weight:500;line-height:1rem}.v-list--dense .v-list-item.v-list-item--two-line,.v-list-item--dense.v-list-item--two-line{min-height:60px}.v-list--dense .v-list-item.v-list-item--three-line,.v-list-item--dense.v-list-item--three-line{min-height:76px}.v-list-item--link{cursor:pointer;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.v-list-item--link:before{background-color:currentColor;bottom:0;content:\"\";left:0;opacity:0;pointer-events:none;position:absolute;right:0;top:0;transition:.3s cubic-bezier(.25,.8,.5,1)}.v-list .v-list-item--active,.v-list .v-list-item--active .v-icon{color:inherit}.v-list-item__action--stack{align-items:flex-end;align-self:stretch;justify-content:space-between;white-space:nowrap;flex-direction:column}.v-list--three-line .v-list-item .v-list-item__avatar:not(.v-list-item__avatar--horizontal),.v-list--three-line .v-list-item .v-list-item__icon,.v-list--two-line .v-list-item .v-list-item__avatar:not(.v-list-item__avatar--horizontal),.v-list--two-line .v-list-item .v-list-item__icon,.v-list-item--three-line .v-list-item__avatar:not(.v-list-item__avatar--horizontal),.v-list-item--three-line .v-list-item__icon,.v-list-item--two-line .v-list-item__avatar:not(.v-list-item__avatar--horizontal),.v-list-item--two-line .v-list-item__icon{margin-bottom:16px;margin-top:16px}.v-list--two-line .v-list-item,.v-list-item--two-line{min-height:64px}.v-list--two-line .v-list-item .v-list-item__icon,.v-list-item--two-line .v-list-item__icon{margin-bottom:32px}.v-list--three-line .v-list-item,.v-list-item--three-line{min-height:88px}.v-list--three-line .v-list-item .v-list-item__action,.v-list--three-line .v-list-item .v-list-item__avatar,.v-list-item--three-line .v-list-item__action,.v-list-item--three-line .v-list-item__avatar{align-self:flex-start;margin-top:16px;margin-bottom:16px}.v-list--three-line .v-list-item .v-list-item__content,.v-list-item--three-line .v-list-item__content{align-self:stretch}.v-list--three-line .v-list-item .v-list-item__subtitle,.v-list-item--three-line .v-list-item__subtitle{white-space:normal;-webkit-line-clamp:2;-webkit-box-orient:vertical;display:-webkit-box}.v-simple-checkbox{align-self:center;line-height:normal;position:relative;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;cursor:pointer}.v-simple-checkbox--disabled{cursor:default}.theme--light.v-divider{border-color:rgba(0,0,0,.12)}.theme--dark.v-divider{border-color:hsla(0,0%,100%,.12)}.v-divider{display:block;flex:1 1 0px;max-width:100%;height:0;max-height:0;border:solid;border-width:thin 0 0;transition:inherit}.v-divider--inset:not(.v-divider--vertical){max-width:calc(100% - 72px)}.v-application--is-ltr .v-divider--inset:not(.v-divider--vertical){margin-left:72px}.v-application--is-rtl .v-divider--inset:not(.v-divider--vertical){margin-right:72px}.v-divider--vertical{align-self:stretch;border:solid;border-width:0 thin 0 0;display:inline-flex;height:inherit;min-height:100%;max-height:100%;max-width:0;width:0;vertical-align:text-bottom}.v-divider--vertical.v-divider--inset{margin-top:8px;min-height:0;max-height:calc(100% - 16px)}.theme--light.v-subheader{color:rgba(0,0,0,.6)}.theme--dark.v-subheader{color:hsla(0,0%,100%,.7)}.v-subheader{align-items:center;display:flex;height:48px;font-size:.875rem;font-weight:400;padding:0 16px}.v-subheader--inset{margin-left:56px}.v-list.accent>.v-list-item,.v-list.error>.v-list-item,.v-list.info>.v-list-item,.v-list.primary>.v-list-item,.v-list.secondary>.v-list-item,.v-list.success>.v-list-item,.v-list.warning>.v-list-item{color:#fff}.theme--light.v-list{background:#fff;color:rgba(0,0,0,.87)}.theme--light.v-list .v-list--disabled{color:rgba(0,0,0,.38)}.theme--light.v-list .v-list-group--active:after,.theme--light.v-list .v-list-group--active:before{background:rgba(0,0,0,.12)}.theme--dark.v-list{background:#1e1e1e;color:#fff}.theme--dark.v-list .v-list--disabled{color:hsla(0,0%,100%,.5)}.theme--dark.v-list .v-list-group--active:after,.theme--dark.v-list .v-list-group--active:before{background:hsla(0,0%,100%,.12)}.v-list{border-radius:4px;display:block;padding:8px 0;position:static;transition:box-shadow .28s cubic-bezier(.4,0,.2,1);will-change:box-shadow}.v-list--disabled{pointer-events:none}.v-list--flat .v-list-item:before{display:none}.v-list--dense .v-subheader{font-size:.75rem;height:40px;padding:0 8px}.v-list--nav .v-list-item:not(:last-child):not(:only-child),.v-list--rounded .v-list-item:not(:last-child):not(:only-child){margin-bottom:8px}.v-list--nav.v-list--dense .v-list-item:not(:last-child):not(:only-child),.v-list--nav .v-list-item--dense:not(:last-child):not(:only-child),.v-list--rounded.v-list--dense .v-list-item:not(:last-child):not(:only-child),.v-list--rounded .v-list-item--dense:not(:last-child):not(:only-child){margin-bottom:4px}.v-list--nav{padding-left:8px;padding-right:8px}.v-list--nav .v-list-item{padding:0 8px}.v-list--nav .v-list-item,.v-list--nav .v-list-item:before{border-radius:4px}.v-application--is-ltr .v-list--shaped .v-list-item,.v-application--is-ltr .v-list--shaped .v-list-item:before,.v-application--is-ltr .v-list--shaped .v-list-item>.v-ripple__container{border-bottom-right-radius:32px!important;border-top-right-radius:32px!important}.v-application--is-rtl .v-list--shaped .v-list-item,.v-application--is-rtl .v-list--shaped .v-list-item:before,.v-application--is-rtl .v-list--shaped .v-list-item>.v-ripple__container{border-bottom-left-radius:32px!important;border-top-left-radius:32px!important}.v-application--is-ltr .v-list--shaped.v-list--two-line .v-list-item,.v-application--is-ltr .v-list--shaped.v-list--two-line .v-list-item:before,.v-application--is-ltr .v-list--shaped.v-list--two-line .v-list-item>.v-ripple__container{border-bottom-right-radius:42.6666666667px!important;border-top-right-radius:42.6666666667px!important}.v-application--is-rtl .v-list--shaped.v-list--two-line .v-list-item,.v-application--is-rtl .v-list--shaped.v-list--two-line .v-list-item:before,.v-application--is-rtl .v-list--shaped.v-list--two-line .v-list-item>.v-ripple__container{border-bottom-left-radius:42.6666666667px!important;border-top-left-radius:42.6666666667px!important}.v-application--is-ltr .v-list--shaped.v-list--three-line .v-list-item,.v-application--is-ltr .v-list--shaped.v-list--three-line .v-list-item:before,.v-application--is-ltr .v-list--shaped.v-list--three-line .v-list-item>.v-ripple__container{border-bottom-right-radius:58.6666666667px!important;border-top-right-radius:58.6666666667px!important}.v-application--is-rtl .v-list--shaped.v-list--three-line .v-list-item,.v-application--is-rtl .v-list--shaped.v-list--three-line .v-list-item:before,.v-application--is-rtl .v-list--shaped.v-list--three-line .v-list-item>.v-ripple__container{border-bottom-left-radius:58.6666666667px!important;border-top-left-radius:58.6666666667px!important}.v-application--is-ltr .v-list--shaped{padding-right:8px}.v-application--is-rtl .v-list--shaped{padding-left:8px}.v-list--rounded{padding:8px}.v-list--rounded .v-list-item,.v-list--rounded .v-list-item:before,.v-list--rounded .v-list-item>.v-ripple__container{border-radius:32px!important}.v-list--rounded.v-list--two-line .v-list-item,.v-list--rounded.v-list--two-line .v-list-item:before,.v-list--rounded.v-list--two-line .v-list-item>.v-ripple__container{border-radius:42.6666666667px!important}.v-list--rounded.v-list--three-line .v-list-item,.v-list--rounded.v-list--three-line .v-list-item:before,.v-list--rounded.v-list--three-line .v-list-item>.v-ripple__container{border-radius:58.6666666667px!important}.v-list--subheader{padding-top:0}.v-list-group .v-list-group__header .v-list-item__icon.v-list-group__header__append-icon{align-self:center;margin:0;min-width:48px;justify-content:flex-end}.v-list-group--sub-group{align-items:center;display:flex;flex-wrap:wrap}.v-list-group__header.v-list-item--active:not(:hover):not(:focus):before{opacity:0}.v-list-group__items{flex:1 1 auto}.v-list-group__items .v-list-group__items,.v-list-group__items .v-list-item{overflow:hidden}.v-list-group--active>.v-list-group__header.v-list-group__header--sub-group>.v-list-group__header__prepend-icon .v-icon,.v-list-group--active>.v-list-group__header>.v-list-group__header__append-icon .v-icon{transform:rotate(-180deg)}.v-list-group--active>.v-list-group__header .v-list-group__header__prepend-icon .v-icon,.v-list-group--active>.v-list-group__header .v-list-item,.v-list-group--active>.v-list-group__header .v-list-item__content{color:inherit}.v-application--is-ltr .v-list-group--sub-group .v-list-item__action:first-child,.v-application--is-ltr .v-list-group--sub-group .v-list-item__avatar:first-child,.v-application--is-ltr .v-list-group--sub-group .v-list-item__icon:first-child{margin-right:16px}.v-application--is-rtl .v-list-group--sub-group .v-list-item__action:first-child,.v-application--is-rtl .v-list-group--sub-group .v-list-item__avatar:first-child,.v-application--is-rtl .v-list-group--sub-group .v-list-item__icon:first-child{margin-left:16px}.v-application--is-ltr .v-list-group--sub-group .v-list-group__header{padding-left:32px}.v-application--is-rtl .v-list-group--sub-group .v-list-group__header{padding-right:32px}.v-application--is-ltr .v-list-group--sub-group .v-list-group__items .v-list-item{padding-left:40px}.v-application--is-rtl .v-list-group--sub-group .v-list-group__items .v-list-item{padding-right:40px}.v-list-group--sub-group.v-list-group--active .v-list-item__icon.v-list-group__header__prepend-icon .v-icon{transform:rotate(-180deg)}.v-application--is-ltr .v-list-group--no-action>.v-list-group__items>.v-list-item{padding-left:72px}.v-application--is-rtl .v-list-group--no-action>.v-list-group__items>.v-list-item{padding-right:72px}.v-application--is-ltr .v-list-group--no-action.v-list-group--sub-group>.v-list-group__items>.v-list-item{padding-left:88px}.v-application--is-rtl .v-list-group--no-action.v-list-group--sub-group>.v-list-group__items>.v-list-item{padding-right:88px}.v-application--is-ltr .v-list--dense .v-list-group--sub-group .v-list-group__header{padding-left:24px}.v-application--is-rtl .v-list--dense .v-list-group--sub-group .v-list-group__header{padding-right:24px}.v-application--is-ltr .v-list--dense.v-list--nav .v-list-group--no-action>.v-list-group__items>.v-list-item{padding-left:64px}.v-application--is-rtl .v-list--dense.v-list--nav .v-list-group--no-action>.v-list-group__items>.v-list-item{padding-right:64px}.v-application--is-ltr .v-list--dense.v-list--nav .v-list-group--no-action.v-list-group--sub-group>.v-list-group__items>.v-list-item{padding-left:80px}.v-application--is-rtl .v-list--dense.v-list--nav .v-list-group--no-action.v-list-group--sub-group>.v-list-group__items>.v-list-item{padding-right:80px}.v-avatar{align-items:center;border-radius:50%;display:inline-flex;justify-content:center;line-height:normal;position:relative;text-align:center;vertical-align:middle;overflow:hidden}.v-avatar .v-icon,.v-avatar .v-image,.v-avatar .v-responsive__content,.v-avatar img,.v-avatar svg{border-radius:inherit;display:inline-flex;height:inherit;width:inherit}.v-avatar--tile{border-radius:0}.v-list-item-group .v-list-item--active{color:inherit}.v-item-group{flex:0 1 auto;position:relative;max-width:100%;transition:.3s cubic-bezier(.25,.8,.5,1)}.v-chip:not(.v-chip--outlined).accent,.v-chip:not(.v-chip--outlined).error,.v-chip:not(.v-chip--outlined).info,.v-chip:not(.v-chip--outlined).primary,.v-chip:not(.v-chip--outlined).secondary,.v-chip:not(.v-chip--outlined).success,.v-chip:not(.v-chip--outlined).warning{color:#fff}.theme--light.v-chip{border-color:rgba(0,0,0,.12);color:rgba(0,0,0,.87)}.theme--light.v-chip:not(.v-chip--active){background:#e0e0e0}.theme--light.v-chip:hover:before{opacity:.04}.theme--light.v-chip--active:before,.theme--light.v-chip--active:hover:before,.theme--light.v-chip:focus:before{opacity:.12}.theme--light.v-chip--active:focus:before{opacity:.16}.theme--dark.v-chip{border-color:hsla(0,0%,100%,.12);color:#fff}.theme--dark.v-chip:not(.v-chip--active){background:#555}.theme--dark.v-chip:hover:before{opacity:.08}.theme--dark.v-chip--active:before,.theme--dark.v-chip--active:hover:before,.theme--dark.v-chip:focus:before{opacity:.24}.theme--dark.v-chip--active:focus:before{opacity:.32}.v-chip{align-items:center;cursor:default;display:inline-flex;line-height:20px;max-width:100%;outline:none;overflow:hidden;padding:0 12px;position:relative;text-decoration:none;transition-duration:.28s;transition-property:box-shadow,opacity;transition-timing-function:cubic-bezier(.4,0,.2,1);vertical-align:middle;white-space:nowrap}.v-chip:before{background-color:currentColor;bottom:0;border-radius:inherit;content:\"\";left:0;opacity:0;position:absolute;pointer-events:none;right:0;top:0}.v-chip .v-avatar{height:24px!important;min-width:24px!important;width:24px!important}.v-chip .v-icon{font-size:24px}.v-application--is-ltr .v-chip .v-avatar--left,.v-application--is-ltr .v-chip .v-icon--left{margin-left:-6px;margin-right:8px}.v-application--is-ltr .v-chip .v-avatar--right,.v-application--is-ltr .v-chip .v-icon--right,.v-application--is-rtl .v-chip .v-avatar--left,.v-application--is-rtl .v-chip .v-icon--left{margin-left:8px;margin-right:-6px}.v-application--is-rtl .v-chip .v-avatar--right,.v-application--is-rtl .v-chip .v-icon--right{margin-left:-6px;margin-right:8px}.v-chip:not(.v-chip--no-color) .v-icon{color:inherit}.v-chip .v-chip__close.v-icon{font-size:18px;max-height:18px;max-width:18px;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.v-application--is-ltr .v-chip .v-chip__close.v-icon.v-icon--right{margin-right:-4px}.v-application--is-rtl .v-chip .v-chip__close.v-icon.v-icon--right{margin-left:-4px}.v-chip .v-chip__close.v-icon:active,.v-chip .v-chip__close.v-icon:focus,.v-chip .v-chip__close.v-icon:hover{opacity:.72}.v-chip .v-chip__content{align-items:center;display:inline-flex;height:100%;max-width:100%}.v-chip--active .v-icon{color:inherit}.v-chip--link:before{transition:opacity .3s cubic-bezier(.25,.8,.5,1)}.v-chip--link:focus:before{opacity:.32}.v-chip--clickable{cursor:pointer;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.v-chip--clickable:active{box-shadow:0 3px 1px -2px rgba(0,0,0,.2),0 2px 2px 0 rgba(0,0,0,.14),0 1px 5px 0 rgba(0,0,0,.12)}.v-chip--disabled{opacity:.4;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.v-chip__filter{max-width:24px}.v-chip__filter.v-icon{color:inherit}.v-chip__filter.expand-x-transition-enter,.v-chip__filter.expand-x-transition-leave-active{margin:0}.v-chip--pill .v-chip__filter{margin-right:0 16px 0 0}.v-chip--pill .v-avatar{height:32px!important;width:32px!important}.v-application--is-ltr .v-chip--pill .v-avatar--left{margin-left:-12px}.v-application--is-ltr .v-chip--pill .v-avatar--right,.v-application--is-rtl .v-chip--pill .v-avatar--left{margin-right:-12px}.v-application--is-rtl .v-chip--pill .v-avatar--right{margin-left:-12px}.v-chip--label{border-radius:4px!important}.v-chip.v-chip--outlined{border-width:thin;border-style:solid}.v-chip.v-chip--outlined:not(.v-chip--active):before{opacity:0}.v-chip.v-chip--outlined.v-chip--active:before{opacity:.08}.v-chip.v-chip--outlined .v-icon{color:inherit}.v-chip.v-chip--outlined.v-chip.v-chip{background-color:transparent!important}.v-chip.v-chip--selected{background:transparent}.v-chip.v-chip--selected:after{opacity:.28}.v-chip.v-size--x-small{border-radius:8px;font-size:10px;height:16px}.v-chip.v-size--small{border-radius:12px;font-size:12px;height:24px}.v-chip.v-size--default{border-radius:16px;font-size:14px;height:32px}.v-chip.v-size--large{border-radius:27px;font-size:16px;height:54px}.v-chip.v-size--x-large{border-radius:33px;font-size:18px;height:66px}.v-menu{display:none}.v-menu--attached{display:inline}.v-menu__content{position:absolute;display:inline-block;border-radius:4px;max-width:80%;overflow-y:auto;overflow-x:hidden;contain:content;will-change:transform;box-shadow:0 5px 5px -3px rgba(0,0,0,.2),0 8px 10px 1px rgba(0,0,0,.14),0 3px 14px 2px rgba(0,0,0,.12)}.v-menu__content--active{pointer-events:none}.v-menu__content--auto .v-list-item{transition-property:transform,opacity;transition-duration:.3s;transition-timing-function:cubic-bezier(.25,.8,.25,1)}.v-menu__content--fixed{position:fixed}.v-menu__content>.card{contain:content;-webkit-backface-visibility:hidden;backface-visibility:hidden}.v-menu>.v-menu__content{max-width:none}.v-menu-transition-enter .v-list-item{min-width:0;pointer-events:none}.v-menu-transition-enter-to .v-list-item{pointer-events:auto;transition-delay:.1s}.v-menu-transition-leave-active,.v-menu-transition-leave-to{pointer-events:none}.v-menu-transition-enter,.v-menu-transition-leave-to{opacity:0}.v-menu-transition-enter-active,.v-menu-transition-leave-active{transition:all .3s cubic-bezier(.25,.8,.25,1)}.v-menu-transition-enter.v-menu__content--auto{transition:none!important}.v-menu-transition-enter.v-menu__content--auto .v-list-item{opacity:0;transform:translateY(-15px)}.v-menu-transition-enter.v-menu__content--auto .v-list-item--active{opacity:1;transform:none!important;pointer-events:auto}.theme--light.v-badge .v-badge__badge:after{border-color:#fff}.theme--dark.v-badge .v-badge__badge:after{border-color:#1e1e1e}.v-badge{position:relative}.v-badge,.v-badge__badge{display:inline-block;line-height:1}.v-badge__badge{border-radius:10px;color:#fff;font-size:12px;height:20px;letter-spacing:0;min-width:20px;padding:4px 6px;pointer-events:auto;position:absolute;text-align:center;text-indent:0;top:auto;transition:.3s cubic-bezier(.25,.8,.5,1);white-space:nowrap}.v-application--is-ltr .v-badge__badge{right:auto}.v-application--is-rtl .v-badge__badge{left:auto}.v-badge__badge .v-icon{color:inherit;font-size:12px;margin:0 -2px}.v-badge__badge .v-img{height:12px;width:12px}.v-badge__wrapper{flex:0 1;height:100%;left:0;pointer-events:none;position:absolute;top:0;width:100%}.v-badge--avatar .v-badge__badge{padding:0}.v-badge--avatar .v-badge__badge .v-avatar{height:20px!important;min-width:0!important;max-width:20px!important}.v-badge--bordered .v-badge__badge:after{border-radius:inherit;border-width:2px;border-style:solid;bottom:0;content:\"\";left:0;position:absolute;right:0;top:0;transform:scale(1.15)}.v-badge--dot .v-badge__badge{border-radius:4.5px;height:9px;min-width:0;padding:0;width:9px}.v-badge--dot .v-badge__badge:after{border-width:1.5px}.v-badge--icon .v-badge__badge{padding:4px 6px}.v-badge--inline{align-items:center;display:inline-flex;justify-content:center}.v-badge--inline .v-badge__badge,.v-badge--inline .v-badge__wrapper{position:relative}.v-badge--inline .v-badge__wrapper{margin:0 4px}.v-badge--tile .v-badge__badge{border-radius:0}.theme--light.v-banner .v-banner__wrapper{border-bottom:1px solid rgba(0,0,0,.12)}.theme--dark.v-banner .v-banner__wrapper{border-bottom:1px solid hsla(0,0%,100%,.12)}.v-banner{position:relative;transition:box-shadow .28s cubic-bezier(.4,0,.2,1);will-change:box-shadow}.v-banner__actions{align-items:center;align-self:flex-end;display:flex;flex:1 0 auto;justify-content:flex-end;margin-bottom:-8px}.v-application--is-ltr .v-banner__actions{margin-left:90px}.v-application--is-rtl .v-banner__actions{margin-right:90px}.v-application--is-ltr .v-banner__actions>*{margin-left:8px}.v-application--is-rtl .v-banner__actions>*{margin-right:8px}.v-banner__content{align-items:center;display:flex;flex:1 1 auto;overflow:hidden}.v-banner__text{line-height:20px}.v-banner__icon{display:inline-flex;flex:0 0 auto}.v-application--is-ltr .v-banner__icon{margin-right:24px}.v-application--is-rtl .v-banner__icon{margin-left:24px}.v-banner__wrapper{align-items:center;display:flex;flex:1 1 auto}.v-application--is-ltr .v-banner__wrapper{padding:16px 8px 16px 24px}.v-application--is-rtl .v-banner__wrapper{padding:16px 24px 16px 8px}.v-banner--single-line .v-banner__actions{margin-bottom:0;align-self:center}.v-banner--single-line .v-banner__text{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.v-banner--single-line .v-banner__wrapper{padding-top:8px;padding-bottom:8px}.v-application--is-ltr .v-banner--has-icon .v-banner__wrapper{padding-left:16px}.v-application--is-rtl .v-banner--has-icon .v-banner__wrapper{padding-right:16px}.v-banner--is-mobile .v-banner__actions{flex:1 0 100%;margin-left:0;margin-right:0;padding-top:12px}.v-banner--is-mobile .v-banner__wrapper{flex-wrap:wrap;padding-top:16px}.v-application--is-ltr .v-banner--is-mobile .v-banner__wrapper{padding-left:16px}.v-application--is-rtl .v-banner--is-mobile .v-banner__wrapper{padding-right:16px}.v-banner--is-mobile.v-banner--has-icon .v-banner__wrapper{padding-top:24px}.v-banner--is-mobile.v-banner--single-line .v-banner__actions{flex:initial;padding-top:0}.v-application--is-ltr .v-banner--is-mobile.v-banner--single-line .v-banner__actions{margin-left:36px}.v-application--is-rtl .v-banner--is-mobile.v-banner--single-line .v-banner__actions{margin-right:36px}.v-banner--is-mobile.v-banner--single-line .v-banner__wrapper{flex-wrap:nowrap;padding-top:10px}.v-application--is-ltr .v-banner--is-mobile .v-banner__icon{margin-right:16px}.v-application--is-rtl .v-banner--is-mobile .v-banner__icon{margin-left:16px}.v-application--is-ltr .v-banner--is-mobile .v-banner__content{padding-right:8px}.v-application--is-rtl .v-banner--is-mobile .v-banner__content{padding-left:8px}.v-banner--is-mobile .v-banner__content .v-banner__wrapper{flex-wrap:nowrap;padding-top:10px}.theme--light.v-bottom-navigation{background-color:#fff;color:rgba(0,0,0,.87)}.theme--light.v-bottom-navigation .v-btn:not(.v-btn--active){color:rgba(0,0,0,.6)!important}.theme--dark.v-bottom-navigation{background-color:#2e2e2e;color:#fff}.theme--dark.v-bottom-navigation .v-btn:not(.v-btn--active){color:hsla(0,0%,100%,.7)!important}.v-item-group.v-bottom-navigation{bottom:0;display:flex;left:0;justify-content:center;width:100%;box-shadow:0 2px 4px -1px rgba(0,0,0,.2),0 4px 5px 0 rgba(0,0,0,.14),0 1px 10px 0 rgba(0,0,0,.12)}.v-item-group.v-bottom-navigation .v-btn:not(.v-btn--flat):not(.v-btn--text):not(.v-btn--outlined){background-color:transparent}.v-item-group.v-bottom-navigation .v-btn{border-radius:0;box-shadow:none;flex:0 1 auto;font-size:.75rem;height:inherit;max-width:168px;min-width:80px;position:relative;text-transform:none}.v-item-group.v-bottom-navigation .v-btn:after{content:none}.v-item-group.v-bottom-navigation .v-btn .v-btn__content{flex-direction:column-reverse;height:inherit}.v-item-group.v-bottom-navigation .v-btn .v-btn__content>:not(.v-icon){line-height:1.2}.v-item-group.v-bottom-navigation .v-btn.v-btn--active{color:inherit}.v-item-group.v-bottom-navigation .v-btn.v-btn--active:not(:hover):before{opacity:0}.v-item-group.v-bottom-navigation--absolute,.v-item-group.v-bottom-navigation--fixed{z-index:4}.v-item-group.v-bottom-navigation--absolute{position:absolute}.v-item-group.v-bottom-navigation--active{transform:translate(0)}.v-item-group.v-bottom-navigation--fixed{position:fixed}.v-item-group.v-bottom-navigation--grow .v-btn{width:100%}.v-item-group.v-bottom-navigation--horizontal .v-btn>.v-btn__content{flex-direction:row-reverse}.v-item-group.v-bottom-navigation--horizontal .v-btn>.v-btn__content>.v-icon{margin-bottom:0;margin-right:16px}.v-item-group.v-bottom-navigation--shift .v-btn .v-btn__content>:not(.v-icon){opacity:0;position:absolute;top:calc(100% - 12px);transform:scale(.9);transition:.3s cubic-bezier(.25,.8,.5,1)}.v-item-group.v-bottom-navigation--shift .v-btn--active .v-btn__content>.v-icon{transform:translateY(-8px)}.v-item-group.v-bottom-navigation--shift .v-btn--active .v-btn__content>:not(.v-icon){opacity:1;top:calc(100% - 22px);transform:scale(1)}.bottom-sheet-transition-enter,.bottom-sheet-transition-leave-to{transform:translateY(100%)}.v-bottom-sheet.v-dialog{align-self:flex-end;border-radius:0;flex:0 1 auto;margin:0;overflow:visible}.v-bottom-sheet.v-dialog.v-bottom-sheet--inset{max-width:70%}@media only screen and (max-width:599px){.v-bottom-sheet.v-dialog.v-bottom-sheet--inset{max-width:none}}.v-dialog{border-radius:4px;margin:24px;overflow-y:auto;pointer-events:auto;transition:.3s cubic-bezier(.25,.8,.25,1);width:100%;z-index:inherit;box-shadow:0 11px 15px -7px rgba(0,0,0,.2),0 24px 38px 3px rgba(0,0,0,.14),0 9px 46px 8px rgba(0,0,0,.12)}.v-dialog:not(.v-dialog--fullscreen){max-height:90%}.v-dialog>*{width:100%}.v-dialog>.v-card>.v-card__title{font-size:1.25rem;font-weight:500;letter-spacing:.0125em;padding:16px 24px 10px}.v-dialog>.v-card>.v-card__subtitle,.v-dialog>.v-card>.v-card__text{padding:0 24px 20px}.v-dialog__content{align-items:center;display:flex;height:100%;justify-content:center;left:0;pointer-events:none;position:fixed;top:0;transition:.2s cubic-bezier(.25,.8,.25,1),z-index 1ms;width:100%;z-index:6;outline:none}.v-dialog__container{display:none}.v-dialog__container--attached{display:inline}.v-dialog--animated{-webkit-animation-duration:.15s;animation-duration:.15s;-webkit-animation-name:animate-dialog;animation-name:animate-dialog;-webkit-animation-timing-function:cubic-bezier(.25,.8,.25,1);animation-timing-function:cubic-bezier(.25,.8,.25,1)}.v-dialog--fullscreen{border-radius:0;margin:0;height:100%;position:fixed;overflow-y:auto;top:0;left:0}.v-dialog--fullscreen>.v-card{min-height:100%;min-width:100%;margin:0!important;padding:0!important}.v-dialog--scrollable,.v-dialog--scrollable>form{display:flex}.v-dialog--scrollable>.v-card,.v-dialog--scrollable>form>.v-card{display:flex;flex:1 1 100%;flex-direction:column;max-height:100%;max-width:100%}.v-dialog--scrollable>.v-card>.v-card__actions,.v-dialog--scrollable>.v-card>.v-card__title,.v-dialog--scrollable>form>.v-card>.v-card__actions,.v-dialog--scrollable>form>.v-card>.v-card__title{flex:0 0 auto}.v-dialog--scrollable>.v-card>.v-card__text,.v-dialog--scrollable>form>.v-card>.v-card__text{-webkit-backface-visibility:hidden;backface-visibility:hidden;flex:1 1 auto;overflow-y:auto}@-webkit-keyframes animate-dialog{0%{transform:scale(1)}50%{transform:scale(1.03)}to{transform:scale(1)}}@keyframes animate-dialog{0%{transform:scale(1)}50%{transform:scale(1.03)}to{transform:scale(1)}}.theme--light.v-overlay{color:rgba(0,0,0,.87)}.theme--dark.v-overlay{color:#fff}.v-overlay{align-items:center;border-radius:inherit;display:flex;justify-content:center;position:fixed;top:0;left:0;right:0;bottom:0;pointer-events:none;transition:.3s cubic-bezier(.25,.8,.5,1),z-index 1ms}.v-overlay__content{position:relative}.v-overlay__scrim{border-radius:inherit;bottom:0;height:100%;left:0;position:absolute;right:0;top:0;transition:inherit;width:100%;will-change:opacity}.v-overlay--absolute{position:absolute}.v-overlay--active{pointer-events:auto}.theme--light.v-breadcrumbs .v-breadcrumbs__divider,.theme--light.v-breadcrumbs .v-breadcrumbs__item--disabled{color:rgba(0,0,0,.38)}.theme--dark.v-breadcrumbs .v-breadcrumbs__divider,.theme--dark.v-breadcrumbs .v-breadcrumbs__item--disabled{color:hsla(0,0%,100%,.5)}.v-breadcrumbs{align-items:center;display:flex;flex-wrap:wrap;flex:0 1 auto;list-style-type:none;margin:0;padding:18px 12px}.v-breadcrumbs li{align-items:center;display:inline-flex;font-size:14px}.v-breadcrumbs li .v-icon{font-size:16px}.v-breadcrumbs li:nth-child(2n){padding:0 12px}.v-breadcrumbs__item{align-items:center;display:inline-flex;text-decoration:none;transition:.3s cubic-bezier(.25,.8,.5,1)}.v-breadcrumbs__item--disabled{pointer-events:none}.v-breadcrumbs--large li,.v-breadcrumbs--large li .v-icon{font-size:16px}.theme--light.v-btn-toggle:not(.v-btn-toggle--group){background:#fff;color:rgba(0,0,0,.87)}.theme--light.v-btn-toggle:not(.v-btn-toggle--group) .v-btn.v-btn{border-color:rgba(0,0,0,.12)!important}.theme--light.v-btn-toggle:not(.v-btn-toggle--group) .v-btn.v-btn:focus:not(:active){border-color:rgba(0,0,0,.26)}.theme--light.v-btn-toggle:not(.v-btn-toggle--group) .v-btn.v-btn .v-icon{color:#000}.theme--dark.v-btn-toggle:not(.v-btn-toggle--group){background:#1e1e1e;color:#fff}.theme--dark.v-btn-toggle:not(.v-btn-toggle--group) .v-btn.v-btn{border-color:hsla(0,0%,100%,.12)!important}.theme--dark.v-btn-toggle:not(.v-btn-toggle--group) .v-btn.v-btn:focus:not(:active){border-color:hsla(0,0%,100%,.3)}.theme--dark.v-btn-toggle:not(.v-btn-toggle--group) .v-btn.v-btn .v-icon{color:#fff}.v-btn-toggle{border-radius:4px;display:inline-flex;max-width:100%}.v-btn-toggle>.v-btn.v-btn{border-radius:0;border-style:solid;border-width:thin;box-shadow:none;opacity:.8;padding:0 12px}.v-btn-toggle>.v-btn.v-btn:first-child{border-top-left-radius:inherit;border-bottom-left-radius:inherit}.v-btn-toggle>.v-btn.v-btn:last-child{border-top-right-radius:inherit;border-bottom-right-radius:inherit}.v-btn-toggle>.v-btn.v-btn--active{color:inherit;opacity:1}.v-btn-toggle>.v-btn.v-btn:after{display:none}.v-btn-toggle>.v-btn.v-btn:not(:first-child){border-left-width:0}.v-btn-toggle:not(.v-btn-toggle--dense) .v-btn.v-btn.v-size--default{height:48px;min-height:0;min-width:48px}.v-btn-toggle--borderless>.v-btn.v-btn{border-width:0}.v-btn-toggle--dense>.v-btn.v-btn{padding:0 8px}.v-btn-toggle--group{border-radius:0}.v-btn-toggle--group>.v-btn.v-btn{background-color:transparent!important;border-color:transparent;margin:4px;min-width:auto}.v-btn-toggle--rounded{border-radius:24px}.v-btn-toggle--shaped{border-radius:24px 4px}.v-btn-toggle--tile{border-radius:0}.theme--light.v-calendar-events .v-event-timed{border:1px solid!important}.theme--light.v-calendar-events .v-event-more{background-color:#fff}.theme--light.v-calendar-events .v-event-more.v-outside{background-color:#f7f7f7}.theme--dark.v-calendar-events .v-event-timed{border:1px solid!important}.theme--dark.v-calendar-events .v-event-more{background-color:#303030}.theme--dark.v-calendar-events .v-event-more.v-outside{background-color:#202020}.v-calendar .v-event{margin-right:-1px;border-radius:4px}.v-calendar .v-event,.v-calendar .v-event-more{position:relative;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px;cursor:pointer;z-index:1}.v-calendar .v-event-more{font-weight:700}.v-calendar .v-event-timed-container{position:absolute;top:0;bottom:0;left:0;right:0;margin-right:10px;pointer-events:none}.v-calendar .v-event-timed{position:absolute;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;font-size:12px;cursor:pointer;border-radius:4px;pointer-events:all}.v-calendar.v-calendar-events .v-calendar-weekly__head-weekday{margin-right:-1px}.v-calendar.v-calendar-events .v-calendar-weekly__day{overflow:visible;margin-right:-1px}.theme--light.v-calendar-weekly{background-color:#fff;border-top:1px solid #e0e0e0;border-left:1px solid #e0e0e0}.theme--light.v-calendar-weekly .v-calendar-weekly__head-weekday{border-right:1px solid #e0e0e0;color:#000}.theme--light.v-calendar-weekly .v-calendar-weekly__head-weekday.v-past{color:rgba(0,0,0,.38)}.theme--light.v-calendar-weekly .v-calendar-weekly__head-weekday.v-outside{background-color:#f7f7f7}.theme--light.v-calendar-weekly .v-calendar-weekly__day{border-right:1px solid #e0e0e0;border-bottom:1px solid #e0e0e0;color:#000}.theme--light.v-calendar-weekly .v-calendar-weekly__day.v-outside{background-color:#f7f7f7}.theme--dark.v-calendar-weekly{background-color:#303030;border-top:1px solid #9e9e9e;border-left:1px solid #9e9e9e}.theme--dark.v-calendar-weekly .v-calendar-weekly__head-weekday{border-right:1px solid #9e9e9e;color:#fff}.theme--dark.v-calendar-weekly .v-calendar-weekly__head-weekday.v-past{color:hsla(0,0%,100%,.5)}.theme--dark.v-calendar-weekly .v-calendar-weekly__head-weekday.v-outside{background-color:#202020}.theme--dark.v-calendar-weekly .v-calendar-weekly__day{border-right:1px solid #9e9e9e;border-bottom:1px solid #9e9e9e;color:#fff}.theme--dark.v-calendar-weekly .v-calendar-weekly__day.v-outside{background-color:#202020}.v-calendar-weekly{width:100%;height:100%;display:flex;flex-direction:column;min-height:0}.v-calendar-weekly__head{display:flex}.v-calendar-weekly__head,.v-calendar-weekly__head-weekday{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.v-calendar-weekly__head-weekday{flex:1 0 20px;padding:0 4px;font-size:11px;overflow:hidden;text-align:center;text-overflow:ellipsis;text-transform:uppercase;white-space:nowrap}.v-calendar-weekly__week{display:flex;flex:1;height:unset;min-height:0}.v-calendar-weekly__day{flex:1;width:0;overflow:hidden;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;position:relative;padding:0;min-width:0}.v-calendar-weekly__day.v-present .v-calendar-weekly__day-month{color:currentColor}.v-calendar-weekly__day-label{text-decoration:none;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;cursor:pointer;box-shadow:none;text-align:center;margin:4px 0 0}.v-calendar-weekly__day-label .v-btn{font-size:12px;text-transform:none}.v-calendar-weekly__day-month{position:absolute;text-decoration:none;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;box-shadow:none;top:0;left:36px;height:32px;line-height:32px}.theme--light.v-calendar-daily{background-color:#fff;border-left:1px solid #e0e0e0;border-top:1px solid #e0e0e0}.theme--light.v-calendar-daily .v-calendar-daily__intervals-head{border-right:1px solid #e0e0e0}.theme--light.v-calendar-daily .v-calendar-daily__intervals-head:after{background:#e0e0e0;background:linear-gradient(90deg,transparent,#e0e0e0)}.theme--light.v-calendar-daily .v-calendar-daily_head-day{border-right:1px solid #e0e0e0;border-bottom:1px solid #e0e0e0;color:#000}.theme--light.v-calendar-daily .v-calendar-daily_head-day.v-past .v-calendar-daily_head-day-label,.theme--light.v-calendar-daily .v-calendar-daily_head-day.v-past .v-calendar-daily_head-weekday{color:rgba(0,0,0,.38)}.theme--light.v-calendar-daily .v-calendar-daily__intervals-body{border-right:1px solid #e0e0e0}.theme--light.v-calendar-daily .v-calendar-daily__intervals-body .v-calendar-daily__interval-text{color:#424242}.theme--light.v-calendar-daily .v-calendar-daily__day{border-right:1px solid #e0e0e0;border-bottom:1px solid #e0e0e0}.theme--light.v-calendar-daily .v-calendar-daily__day-interval{border-top:1px solid #e0e0e0}.theme--light.v-calendar-daily .v-calendar-daily__day-interval:first-child{border-top:none!important}.theme--light.v-calendar-daily .v-calendar-daily__interval:after{border-top:1px solid #e0e0e0}.theme--dark.v-calendar-daily{background-color:#303030;border-left:1px solid #9e9e9e;border-top:1px solid #9e9e9e}.theme--dark.v-calendar-daily .v-calendar-daily__intervals-head{border-right:1px solid #9e9e9e}.theme--dark.v-calendar-daily .v-calendar-daily__intervals-head:after{background:#9e9e9e;background:linear-gradient(90deg,transparent,#9e9e9e)}.theme--dark.v-calendar-daily .v-calendar-daily_head-day{border-right:1px solid #9e9e9e;border-bottom:1px solid #9e9e9e;color:#fff}.theme--dark.v-calendar-daily .v-calendar-daily_head-day.v-past .v-calendar-daily_head-day-label,.theme--dark.v-calendar-daily .v-calendar-daily_head-day.v-past .v-calendar-daily_head-weekday{color:hsla(0,0%,100%,.5)}.theme--dark.v-calendar-daily .v-calendar-daily__intervals-body{border-right:1px solid #9e9e9e}.theme--dark.v-calendar-daily .v-calendar-daily__intervals-body .v-calendar-daily__interval-text{color:#eee}.theme--dark.v-calendar-daily .v-calendar-daily__day{border-right:1px solid #9e9e9e;border-bottom:1px solid #9e9e9e}.theme--dark.v-calendar-daily .v-calendar-daily__day-interval{border-top:1px solid #9e9e9e}.theme--dark.v-calendar-daily .v-calendar-daily__day-interval:first-child{border-top:none!important}.theme--dark.v-calendar-daily .v-calendar-daily__interval:after{border-top:1px solid #9e9e9e}.v-calendar-daily{display:flex;flex-direction:column;overflow:hidden;height:100%}.v-calendar-daily__head{flex:none;display:flex}.v-calendar-daily__intervals-head{flex:none;position:relative}.v-calendar-daily__intervals-head:after{position:absolute;bottom:0;height:1px;left:0;right:0;content:\"\"}.v-calendar-daily_head-day{flex:1 1 auto;width:0;position:relative}.v-calendar-daily_head-weekday{padding:3px 0 0;font-size:11px;text-transform:uppercase}.v-calendar-daily_head-day-label,.v-calendar-daily_head-weekday{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;text-align:center}.v-calendar-daily_head-day-label{padding:0 0 3px;cursor:pointer}.v-calendar-daily__body{flex:1 1 60%;overflow:hidden;display:flex;position:relative;flex-direction:column}.v-calendar-daily__scroll-area{overflow-y:scroll;flex:1 1 auto;display:flex;align-items:flex-start}.v-calendar-daily__pane{width:100%;overflow-y:hidden;flex:none;display:flex;align-items:flex-start}.v-calendar-daily__day-container{display:flex;flex:1;width:100%;height:100%}.v-calendar-daily__intervals-body{flex:none;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.v-calendar-daily__interval{text-align:right;padding-right:8px;border-bottom:none;position:relative}.v-calendar-daily__interval:after{width:8px;position:absolute;height:1px;display:block;content:\"\";right:0;bottom:-1px}.v-calendar-daily__interval-text{display:block;position:relative;top:-6px;font-size:10px;padding-right:4px}.v-calendar-daily__day{flex:1;width:0;position:relative}.theme--light.v-card{background-color:#fff;color:rgba(0,0,0,.87)}.theme--light.v-card .v-card__subtitle,.theme--light.v-card>.v-card__text{color:rgba(0,0,0,.6)}.theme--light.v-card.v-card--outlined{border:thin solid rgba(0,0,0,.12)}.theme--dark.v-card{background-color:#1e1e1e;color:#fff}.theme--dark.v-card .v-card__subtitle,.theme--dark.v-card>.v-card__text{color:hsla(0,0%,100%,.7)}.theme--dark.v-card.v-card--outlined{border:thin solid hsla(0,0%,100%,.12)}.v-card{display:block;max-width:100%;outline:none;text-decoration:none;transition-property:box-shadow,opacity;overflow-wrap:break-word;position:relative;white-space:normal;transition:box-shadow .28s cubic-bezier(.4,0,.2,1);will-change:box-shadow;box-shadow:0 3px 1px -2px rgba(0,0,0,.2),0 2px 2px 0 rgba(0,0,0,.14),0 1px 5px 0 rgba(0,0,0,.12)}.v-card:not(.v-sheet--tile):not(.v-card--shaped){border-radius:4px}.v-card>.v-card__progress+:not(.v-btn):not(.v-chip),.v-card>:first-child:not(.v-btn):not(.v-chip){border-top-left-radius:inherit;border-top-right-radius:inherit}.v-card>:last-child:not(.v-btn):not(.v-chip){border-bottom-left-radius:inherit;border-bottom-right-radius:inherit}.v-card__progress{top:0;left:0;right:0;overflow:hidden}.v-card__subtitle+.v-card__text{padding-top:0}.v-card__subtitle,.v-card__text{font-size:.875rem;font-weight:400;line-height:1.375rem;letter-spacing:.0071428571em}.v-card__subtitle,.v-card__text,.v-card__title{padding:16px}.v-card__title{align-items:center;display:flex;flex-wrap:wrap;font-size:1.25rem;font-weight:500;letter-spacing:.0125em;line-height:2rem;word-break:break-all}.v-card__title+.v-card__subtitle,.v-card__title+.v-card__text{padding-top:0}.v-card__title+.v-card__subtitle{margin-top:-16px}.v-card__text{width:100%}.v-card__actions{align-items:center;display:flex;padding:8px}.v-card__actions>.v-btn.v-btn{padding:0 8px}.v-application--is-ltr .v-card__actions>.v-btn.v-btn+.v-btn{margin-left:8px}.v-application--is-ltr .v-card__actions>.v-btn.v-btn .v-icon--left{margin-left:4px}.v-application--is-ltr .v-card__actions>.v-btn.v-btn .v-icon--right{margin-right:4px}.v-application--is-rtl .v-card__actions>.v-btn.v-btn+.v-btn{margin-right:8px}.v-application--is-rtl .v-card__actions>.v-btn.v-btn .v-icon--left{margin-right:4px}.v-application--is-rtl .v-card__actions>.v-btn.v-btn .v-icon--right{margin-left:4px}.v-card--flat{box-shadow:0 0 0 0 rgba(0,0,0,.2),0 0 0 0 rgba(0,0,0,.14),0 0 0 0 rgba(0,0,0,.12)}.v-card--hover{cursor:pointer;transition:box-shadow .4s cubic-bezier(.25,.8,.25,1)}.v-card--hover:focus,.v-card--hover:hover{box-shadow:0 5px 5px -3px rgba(0,0,0,.2),0 8px 10px 1px rgba(0,0,0,.14),0 3px 14px 2px rgba(0,0,0,.12)}.v-card--link,.v-card--link .v-chip{cursor:pointer}.v-card--link:focus:before{opacity:.08}.v-card--link:before{background:currentColor;bottom:0;content:\"\";left:0;opacity:0;pointer-events:none;position:absolute;right:0;top:0;transition:opacity .2s}.v-card--disabled{pointer-events:none;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.v-card--disabled>:not(.v-card__progress){opacity:.6;transition:inherit}.v-card--loading{overflow:hidden}.v-card--outlined{box-shadow:none}.v-card--raised{box-shadow:0 5px 5px -3px rgba(0,0,0,.2),0 8px 10px 1px rgba(0,0,0,.14),0 3px 14px 2px rgba(0,0,0,.12)}.v-card--shaped{border-radius:24px 4px}.v-carousel{overflow:hidden;position:relative;width:100%}.v-carousel__controls{align-items:center;background:rgba(0,0,0,.3);bottom:0;display:flex;height:50px;justify-content:center;list-style-type:none;position:absolute;width:100%;z-index:1}.v-carousel__controls>.v-item-group{flex:0 1 auto}.v-carousel__controls__item{margin:0 8px}.v-carousel__controls__item .v-icon{opacity:.5}.v-carousel__controls__item--active .v-icon{opacity:1;vertical-align:middle}.v-carousel__controls__item:hover{background:none}.v-carousel__controls__item:hover .v-icon{opacity:.8}.v-carousel__progress{margin:0;position:absolute;bottom:0;left:0;right:0}.v-carousel .v-window-item{display:block;height:inherit;text-decoration:none}.v-carousel--hide-delimiter-background .v-carousel__controls{background:transparent}.v-carousel--vertical-delimiters .v-carousel__controls{height:100%!important;width:50px}.v-window__container{height:inherit;position:relative;transition:.3s cubic-bezier(.25,.8,.5,1)}.v-window__container--is-active{overflow:hidden}.v-window__next,.v-window__prev{background:rgba(0,0,0,.3);border-radius:50%;position:absolute;margin:0 16px;top:calc(50% - 20px);z-index:1}.v-window__next .v-btn:hover,.v-window__prev .v-btn:hover{background:none}.v-application--is-ltr .v-window__prev{left:0}.v-application--is-ltr .v-window__next,.v-application--is-rtl .v-window__prev{right:0}.v-application--is-rtl .v-window__next{left:0}.v-window--show-arrows-on-hover{overflow:hidden}.v-window--show-arrows-on-hover .v-window__next,.v-window--show-arrows-on-hover .v-window__prev{transition:transform .2s cubic-bezier(.25,.8,.5,1)}.v-application--is-ltr .v-window--show-arrows-on-hover .v-window__prev{transform:translateX(-200%)}.v-application--is-ltr .v-window--show-arrows-on-hover .v-window__next,.v-application--is-rtl .v-window--show-arrows-on-hover .v-window__prev{transform:translateX(200%)}.v-application--is-rtl .v-window--show-arrows-on-hover .v-window__next{transform:translateX(-200%)}.v-window--show-arrows-on-hover:hover .v-window__next,.v-window--show-arrows-on-hover:hover .v-window__prev{transform:translateX(0)}.v-window-x-reverse-transition-enter-active,.v-window-x-reverse-transition-leave-active,.v-window-x-transition-enter-active,.v-window-x-transition-leave-active,.v-window-y-reverse-transition-enter-active,.v-window-y-reverse-transition-leave-active,.v-window-y-transition-enter-active,.v-window-y-transition-leave-active{transition:.3s cubic-bezier(.25,.8,.5,1)}.v-window-x-reverse-transition-leave,.v-window-x-reverse-transition-leave-to,.v-window-x-transition-leave,.v-window-x-transition-leave-to,.v-window-y-reverse-transition-leave,.v-window-y-reverse-transition-leave-to,.v-window-y-transition-leave,.v-window-y-transition-leave-to{position:absolute!important;top:0;width:100%}.v-window-x-transition-enter{transform:translateX(100%)}.v-window-x-reverse-transition-enter,.v-window-x-transition-leave-to{transform:translateX(-100%)}.v-window-x-reverse-transition-leave-to{transform:translateX(100%)}.v-window-y-transition-enter{transform:translateY(100%)}.v-window-y-reverse-transition-enter,.v-window-y-transition-leave-to{transform:translateY(-100%)}.v-window-y-reverse-transition-leave-to{transform:translateY(100%)}.v-input--checkbox.v-input--indeterminate.v-input--is-disabled{opacity:.6}.theme--light.v-input--selection-controls.v-input--is-disabled:not(.v-input--indeterminate) .v-icon{color:rgba(0,0,0,.26)!important}.theme--dark.v-input--selection-controls.v-input--is-disabled:not(.v-input--indeterminate) .v-icon{color:hsla(0,0%,100%,.3)!important}.v-input--selection-controls{margin-top:16px;padding-top:4px}.v-input--selection-controls>.v-input__append-outer,.v-input--selection-controls>.v-input__prepend-outer{margin-top:0;margin-bottom:0}.v-input--selection-controls:not(.v-input--hide-details)>.v-input__slot{margin-bottom:12px}.v-input--selection-controls .v-input__slot>.v-label,.v-input--selection-controls .v-radio>.v-label{align-items:center;display:inline-flex;flex:1 1 auto;height:auto}.v-input--selection-controls__input{color:inherit;display:inline-flex;flex:0 0 auto;height:24px;position:relative;transition:.3s cubic-bezier(.25,.8,.5,1);transition-property:transform;width:24px;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.v-input--selection-controls__input .v-icon{width:100%}.v-application--is-ltr .v-input--selection-controls__input{margin-right:8px}.v-application--is-rtl .v-input--selection-controls__input{margin-left:8px}.v-input--selection-controls__input input[role=checkbox],.v-input--selection-controls__input input[role=radio],.v-input--selection-controls__input input[role=switch]{position:absolute;opacity:0;width:100%;height:100%;cursor:pointer;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.v-input--selection-controls__input+.v-label{cursor:pointer;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.v-input--selection-controls__ripple{border-radius:50%;cursor:pointer;height:34px;position:absolute;transition:inherit;width:34px;left:-12px;top:calc(50% - 24px);margin:7px}.v-input--selection-controls__ripple:before{border-radius:inherit;bottom:0;content:\"\";position:absolute;opacity:.2;left:0;right:0;top:0;transform-origin:center center;transform:scale(.2);transition:inherit}.v-input--selection-controls__ripple>.v-ripple__container{transform:scale(1.2)}.v-input--selection-controls.v-input--dense .v-input--selection-controls__ripple{width:28px;height:28px;left:-9px}.v-input--selection-controls.v-input--dense:not(.v-input--switch) .v-input--selection-controls__ripple{top:calc(50% - 21px)}.v-input--selection-controls.v-input{flex:0 1 auto}.v-input--selection-controls.v-input--is-focused .v-input--selection-controls__ripple:before,.v-input--selection-controls .v-radio--is-focused .v-input--selection-controls__ripple:before{background:currentColor;transform:scale(1.2)}.v-input--selection-controls .v-input--selection-controls__input:hover .v-input--selection-controls__ripple:before{background:currentColor;transform:scale(1.2);transition:none}.v-chip-group .v-chip{margin:4px 8px 4px 0}.v-chip-group .v-chip--active{color:inherit}.v-chip-group .v-chip--active.v-chip--no-color:after{opacity:.22}.v-chip-group .v-chip--active.v-chip--no-color:focus:after{opacity:.32}.v-chip-group .v-slide-group__content{padding:4px 0}.v-chip-group--column .v-slide-group__content{white-space:normal;flex-wrap:wrap;max-width:100%}.v-slide-group{display:flex}.v-slide-group:not(.v-slide-group--has-affixes) .v-slide-group__next,.v-slide-group:not(.v-slide-group--has-affixes) .v-slide-group__prev{display:none}.v-slide-group.v-item-group>.v-slide-group__next,.v-slide-group.v-item-group>.v-slide-group__prev{cursor:pointer}.v-slide-item{display:inline-flex;flex:0 1 auto}.v-slide-group__next,.v-slide-group__prev{align-items:center;display:flex;flex:0 1 52px;justify-content:center;min-width:52px}.v-slide-group__content{display:flex;flex:1 0 auto;position:relative;transition:.3s cubic-bezier(.25,.8,.5,1);white-space:nowrap}.v-slide-group__wrapper{contain:content;display:flex;flex:1 1 auto;overflow:hidden}.v-slide-group__next--disabled,.v-slide-group__prev--disabled{pointer-events:none}.theme--light.v-color-picker .v-color-picker__input input{border:thin solid rgba(0,0,0,.12)}.theme--light.v-color-picker span{color:rgba(0,0,0,.6)}.theme--light.v-color-picker .v-color-picker__color,.theme--light.v-color-picker .v-color-picker__dot{background-color:hsla(0,0%,100%,0)}.theme--dark.v-color-picker .v-color-picker__input input{border:thin solid hsla(0,0%,100%,.12)}.theme--dark.v-color-picker span{color:hsla(0,0%,100%,.7)}.theme--dark.v-color-picker .v-color-picker__color,.theme--dark.v-color-picker .v-color-picker__dot{background-color:hsla(0,0%,100%,.12)}.v-color-picker{align-self:flex-start;border-radius:4px;contain:content;box-shadow:0 3px 1px -2px rgba(0,0,0,.2),0 2px 2px 0 rgba(0,0,0,.14),0 1px 5px 0 rgba(0,0,0,.12)}.v-color-picker__controls{display:flex;flex-direction:column;padding:16px}.v-color-picker--flat,.v-color-picker--flat .v-color-picker__track:not(.v-input--is-disabled) .v-slider__thumb{box-shadow:0 0 0 0 rgba(0,0,0,.2),0 0 0 0 rgba(0,0,0,.14),0 0 0 0 rgba(0,0,0,.12)}.v-color-picker__edit{margin-top:24px;display:flex}.v-color-picker__input{width:100%;display:flex;flex-wrap:wrap;justify-content:center;text-align:center}.v-color-picker__input:not(:last-child){margin-right:8px}.v-color-picker__input input{border-radius:4px;margin-bottom:8px;min-width:0;outline:none;text-align:center;width:100%;height:28px}.v-color-picker__input span{font-size:.75rem}.v-color-picker__canvas{position:relative;overflow:hidden;contain:strict}.v-color-picker__canvas-dot{position:absolute;top:0;left:0;width:15px;height:15px;background:transparent;border-radius:50%;box-shadow:0 0 0 1.5px #fff,inset 0 0 1px 1.5px rgba(0,0,0,.3)}.v-color-picker__canvas-dot--disabled{box-shadow:0 0 0 1.5px hsla(0,0%,100%,.7),inset 0 0 1px 1.5px rgba(0,0,0,.3)}.v-color-picker__canvas:hover .v-color-picker__canvas-dot{will-change:transform}.v-color-picker .v-input__slider{border-radius:5px}.v-color-picker .v-input__slider .v-slider{margin:0}.v-color-picker__alpha:not(.v-input--is-disabled) .v-slider{border-radius:5px;background:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAGElEQVQYlWNgYGCQwoKxgqGgcJA5h3yFAAs8BRWVSwooAAAAAElFTkSuQmCC) repeat}.v-color-picker__sliders{display:flex;flex:1 0 auto;flex-direction:column}.v-color-picker__dot{position:relative;height:30px;margin-right:24px;width:30px;background:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAGElEQVQYlWNgYGCQwoKxgqGgcJA5h3yFAAs8BRWVSwooAAAAAElFTkSuQmCC) repeat;border-radius:50%;overflow:hidden}.v-color-picker__dot>div{width:100%;height:100%}.v-color-picker__hue:not(.v-input--is-disabled){background:linear-gradient(90deg,red 0,#ff0 16.66%,#0f0 33.33%,#0ff 50%,#00f 66.66%,#f0f 83.33%,red)}.v-color-picker__track{position:relative;width:100%}.v-color-picker__preview{align-items:center;display:flex}.v-color-picker__preview .v-slider{min-height:10px}.v-color-picker__preview .v-slider:not(.v-slider--disabled) .v-slider__thumb{box-shadow:0 3px 3px -2px rgba(0,0,0,.2),0 3px 4px 0 rgba(0,0,0,.14),0 1px 8px 0 rgba(0,0,0,.12)}.v-color-picker__preview .v-slider:not(.v-slider--disabled) .v-slider__track-container{opacity:0}.v-color-picker__preview:not(.v-color-picker__preview--hide-alpha) .v-color-picker__hue{margin-bottom:24px}.theme--light.v-slider .v-slider__thumb,.theme--light.v-slider .v-slider__track-background,.theme--light.v-slider .v-slider__track-fill{background:rgba(0,0,0,.26)}.theme--dark.v-slider .v-slider__thumb,.theme--dark.v-slider .v-slider__track-background,.theme--dark.v-slider .v-slider__track-fill{background:hsla(0,0%,100%,.2)}.v-slider{cursor:default;display:flex;align-items:center;position:relative;flex:1;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.v-slider input{cursor:default;padding:0;width:100%;display:none}.v-slider__track-container{position:absolute;border-radius:0}.v-slider__thumb-container,.v-slider__track-background,.v-slider__track-fill{position:absolute;transition:.3s cubic-bezier(.25,.8,.5,1)}.v-slider__thumb-container{outline:none;top:50%}.v-slider__thumb-container:hover .v-slider__thumb:before{transform:scale(1)}.v-slider__thumb{width:12px;height:12px;left:-6px;top:50%;transform:translateY(-50%);-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.v-slider__thumb,.v-slider__thumb:before{position:absolute;border-radius:50%;transition:.3s cubic-bezier(.25,.8,.5,1)}.v-slider__thumb:before{content:\"\";color:inherit;width:36px;height:36px;background:currentColor;opacity:.3;left:-12px;top:-12px;transform:scale(.1);pointer-events:none}.v-slider__tick,.v-slider__ticks-container{position:absolute}.v-slider__tick{opacity:0;background-color:rgba(0,0,0,.5);transition:.3s cubic-bezier(.25,.8,.5,1);border-radius:0}.v-slider__tick--filled{background-color:hsla(0,0%,100%,.5)}.v-application--is-ltr .v-slider__tick:first-child .v-slider__tick-label{transform:none}.v-application--is-rtl .v-slider__tick:first-child .v-slider__tick-label{transform:translateX(100%)}.v-application--is-ltr .v-slider__tick:last-child .v-slider__tick-label{transform:translateX(-100%)}.v-application--is-rtl .v-slider__tick:last-child .v-slider__tick-label{transform:none}.v-slider__tick-label{position:absolute;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;white-space:nowrap}.v-slider__thumb-label-container{top:0}.v-slider__thumb-label,.v-slider__thumb-label-container{position:absolute;left:0;transition:.3s cubic-bezier(.25,.8,.25,1)}.v-slider__thumb-label{display:flex;align-items:center;justify-content:center;font-size:.75rem;color:#fff;width:32px;height:32px;border-radius:50% 50% 0;bottom:100%;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.v-slider--horizontal{min-height:32px;margin-left:8px;margin-right:8px}.v-slider--horizontal .v-slider__track-container{width:100%;height:2px;left:0;top:50%;transform:translateY(-50%)}.v-slider--horizontal .v-slider__track-background,.v-slider--horizontal .v-slider__track-fill{height:100%}.v-slider--horizontal .v-slider__ticks-container{left:0;height:2px;width:100%}.v-application--is-ltr .v-slider--horizontal .v-slider__tick:first-child .v-slider__tick-label{transform:translateX(0)}.v-application--is-rtl .v-slider--horizontal .v-slider__tick:first-child .v-slider__tick-label{transform:translateX(100%)}.v-application--is-ltr .v-slider--horizontal .v-slider__tick:last-child .v-slider__tick-label{transform:translateX(-100%)}.v-application--is-rtl .v-slider--horizontal .v-slider__tick:last-child .v-slider__tick-label{transform:translateX(0)}.v-slider--horizontal .v-slider__tick .v-slider__tick-label{top:8px}.v-application--is-ltr .v-slider--horizontal .v-slider__tick .v-slider__tick-label{transform:translateX(-50%)}.v-application--is-rtl .v-slider--horizontal .v-slider__tick .v-slider__tick-label{transform:translateX(50%)}.v-slider--horizontal .v-slider__thumb-label{transform:translateY(-20%) translateY(-12px) translateX(-50%) rotate(45deg)}.v-slider--horizontal .v-slider__thumb-label>*{transform:rotate(-45deg)}.v-slider--vertical{min-height:150px;margin-top:12px;margin-bottom:12px}.v-slider--vertical .v-slider__track-container{height:100%;width:2px;left:50%;top:0;transform:translateX(-50%)}.v-slider--vertical .v-slider__track-background,.v-slider--vertical .v-slider__track-fill{width:100%}.v-slider--vertical .v-slider__thumb-container{left:50%}.v-slider--vertical .v-slider__ticks-container{top:0;width:2px;height:100%;left:50%;transform:translateX(-50%)}.v-application--is-ltr .v-slider--vertical .v-slider__tick .v-slider__tick-label,.v-application--is-ltr .v-slider--vertical .v-slider__tick:first-child .v-slider__tick-label,.v-application--is-ltr .v-slider--vertical .v-slider__tick:last-child .v-slider__tick-label{transform:translateY(-50%);left:12px}.v-application--is-rtl .v-slider--vertical .v-slider__tick .v-slider__tick-label,.v-application--is-rtl .v-slider--vertical .v-slider__tick:first-child .v-slider__tick-label,.v-application--is-rtl .v-slider--vertical .v-slider__tick:last-child .v-slider__tick-label{transform:translateY(-50%);right:12px}.v-slider--vertical .v-slider__thumb-label>*{transform:rotate(-135deg)}.v-slider__thumb-container--focused .v-slider__thumb:before{transform:scale(1)}.v-slider--active .v-slider__tick{opacity:1}.v-slider__thumb-container--active .v-slider__thumb:before{transform:scale(1.5)!important}.v-slider--disabled{pointer-events:none}.v-slider--disabled .v-slider__thumb{width:8px;height:8px;left:-4px}.v-slider--disabled .v-slider__thumb:before{display:none}.v-slider__ticks-container--always-show .v-slider__tick{opacity:1}.v-input__slider.v-input--is-readonly .v-input__slot{pointer-events:none}.v-application--is-ltr .v-input__slider .v-input__slot .v-label{margin-left:0;margin-right:12px}.v-application--is-ltr .v-input__slider--inverse-label .v-input__slot .v-label,.v-application--is-rtl .v-input__slider .v-input__slot .v-label{margin-right:0;margin-left:12px}.v-application--is-rtl .v-input__slider--inverse-label .v-input__slot .v-label{margin-left:0;margin-right:12px}.v-input__slider--vertical{align-items:center}.v-application--is-ltr .v-input__slider--vertical{flex-direction:column-reverse}.v-application--is-rtl .v-input__slider--vertical{flex-direction:column}.v-input__slider--vertical .v-input__append-outer,.v-input__slider--vertical .v-input__prepend-outer,.v-input__slider--vertical .v-input__slot{margin:0}.v-input__slider--vertical .v-messages{display:none}.v-input--has-state .v-slider__track-background{opacity:.4}.v-color-picker__swatches{overflow-y:auto}.v-color-picker__swatches>div{display:flex;flex-wrap:wrap;padding:8px}.v-color-picker__swatch{display:flex;flex-direction:column;margin-bottom:10px}.v-color-picker__color{position:relative;height:18px;max-height:18px;width:45px;margin:2px 4px;border-radius:2px;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;overflow:hidden;background:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAGElEQVQYlWNgYGCQwoKxgqGgcJA5h3yFAAs8BRWVSwooAAAAAElFTkSuQmCC) repeat;cursor:pointer}.v-color-picker__color>div{display:flex;align-items:center;justify-content:center;width:100%;height:100%}.v-content{display:flex;flex:1 0 auto;max-width:100%;transition:.2s cubic-bezier(.4,0,.2,1)}.v-content:not([data-booted=true]){transition:none!important}.v-content__wrap{flex:1 1 auto;max-width:100%;position:relative}@-moz-document url-prefix(){@media print{.v-content{display:block}}}.v-data-footer{display:flex;flex-wrap:wrap;justify-content:flex-end;align-items:center;font-size:.75rem;padding:0 8px}.v-data-footer .v-btn{color:inherit}.v-application--is-ltr .v-data-footer__icons-before .v-btn:last-child{margin-right:7px}.v-application--is-ltr .v-data-footer__icons-after .v-btn:first-child,.v-application--is-rtl .v-data-footer__icons-before .v-btn:last-child{margin-left:7px}.v-application--is-rtl .v-data-footer__icons-after .v-btn:first-child{margin-right:7px}.v-data-footer__pagination{display:block;text-align:center}.v-application--is-ltr .v-data-footer__pagination{margin:0 32px 0 24px}.v-application--is-rtl .v-data-footer__pagination{margin:0 24px 0 32px}.v-data-footer__select{display:flex;align-items:center;flex:0 0 0;justify-content:flex-end;white-space:nowrap}.v-application--is-ltr .v-data-footer__select{margin-right:14px}.v-application--is-rtl .v-data-footer__select{margin-left:14px}.v-data-footer__select .v-select{flex:0 1 0;padding:0;position:static}.v-application--is-ltr .v-data-footer__select .v-select{margin:13px 0 13px 34px}.v-application--is-rtl .v-data-footer__select .v-select{margin:13px 34px 13px 0}.v-data-footer__select .v-select__selections{flex-wrap:nowrap}.v-data-footer__select .v-select__selections .v-select__selection--comma{font-size:.75rem}.theme--light.v-data-table tbody tr.v-data-table__selected{background:#f5f5f5}.theme--light.v-data-table .v-row-group__header,.theme--light.v-data-table .v-row-group__summary{background:#eee}.theme--light.v-data-table .v-data-footer{border-top:thin solid rgba(0,0,0,.12)}.theme--light.v-data-table .v-data-table__empty-wrapper{color:rgba(0,0,0,.38)}.theme--dark.v-data-table tbody tr.v-data-table__selected{background:#505050}.theme--dark.v-data-table .v-row-group__header,.theme--dark.v-data-table .v-row-group__summary{background:#616161}.theme--dark.v-data-table .v-data-footer{border-top:thin solid hsla(0,0%,100%,.12)}.theme--dark.v-data-table .v-data-table__empty-wrapper{color:hsla(0,0%,100%,.5)}.v-data-table{border-radius:4px}.v-data-table tbody tr.v-data-table__expanded{border-bottom:0}.v-data-table tbody tr.v-data-table__expanded__content{box-shadow:inset 0 4px 8px -5px rgba(50,50,50,.75),inset 0 -4px 8px -5px rgba(50,50,50,.75)}.v-data-table .v-data-table__mobile-table-row{display:initial}.v-data-table .v-data-table__mobile-row{height:auto;min-height:48px}.v-data-table__empty-wrapper{text-align:center}.v-data-table__mobile-row{align-items:center;display:flex;justify-content:space-between}.v-data-table__mobile-row__header{font-weight:600}.v-application--is-ltr .v-data-table__mobile-row__cell{text-align:right}.v-application--is-rtl .v-data-table__mobile-row__cell{text-align:left}.v-row-group__header td,.v-row-group__summary td{height:35px}.v-data-table__expand-icon{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;cursor:pointer}.v-data-table__expand-icon--active{transform:rotate(-180deg)}.theme--light.v-data-table .v-data-table-header th.sortable .v-data-table-header__icon{color:rgba(0,0,0,.38)}.theme--light.v-data-table .v-data-table-header th.sortable.active,.theme--light.v-data-table .v-data-table-header th.sortable.active .v-data-table-header__icon,.theme--light.v-data-table .v-data-table-header th.sortable:hover{color:rgba(0,0,0,.87)}.theme--light.v-data-table .v-data-table-header__sort-badge{background-color:rgba(0,0,0,.12);color:rgba(0,0,0,.87)}.theme--dark.v-data-table .v-data-table-header th.sortable .v-data-table-header__icon{color:hsla(0,0%,100%,.5)}.theme--dark.v-data-table .v-data-table-header th.sortable.active,.theme--dark.v-data-table .v-data-table-header th.sortable.active .v-data-table-header__icon,.theme--dark.v-data-table .v-data-table-header th.sortable:hover{color:#fff}.theme--dark.v-data-table .v-data-table-header__sort-badge{background-color:hsla(0,0%,100%,.12);color:#fff}.v-data-table-header th.sortable{pointer-events:auto;cursor:pointer;outline:0}.v-data-table-header th.active .v-data-table-header__icon,.v-data-table-header th:hover .v-data-table-header__icon{transform:none;opacity:1}.v-data-table-header th.desc .v-data-table-header__icon{transform:rotate(-180deg)}.v-data-table-header__icon{display:inline-block;opacity:0;transition:.3s cubic-bezier(.25,.8,.5,1)}.v-data-table-header__sort-badge{display:inline-flex;justify-content:center;align-items:center;border:0;border-radius:50%;min-width:18px;min-height:18px;height:18px;width:18px}.v-data-table-header-mobile th{height:auto}.v-data-table-header-mobile__wrapper{display:flex}.v-data-table-header-mobile__wrapper .v-select{margin-bottom:8px}.v-data-table-header-mobile__wrapper .v-select .v-chip{height:24px}.v-data-table-header-mobile__wrapper .v-select .v-chip__close.desc .v-icon{transform:rotate(-180deg)}.v-data-table-header-mobile__select{min-width:56px;display:flex;align-items:center;justify-content:center}.theme--light.v-data-table{background-color:#fff;color:rgba(0,0,0,.87)}.theme--light.v-data-table .v-data-table__divider{border-right:thin solid rgba(0,0,0,.12)}.theme--light.v-data-table.v-data-table--fixed-header thead th{background:#fff;box-shadow:inset 0 -1px 0 rgba(0,0,0,.12)}.theme--light.v-data-table thead tr:last-child th{border-bottom:thin solid rgba(0,0,0,.12)}.theme--light.v-data-table thead tr th{color:rgba(0,0,0,.6)}.theme--light.v-data-table tbody tr:not(:last-child) td:last-child,.theme--light.v-data-table tbody tr:not(:last-child) td:not(.v-data-table__mobile-row){border-bottom:thin solid rgba(0,0,0,.12)}.theme--light.v-data-table tbody tr.active{background:#f5f5f5}.theme--light.v-data-table tbody tr:hover:not(.v-data-table__expanded__content){background:#eee}.theme--dark.v-data-table{background-color:#1e1e1e;color:#fff}.theme--dark.v-data-table .v-data-table__divider{border-right:thin solid hsla(0,0%,100%,.12)}.theme--dark.v-data-table.v-data-table--fixed-header thead th{background:#1e1e1e;box-shadow:inset 0 -1px 0 hsla(0,0%,100%,.12)}.theme--dark.v-data-table thead tr:last-child th{border-bottom:thin solid hsla(0,0%,100%,.12)}.theme--dark.v-data-table thead tr th{color:hsla(0,0%,100%,.7)}.theme--dark.v-data-table tbody tr:not(:last-child) td:last-child,.theme--dark.v-data-table tbody tr:not(:last-child) td:not(.v-data-table__mobile-row){border-bottom:thin solid hsla(0,0%,100%,.12)}.theme--dark.v-data-table tbody tr.active{background:#505050}.theme--dark.v-data-table tbody tr:hover:not(.v-data-table__expanded__content){background:#616161}.v-data-table table{width:100%;border-spacing:0}.v-data-table td,.v-data-table th{padding:0 16px}.v-data-table th{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;font-size:.75rem;height:48px}.v-application--is-ltr .v-data-table th{text-align:left}.v-application--is-rtl .v-data-table th{text-align:right}.v-data-table td{font-size:.875rem;height:48px}.v-data-table__wrapper{overflow-x:auto;overflow-y:hidden}.v-data-table__progress{height:auto!important}.v-data-table__progress th{height:auto!important;border:none!important;padding:0}.v-data-table--dense td{height:24px}.v-data-table--dense th{height:32px}.v-data-table--fixed-header .v-data-table__wrapper,.v-data-table--fixed-height .v-data-table__wrapper{overflow-y:auto}.v-data-table--fixed-header thead th{border-bottom:0!important;position:-webkit-sticky;position:sticky;top:0;z-index:2}.v-data-table--fixed-header thead tr:nth-child(2) th{top:48px}.v-application--is-ltr .v-data-table--fixed-header .v-data-footer{margin-right:17px}.v-application--is-rtl .v-data-table--fixed-header .v-data-footer{margin-left:17px}.v-data-table--fixed.v-data-table--dense thead tr:nth-child(2) th{top:32px}.theme--light.v-small-dialog__actions,.theme--light.v-small-dialog__menu-content{background:#fff}.theme--dark.v-small-dialog__actions,.theme--dark.v-small-dialog__menu-content{background:#1e1e1e}.v-small-dialog{display:block}.v-small-dialog__activator{cursor:pointer}.v-small-dialog__activator__content{display:inline-block}.v-small-dialog__content{padding:0 16px}.v-small-dialog__actions{padding:8px;text-align:right;white-space:pre}.v-virtual-table{position:relative}.v-virtual-table__wrapper{display:flex}.v-virtual-table__table{width:100%;height:100%;overflow-x:auto}.theme--light.v-picker__title{background:#e0e0e0}.theme--dark.v-picker__title{background:#616161}.theme--light.v-picker__body{background:#fff}.theme--dark.v-picker__body{background:#424242}.v-picker{border-radius:4px;contain:layout style;display:inline-flex;flex-direction:column;vertical-align:top;position:relative}.v-picker--full-width{display:flex;width:100%}.v-picker--full-width>.v-picker__body{margin:initial}.v-picker__title{color:#fff;border-top-left-radius:4px;border-top-right-radius:4px;padding:16px}.v-picker__title__btn{transition:.3s cubic-bezier(.25,.8,.5,1)}.v-picker__title__btn:not(.v-picker__title__btn--active){opacity:.6;cursor:pointer}.v-picker__title__btn:not(.v-picker__title__btn--active):hover:not(:focus){opacity:1}.v-picker__title__btn--readonly{pointer-events:none}.v-picker__title__btn--active{opacity:1}.v-picker__body{height:auto;overflow:hidden;position:relative;z-index:0;flex:1 0 auto;display:flex;flex-direction:column;align-items:center;margin:0 auto}.v-picker__body>div{width:100%}.v-picker__body>div.fade-transition-leave-active{position:absolute}.v-picker--landscape .v-picker__title{border-top-right-radius:0;border-bottom-right-radius:0;width:170px;position:absolute;top:0;height:100%;z-index:1}.v-application--is-ltr .v-picker--landscape .v-picker__title{left:0}.v-application--is-rtl .v-picker--landscape .v-picker__title{right:0}.v-application--is-ltr .v-picker--landscape .v-picker__actions:not(.v-picker__actions--no-title),.v-application--is-ltr .v-picker--landscape .v-picker__body:not(.v-picker__body--no-title){margin-left:170px;margin-right:0}.v-application--is-rtl .v-picker--landscape .v-picker__actions:not(.v-picker__actions--no-title),.v-application--is-rtl .v-picker--landscape .v-picker__body:not(.v-picker__body--no-title){margin-right:170px;margin-left:0}.v-date-picker-title{display:flex;justify-content:space-between;flex-direction:column;flex-wrap:wrap;line-height:1}.v-application--is-ltr .v-date-picker-title .v-picker__title__btn{text-align:left}.v-application--is-rtl .v-date-picker-title .v-picker__title__btn{text-align:right}.v-date-picker-title__year{align-items:center;display:inline-flex;font-size:14px;font-weight:500;margin-bottom:8px}.v-date-picker-title__date{font-size:34px;text-align:left;font-weight:500;position:relative;overflow:hidden;padding-bottom:8px;margin-bottom:-8px}.v-date-picker-title__date>div{position:relative}.v-date-picker-title--disabled{pointer-events:none}.theme--light.v-date-picker-header .v-date-picker-header__value:not(.v-date-picker-header__value--disabled) button:not(:hover):not(:focus){color:rgba(0,0,0,.87)}.theme--light.v-date-picker-header .v-date-picker-header__value--disabled button{color:rgba(0,0,0,.38)}.theme--dark.v-date-picker-header .v-date-picker-header__value:not(.v-date-picker-header__value--disabled) button:not(:hover):not(:focus){color:#fff}.theme--dark.v-date-picker-header .v-date-picker-header__value--disabled button{color:hsla(0,0%,100%,.5)}.v-date-picker-header{padding:4px 16px;align-items:center;display:flex;justify-content:space-between;position:relative}.v-date-picker-header .v-btn{margin:0;z-index:auto}.v-date-picker-header .v-icon{cursor:pointer;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.v-date-picker-header__value{flex:1;text-align:center;position:relative;overflow:hidden}.v-date-picker-header__value div{transition:.3s cubic-bezier(.25,.8,.5,1);width:100%}.v-date-picker-header__value button{cursor:pointer;font-weight:700;outline:none;padding:.5rem;transition:.3s cubic-bezier(.25,.8,.5,1)}.v-date-picker-header--disabled{pointer-events:none}.theme--light.v-date-picker-table .v-date-picker-table--date__week,.theme--light.v-date-picker-table th{color:rgba(0,0,0,.38)}.theme--dark.v-date-picker-table .v-date-picker-table--date__week,.theme--dark.v-date-picker-table th{color:hsla(0,0%,100%,.5)}.v-date-picker-table{position:relative;padding:0 12px;height:242px}.v-date-picker-table table{transition:.3s cubic-bezier(.25,.8,.5,1);top:0;table-layout:fixed;width:100%}.v-date-picker-table td,.v-date-picker-table th{text-align:center;position:relative}.v-date-picker-table th{font-size:12px}.v-date-picker-table--date .v-btn{height:32px;width:32px}.v-date-picker-table .v-btn{z-index:auto;margin:0;font-size:12px}.v-date-picker-table .v-btn.v-btn--active{color:#fff}.v-date-picker-table--month td{width:33.333333%;height:56px;vertical-align:middle;text-align:center}.v-date-picker-table--month td .v-btn{margin:0 auto;max-width:140px;min-width:40px;width:100%}.v-date-picker-table--date th{padding:8px 0;font-weight:600}.v-date-picker-table--date td{width:45px}.v-date-picker-table__events{height:8px;left:0;position:absolute;text-align:center;white-space:pre;width:100%}.v-date-picker-table__events>div{border-radius:50%;display:inline-block;height:8px;margin:0 1px;width:8px}.v-date-picker-table--date .v-date-picker-table__events{bottom:6px}.v-date-picker-table--month .v-date-picker-table__events{bottom:8px}.v-date-picker-table__current .v-date-picker-table__events{margin-bottom:-1px}.v-date-picker-table--disabled{pointer-events:none}.v-date-picker-years{font-size:16px;font-weight:400;height:290px;list-style-type:none;overflow:auto;text-align:center}.v-date-picker-years.v-date-picker-years{padding:0}.v-date-picker-years li{cursor:pointer;padding:8px 0;transition:none}.v-date-picker-years li.active{font-size:26px;font-weight:500;padding:10px 0}.v-date-picker-years li:hover{background:rgba(0,0,0,.12)}.v-picker--landscape .v-date-picker-years{padding:0;height:290px}.theme--light.v-expansion-panels .v-expansion-panel{background-color:#fff;color:rgba(0,0,0,.87)}.theme--light.v-expansion-panels .v-expansion-panel--disabled{color:rgba(0,0,0,.38)}.theme--light.v-expansion-panels .v-expansion-panel:not(:first-child):after{border-color:rgba(0,0,0,.12)}.theme--light.v-expansion-panels .v-expansion-panel-header .v-expansion-panel-header__icon .v-icon{color:rgba(0,0,0,.54)}.theme--light.v-expansion-panels.v-expansion-panels--focusable .v-expansion-panel-header:hover:before{opacity:.04}.theme--light.v-expansion-panels.v-expansion-panels--focusable .v-expansion-panel-header--active:before,.theme--light.v-expansion-panels.v-expansion-panels--focusable .v-expansion-panel-header--active:hover:before,.theme--light.v-expansion-panels.v-expansion-panels--focusable .v-expansion-panel-header:focus:before{opacity:.12}.theme--light.v-expansion-panels.v-expansion-panels--focusable .v-expansion-panel-header--active:focus:before{opacity:.16}.theme--light.v-expansion-panels.v-expansion-panels--hover>.v-expansion-panel>.v-expansion-panel-header:hover:hover:before{opacity:.04}.theme--light.v-expansion-panels.v-expansion-panels--hover>.v-expansion-panel>.v-expansion-panel-header:hover--active:before,.theme--light.v-expansion-panels.v-expansion-panels--hover>.v-expansion-panel>.v-expansion-panel-header:hover--active:hover:before,.theme--light.v-expansion-panels.v-expansion-panels--hover>.v-expansion-panel>.v-expansion-panel-header:hover:focus:before{opacity:.12}.theme--light.v-expansion-panels.v-expansion-panels--hover>.v-expansion-panel>.v-expansion-panel-header:hover--active:focus:before{opacity:.16}.theme--dark.v-expansion-panels .v-expansion-panel{background-color:#1e1e1e;color:#fff}.theme--dark.v-expansion-panels .v-expansion-panel--disabled{color:hsla(0,0%,100%,.5)}.theme--dark.v-expansion-panels .v-expansion-panel:not(:first-child):after{border-color:hsla(0,0%,100%,.12)}.theme--dark.v-expansion-panels .v-expansion-panel-header .v-expansion-panel-header__icon .v-icon{color:#fff}.theme--dark.v-expansion-panels.v-expansion-panels--focusable .v-expansion-panel-header:hover:before{opacity:.08}.theme--dark.v-expansion-panels.v-expansion-panels--focusable .v-expansion-panel-header--active:before,.theme--dark.v-expansion-panels.v-expansion-panels--focusable .v-expansion-panel-header--active:hover:before,.theme--dark.v-expansion-panels.v-expansion-panels--focusable .v-expansion-panel-header:focus:before{opacity:.24}.theme--dark.v-expansion-panels.v-expansion-panels--focusable .v-expansion-panel-header--active:focus:before{opacity:.32}.theme--dark.v-expansion-panels.v-expansion-panels--hover>.v-expansion-panel>.v-expansion-panel-header:hover:hover:before{opacity:.08}.theme--dark.v-expansion-panels.v-expansion-panels--hover>.v-expansion-panel>.v-expansion-panel-header:hover--active:before,.theme--dark.v-expansion-panels.v-expansion-panels--hover>.v-expansion-panel>.v-expansion-panel-header:hover--active:hover:before,.theme--dark.v-expansion-panels.v-expansion-panels--hover>.v-expansion-panel>.v-expansion-panel-header:hover:focus:before{opacity:.24}.theme--dark.v-expansion-panels.v-expansion-panels--hover>.v-expansion-panel>.v-expansion-panel-header:hover--active:focus:before{opacity:.32}.v-expansion-panels{border-radius:4px;display:flex;flex-wrap:wrap;justify-content:center;list-style-type:none;padding:0;width:100%;z-index:1}.v-expansion-panels>*{cursor:auto}.v-expansion-panels>:first-child{border-top-left-radius:inherit;border-top-right-radius:inherit}.v-expansion-panels>:last-child{border-bottom-left-radius:inherit;border-bottom-right-radius:inherit}.v-expansion-panels:not(.v-expansion-panels--accordion):not(.v-expansion-panels--tile)>.v-expansion-panel--active{border-radius:4px}.v-expansion-panels:not(.v-expansion-panels--accordion):not(.v-expansion-panels--tile)>.v-expansion-panel--active+.v-expansion-panel{border-top-left-radius:4px;border-top-right-radius:4px}.v-expansion-panels:not(.v-expansion-panels--accordion):not(.v-expansion-panels--tile)>.v-expansion-panel--next-active{border-bottom-left-radius:4px;border-bottom-right-radius:4px}.v-expansion-panels:not(.v-expansion-panels--accordion):not(.v-expansion-panels--tile)>.v-expansion-panel--next-active .v-expansion-panel-header{border-bottom-left-radius:inherit;border-bottom-right-radius:inherit}.v-expansion-panel{flex:1 0 100%;max-width:100%;position:relative;transition:.3s cubic-bezier(.25,.8,.5,1)}.v-expansion-panel:before{border-radius:inherit;bottom:0;content:\"\";left:0;position:absolute;right:0;top:0;z-index:-1;transition:box-shadow .28s cubic-bezier(.4,0,.2,1);will-change:box-shadow;box-shadow:0 3px 1px -2px rgba(0,0,0,.2),0 2px 2px 0 rgba(0,0,0,.14),0 1px 5px 0 rgba(0,0,0,.12)}.v-expansion-panel:not(:first-child):after{border-top:thin solid;content:\"\";left:0;position:absolute;right:0;top:0;transition:border-color .2s cubic-bezier(.4,0,.2,1),opacity .2s cubic-bezier(.4,0,.2,1)}.v-expansion-panel--disabled .v-expansion-panel-header{pointer-events:none}.v-expansion-panel--active+.v-expansion-panel,.v-expansion-panel--active:not(:first-child){margin-top:16px}.v-expansion-panel--active+.v-expansion-panel:after,.v-expansion-panel--active:not(:first-child):after{opacity:0}.v-expansion-panel--active>.v-expansion-panel-header{min-height:64px}.v-expansion-panel--active>.v-expansion-panel-header--active .v-expansion-panel-header__icon:not(.v-expansion-panel-header__icon--disable-rotate) .v-icon{transform:rotate(-180deg)}.v-expansion-panel-header__icon{display:inline-flex;margin-bottom:-4px;margin-top:-4px;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.v-application--is-ltr .v-expansion-panel-header__icon{margin-left:auto}.v-application--is-rtl .v-expansion-panel-header__icon{margin-right:auto}.v-expansion-panel-header{align-items:center;border-top-left-radius:inherit;border-top-right-radius:inherit;display:flex;font-size:.9375rem;line-height:1;min-height:48px;outline:none;padding:16px 24px;position:relative;transition:min-height .3s cubic-bezier(.25,.8,.5,1);width:100%}.v-application--is-ltr .v-expansion-panel-header{text-align:left}.v-application--is-rtl .v-expansion-panel-header{text-align:right}.v-expansion-panel-header:not(.v-expansion-panel-header--mousedown):focus:before{opacity:.12}.v-expansion-panel-header:before{background-color:currentColor;border-radius:inherit;bottom:0;content:\"\";left:0;opacity:0;pointer-events:none;position:absolute;right:0;top:0;transition:opacity .3s cubic-bezier(.25,.8,.5,1)}.v-expansion-panel-header>:not(.v-expansion-panel-header__icon){flex:1 1 auto}.v-expansion-panel-content{display:flex}.v-expansion-panel-content__wrap{padding:0 24px 16px;flex:1 1 auto;max-width:100%}.v-expansion-panels--accordion>.v-expansion-panel{margin-top:0}.v-expansion-panels--accordion>.v-expansion-panel:after{opacity:1}.v-expansion-panels--popout>.v-expansion-panel{max-width:calc(100% - 32px)}.v-expansion-panels--popout>.v-expansion-panel--active{max-width:calc(100% + 16px)}.v-expansion-panels--inset>.v-expansion-panel{max-width:100%}.v-expansion-panels--inset>.v-expansion-panel--active{max-width:calc(100% - 32px)}.v-expansion-panels--flat>.v-expansion-panel:after{border-top:none}.v-expansion-panels--flat>.v-expansion-panel:before{box-shadow:0 0 0 0 rgba(0,0,0,.2),0 0 0 0 rgba(0,0,0,.14),0 0 0 0 rgba(0,0,0,.12)}.v-expansion-panels--tile,.v-expansion-panels--tile>.v-expansion-panel:before{border-radius:0}.theme--light.v-file-input .v-file-input__text{color:rgba(0,0,0,.87)}.theme--light.v-file-input .v-file-input__text--placeholder{color:rgba(0,0,0,.6)}.theme--light.v-file-input.v-input--is-disabled .v-file-input__text,.theme--light.v-file-input.v-input--is-disabled .v-file-input__text .v-file-input__text--placeholder{color:rgba(0,0,0,.38)}.theme--dark.v-file-input .v-file-input__text{color:#fff}.theme--dark.v-file-input .v-file-input__text--placeholder{color:hsla(0,0%,100%,.7)}.theme--dark.v-file-input.v-input--is-disabled .v-file-input__text,.theme--dark.v-file-input.v-input--is-disabled .v-file-input__text .v-file-input__text--placeholder{color:hsla(0,0%,100%,.5)}.v-file-input input[type=file]{left:0;opacity:0;position:absolute;max-width:0;width:0}.v-file-input .v-file-input__text{align-items:center;align-self:stretch;display:flex;flex-wrap:wrap;width:100%}.v-file-input .v-file-input__text.v-file-input__text--chips{flex-wrap:wrap}.v-file-input .v-file-input__text .v-chip{margin:4px}.v-file-input .v-text-field__slot{min-height:32px}.v-file-input.v-text-field--filled:not(.v-text-field--single-line) .v-file-input__text{padding-top:22px}.v-file-input.v-text-field--outlined .v-text-field__slot{padding:6px 0}.v-file-input.v-text-field--outlined.v-input--dense .v-text-field__slot{padding:3px 0}.theme--light.v-footer{background-color:#f5f5f5;color:rgba(0,0,0,.87)}.theme--dark.v-footer{background-color:#272727;color:#fff}.v-footer{align-items:center;display:flex;flex:0 1 auto!important;flex-wrap:wrap;padding:6px 16px;position:relative;transition-duration:.2s;transition-property:background-color,left,right;transition-timing-function:cubic-bezier(.4,0,.2,1)}.v-footer:not([data-booted=true]){transition:none!important}.v-footer--absolute,.v-footer--fixed{z-index:3}.v-footer--absolute{position:absolute;width:100%}.v-footer--fixed{position:fixed}.v-footer--padless{padding:0}.container.grow-shrink-0{flex-grow:0;flex-shrink:0}.container.fill-height{align-items:center;display:flex;flex-wrap:wrap}.container.fill-height>.row{flex:1 1 100%;max-width:100%}.container.fill-height>.layout{height:100%;flex:1 1 auto}.container.fill-height>.layout.grow-shrink-0{flex-grow:0;flex-shrink:0}.container.grid-list-xs .layout .flex{padding:1px}.container.grid-list-xs .layout:only-child{margin:-1px}.container.grid-list-xs .layout:not(:only-child){margin:auto -1px}.container.grid-list-xs :not(:only-child) .layout:first-child{margin-top:-1px}.container.grid-list-xs :not(:only-child) .layout:last-child{margin-bottom:-1px}.container.grid-list-sm .layout .flex{padding:2px}.container.grid-list-sm .layout:only-child{margin:-2px}.container.grid-list-sm .layout:not(:only-child){margin:auto -2px}.container.grid-list-sm :not(:only-child) .layout:first-child{margin-top:-2px}.container.grid-list-sm :not(:only-child) .layout:last-child{margin-bottom:-2px}.container.grid-list-md .layout .flex{padding:4px}.container.grid-list-md .layout:only-child{margin:-4px}.container.grid-list-md .layout:not(:only-child){margin:auto -4px}.container.grid-list-md :not(:only-child) .layout:first-child{margin-top:-4px}.container.grid-list-md :not(:only-child) .layout:last-child{margin-bottom:-4px}.container.grid-list-lg .layout .flex{padding:8px}.container.grid-list-lg .layout:only-child{margin:-8px}.container.grid-list-lg .layout:not(:only-child){margin:auto -8px}.container.grid-list-lg :not(:only-child) .layout:first-child{margin-top:-8px}.container.grid-list-lg :not(:only-child) .layout:last-child{margin-bottom:-8px}.container.grid-list-xl .layout .flex{padding:12px}.container.grid-list-xl .layout:only-child{margin:-12px}.container.grid-list-xl .layout:not(:only-child){margin:auto -12px}.container.grid-list-xl :not(:only-child) .layout:first-child{margin-top:-12px}.container.grid-list-xl :not(:only-child) .layout:last-child{margin-bottom:-12px}.layout{display:flex;flex:1 1 auto;flex-wrap:nowrap;min-width:0}.layout.reverse{flex-direction:row-reverse}.layout.column{flex-direction:column}.layout.column.reverse{flex-direction:column-reverse}.layout.column>.flex{max-width:100%}.layout.wrap{flex-wrap:wrap}.layout.grow-shrink-0{flex-grow:0;flex-shrink:0}@media (min-width:0){.flex.xs12{flex-basis:100%;flex-grow:0;max-width:100%}.flex.order-xs12{order:12}.flex.xs11{flex-basis:91.6666666667%;flex-grow:0;max-width:91.6666666667%}.flex.order-xs11{order:11}.flex.xs10{flex-basis:83.3333333333%;flex-grow:0;max-width:83.3333333333%}.flex.order-xs10{order:10}.flex.xs9{flex-basis:75%;flex-grow:0;max-width:75%}.flex.order-xs9{order:9}.flex.xs8{flex-basis:66.6666666667%;flex-grow:0;max-width:66.6666666667%}.flex.order-xs8{order:8}.flex.xs7{flex-basis:58.3333333333%;flex-grow:0;max-width:58.3333333333%}.flex.order-xs7{order:7}.flex.xs6{flex-basis:50%;flex-grow:0;max-width:50%}.flex.order-xs6{order:6}.flex.xs5{flex-basis:41.6666666667%;flex-grow:0;max-width:41.6666666667%}.flex.order-xs5{order:5}.flex.xs4{flex-basis:33.3333333333%;flex-grow:0;max-width:33.3333333333%}.flex.order-xs4{order:4}.flex.xs3{flex-basis:25%;flex-grow:0;max-width:25%}.flex.order-xs3{order:3}.flex.xs2{flex-basis:16.6666666667%;flex-grow:0;max-width:16.6666666667%}.flex.order-xs2{order:2}.flex.xs1{flex-basis:8.3333333333%;flex-grow:0;max-width:8.3333333333%}.flex.order-xs1{order:1}.flex.offset-xs12{margin-left:100%}.flex.offset-xs11{margin-left:91.6666666667%}.flex.offset-xs10{margin-left:83.3333333333%}.flex.offset-xs9{margin-left:75%}.flex.offset-xs8{margin-left:66.6666666667%}.flex.offset-xs7{margin-left:58.3333333333%}.flex.offset-xs6{margin-left:50%}.flex.offset-xs5{margin-left:41.6666666667%}.flex.offset-xs4{margin-left:33.3333333333%}.flex.offset-xs3{margin-left:25%}.flex.offset-xs2{margin-left:16.6666666667%}.flex.offset-xs1{margin-left:8.3333333333%}.flex.offset-xs0{margin-left:0}}@media (min-width:600px){.flex.sm12{flex-basis:100%;flex-grow:0;max-width:100%}.flex.order-sm12{order:12}.flex.sm11{flex-basis:91.6666666667%;flex-grow:0;max-width:91.6666666667%}.flex.order-sm11{order:11}.flex.sm10{flex-basis:83.3333333333%;flex-grow:0;max-width:83.3333333333%}.flex.order-sm10{order:10}.flex.sm9{flex-basis:75%;flex-grow:0;max-width:75%}.flex.order-sm9{order:9}.flex.sm8{flex-basis:66.6666666667%;flex-grow:0;max-width:66.6666666667%}.flex.order-sm8{order:8}.flex.sm7{flex-basis:58.3333333333%;flex-grow:0;max-width:58.3333333333%}.flex.order-sm7{order:7}.flex.sm6{flex-basis:50%;flex-grow:0;max-width:50%}.flex.order-sm6{order:6}.flex.sm5{flex-basis:41.6666666667%;flex-grow:0;max-width:41.6666666667%}.flex.order-sm5{order:5}.flex.sm4{flex-basis:33.3333333333%;flex-grow:0;max-width:33.3333333333%}.flex.order-sm4{order:4}.flex.sm3{flex-basis:25%;flex-grow:0;max-width:25%}.flex.order-sm3{order:3}.flex.sm2{flex-basis:16.6666666667%;flex-grow:0;max-width:16.6666666667%}.flex.order-sm2{order:2}.flex.sm1{flex-basis:8.3333333333%;flex-grow:0;max-width:8.3333333333%}.flex.order-sm1{order:1}.flex.offset-sm12{margin-left:100%}.flex.offset-sm11{margin-left:91.6666666667%}.flex.offset-sm10{margin-left:83.3333333333%}.flex.offset-sm9{margin-left:75%}.flex.offset-sm8{margin-left:66.6666666667%}.flex.offset-sm7{margin-left:58.3333333333%}.flex.offset-sm6{margin-left:50%}.flex.offset-sm5{margin-left:41.6666666667%}.flex.offset-sm4{margin-left:33.3333333333%}.flex.offset-sm3{margin-left:25%}.flex.offset-sm2{margin-left:16.6666666667%}.flex.offset-sm1{margin-left:8.3333333333%}.flex.offset-sm0{margin-left:0}}@media (min-width:960px){.flex.md12{flex-basis:100%;flex-grow:0;max-width:100%}.flex.order-md12{order:12}.flex.md11{flex-basis:91.6666666667%;flex-grow:0;max-width:91.6666666667%}.flex.order-md11{order:11}.flex.md10{flex-basis:83.3333333333%;flex-grow:0;max-width:83.3333333333%}.flex.order-md10{order:10}.flex.md9{flex-basis:75%;flex-grow:0;max-width:75%}.flex.order-md9{order:9}.flex.md8{flex-basis:66.6666666667%;flex-grow:0;max-width:66.6666666667%}.flex.order-md8{order:8}.flex.md7{flex-basis:58.3333333333%;flex-grow:0;max-width:58.3333333333%}.flex.order-md7{order:7}.flex.md6{flex-basis:50%;flex-grow:0;max-width:50%}.flex.order-md6{order:6}.flex.md5{flex-basis:41.6666666667%;flex-grow:0;max-width:41.6666666667%}.flex.order-md5{order:5}.flex.md4{flex-basis:33.3333333333%;flex-grow:0;max-width:33.3333333333%}.flex.order-md4{order:4}.flex.md3{flex-basis:25%;flex-grow:0;max-width:25%}.flex.order-md3{order:3}.flex.md2{flex-basis:16.6666666667%;flex-grow:0;max-width:16.6666666667%}.flex.order-md2{order:2}.flex.md1{flex-basis:8.3333333333%;flex-grow:0;max-width:8.3333333333%}.flex.order-md1{order:1}.flex.offset-md12{margin-left:100%}.flex.offset-md11{margin-left:91.6666666667%}.flex.offset-md10{margin-left:83.3333333333%}.flex.offset-md9{margin-left:75%}.flex.offset-md8{margin-left:66.6666666667%}.flex.offset-md7{margin-left:58.3333333333%}.flex.offset-md6{margin-left:50%}.flex.offset-md5{margin-left:41.6666666667%}.flex.offset-md4{margin-left:33.3333333333%}.flex.offset-md3{margin-left:25%}.flex.offset-md2{margin-left:16.6666666667%}.flex.offset-md1{margin-left:8.3333333333%}.flex.offset-md0{margin-left:0}}@media (min-width:1264px){.flex.lg12{flex-basis:100%;flex-grow:0;max-width:100%}.flex.order-lg12{order:12}.flex.lg11{flex-basis:91.6666666667%;flex-grow:0;max-width:91.6666666667%}.flex.order-lg11{order:11}.flex.lg10{flex-basis:83.3333333333%;flex-grow:0;max-width:83.3333333333%}.flex.order-lg10{order:10}.flex.lg9{flex-basis:75%;flex-grow:0;max-width:75%}.flex.order-lg9{order:9}.flex.lg8{flex-basis:66.6666666667%;flex-grow:0;max-width:66.6666666667%}.flex.order-lg8{order:8}.flex.lg7{flex-basis:58.3333333333%;flex-grow:0;max-width:58.3333333333%}.flex.order-lg7{order:7}.flex.lg6{flex-basis:50%;flex-grow:0;max-width:50%}.flex.order-lg6{order:6}.flex.lg5{flex-basis:41.6666666667%;flex-grow:0;max-width:41.6666666667%}.flex.order-lg5{order:5}.flex.lg4{flex-basis:33.3333333333%;flex-grow:0;max-width:33.3333333333%}.flex.order-lg4{order:4}.flex.lg3{flex-basis:25%;flex-grow:0;max-width:25%}.flex.order-lg3{order:3}.flex.lg2{flex-basis:16.6666666667%;flex-grow:0;max-width:16.6666666667%}.flex.order-lg2{order:2}.flex.lg1{flex-basis:8.3333333333%;flex-grow:0;max-width:8.3333333333%}.flex.order-lg1{order:1}.flex.offset-lg12{margin-left:100%}.flex.offset-lg11{margin-left:91.6666666667%}.flex.offset-lg10{margin-left:83.3333333333%}.flex.offset-lg9{margin-left:75%}.flex.offset-lg8{margin-left:66.6666666667%}.flex.offset-lg7{margin-left:58.3333333333%}.flex.offset-lg6{margin-left:50%}.flex.offset-lg5{margin-left:41.6666666667%}.flex.offset-lg4{margin-left:33.3333333333%}.flex.offset-lg3{margin-left:25%}.flex.offset-lg2{margin-left:16.6666666667%}.flex.offset-lg1{margin-left:8.3333333333%}.flex.offset-lg0{margin-left:0}}@media (min-width:1904px){.flex.xl12{flex-basis:100%;flex-grow:0;max-width:100%}.flex.order-xl12{order:12}.flex.xl11{flex-basis:91.6666666667%;flex-grow:0;max-width:91.6666666667%}.flex.order-xl11{order:11}.flex.xl10{flex-basis:83.3333333333%;flex-grow:0;max-width:83.3333333333%}.flex.order-xl10{order:10}.flex.xl9{flex-basis:75%;flex-grow:0;max-width:75%}.flex.order-xl9{order:9}.flex.xl8{flex-basis:66.6666666667%;flex-grow:0;max-width:66.6666666667%}.flex.order-xl8{order:8}.flex.xl7{flex-basis:58.3333333333%;flex-grow:0;max-width:58.3333333333%}.flex.order-xl7{order:7}.flex.xl6{flex-basis:50%;flex-grow:0;max-width:50%}.flex.order-xl6{order:6}.flex.xl5{flex-basis:41.6666666667%;flex-grow:0;max-width:41.6666666667%}.flex.order-xl5{order:5}.flex.xl4{flex-basis:33.3333333333%;flex-grow:0;max-width:33.3333333333%}.flex.order-xl4{order:4}.flex.xl3{flex-basis:25%;flex-grow:0;max-width:25%}.flex.order-xl3{order:3}.flex.xl2{flex-basis:16.6666666667%;flex-grow:0;max-width:16.6666666667%}.flex.order-xl2{order:2}.flex.xl1{flex-basis:8.3333333333%;flex-grow:0;max-width:8.3333333333%}.flex.order-xl1{order:1}.flex.offset-xl12{margin-left:100%}.flex.offset-xl11{margin-left:91.6666666667%}.flex.offset-xl10{margin-left:83.3333333333%}.flex.offset-xl9{margin-left:75%}.flex.offset-xl8{margin-left:66.6666666667%}.flex.offset-xl7{margin-left:58.3333333333%}.flex.offset-xl6{margin-left:50%}.flex.offset-xl5{margin-left:41.6666666667%}.flex.offset-xl4{margin-left:33.3333333333%}.flex.offset-xl3{margin-left:25%}.flex.offset-xl2{margin-left:16.6666666667%}.flex.offset-xl1{margin-left:8.3333333333%}.flex.offset-xl0{margin-left:0}}.child-flex>*,.flex{flex:1 1 auto;max-width:100%}.child-flex>.grow-shrink-0,.flex.grow-shrink-0{flex-grow:0;flex-shrink:0}.grow,.spacer{flex-grow:1!important}.grow{flex-shrink:0!important}.shrink{flex-grow:0!important;flex-shrink:1!important}.fill-height{height:100%}.container{width:100%;padding:12px;margin-right:auto;margin-left:auto}@media (min-width:960px){.container{max-width:900px}}@media (min-width:1264px){.container{max-width:1185px}}@media (min-width:1904px){.container{max-width:1785px}}.container--fluid{max-width:100%}.row{display:flex;flex-wrap:wrap;flex:1 1 auto;margin-right:-12px;margin-left:-12px}.row--dense{margin-right:-4px;margin-left:-4px}.row--dense>.col,.row--dense>[class*=col-]{padding:4px}.no-gutters{margin-right:0;margin-left:0}.no-gutters>.col,.no-gutters>[class*=col-]{padding:0}.col,.col-1,.col-2,.col-3,.col-4,.col-5,.col-6,.col-7,.col-8,.col-9,.col-10,.col-11,.col-12,.col-auto,.col-lg,.col-lg-1,.col-lg-2,.col-lg-3,.col-lg-4,.col-lg-5,.col-lg-6,.col-lg-7,.col-lg-8,.col-lg-9,.col-lg-10,.col-lg-11,.col-lg-12,.col-lg-auto,.col-md,.col-md-1,.col-md-2,.col-md-3,.col-md-4,.col-md-5,.col-md-6,.col-md-7,.col-md-8,.col-md-9,.col-md-10,.col-md-11,.col-md-12,.col-md-auto,.col-sm,.col-sm-1,.col-sm-2,.col-sm-3,.col-sm-4,.col-sm-5,.col-sm-6,.col-sm-7,.col-sm-8,.col-sm-9,.col-sm-10,.col-sm-11,.col-sm-12,.col-sm-auto,.col-xl,.col-xl-1,.col-xl-2,.col-xl-3,.col-xl-4,.col-xl-5,.col-xl-6,.col-xl-7,.col-xl-8,.col-xl-9,.col-xl-10,.col-xl-11,.col-xl-12,.col-xl-auto{width:100%;padding:12px}.col{flex-basis:0;flex-grow:1;max-width:100%}.col-auto{flex:0 0 auto;width:auto;max-width:100%}.col-1{flex:0 0 8.3333333333%;max-width:8.3333333333%}.col-2{flex:0 0 16.6666666667%;max-width:16.6666666667%}.col-3{flex:0 0 25%;max-width:25%}.col-4{flex:0 0 33.3333333333%;max-width:33.3333333333%}.col-5{flex:0 0 41.6666666667%;max-width:41.6666666667%}.col-6{flex:0 0 50%;max-width:50%}.col-7{flex:0 0 58.3333333333%;max-width:58.3333333333%}.col-8{flex:0 0 66.6666666667%;max-width:66.6666666667%}.col-9{flex:0 0 75%;max-width:75%}.col-10{flex:0 0 83.3333333333%;max-width:83.3333333333%}.col-11{flex:0 0 91.6666666667%;max-width:91.6666666667%}.col-12{flex:0 0 100%;max-width:100%}.offset-1{margin-left:8.3333333333%}.offset-2{margin-left:16.6666666667%}.offset-3{margin-left:25%}.offset-4{margin-left:33.3333333333%}.offset-5{margin-left:41.6666666667%}.offset-6{margin-left:50%}.offset-7{margin-left:58.3333333333%}.offset-8{margin-left:66.6666666667%}.offset-9{margin-left:75%}.offset-10{margin-left:83.3333333333%}.offset-11{margin-left:91.6666666667%}@media (min-width:600px){.col-sm{flex-basis:0;flex-grow:1;max-width:100%}.col-sm-auto{flex:0 0 auto;width:auto;max-width:100%}.col-sm-1{flex:0 0 8.3333333333%;max-width:8.3333333333%}.col-sm-2{flex:0 0 16.6666666667%;max-width:16.6666666667%}.col-sm-3{flex:0 0 25%;max-width:25%}.col-sm-4{flex:0 0 33.3333333333%;max-width:33.3333333333%}.col-sm-5{flex:0 0 41.6666666667%;max-width:41.6666666667%}.col-sm-6{flex:0 0 50%;max-width:50%}.col-sm-7{flex:0 0 58.3333333333%;max-width:58.3333333333%}.col-sm-8{flex:0 0 66.6666666667%;max-width:66.6666666667%}.col-sm-9{flex:0 0 75%;max-width:75%}.col-sm-10{flex:0 0 83.3333333333%;max-width:83.3333333333%}.col-sm-11{flex:0 0 91.6666666667%;max-width:91.6666666667%}.col-sm-12{flex:0 0 100%;max-width:100%}.offset-sm-0{margin-left:0}.offset-sm-1{margin-left:8.3333333333%}.offset-sm-2{margin-left:16.6666666667%}.offset-sm-3{margin-left:25%}.offset-sm-4{margin-left:33.3333333333%}.offset-sm-5{margin-left:41.6666666667%}.offset-sm-6{margin-left:50%}.offset-sm-7{margin-left:58.3333333333%}.offset-sm-8{margin-left:66.6666666667%}.offset-sm-9{margin-left:75%}.offset-sm-10{margin-left:83.3333333333%}.offset-sm-11{margin-left:91.6666666667%}}@media (min-width:960px){.col-md{flex-basis:0;flex-grow:1;max-width:100%}.col-md-auto{flex:0 0 auto;width:auto;max-width:100%}.col-md-1{flex:0 0 8.3333333333%;max-width:8.3333333333%}.col-md-2{flex:0 0 16.6666666667%;max-width:16.6666666667%}.col-md-3{flex:0 0 25%;max-width:25%}.col-md-4{flex:0 0 33.3333333333%;max-width:33.3333333333%}.col-md-5{flex:0 0 41.6666666667%;max-width:41.6666666667%}.col-md-6{flex:0 0 50%;max-width:50%}.col-md-7{flex:0 0 58.3333333333%;max-width:58.3333333333%}.col-md-8{flex:0 0 66.6666666667%;max-width:66.6666666667%}.col-md-9{flex:0 0 75%;max-width:75%}.col-md-10{flex:0 0 83.3333333333%;max-width:83.3333333333%}.col-md-11{flex:0 0 91.6666666667%;max-width:91.6666666667%}.col-md-12{flex:0 0 100%;max-width:100%}.offset-md-0{margin-left:0}.offset-md-1{margin-left:8.3333333333%}.offset-md-2{margin-left:16.6666666667%}.offset-md-3{margin-left:25%}.offset-md-4{margin-left:33.3333333333%}.offset-md-5{margin-left:41.6666666667%}.offset-md-6{margin-left:50%}.offset-md-7{margin-left:58.3333333333%}.offset-md-8{margin-left:66.6666666667%}.offset-md-9{margin-left:75%}.offset-md-10{margin-left:83.3333333333%}.offset-md-11{margin-left:91.6666666667%}}@media (min-width:1264px){.col-lg{flex-basis:0;flex-grow:1;max-width:100%}.col-lg-auto{flex:0 0 auto;width:auto;max-width:100%}.col-lg-1{flex:0 0 8.3333333333%;max-width:8.3333333333%}.col-lg-2{flex:0 0 16.6666666667%;max-width:16.6666666667%}.col-lg-3{flex:0 0 25%;max-width:25%}.col-lg-4{flex:0 0 33.3333333333%;max-width:33.3333333333%}.col-lg-5{flex:0 0 41.6666666667%;max-width:41.6666666667%}.col-lg-6{flex:0 0 50%;max-width:50%}.col-lg-7{flex:0 0 58.3333333333%;max-width:58.3333333333%}.col-lg-8{flex:0 0 66.6666666667%;max-width:66.6666666667%}.col-lg-9{flex:0 0 75%;max-width:75%}.col-lg-10{flex:0 0 83.3333333333%;max-width:83.3333333333%}.col-lg-11{flex:0 0 91.6666666667%;max-width:91.6666666667%}.col-lg-12{flex:0 0 100%;max-width:100%}.offset-lg-0{margin-left:0}.offset-lg-1{margin-left:8.3333333333%}.offset-lg-2{margin-left:16.6666666667%}.offset-lg-3{margin-left:25%}.offset-lg-4{margin-left:33.3333333333%}.offset-lg-5{margin-left:41.6666666667%}.offset-lg-6{margin-left:50%}.offset-lg-7{margin-left:58.3333333333%}.offset-lg-8{margin-left:66.6666666667%}.offset-lg-9{margin-left:75%}.offset-lg-10{margin-left:83.3333333333%}.offset-lg-11{margin-left:91.6666666667%}}@media (min-width:1904px){.col-xl{flex-basis:0;flex-grow:1;max-width:100%}.col-xl-auto{flex:0 0 auto;width:auto;max-width:100%}.col-xl-1{flex:0 0 8.3333333333%;max-width:8.3333333333%}.col-xl-2{flex:0 0 16.6666666667%;max-width:16.6666666667%}.col-xl-3{flex:0 0 25%;max-width:25%}.col-xl-4{flex:0 0 33.3333333333%;max-width:33.3333333333%}.col-xl-5{flex:0 0 41.6666666667%;max-width:41.6666666667%}.col-xl-6{flex:0 0 50%;max-width:50%}.col-xl-7{flex:0 0 58.3333333333%;max-width:58.3333333333%}.col-xl-8{flex:0 0 66.6666666667%;max-width:66.6666666667%}.col-xl-9{flex:0 0 75%;max-width:75%}.col-xl-10{flex:0 0 83.3333333333%;max-width:83.3333333333%}.col-xl-11{flex:0 0 91.6666666667%;max-width:91.6666666667%}.col-xl-12{flex:0 0 100%;max-width:100%}.offset-xl-0{margin-left:0}.offset-xl-1{margin-left:8.3333333333%}.offset-xl-2{margin-left:16.6666666667%}.offset-xl-3{margin-left:25%}.offset-xl-4{margin-left:33.3333333333%}.offset-xl-5{margin-left:41.6666666667%}.offset-xl-6{margin-left:50%}.offset-xl-7{margin-left:58.3333333333%}.offset-xl-8{margin-left:66.6666666667%}.offset-xl-9{margin-left:75%}.offset-xl-10{margin-left:83.3333333333%}.offset-xl-11{margin-left:91.6666666667%}}.theme--light.v-navigation-drawer{background-color:#fff}.theme--light.v-navigation-drawer:not(.v-navigation-drawer--floating) .v-navigation-drawer__border{background-color:rgba(0,0,0,.12)}.theme--light.v-navigation-drawer .v-divider{border-color:rgba(0,0,0,.12)}.theme--dark.v-navigation-drawer{background-color:#363636}.theme--dark.v-navigation-drawer:not(.v-navigation-drawer--floating) .v-navigation-drawer__border{background-color:hsla(0,0%,100%,.12)}.theme--dark.v-navigation-drawer .v-divider{border-color:hsla(0,0%,100%,.12)}.v-navigation-drawer{-webkit-overflow-scrolling:touch;display:flex;flex-direction:column;left:0;max-width:100%;overflow:hidden;pointer-events:auto;top:0;transition-duration:.2s;transition-timing-function:cubic-bezier(.4,0,.2,1);will-change:transform;transition-property:transform,width}.v-navigation-drawer:not([data-booted=true]){transition:none!important}.v-navigation-drawer.v-navigation-drawer--right:after{left:0;right:auto}.v-navigation-drawer .v-list{background:inherit}.v-navigation-drawer__border{position:absolute;right:0;top:0;height:100%;width:1px}.v-navigation-drawer__content{height:100%;overflow-y:auto;overflow-x:hidden}.v-navigation-drawer__image{border-radius:inherit;height:100%;position:absolute;top:0;bottom:0;z-index:-1;contain:strict;width:100%}.v-navigation-drawer__image .v-image{border-radius:inherit}.v-navigation-drawer--bottom.v-navigation-drawer--is-mobile{max-height:50%;top:auto;bottom:0;min-width:100%}.v-navigation-drawer--right{left:auto;right:0}.v-navigation-drawer--right>.v-navigation-drawer__border{right:auto;left:0}.v-navigation-drawer--absolute{z-index:1}.v-navigation-drawer--fixed{z-index:6}.v-navigation-drawer--absolute{position:absolute}.v-navigation-drawer--clipped:not(.v-navigation-drawer--temporary):not(.v-navigation-drawer--is-mobile){z-index:4}.v-navigation-drawer--fixed{position:fixed}.v-navigation-drawer--floating:after{display:none}.v-navigation-drawer--mini-variant{overflow:hidden}.v-navigation-drawer--mini-variant .v-list-item>:first-child{margin-left:0;margin-right:0}.v-navigation-drawer--mini-variant .v-list-item>:not(:first-child){position:absolute!important;height:1px;width:1px;overflow:hidden;clip:rect(1px,1px,1px,1px);white-space:nowrap;display:initial}.v-navigation-drawer--mini-variant .v-list-group--no-action .v-list-group__items,.v-navigation-drawer--mini-variant .v-list-group--sub-group{display:none}.v-navigation-drawer--mini-variant.v-navigation-drawer--custom-mini-variant .v-list-item{justify-content:center}.v-navigation-drawer--temporary{z-index:7}.v-navigation-drawer--mobile{z-index:6}.v-navigation-drawer--is-mobile:not(.v-navigation-drawer--close),.v-navigation-drawer--temporary:not(.v-navigation-drawer--close){box-shadow:0 8px 10px -5px rgba(0,0,0,.2),0 16px 24px 2px rgba(0,0,0,.14),0 6px 30px 5px rgba(0,0,0,.12)}.theme--light.v-overflow-btn.theme--light.v-overflow-btn>.v-input__control>.v-input__slot{border-color:rgba(0,0,0,.12)}.theme--light.v-overflow-btn:not(.v-input--is-focused):not(.v-input--has-state)>.v-input__control>.v-input__slot:hover{background:#fff}.theme--light.v-overflow-btn.v-overflow-btn--segmented .v-input__append-inner{border-left:thin solid rgba(0,0,0,.12)}.theme--dark.v-overflow-btn.theme--dark.v-overflow-btn>.v-input__control>.v-input__slot{border-color:hsla(0,0%,100%,.12)}.theme--dark.v-overflow-btn:not(.v-input--is-focused):not(.v-input--has-state)>.v-input__control>.v-input__slot:hover{background:#1e1e1e}.theme--dark.v-overflow-btn.v-overflow-btn--segmented .v-input__append-inner{border-left:thin solid hsla(0,0%,100%,.12)}.v-autocomplete__content.v-menu__content{box-shadow:0 4px 6px 0 rgba(32,33,36,.28)}.v-autocomplete__content.v-menu__content .v-select-list{border-radius:0 0 4px 4px}.v-overflow-btn{margin-top:12px;padding-top:0}.v-overflow-btn:not(.v-overflow-btn--editable)>.v-input__control>.v-input__slot{cursor:pointer}.v-overflow-btn .v-input__slot{border-width:2px 0;border-style:solid}.v-overflow-btn .v-input__slot:before{display:none}.v-overflow-btn .v-select__slot{height:48px}.v-overflow-btn.v-input--dense .v-select__slot{height:38px}.v-overflow-btn.v-input--dense input{cursor:pointer}.v-application--is-ltr .v-overflow-btn.v-input--dense input{margin-left:16px}.v-application--is-rtl .v-overflow-btn.v-input--dense input{margin-right:16px}.v-application--is-ltr .v-overflow-btn .v-select__selection--comma:first-child{margin-left:16px}.v-application--is-rtl .v-overflow-btn .v-select__selection--comma:first-child{margin-right:16px}.v-overflow-btn .v-input__slot{transition:.3s cubic-bezier(.25,.8,.5,1)}.v-overflow-btn .v-input__slot:after,.v-overflow-btn .v-input__slot:before{display:none}.v-overflow-btn .v-label{top:calc(50% - 10px)}.v-application--is-ltr .v-overflow-btn .v-label{margin-left:16px}.v-application--is-rtl .v-overflow-btn .v-label{margin-right:16px}.v-overflow-btn .v-input__append-inner{align-items:center;align-self:auto;flex-shrink:0;height:48px;margin-top:0;padding:0 4px;width:42px}.v-overflow-btn .v-input__append-outer,.v-overflow-btn .v-input__prepend-outer{margin-bottom:12px;margin-top:12px}.v-overflow-btn .v-input__control:before{height:1px;top:-1px;content:\"\";left:0;position:absolute;transition:.3s cubic-bezier(.25,.8,.5,1);width:100%}.v-overflow-btn.v-input--is-focused .v-input__slot,.v-overflow-btn.v-select--is-menu-active .v-input__slot{border-color:transparent!important;box-shadow:0 1px 6px 0 rgba(32,33,36,.28)}.v-overflow-btn.v-input--is-focused .v-input__slot{border-radius:4px}.v-overflow-btn.v-select--is-menu-active .v-input__slot{border-radius:4px 4px 0 0}.v-overflow-btn .v-select__selections{width:0}.v-overflow-btn--segmented .v-input__slot{border-width:thin 0}.v-overflow-btn--segmented .v-select__selections{flex-wrap:nowrap}.v-overflow-btn--segmented .v-select__selections .v-btn{border-radius:0;margin:0;height:48px;width:100%}.v-application--is-ltr .v-overflow-btn--segmented .v-select__selections .v-btn{margin-right:-16px}.v-application--is-rtl .v-overflow-btn--segmented .v-select__selections .v-btn{margin-left:-16px}.v-overflow-btn--segmented .v-select__selections .v-btn__content{justify-content:start}.v-overflow-btn--segmented .v-select__selections .v-btn__content:before{background-color:transparent}.v-overflow-btn--editable .v-select__slot input{cursor:text;padding:8px 16px}.v-overflow-btn--editable .v-input__append-inner,.v-overflow-btn--editable .v-input__append-inner *{cursor:pointer}.theme--light.v-pagination .v-pagination__item{background:#fff;color:rgba(0,0,0,.87)}.theme--light.v-pagination .v-pagination__item--active{color:#fff}.theme--light.v-pagination .v-pagination__navigation{background:#fff}.theme--dark.v-pagination .v-pagination__item{background:#1e1e1e;color:#fff}.theme--dark.v-pagination .v-pagination__item--active{color:#fff}.theme--dark.v-pagination .v-pagination__navigation{background:#1e1e1e}.v-pagination{align-items:center;display:inline-flex;list-style-type:none;justify-content:center;margin:0;max-width:100%;width:100%}.v-pagination.v-pagination{padding-left:0}.v-pagination>li{align-items:center;display:flex}.v-pagination--circle .v-pagination__item,.v-pagination--circle .v-pagination__more,.v-pagination--circle .v-pagination__navigation{border-radius:50%}.v-pagination--disabled{pointer-events:none;opacity:.6}.v-pagination__item{background:transparent;border-radius:4px;font-size:1rem;height:34px;margin:.3rem;min-width:34px;padding:0 5px;text-decoration:none;transition:.3s cubic-bezier(0,0,.2,1);width:auto;box-shadow:0 3px 1px -2px rgba(0,0,0,.2),0 2px 2px 0 rgba(0,0,0,.14),0 1px 5px 0 rgba(0,0,0,.12)}.v-pagination__item--active{box-shadow:0 2px 4px -1px rgba(0,0,0,.2),0 4px 5px 0 rgba(0,0,0,.14),0 1px 10px 0 rgba(0,0,0,.12)}.v-pagination__navigation{box-shadow:0 3px 1px -2px rgba(0,0,0,.2),0 2px 2px 0 rgba(0,0,0,.14),0 1px 5px 0 rgba(0,0,0,.12);border-radius:4px;display:inline-flex;justify-content:center;align-items:center;text-decoration:none;height:32px;width:32px;margin:.3rem 10px}.v-pagination__navigation .v-icon{transition:.2s cubic-bezier(.4,0,.6,1);vertical-align:middle}.v-pagination__navigation--disabled{opacity:.6;pointer-events:none}.v-pagination__more{margin:.3rem;display:inline-flex;align-items:flex-end;justify-content:center;height:32px;width:32px}.v-parallax{position:relative;overflow:hidden;z-index:0}.v-parallax__image-container{position:absolute;top:0;left:0;right:0;bottom:0;z-index:1;contain:strict}.v-parallax__image{position:absolute;bottom:0;left:50%;min-width:100%;min-height:100%;display:none;transform:translate(-50%);will-change:transform;transition:opacity .3s cubic-bezier(.25,.8,.5,1);z-index:1}.v-parallax__content{color:#fff;height:100%;z-index:2;position:relative;display:flex;flex-direction:column;justify-content:center;padding:0 1rem}.v-input--radio-group__input{border:none;display:flex;width:100%}.v-input--radio-group--column .v-input--radio-group__input>.v-label{padding-bottom:8px}.v-input--radio-group--row .v-input--radio-group__input>.v-label{padding-right:8px}.v-input--radio-group--row legend{align-self:center;display:inline-block}.v-input--radio-group--row .v-input--radio-group__input{flex-direction:row;flex-wrap:wrap}.v-input--radio-group--column .v-radio:not(:last-child):not(:only-child){margin-bottom:8px}.v-input--radio-group--column .v-input--radio-group__input{flex-direction:column}.theme--light.v-radio--is-disabled label{color:rgba(0,0,0,.38)}.theme--light.v-radio--is-disabled .v-icon{color:rgba(0,0,0,.26)!important}.theme--dark.v-radio--is-disabled label{color:hsla(0,0%,100%,.5)}.theme--dark.v-radio--is-disabled .v-icon{color:hsla(0,0%,100%,.3)!important}.v-radio{align-items:center;display:flex;height:auto;outline:none}.v-radio--is-disabled{pointer-events:none}.v-input--radio-group.v-input--radio-group--row .v-radio{margin-right:16px}.theme--light.v-input--range-slider.v-input--slider.v-input--is-disabled .v-slider.v-slider .v-slider__thumb{background:#fafafa}.theme--dark.v-input--range-slider.v-input--slider.v-input--is-disabled .v-slider.v-slider .v-slider__thumb{background:#424242}.v-input--range-slider.v-input--is-disabled .v-slider__track-fill{display:none}.v-input--range-slider.v-input--is-disabled.v-input--slider .v-slider.v-slider .v-slider__thumb{border-color:transparent}.v-rating{max-width:100%;white-space:nowrap}.v-rating .v-icon{padding:.5rem;border-radius:50%;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;outline:none}.v-rating .v-icon:after{display:none}.v-application--is-ltr .v-rating .v-icon{transform:scaleX(1)}.v-application--is-rtl .v-rating .v-icon{transform:scaleX(-1)}.v-rating--readonly .v-icon{pointer-events:none}.v-rating--dense .v-icon{padding:.1rem}.theme--light.v-skeleton-loader .v-skeleton-loader__bone:after{background:linear-gradient(90deg,transparent,hsla(0,0%,100%,.3),transparent)}.theme--light.v-skeleton-loader .v-skeleton-loader__avatar,.theme--light.v-skeleton-loader .v-skeleton-loader__button,.theme--light.v-skeleton-loader .v-skeleton-loader__chip,.theme--light.v-skeleton-loader .v-skeleton-loader__divider,.theme--light.v-skeleton-loader .v-skeleton-loader__heading,.theme--light.v-skeleton-loader .v-skeleton-loader__image,.theme--light.v-skeleton-loader .v-skeleton-loader__text{background:rgba(0,0,0,.12)}.theme--light.v-skeleton-loader .v-skeleton-loader__actions,.theme--light.v-skeleton-loader .v-skeleton-loader__article,.theme--light.v-skeleton-loader .v-skeleton-loader__card-heading,.theme--light.v-skeleton-loader .v-skeleton-loader__card-text,.theme--light.v-skeleton-loader .v-skeleton-loader__date-picker,.theme--light.v-skeleton-loader .v-skeleton-loader__list-item,.theme--light.v-skeleton-loader .v-skeleton-loader__list-item-avatar,.theme--light.v-skeleton-loader .v-skeleton-loader__list-item-avatar-three-line,.theme--light.v-skeleton-loader .v-skeleton-loader__list-item-avatar-two-line,.theme--light.v-skeleton-loader .v-skeleton-loader__list-item-text,.theme--light.v-skeleton-loader .v-skeleton-loader__list-item-three-line,.theme--light.v-skeleton-loader .v-skeleton-loader__list-item-two-line,.theme--light.v-skeleton-loader .v-skeleton-loader__table-heading,.theme--light.v-skeleton-loader .v-skeleton-loader__table-tbody,.theme--light.v-skeleton-loader .v-skeleton-loader__table-tfoot,.theme--light.v-skeleton-loader .v-skeleton-loader__table-thead{background:#fff}.theme--dark.v-skeleton-loader .v-skeleton-loader__bone:after{background:linear-gradient(90deg,transparent,hsla(0,0%,100%,.05),transparent)}.theme--dark.v-skeleton-loader .v-skeleton-loader__avatar,.theme--dark.v-skeleton-loader .v-skeleton-loader__button,.theme--dark.v-skeleton-loader .v-skeleton-loader__chip,.theme--dark.v-skeleton-loader .v-skeleton-loader__divider,.theme--dark.v-skeleton-loader .v-skeleton-loader__heading,.theme--dark.v-skeleton-loader .v-skeleton-loader__image,.theme--dark.v-skeleton-loader .v-skeleton-loader__text{background:hsla(0,0%,100%,.12)}.theme--dark.v-skeleton-loader .v-skeleton-loader__actions,.theme--dark.v-skeleton-loader .v-skeleton-loader__article,.theme--dark.v-skeleton-loader .v-skeleton-loader__card-heading,.theme--dark.v-skeleton-loader .v-skeleton-loader__card-text,.theme--dark.v-skeleton-loader .v-skeleton-loader__date-picker,.theme--dark.v-skeleton-loader .v-skeleton-loader__list-item,.theme--dark.v-skeleton-loader .v-skeleton-loader__list-item-avatar,.theme--dark.v-skeleton-loader .v-skeleton-loader__list-item-avatar-three-line,.theme--dark.v-skeleton-loader .v-skeleton-loader__list-item-avatar-two-line,.theme--dark.v-skeleton-loader .v-skeleton-loader__list-item-text,.theme--dark.v-skeleton-loader .v-skeleton-loader__list-item-three-line,.theme--dark.v-skeleton-loader .v-skeleton-loader__list-item-two-line,.theme--dark.v-skeleton-loader .v-skeleton-loader__table-heading,.theme--dark.v-skeleton-loader .v-skeleton-loader__table-tbody,.theme--dark.v-skeleton-loader .v-skeleton-loader__table-tfoot,.theme--dark.v-skeleton-loader .v-skeleton-loader__table-thead{background:#1e1e1e}.v-skeleton-loader{border-radius:4px;position:relative;vertical-align:top}.v-skeleton-loader__actions{padding:16px 16px 8px;text-align:right}.v-skeleton-loader__actions .v-skeleton-loader__button{display:inline-block}.v-application--is-ltr .v-skeleton-loader__actions .v-skeleton-loader__button:first-child{margin-right:12px}.v-application--is-rtl .v-skeleton-loader__actions .v-skeleton-loader__button:first-child{margin-left:12px}.v-skeleton-loader .v-skeleton-loader__list-item,.v-skeleton-loader .v-skeleton-loader__list-item-avatar,.v-skeleton-loader .v-skeleton-loader__list-item-avatar-three-line,.v-skeleton-loader .v-skeleton-loader__list-item-avatar-two-line,.v-skeleton-loader .v-skeleton-loader__list-item-text,.v-skeleton-loader .v-skeleton-loader__list-item-three-line,.v-skeleton-loader .v-skeleton-loader__list-item-two-line{border-radius:4px}.v-skeleton-loader .v-skeleton-loader__actions:after,.v-skeleton-loader .v-skeleton-loader__article:after,.v-skeleton-loader .v-skeleton-loader__card-avatar:after,.v-skeleton-loader .v-skeleton-loader__card-heading:after,.v-skeleton-loader .v-skeleton-loader__card-text:after,.v-skeleton-loader .v-skeleton-loader__card:after,.v-skeleton-loader .v-skeleton-loader__date-picker-days:after,.v-skeleton-loader .v-skeleton-loader__date-picker-options:after,.v-skeleton-loader .v-skeleton-loader__date-picker:after,.v-skeleton-loader .v-skeleton-loader__list-item-avatar-three-line:after,.v-skeleton-loader .v-skeleton-loader__list-item-avatar-two-line:after,.v-skeleton-loader .v-skeleton-loader__list-item-avatar:after,.v-skeleton-loader .v-skeleton-loader__list-item-text:after,.v-skeleton-loader .v-skeleton-loader__list-item-three-line:after,.v-skeleton-loader .v-skeleton-loader__list-item-two-line:after,.v-skeleton-loader .v-skeleton-loader__list-item:after,.v-skeleton-loader .v-skeleton-loader__paragraph:after,.v-skeleton-loader .v-skeleton-loader__sentences:after,.v-skeleton-loader .v-skeleton-loader__table-cell:after,.v-skeleton-loader .v-skeleton-loader__table-heading:after,.v-skeleton-loader .v-skeleton-loader__table-row-divider:after,.v-skeleton-loader .v-skeleton-loader__table-row:after,.v-skeleton-loader .v-skeleton-loader__table-tbody:after,.v-skeleton-loader .v-skeleton-loader__table-tfoot:after,.v-skeleton-loader .v-skeleton-loader__table-thead:after,.v-skeleton-loader .v-skeleton-loader__table:after{display:none}.v-application--is-ltr .v-skeleton-loader__article .v-skeleton-loader__heading{margin:16px 0 16px 16px}.v-application--is-rtl .v-skeleton-loader__article .v-skeleton-loader__heading{margin:16px 16px 0}.v-skeleton-loader__article .v-skeleton-loader__paragraph{padding:16px}.v-skeleton-loader__bone{border-radius:inherit;overflow:hidden;position:relative}.v-skeleton-loader__bone:after{-webkit-animation:loading 1.5s infinite;animation:loading 1.5s infinite;content:\"\";height:100%;left:0;position:absolute;right:0;top:0;transform:translateX(-100%);z-index:1}.v-skeleton-loader__avatar{border-radius:50%;height:48px;width:48px}.v-skeleton-loader__button{border-radius:4px;height:36px;width:64px}.v-skeleton-loader__card .v-skeleton-loader__image{border-radius:0}.v-skeleton-loader__card-heading .v-skeleton-loader__heading{margin:16px}.v-skeleton-loader__card-text{padding:16px}.v-skeleton-loader__chip{border-radius:16px;height:32px;width:96px}.v-skeleton-loader__date-picker{border-radius:inherit}.v-skeleton-loader__date-picker .v-skeleton-loader__list-item:first-child .v-skeleton-loader__text{max-width:88px;width:20%}.v-skeleton-loader__date-picker .v-skeleton-loader__heading{max-width:256px;width:40%}.v-skeleton-loader__date-picker-days{display:flex;flex-wrap:wrap;padding:0 12px;margin:0 auto}.v-skeleton-loader__date-picker-days .v-skeleton-loader__avatar{border-radius:4px;flex:1 1 auto;margin:4px;height:40px;width:40px}.v-skeleton-loader__date-picker-options{align-items:center;display:flex;padding:16px}.v-skeleton-loader__date-picker-options .v-skeleton-loader__avatar{height:40px;width:40px}.v-skeleton-loader__date-picker-options .v-skeleton-loader__avatar:nth-child(2){margin-left:auto}.v-application--is-ltr .v-skeleton-loader__date-picker-options .v-skeleton-loader__avatar:nth-child(2){margin-right:8px}.v-application--is-rtl .v-skeleton-loader__date-picker-options .v-skeleton-loader__avatar:nth-child(2){margin-left:8px}.v-skeleton-loader__date-picker-options .v-skeleton-loader__text.v-skeleton-loader__bone:first-child{margin-bottom:0;max-width:50%;width:456px}.v-skeleton-loader__divider{border-radius:1px;height:2px}.v-skeleton-loader__heading{border-radius:12px;height:24px;width:45%}.v-skeleton-loader__image{height:200px}.v-skeleton-loader__image:not(:first-child):not(:last-child){border-radius:0}.v-skeleton-loader__list-item{height:48px}.v-skeleton-loader__list-item-three-line{flex-wrap:wrap}.v-skeleton-loader__list-item-three-line>*{flex:1 0 100%;width:100%}.v-skeleton-loader__list-item-avatar-three-line .v-skeleton-loader__avatar,.v-skeleton-loader__list-item-avatar-two-line .v-skeleton-loader__avatar,.v-skeleton-loader__list-item-avatar .v-skeleton-loader__avatar{height:40px;width:40px}.v-skeleton-loader__list-item-avatar{height:48px}.v-skeleton-loader__list-item-avatar-two-line,.v-skeleton-loader__list-item-two-line{height:72px}.v-skeleton-loader__list-item-avatar-three-line,.v-skeleton-loader__list-item-three-line{height:88px}.v-skeleton-loader__list-item-avatar-three-line .v-skeleton-loader__avatar{align-self:flex-start}.v-skeleton-loader__list-item,.v-skeleton-loader__list-item-avatar,.v-skeleton-loader__list-item-avatar-three-line,.v-skeleton-loader__list-item-avatar-two-line,.v-skeleton-loader__list-item-three-line,.v-skeleton-loader__list-item-two-line{align-content:center;align-items:center;display:flex;flex-wrap:wrap;padding:0 16px}.v-application--is-ltr .v-skeleton-loader__list-item-avatar-three-line .v-skeleton-loader__avatar,.v-application--is-ltr .v-skeleton-loader__list-item-avatar-two-line .v-skeleton-loader__avatar,.v-application--is-ltr .v-skeleton-loader__list-item-avatar .v-skeleton-loader__avatar,.v-application--is-ltr .v-skeleton-loader__list-item-three-line .v-skeleton-loader__avatar,.v-application--is-ltr .v-skeleton-loader__list-item-two-line .v-skeleton-loader__avatar,.v-application--is-ltr .v-skeleton-loader__list-item .v-skeleton-loader__avatar{margin-right:16px}.v-application--is-rtl .v-skeleton-loader__list-item-avatar-three-line .v-skeleton-loader__avatar,.v-application--is-rtl .v-skeleton-loader__list-item-avatar-two-line .v-skeleton-loader__avatar,.v-application--is-rtl .v-skeleton-loader__list-item-avatar .v-skeleton-loader__avatar,.v-application--is-rtl .v-skeleton-loader__list-item-three-line .v-skeleton-loader__avatar,.v-application--is-rtl .v-skeleton-loader__list-item-two-line .v-skeleton-loader__avatar,.v-application--is-rtl .v-skeleton-loader__list-item .v-skeleton-loader__avatar{margin-left:16px}.v-skeleton-loader__list-item-avatar-three-line .v-skeleton-loader__text:last-child,.v-skeleton-loader__list-item-avatar-three-line .v-skeleton-loader__text:only-child,.v-skeleton-loader__list-item-avatar-two-line .v-skeleton-loader__text:last-child,.v-skeleton-loader__list-item-avatar-two-line .v-skeleton-loader__text:only-child,.v-skeleton-loader__list-item-avatar .v-skeleton-loader__text:last-child,.v-skeleton-loader__list-item-avatar .v-skeleton-loader__text:only-child,.v-skeleton-loader__list-item-three-line .v-skeleton-loader__text:last-child,.v-skeleton-loader__list-item-three-line .v-skeleton-loader__text:only-child,.v-skeleton-loader__list-item-two-line .v-skeleton-loader__text:last-child,.v-skeleton-loader__list-item-two-line .v-skeleton-loader__text:only-child,.v-skeleton-loader__list-item .v-skeleton-loader__text:last-child,.v-skeleton-loader__list-item .v-skeleton-loader__text:only-child{margin-bottom:0}.v-skeleton-loader__paragraph,.v-skeleton-loader__sentences{flex:1 0 auto}.v-skeleton-loader__paragraph:not(:last-child){margin-bottom:6px}.v-skeleton-loader__paragraph .v-skeleton-loader__text:first-child{max-width:100%}.v-skeleton-loader__paragraph .v-skeleton-loader__text:nth-child(2){max-width:50%}.v-skeleton-loader__paragraph .v-skeleton-loader__text:nth-child(3),.v-skeleton-loader__sentences .v-skeleton-loader__text:nth-child(2){max-width:70%}.v-skeleton-loader__sentences:not(:last-child){margin-bottom:6px}.v-skeleton-loader__table-heading{align-items:center;display:flex;justify-content:space-between;padding:16px}.v-skeleton-loader__table-heading .v-skeleton-loader__heading{max-width:15%}.v-skeleton-loader__table-heading .v-skeleton-loader__text{max-width:40%}.v-skeleton-loader__table-thead{display:flex;justify-content:space-between;padding:16px}.v-skeleton-loader__table-thead .v-skeleton-loader__heading{max-width:5%}.v-skeleton-loader__table-tbody{padding:16px 16px 0}.v-skeleton-loader__table-tfoot{align-items:center;display:flex;justify-content:flex-end;padding:16px}.v-application--is-ltr .v-skeleton-loader__table-tfoot>*{margin-left:8px}.v-application--is-rtl .v-skeleton-loader__table-tfoot>*{margin-right:8px}.v-skeleton-loader__table-tfoot .v-skeleton-loader__avatar{height:40px;width:40px}.v-skeleton-loader__table-tfoot .v-skeleton-loader__text{margin-bottom:0}.v-skeleton-loader__table-tfoot .v-skeleton-loader__text:first-child{max-width:128px}.v-skeleton-loader__table-tfoot .v-skeleton-loader__text:nth-child(2){max-width:64px}.v-skeleton-loader__table-row{display:flex;justify-content:space-between}.v-skeleton-loader__table-cell{align-items:center;display:flex;height:48px;width:88px}.v-skeleton-loader__table-cell .v-skeleton-loader__text{margin-bottom:0}.v-skeleton-loader__text{border-radius:6px;flex:1 0 auto;height:12px;margin-bottom:6px}.v-skeleton-loader--boilerplate .v-skeleton-loader__bone:after{display:none}.v-skeleton-loader--is-loading{overflow:hidden}.v-skeleton-loader--tile,.v-skeleton-loader--tile .v-skeleton-loader__bone{border-radius:0}@-webkit-keyframes loading{to{transform:translateX(100%)}}@keyframes loading{to{transform:translateX(100%)}}.v-snack{align-items:center;color:#fff;display:flex;font-size:.875rem;left:8px;pointer-events:none;position:fixed;right:8px;transition-duration:.15s;transition-timing-function:cubic-bezier(0,0,.2,1);z-index:1000}.v-application--is-ltr .v-snack{text-align:left}.v-application--is-rtl .v-snack{text-align:right}.v-snack--absolute{position:absolute}.v-snack--top{top:8px}.v-snack--bottom{bottom:8px}.v-snack__wrapper{align-items:center;background-color:#323232;border-radius:4px;display:flex;margin:0 auto;pointer-events:auto;transition:inherit;transition-property:opacity,transform;min-width:100%;box-shadow:0 3px 5px -1px rgba(0,0,0,.2),0 6px 10px 0 rgba(0,0,0,.14),0 1px 18px 0 rgba(0,0,0,.12)}.v-snack__content{align-items:center;display:flex;min-height:48px;justify-content:space-between;overflow:hidden;padding:8px 16px;width:100%}.v-snack__content .v-btn{flex:0 0 auto;height:auto;min-width:auto;padding:8px;width:auto}.v-snack__content .v-btn--icon,.v-snack__content .v-btn--outlined,.v-snack__content .v-btn--text{color:#fff}.v-application--is-ltr .v-snack__content .v-btn{margin:0 -8px 0 24px}.v-application--is-rtl .v-snack__content .v-btn{margin:0 24px 0 -8px}.v-snack__content .v-btn__content{margin:-2px}.v-snack--multi-line .v-snack__content{height:auto;min-height:68px}.v-snack--vertical .v-snack__content{align-items:stretch;flex-direction:column;height:auto;padding:16px 16px 8px}.v-snack--vertical .v-snack__content .v-btn.v-btn{align-self:flex-end;justify-self:flex-end;margin-top:18px}.v-application--is-ltr .v-snack--vertical .v-snack__content .v-btn.v-btn{margin-left:0}.v-application--is-rtl .v-snack--vertical .v-snack__content .v-btn.v-btn{margin-right:0}.v-snack--vertical .v-snack__content .v-btn__content{flex:0 0 auto;margin:0}@media only screen and (min-width:600px){.v-snack__wrapper{min-width:344px;max-width:672px}.v-snack--left .v-snack__wrapper{margin-left:0}.v-snack--right .v-snack__wrapper{margin-right:0}.v-application--is-ltr .v-snack__content .v-btn:first-of-type{margin-left:42px}.v-application--is-rtl .v-snack__content .v-btn:first-of-type{margin-right:42px}}.v-snack-transition-enter .v-snack__wrapper{transform:scale(.8)}.v-snack-transition-enter .v-snack__wrapper,.v-snack-transition-leave-to .v-snack__wrapper{opacity:0}.v-speed-dial{position:relative;z-index:1}.v-speed-dial--absolute{position:absolute}.v-speed-dial--fixed{position:fixed}.v-speed-dial--absolute,.v-speed-dial--fixed{z-index:4}.v-speed-dial--absolute>.v-btn--floating,.v-speed-dial--fixed>.v-btn--floating{margin:0}.v-speed-dial--top{top:16px}.v-speed-dial--bottom{bottom:16px}.v-speed-dial--left{left:16px}.v-speed-dial--right{right:16px}.v-speed-dial--direction-left .v-speed-dial__list,.v-speed-dial--direction-right .v-speed-dial__list{height:100%;top:0;padding:0 16px}.v-speed-dial--direction-bottom .v-speed-dial__list,.v-speed-dial--direction-top .v-speed-dial__list{left:0;width:100%}.v-speed-dial--direction-top .v-speed-dial__list{flex-direction:column-reverse;bottom:100%}.v-speed-dial--direction-right .v-speed-dial__list{flex-direction:row;left:100%}.v-speed-dial--direction-bottom .v-speed-dial__list{flex-direction:column;top:100%}.v-speed-dial--direction-left .v-speed-dial__list{flex-direction:row-reverse;right:100%}.v-speed-dial__list{align-items:center;display:flex;justify-content:center;padding:16px 0;position:absolute}.v-speed-dial__list .v-btn{margin:6px}.v-speed-dial:not(.v-speed-dial--is-active) .v-speed-dial__list{pointer-events:none}.theme--light.v-stepper{background:#fff}.theme--light.v-stepper .v-stepper__step:not(.v-stepper__step--active):not(.v-stepper__step--complete):not(.v-stepper__step--error) .v-stepper__step__step{background:rgba(0,0,0,.38)}.theme--light.v-stepper .v-stepper__step__step,.theme--light.v-stepper .v-stepper__step__step .v-icon{color:#fff}.theme--light.v-stepper .v-stepper__header .v-divider{border-color:rgba(0,0,0,.12)}.theme--light.v-stepper .v-stepper__step--active .v-stepper__label{text-shadow:0 0 0 #000}.theme--light.v-stepper .v-stepper__step--editable:hover{background:rgba(0,0,0,.06)}.theme--light.v-stepper .v-stepper__step--editable:hover .v-stepper__label{text-shadow:0 0 0 #000}.theme--light.v-stepper .v-stepper__step--complete .v-stepper__label{color:rgba(0,0,0,.87)}.theme--light.v-stepper .v-stepper__step--inactive.v-stepper__step--editable:not(.v-stepper__step--error):hover .v-stepper__step__step{background:rgba(0,0,0,.54)}.theme--light.v-stepper .v-stepper__label{color:rgba(0,0,0,.38)}.theme--light.v-stepper--non-linear .v-stepper__step:not(.v-stepper__step--complete):not(.v-stepper__step--error) .v-stepper__label,.theme--light.v-stepper .v-stepper__label small{color:rgba(0,0,0,.6)}.v-application--is-ltr .theme--light.v-stepper--vertical .v-stepper__content:not(:last-child){border-left:1px solid rgba(0,0,0,.12)}.v-application--is-rtl .theme--light.v-stepper--vertical .v-stepper__content:not(:last-child){border-right:1px solid rgba(0,0,0,.12)}.theme--dark.v-stepper{background:#303030}.theme--dark.v-stepper .v-stepper__step:not(.v-stepper__step--active):not(.v-stepper__step--complete):not(.v-stepper__step--error) .v-stepper__step__step{background:hsla(0,0%,100%,.5)}.theme--dark.v-stepper .v-stepper__step__step,.theme--dark.v-stepper .v-stepper__step__step .v-icon{color:#fff}.theme--dark.v-stepper .v-stepper__header .v-divider{border-color:hsla(0,0%,100%,.12)}.theme--dark.v-stepper .v-stepper__step--active .v-stepper__label{text-shadow:0 0 0 #fff}.theme--dark.v-stepper .v-stepper__step--editable:hover{background:hsla(0,0%,100%,.06)}.theme--dark.v-stepper .v-stepper__step--editable:hover .v-stepper__label{text-shadow:0 0 0 #fff}.theme--dark.v-stepper .v-stepper__step--complete .v-stepper__label{color:hsla(0,0%,100%,.87)}.theme--dark.v-stepper .v-stepper__step--inactive.v-stepper__step--editable:not(.v-stepper__step--error):hover .v-stepper__step__step{background:hsla(0,0%,100%,.75)}.theme--dark.v-stepper .v-stepper__label{color:hsla(0,0%,100%,.5)}.theme--dark.v-stepper--non-linear .v-stepper__step:not(.v-stepper__step--complete):not(.v-stepper__step--error) .v-stepper__label,.theme--dark.v-stepper .v-stepper__label small{color:hsla(0,0%,100%,.7)}.v-application--is-ltr .theme--dark.v-stepper--vertical .v-stepper__content:not(:last-child){border-left:1px solid hsla(0,0%,100%,.12)}.v-application--is-rtl .theme--dark.v-stepper--vertical .v-stepper__content:not(:last-child){border-right:1px solid hsla(0,0%,100%,.12)}.v-stepper{border-radius:4px;overflow:hidden;position:relative}.v-stepper,.v-stepper__header{box-shadow:0 3px 1px -2px rgba(0,0,0,.2),0 2px 2px 0 rgba(0,0,0,.14),0 1px 5px 0 rgba(0,0,0,.12)}.v-stepper__header{height:72px;align-items:stretch;display:flex;flex-wrap:wrap;justify-content:space-between}.v-stepper__header .v-divider{align-self:center;margin:0 -16px}.v-stepper__items{position:relative;overflow:hidden}.v-stepper__step__step{align-items:center;border-radius:50%;display:inline-flex;font-size:.75rem;justify-content:center;height:24px;min-width:24px;width:24px;transition:.3s cubic-bezier(.25,.8,.25,1)}.v-application--is-ltr .v-stepper__step__step{margin-right:8px}.v-application--is-rtl .v-stepper__step__step{margin-left:8px}.v-stepper__step__step .v-icon.v-icon{font-size:1.25rem}.v-stepper__step__step .v-icon.v-icon.v-icon--svg{height:1.25rem;width:1.25rem}.v-stepper__step{align-items:center;display:flex;flex-direction:row;padding:24px;position:relative}.v-stepper__step--active .v-stepper__label{transition:.3s cubic-bezier(.4,0,.6,1)}.v-stepper__step--editable{cursor:pointer}.v-stepper__step.v-stepper__step--error .v-stepper__step__step{background:transparent;color:inherit}.v-stepper__step.v-stepper__step--error .v-stepper__step__step .v-icon{font-size:1.5rem;color:inherit}.v-stepper__step.v-stepper__step--error .v-stepper__label{color:inherit;text-shadow:none;font-weight:500}.v-stepper__step.v-stepper__step--error .v-stepper__label small{color:inherit}.v-stepper__label{align-items:flex-start;display:flex;flex-direction:column;line-height:1}.v-application--is-ltr .v-stepper__label{text-align:left}.v-application--is-rtl .v-stepper__label{text-align:right}.v-stepper__label small{font-size:.75rem;font-weight:300;text-shadow:none}.v-stepper__wrapper{overflow:hidden;transition:none}.v-stepper__content{top:0;padding:24px 24px 16px;flex:1 0 auto;width:100%}.v-stepper__content>.v-btn{margin:24px 8px 8px 0}.v-stepper--is-booted .v-stepper__content,.v-stepper--is-booted .v-stepper__wrapper{transition:.3s cubic-bezier(.25,.8,.5,1)}.v-stepper--vertical{padding-bottom:36px}.v-stepper--vertical .v-stepper__content{padding:16px 60px 16px 23px;width:auto}.v-application--is-ltr .v-stepper--vertical .v-stepper__content{margin:-8px -36px -16px 36px}.v-application--is-rtl .v-stepper--vertical .v-stepper__content{margin:-8px 36px -16px -36px}.v-stepper--vertical .v-stepper__step{padding:24px 24px 16px}.v-application--is-ltr .v-stepper--vertical .v-stepper__step__step{margin-right:12px}.v-application--is-rtl .v-stepper--vertical .v-stepper__step__step{margin-left:12px}.v-stepper--alt-labels .v-stepper__header{height:auto}.v-stepper--alt-labels .v-stepper__header .v-divider{margin:35px -67px 0;align-self:flex-start}.v-stepper--alt-labels .v-stepper__step{flex-direction:column;justify-content:flex-start;align-items:center;flex-basis:175px}.v-stepper--alt-labels .v-stepper__step small{align-self:center}.v-stepper--alt-labels .v-stepper__step__step{margin-bottom:11px;margin-left:0;margin-right:0}@media only screen and (max-width:959px){.v-stepper:not(.v-stepper--vertical) .v-stepper__label{display:none}.v-stepper:not(.v-stepper--vertical) .v-stepper__step__step{margin-left:0;margin-right:0}}.theme--light.v-input--switch .v-input--switch__thumb{color:#fff}.theme--light.v-input--switch .v-input--switch__track{color:rgba(0,0,0,.38)}.theme--light.v-input--switch.v-input--is-disabled:not(.v-input--is-dirty) .v-input--switch__thumb{color:#fafafa!important}.theme--light.v-input--switch.v-input--is-disabled:not(.v-input--is-dirty) .v-input--switch__track{color:rgba(0,0,0,.12)!important}.theme--dark.v-input--switch .v-input--switch__thumb{color:#bdbdbd}.theme--dark.v-input--switch .v-input--switch__track{color:hsla(0,0%,100%,.3)}.theme--dark.v-input--switch.v-input--is-disabled:not(.v-input--is-dirty) .v-input--switch__thumb{color:#424242!important}.theme--dark.v-input--switch.v-input--is-disabled:not(.v-input--is-dirty) .v-input--switch__track{color:hsla(0,0%,100%,.1)!important}.v-input--switch__thumb,.v-input--switch__track{background-color:currentColor;pointer-events:none;transition:inherit}.v-input--switch__track{border-radius:8px;width:36px;height:14px;left:2px;position:absolute;opacity:.6;right:2px;top:calc(50% - 7px)}.v-input--switch__thumb{border-radius:50%;top:calc(50% - 10px);height:20px;position:relative;width:20px;display:flex;justify-content:center;align-items:center;transition:.3s cubic-bezier(.25,.8,.5,1)}.v-input--switch .v-input--selection-controls__input{width:38px}.v-input--switch .v-input--selection-controls__ripple{top:calc(50% - 24px)}.v-input--switch.v-input--dense .v-input--switch__thumb{width:18px;height:18px}.v-input--switch.v-input--dense .v-input--switch__track{height:12px;width:32px}.v-input--switch.v-input--dense.v-input--switch--inset .v-input--switch__track{height:22px;width:44px;top:calc(50% - 12px);left:-3px}.v-input--switch.v-input--dense .v-input--selection-controls__ripple{top:calc(50% - 22px)}.v-input--switch.v-input--is-dirty.v-input--is-disabled{opacity:.6}.v-application--is-ltr .v-input--switch .v-input--selection-controls__ripple{left:-14px}.v-application--is-ltr .v-input--switch.v-input--dense .v-input--selection-controls__ripple{left:-12px}.v-application--is-ltr .v-input--switch.v-input--is-dirty .v-input--selection-controls__ripple,.v-application--is-ltr .v-input--switch.v-input--is-dirty .v-input--switch__thumb{transform:translate(20px)}.v-application--is-rtl .v-input--switch .v-input--selection-controls__ripple{right:-14px}.v-application--is-rtl .v-input--switch.v-input--dense .v-input--selection-controls__ripple{right:-12px}.v-application--is-rtl .v-input--switch.v-input--is-dirty .v-input--selection-controls__ripple,.v-application--is-rtl .v-input--switch.v-input--is-dirty .v-input--switch__thumb{transform:translate(-20px)}.v-input--switch:not(.v-input--switch--flat):not(.v-input--switch--inset) .v-input--switch__thumb{box-shadow:0 2px 4px -1px rgba(0,0,0,.2),0 4px 5px 0 rgba(0,0,0,.14),0 1px 10px 0 rgba(0,0,0,.12)}.v-input--switch--inset .v-input--selection-controls__input,.v-input--switch--inset .v-input--switch__track{width:48px}.v-input--switch--inset .v-input--switch__track{border-radius:14px;height:28px;left:-4px;opacity:.32;top:calc(50% - 14px)}.v-application--is-ltr .v-input--switch--inset .v-input--selection-controls__ripple,.v-application--is-ltr .v-input--switch--inset .v-input--switch__thumb{transform:translate(0)!important}.v-application--is-rtl .v-input--switch--inset .v-input--selection-controls__ripple,.v-application--is-rtl .v-input--switch--inset .v-input--switch__thumb{transform:translate(-6px)!important}.v-application--is-ltr .v-input--switch--inset.v-input--is-dirty .v-input--selection-controls__ripple,.v-application--is-ltr .v-input--switch--inset.v-input--is-dirty .v-input--switch__thumb{transform:translate(20px)!important}.v-application--is-rtl .v-input--switch--inset.v-input--is-dirty .v-input--selection-controls__ripple,.v-application--is-rtl .v-input--switch--inset.v-input--is-dirty .v-input--switch__thumb{transform:translate(-26px)!important}.theme--light.v-system-bar{background-color:#e0e0e0;color:rgba(0,0,0,.6)}.theme--light.v-system-bar .v-icon{color:rgba(0,0,0,.6)}.theme--light.v-system-bar--lights-out{background-color:hsla(0,0%,100%,.7)!important}.theme--dark.v-system-bar{background-color:#000;color:hsla(0,0%,100%,.7)}.theme--dark.v-system-bar .v-icon{color:hsla(0,0%,100%,.7)}.theme--dark.v-system-bar--lights-out{background-color:rgba(0,0,0,.2)!important}.v-system-bar{align-items:center;display:flex;font-size:.875rem;font-weight:400;padding:0 8px}.v-system-bar .v-icon{font-size:1rem;margin-right:4px}.v-system-bar--absolute,.v-system-bar--fixed{left:0;top:0;width:100%;z-index:3}.v-system-bar--fixed{position:fixed}.v-system-bar--absolute{position:absolute}.v-system-bar--window .v-icon{font-size:1.25rem;margin-right:8px}.theme--light.v-tabs>.v-tabs-bar{background-color:#fff}.theme--light.v-tabs>.v-tabs-bar .v-tab--disabled,.theme--light.v-tabs>.v-tabs-bar .v-tab:not(.v-tab--active),.theme--light.v-tabs>.v-tabs-bar .v-tab:not(.v-tab--active)>.v-icon{color:rgba(0,0,0,.54)}.theme--light.v-tabs .v-tab:hover:before{opacity:.04}.theme--light.v-tabs .v-tab--active:before,.theme--light.v-tabs .v-tab--active:hover:before,.theme--light.v-tabs .v-tab:focus:before{opacity:.12}.theme--light.v-tabs .v-tab--active:focus:before{opacity:.16}.theme--dark.v-tabs>.v-tabs-bar{background-color:#1e1e1e}.theme--dark.v-tabs>.v-tabs-bar .v-tab--disabled,.theme--dark.v-tabs>.v-tabs-bar .v-tab:not(.v-tab--active),.theme--dark.v-tabs>.v-tabs-bar .v-tab:not(.v-tab--active)>.v-icon{color:hsla(0,0%,100%,.6)}.theme--dark.v-tabs .v-tab:hover:before{opacity:.08}.theme--dark.v-tabs .v-tab--active:before,.theme--dark.v-tabs .v-tab--active:hover:before,.theme--dark.v-tabs .v-tab:focus:before{opacity:.24}.theme--dark.v-tabs .v-tab--active:focus:before{opacity:.32}.theme--light.v-tabs-items{background-color:#fff}.theme--dark.v-tabs-items{background-color:#1e1e1e}.v-tabs-bar.accent .v-tab,.v-tabs-bar.accent .v-tabs-slider,.v-tabs-bar.error .v-tab,.v-tabs-bar.error .v-tabs-slider,.v-tabs-bar.info .v-tab,.v-tabs-bar.info .v-tabs-slider,.v-tabs-bar.primary .v-tab,.v-tabs-bar.primary .v-tabs-slider,.v-tabs-bar.secondary .v-tab,.v-tabs-bar.secondary .v-tabs-slider,.v-tabs-bar.success .v-tab,.v-tabs-bar.success .v-tabs-slider,.v-tabs-bar.warning .v-tab,.v-tabs-bar.warning .v-tabs-slider{color:#fff}.v-tabs{flex:1 1 auto;width:100%}.v-tabs .v-menu__activator{height:100%}.v-tabs:not(.v-tabs--vertical) .v-tab{white-space:normal}.v-tabs-bar{border-radius:inherit;height:48px}.v-tabs-bar.v-slide-group--is-overflowing.v-tabs-bar--is-mobile:not(.v-tabs-bar--show-arrows):not(.v-slide-group--has-affixes) .v-slide-group__prev{display:initial;visibility:hidden}.v-tabs-bar.v-item-group>*{cursor:auto}.v-tab{align-items:center;display:flex;flex:0 1 auto;font-size:.875rem;font-weight:500;justify-content:center;letter-spacing:.0892857143em;line-height:normal;min-width:90px;max-width:360px;outline:none;padding:0 16px;position:relative;text-align:center;text-decoration:none;text-transform:uppercase;transition:none;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.v-tab.v-tab{color:inherit}.v-tab:before{background-color:currentColor;bottom:0;content:\"\";left:0;opacity:0;pointer-events:none;position:absolute;right:0;top:0;transition:.3s cubic-bezier(.25,.8,.5,1)}.v-tab:not(.v-tab-disabled){cursor:pointer}.v-tabs-slider{background-color:currentColor;height:100%;width:100%}.v-tabs-slider-wrapper{bottom:0;margin:0!important;position:absolute;transition:.3s cubic-bezier(.25,.8,.5,1);z-index:1}.v-application--is-ltr .v-tabs--align-with-title>.v-tabs-bar:not(.v-tabs-bar--show-arrows)>.v-slide-group__wrapper>.v-tabs-bar__content>.v-tab:first-child,.v-application--is-ltr .v-tabs--align-with-title>.v-tabs-bar:not(.v-tabs-bar--show-arrows)>.v-slide-group__wrapper>.v-tabs-bar__content>.v-tabs-slider-wrapper+.v-tab{margin-left:42px}.v-application--is-rtl .v-tabs--align-with-title>.v-tabs-bar:not(.v-tabs-bar--show-arrows)>.v-slide-group__wrapper>.v-tabs-bar__content>.v-tab:first-child,.v-application--is-rtl .v-tabs--align-with-title>.v-tabs-bar:not(.v-tabs-bar--show-arrows)>.v-slide-group__wrapper>.v-tabs-bar__content>.v-tabs-slider-wrapper+.v-tab{margin-right:42px}.v-application--is-ltr .v-tabs--centered>.v-tabs-bar .v-tabs-bar__content>:last-child,.v-application--is-ltr .v-tabs--fixed-tabs>.v-tabs-bar .v-tabs-bar__content>:last-child{margin-right:auto}.v-application--is-ltr .v-tabs--centered>.v-tabs-bar .v-tabs-bar__content>:first-child:not(.v-tabs-slider-wrapper),.v-application--is-ltr .v-tabs--centered>.v-tabs-bar .v-tabs-slider-wrapper+*,.v-application--is-ltr .v-tabs--fixed-tabs>.v-tabs-bar .v-tabs-bar__content>:first-child:not(.v-tabs-slider-wrapper),.v-application--is-ltr .v-tabs--fixed-tabs>.v-tabs-bar .v-tabs-slider-wrapper+*,.v-application--is-rtl .v-tabs--centered>.v-tabs-bar .v-tabs-bar__content>:last-child,.v-application--is-rtl .v-tabs--fixed-tabs>.v-tabs-bar .v-tabs-bar__content>:last-child{margin-left:auto}.v-application--is-rtl .v-tabs--centered>.v-tabs-bar .v-tabs-bar__content>:first-child:not(.v-tabs-slider-wrapper),.v-application--is-rtl .v-tabs--centered>.v-tabs-bar .v-tabs-slider-wrapper+*,.v-application--is-rtl .v-tabs--fixed-tabs>.v-tabs-bar .v-tabs-bar__content>:first-child:not(.v-tabs-slider-wrapper),.v-application--is-rtl .v-tabs--fixed-tabs>.v-tabs-bar .v-tabs-slider-wrapper+*{margin-right:auto}.v-tabs--fixed-tabs>.v-tabs-bar .v-tab{flex:1 1 auto;width:100%}.v-tabs--grow>.v-tabs-bar .v-tab{flex:1 0 auto;max-width:none}.v-tabs--icons-and-text>.v-tabs-bar{height:72px}.v-tabs--icons-and-text>.v-tabs-bar .v-tab{flex-direction:column-reverse}.v-tabs--icons-and-text>.v-tabs-bar .v-tab>:first-child{margin-bottom:6px}.v-tabs--overflow>.v-tabs-bar .v-tab{flex:1 0 auto}.v-application--is-ltr .v-tabs--right>.v-tabs-bar .v-tab:first-child,.v-application--is-ltr .v-tabs--right>.v-tabs-bar .v-tabs-slider-wrapper+.v-tab{margin-left:auto}.v-application--is-rtl .v-tabs--right>.v-tabs-bar .v-tab:first-child,.v-application--is-rtl .v-tabs--right>.v-tabs-bar .v-tabs-slider-wrapper+.v-tab{margin-right:auto}.v-application--is-ltr .v-tabs--right>.v-tabs-bar .v-tab:last-child{margin-right:0}.v-application--is-rtl .v-tabs--right>.v-tabs-bar .v-tab:last-child{margin-left:0}.v-tabs--vertical{display:flex}.v-tabs--vertical>.v-tabs-bar{flex:1 0 auto;height:auto}.v-tabs--vertical>.v-tabs-bar .v-slide-group__next,.v-tabs--vertical>.v-tabs-bar .v-slide-group__prev{display:none}.v-tabs--vertical>.v-tabs-bar .v-tabs-bar__content{flex-direction:column}.v-tabs--vertical>.v-tabs-bar .v-tab{height:48px}.v-tabs--vertical>.v-tabs-bar .v-tabs-slider{height:100%}.v-tabs--vertical>.v-window{flex:0 1 100%}.v-tabs--vertical.v-tabs--icons-and-text>.v-tabs-bar .v-tab{height:72px}.v-tab--active{color:inherit}.v-tab--active.v-tab:not(:focus):before{opacity:0}.v-tab--active .v-icon{color:inherit}.v-tab--disabled{pointer-events:none;opacity:.5}.v-textarea textarea{align-self:stretch;flex:1 1 auto;line-height:1.75rem;max-width:100%;min-height:32px;outline:none;padding:0;width:100%}.v-textarea .v-text-field__prefix,.v-textarea .v-text-field__suffix{padding-top:2px;align-self:start}.v-textarea.v-text-field--box .v-text-field__prefix,.v-textarea.v-text-field--box textarea,.v-textarea.v-text-field--enclosed .v-text-field__prefix,.v-textarea.v-text-field--enclosed textarea{margin-top:24px}.v-textarea.v-text-field--box.v-text-field--outlined:not(.v-input--dense) .v-text-field__prefix,.v-textarea.v-text-field--box.v-text-field--outlined:not(.v-input--dense) .v-text-field__suffix,.v-textarea.v-text-field--box.v-text-field--outlined:not(.v-input--dense) textarea,.v-textarea.v-text-field--box.v-text-field--single-line:not(.v-input--dense) .v-text-field__prefix,.v-textarea.v-text-field--box.v-text-field--single-line:not(.v-input--dense) .v-text-field__suffix,.v-textarea.v-text-field--box.v-text-field--single-line:not(.v-input--dense) textarea,.v-textarea.v-text-field--enclosed.v-text-field--outlined:not(.v-input--dense) .v-text-field__prefix,.v-textarea.v-text-field--enclosed.v-text-field--outlined:not(.v-input--dense) .v-text-field__suffix,.v-textarea.v-text-field--enclosed.v-text-field--outlined:not(.v-input--dense) textarea,.v-textarea.v-text-field--enclosed.v-text-field--single-line:not(.v-input--dense) .v-text-field__prefix,.v-textarea.v-text-field--enclosed.v-text-field--single-line:not(.v-input--dense) .v-text-field__suffix,.v-textarea.v-text-field--enclosed.v-text-field--single-line:not(.v-input--dense) textarea{margin-top:10px}.v-textarea.v-text-field--box.v-text-field--outlined:not(.v-input--dense) .v-label,.v-textarea.v-text-field--box.v-text-field--single-line:not(.v-input--dense) .v-label,.v-textarea.v-text-field--enclosed.v-text-field--outlined:not(.v-input--dense) .v-label,.v-textarea.v-text-field--enclosed.v-text-field--single-line:not(.v-input--dense) .v-label{top:18px}.v-textarea.v-text-field--box.v-text-field--outlined.v-input--dense .v-text-field__prefix,.v-textarea.v-text-field--box.v-text-field--outlined.v-input--dense .v-text-field__suffix,.v-textarea.v-text-field--box.v-text-field--outlined.v-input--dense textarea,.v-textarea.v-text-field--box.v-text-field--single-line.v-input--dense .v-text-field__prefix,.v-textarea.v-text-field--box.v-text-field--single-line.v-input--dense .v-text-field__suffix,.v-textarea.v-text-field--box.v-text-field--single-line.v-input--dense textarea,.v-textarea.v-text-field--enclosed.v-text-field--outlined.v-input--dense .v-text-field__prefix,.v-textarea.v-text-field--enclosed.v-text-field--outlined.v-input--dense .v-text-field__suffix,.v-textarea.v-text-field--enclosed.v-text-field--outlined.v-input--dense textarea,.v-textarea.v-text-field--enclosed.v-text-field--single-line.v-input--dense .v-text-field__prefix,.v-textarea.v-text-field--enclosed.v-text-field--single-line.v-input--dense .v-text-field__suffix,.v-textarea.v-text-field--enclosed.v-text-field--single-line.v-input--dense textarea{margin-top:6px}.v-textarea.v-text-field--box.v-text-field--outlined.v-input--dense .v-input__append-inner,.v-textarea.v-text-field--box.v-text-field--outlined.v-input--dense .v-input__append-outer,.v-textarea.v-text-field--box.v-text-field--outlined.v-input--dense .v-input__prepend-inner,.v-textarea.v-text-field--box.v-text-field--outlined.v-input--dense .v-input__prepend-outer,.v-textarea.v-text-field--box.v-text-field--single-line.v-input--dense .v-input__append-inner,.v-textarea.v-text-field--box.v-text-field--single-line.v-input--dense .v-input__append-outer,.v-textarea.v-text-field--box.v-text-field--single-line.v-input--dense .v-input__prepend-inner,.v-textarea.v-text-field--box.v-text-field--single-line.v-input--dense .v-input__prepend-outer,.v-textarea.v-text-field--enclosed.v-text-field--outlined.v-input--dense .v-input__append-inner,.v-textarea.v-text-field--enclosed.v-text-field--outlined.v-input--dense .v-input__append-outer,.v-textarea.v-text-field--enclosed.v-text-field--outlined.v-input--dense .v-input__prepend-inner,.v-textarea.v-text-field--enclosed.v-text-field--outlined.v-input--dense .v-input__prepend-outer,.v-textarea.v-text-field--enclosed.v-text-field--single-line.v-input--dense .v-input__append-inner,.v-textarea.v-text-field--enclosed.v-text-field--single-line.v-input--dense .v-input__append-outer,.v-textarea.v-text-field--enclosed.v-text-field--single-line.v-input--dense .v-input__prepend-inner,.v-textarea.v-text-field--enclosed.v-text-field--single-line.v-input--dense .v-input__prepend-outer{align-self:flex-start;margin-top:8px}.v-textarea.v-text-field--solo{align-items:flex-start}.v-textarea.v-text-field--solo .v-input__append-inner,.v-textarea.v-text-field--solo .v-input__append-outer,.v-textarea.v-text-field--solo .v-input__prepend-inner,.v-textarea.v-text-field--solo .v-input__prepend-outer{align-self:flex-start;margin-top:12px}.v-application--is-ltr .v-textarea.v-text-field--solo .v-input__append-inner{padding-left:12px}.v-application--is-rtl .v-textarea.v-text-field--solo .v-input__append-inner{padding-right:12px}.v-textarea--auto-grow textarea{overflow:hidden}.v-textarea--no-resize textarea{resize:none}.v-textarea.v-text-field--enclosed .v-text-field__slot{align-self:stretch}.v-application--is-ltr .v-textarea.v-text-field--enclosed .v-text-field__slot{margin-right:-12px}.v-application--is-rtl .v-textarea.v-text-field--enclosed .v-text-field__slot{margin-left:-12px}.v-application--is-ltr .v-textarea.v-text-field--enclosed .v-text-field__slot textarea{padding-right:12px}.v-application--is-rtl .v-textarea.v-text-field--enclosed .v-text-field__slot textarea{padding-left:12px}.theme--light.v-timeline:before{background:rgba(0,0,0,.12)}.theme--light.v-timeline .v-timeline-item__dot{background:#fff}.theme--light.v-timeline .v-timeline-item .v-card:before{border-right-color:rgba(0,0,0,.12)}.theme--dark.v-timeline:before{background:hsla(0,0%,100%,.12)}.theme--dark.v-timeline .v-timeline-item__dot{background:#1e1e1e}.theme--dark.v-timeline .v-timeline-item .v-card:before{border-right-color:rgba(0,0,0,.12)}.v-timeline{padding-top:24px;position:relative}.v-timeline:before{bottom:0;content:\"\";height:100%;position:absolute;top:0;width:2px}.v-timeline-item{display:flex;padding-bottom:24px}.v-timeline-item__body{position:relative;height:100%;flex:1 1 auto}.v-timeline-item__divider{position:relative;min-width:96px;display:flex;align-items:center;justify-content:center}.v-timeline-item__dot{z-index:2;border-radius:50%;box-shadow:0 2px 1px -1px rgba(0,0,0,.2),0 1px 1px 0 rgba(0,0,0,.14),0 1px 3px 0 rgba(0,0,0,.12);height:38px;left:calc(50% - 19px);width:38px}.v-timeline-item__dot .v-timeline-item__inner-dot{height:30px;margin:4px;width:30px}.v-timeline-item__dot--small{height:24px;left:calc(50% - 12px);width:24px}.v-timeline-item__dot--small .v-timeline-item__inner-dot{height:18px;margin:3px;width:18px}.v-timeline-item__dot--large{height:52px;left:calc(50% - 26px);width:52px}.v-timeline-item__dot--large .v-timeline-item__inner-dot{height:42px;margin:5px;width:42px}.v-timeline-item__inner-dot{border-radius:50%;display:flex;justify-content:center;align-items:center}.v-timeline-item__opposite{flex:1 1 auto;align-self:center;max-width:calc(50% - 48px)}.v-timeline:not(.v-timeline--dense):not(.v-timeline--reverse) .v-timeline-item--after,.v-timeline:not(.v-timeline--dense):not(.v-timeline--reverse) .v-timeline-item:nth-child(odd):not(.v-timeline-item--before){flex-direction:row-reverse}.v-application--is-ltr .v-timeline:not(.v-timeline--dense):not(.v-timeline--reverse) .v-timeline-item--after .v-timeline-item__opposite,.v-application--is-ltr .v-timeline:not(.v-timeline--dense):not(.v-timeline--reverse) .v-timeline-item:nth-child(odd):not(.v-timeline-item--before) .v-timeline-item__opposite{text-align:right}.v-application--is-rtl .v-timeline:not(.v-timeline--dense):not(.v-timeline--reverse) .v-timeline-item--after .v-timeline-item__opposite,.v-application--is-rtl .v-timeline:not(.v-timeline--dense):not(.v-timeline--reverse) .v-timeline-item:nth-child(odd):not(.v-timeline-item--before) .v-timeline-item__opposite{text-align:left}.v-application--is-ltr .v-timeline:not(.v-timeline--dense):not(.v-timeline--reverse) .v-timeline-item--after .v-timeline-item__body .v-card:after,.v-application--is-ltr .v-timeline:not(.v-timeline--dense):not(.v-timeline--reverse) .v-timeline-item--after .v-timeline-item__body>.v-card:before,.v-application--is-ltr .v-timeline:not(.v-timeline--dense):not(.v-timeline--reverse) .v-timeline-item:nth-child(odd):not(.v-timeline-item--before) .v-timeline-item__body .v-card:after,.v-application--is-ltr .v-timeline:not(.v-timeline--dense):not(.v-timeline--reverse) .v-timeline-item:nth-child(odd):not(.v-timeline-item--before) .v-timeline-item__body>.v-card:before{transform:rotate(0);left:-10px;right:auto}.v-application--is-rtl .v-timeline:not(.v-timeline--dense):not(.v-timeline--reverse) .v-timeline-item--after .v-timeline-item__body .v-card:after,.v-application--is-rtl .v-timeline:not(.v-timeline--dense):not(.v-timeline--reverse) .v-timeline-item--after .v-timeline-item__body>.v-card:before,.v-application--is-rtl .v-timeline:not(.v-timeline--dense):not(.v-timeline--reverse) .v-timeline-item:nth-child(odd):not(.v-timeline-item--before) .v-timeline-item__body .v-card:after,.v-application--is-rtl .v-timeline:not(.v-timeline--dense):not(.v-timeline--reverse) .v-timeline-item:nth-child(odd):not(.v-timeline-item--before) .v-timeline-item__body>.v-card:before{transform:rotate(180deg);left:auto;right:-10px}.v-timeline:not(.v-timeline--dense):not(.v-timeline--reverse) .v-timeline-item--after .v-timeline-item__body,.v-timeline:not(.v-timeline--dense):not(.v-timeline--reverse) .v-timeline-item:nth-child(odd):not(.v-timeline-item--before) .v-timeline-item__body{max-width:calc(50% - 48px)}.v-timeline:not(.v-timeline--dense):not(.v-timeline--reverse) .v-timeline-item--before,.v-timeline:not(.v-timeline--dense):not(.v-timeline--reverse) .v-timeline-item:nth-child(2n):not(.v-timeline-item--after){flex-direction:row}.v-application--is-ltr .v-timeline:not(.v-timeline--dense):not(.v-timeline--reverse) .v-timeline-item--before .v-timeline-item__opposite,.v-application--is-ltr .v-timeline:not(.v-timeline--dense):not(.v-timeline--reverse) .v-timeline-item:nth-child(2n):not(.v-timeline-item--after) .v-timeline-item__opposite{text-align:left}.v-application--is-rtl .v-timeline:not(.v-timeline--dense):not(.v-timeline--reverse) .v-timeline-item--before .v-timeline-item__opposite,.v-application--is-rtl .v-timeline:not(.v-timeline--dense):not(.v-timeline--reverse) .v-timeline-item:nth-child(2n):not(.v-timeline-item--after) .v-timeline-item__opposite{text-align:right}.v-application--is-ltr .v-timeline:not(.v-timeline--dense):not(.v-timeline--reverse) .v-timeline-item--before .v-timeline-item__body .v-card:after,.v-application--is-ltr .v-timeline:not(.v-timeline--dense):not(.v-timeline--reverse) .v-timeline-item--before .v-timeline-item__body>.v-card:before,.v-application--is-ltr .v-timeline:not(.v-timeline--dense):not(.v-timeline--reverse) .v-timeline-item:nth-child(2n):not(.v-timeline-item--after) .v-timeline-item__body .v-card:after,.v-application--is-ltr .v-timeline:not(.v-timeline--dense):not(.v-timeline--reverse) .v-timeline-item:nth-child(2n):not(.v-timeline-item--after) .v-timeline-item__body>.v-card:before{transform:rotate(180deg);right:-10px;left:auto}.v-application--is-rtl .v-timeline:not(.v-timeline--dense):not(.v-timeline--reverse) .v-timeline-item--before .v-timeline-item__body .v-card:after,.v-application--is-rtl .v-timeline:not(.v-timeline--dense):not(.v-timeline--reverse) .v-timeline-item--before .v-timeline-item__body>.v-card:before,.v-application--is-rtl .v-timeline:not(.v-timeline--dense):not(.v-timeline--reverse) .v-timeline-item:nth-child(2n):not(.v-timeline-item--after) .v-timeline-item__body .v-card:after,.v-application--is-rtl .v-timeline:not(.v-timeline--dense):not(.v-timeline--reverse) .v-timeline-item:nth-child(2n):not(.v-timeline-item--after) .v-timeline-item__body>.v-card:before{transform:rotate(0);right:auto;left:-10px}.v-timeline:not(.v-timeline--dense):not(.v-timeline--reverse) .v-timeline-item--before .v-timeline-item__body,.v-timeline:not(.v-timeline--dense):not(.v-timeline--reverse) .v-timeline-item:nth-child(2n):not(.v-timeline-item--after) .v-timeline-item__body{max-width:calc(50% - 48px)}.v-timeline-item__body>.v-card:not(.v-card--flat):after,.v-timeline-item__body>.v-card:not(.v-card--flat):before{content:\"\";position:absolute;border-top:10px solid transparent;border-bottom:10px solid transparent;border-right:10px solid #000;top:calc(50% - 10px)}.v-timeline-item__body>.v-card:not(.v-card--flat):after{border-right-color:inherit}.v-timeline-item__body>.v-card:not(.v-card--flat):before{top:calc(50% - 8px)}.v-timeline--align-top .v-timeline-item__dot{align-self:start}.v-timeline--align-top .v-timeline-item__body>.v-card:before{top:12px}.v-timeline--align-top .v-timeline-item__body>.v-card:after{top:10px}.v-application--is-ltr .v-timeline:not(.v-timeline--dense):not(.v-timeline--reverse):before{left:calc(50% - 1px);right:auto}.v-application--is-ltr .v-timeline--reverse:not(.v-timeline--dense):before,.v-application--is-rtl .v-timeline:not(.v-timeline--dense):not(.v-timeline--reverse):before{left:auto;right:calc(50% - 1px)}.v-application--is-rtl .v-timeline--reverse:not(.v-timeline--dense):before{right:auto;left:calc(50% - 1px)}.v-timeline--reverse:not(.v-timeline--dense) .v-timeline-item--before,.v-timeline--reverse:not(.v-timeline--dense) .v-timeline-item:nth-child(odd):not(.v-timeline-item--after){flex-direction:row}.v-application--is-ltr .v-timeline--reverse:not(.v-timeline--dense) .v-timeline-item--before .v-timeline-item__opposite,.v-application--is-ltr .v-timeline--reverse:not(.v-timeline--dense) .v-timeline-item:nth-child(odd):not(.v-timeline-item--after) .v-timeline-item__opposite{text-align:left}.v-application--is-rtl .v-timeline--reverse:not(.v-timeline--dense) .v-timeline-item--before .v-timeline-item__opposite,.v-application--is-rtl .v-timeline--reverse:not(.v-timeline--dense) .v-timeline-item:nth-child(odd):not(.v-timeline-item--after) .v-timeline-item__opposite{text-align:right}.v-application--is-ltr .v-timeline--reverse:not(.v-timeline--dense) .v-timeline-item--before .v-timeline-item__body .v-card:after,.v-application--is-ltr .v-timeline--reverse:not(.v-timeline--dense) .v-timeline-item--before .v-timeline-item__body>.v-card:before,.v-application--is-ltr .v-timeline--reverse:not(.v-timeline--dense) .v-timeline-item:nth-child(odd):not(.v-timeline-item--after) .v-timeline-item__body .v-card:after,.v-application--is-ltr .v-timeline--reverse:not(.v-timeline--dense) .v-timeline-item:nth-child(odd):not(.v-timeline-item--after) .v-timeline-item__body>.v-card:before{transform:rotate(180deg);right:-10px;left:auto}.v-application--is-rtl .v-timeline--reverse:not(.v-timeline--dense) .v-timeline-item--before .v-timeline-item__body .v-card:after,.v-application--is-rtl .v-timeline--reverse:not(.v-timeline--dense) .v-timeline-item--before .v-timeline-item__body>.v-card:before,.v-application--is-rtl .v-timeline--reverse:not(.v-timeline--dense) .v-timeline-item:nth-child(odd):not(.v-timeline-item--after) .v-timeline-item__body .v-card:after,.v-application--is-rtl .v-timeline--reverse:not(.v-timeline--dense) .v-timeline-item:nth-child(odd):not(.v-timeline-item--after) .v-timeline-item__body>.v-card:before{transform:rotate(0);right:auto;left:-10px}.v-timeline--reverse:not(.v-timeline--dense) .v-timeline-item--before .v-timeline-item__body,.v-timeline--reverse:not(.v-timeline--dense) .v-timeline-item:nth-child(odd):not(.v-timeline-item--after) .v-timeline-item__body{max-width:calc(50% - 48px)}.v-timeline--reverse:not(.v-timeline--dense) .v-timeline-item--after,.v-timeline--reverse:not(.v-timeline--dense) .v-timeline-item:nth-child(2n):not(.v-timeline-item--before){flex-direction:row-reverse}.v-application--is-ltr .v-timeline--reverse:not(.v-timeline--dense) .v-timeline-item--after .v-timeline-item__opposite,.v-application--is-ltr .v-timeline--reverse:not(.v-timeline--dense) .v-timeline-item:nth-child(2n):not(.v-timeline-item--before) .v-timeline-item__opposite{text-align:right}.v-application--is-rtl .v-timeline--reverse:not(.v-timeline--dense) .v-timeline-item--after .v-timeline-item__opposite,.v-application--is-rtl .v-timeline--reverse:not(.v-timeline--dense) .v-timeline-item:nth-child(2n):not(.v-timeline-item--before) .v-timeline-item__opposite{text-align:left}.v-application--is-ltr .v-timeline--reverse:not(.v-timeline--dense) .v-timeline-item--after .v-timeline-item__body .v-card:after,.v-application--is-ltr .v-timeline--reverse:not(.v-timeline--dense) .v-timeline-item--after .v-timeline-item__body>.v-card:before,.v-application--is-ltr .v-timeline--reverse:not(.v-timeline--dense) .v-timeline-item:nth-child(2n):not(.v-timeline-item--before) .v-timeline-item__body .v-card:after,.v-application--is-ltr .v-timeline--reverse:not(.v-timeline--dense) .v-timeline-item:nth-child(2n):not(.v-timeline-item--before) .v-timeline-item__body>.v-card:before{transform:rotate(0);left:-10px;right:auto}.v-application--is-rtl .v-timeline--reverse:not(.v-timeline--dense) .v-timeline-item--after .v-timeline-item__body .v-card:after,.v-application--is-rtl .v-timeline--reverse:not(.v-timeline--dense) .v-timeline-item--after .v-timeline-item__body>.v-card:before,.v-application--is-rtl .v-timeline--reverse:not(.v-timeline--dense) .v-timeline-item:nth-child(2n):not(.v-timeline-item--before) .v-timeline-item__body .v-card:after,.v-application--is-rtl .v-timeline--reverse:not(.v-timeline--dense) .v-timeline-item:nth-child(2n):not(.v-timeline-item--before) .v-timeline-item__body>.v-card:before{transform:rotate(180deg);left:auto;right:-10px}.v-timeline--reverse:not(.v-timeline--dense) .v-timeline-item--after .v-timeline-item__body,.v-timeline--reverse:not(.v-timeline--dense) .v-timeline-item:nth-child(2n):not(.v-timeline-item--before) .v-timeline-item__body{max-width:calc(50% - 48px)}.v-application--is-ltr .v-timeline--reverse.v-timeline--dense:before{right:47px;left:auto}.v-application--is-ltr .v-timeline--dense:not(.v-timeline--reverse):before,.v-application--is-rtl .v-timeline--reverse.v-timeline--dense:before{right:auto;left:47px}.v-application--is-rtl .v-timeline--dense:not(.v-timeline--reverse):before{left:auto;right:47px}.v-timeline--dense .v-timeline-item{flex-direction:row-reverse!important}.v-application--is-ltr .v-timeline--dense .v-timeline-item .v-timeline-item__body .v-card:after,.v-application--is-ltr .v-timeline--dense .v-timeline-item .v-timeline-item__body>.v-card:before{transform:rotate(0);left:-10px;right:auto}.v-application--is-rtl .v-timeline--dense .v-timeline-item .v-timeline-item__body .v-card:after,.v-application--is-rtl .v-timeline--dense .v-timeline-item .v-timeline-item__body>.v-card:before{transform:rotate(180deg);left:auto;right:-10px}.v-timeline--dense .v-timeline-item__body{max-width:calc(100% - 96px)}.v-timeline--dense .v-timeline-item__opposite{display:none}.v-timeline--reverse.v-timeline--dense .v-timeline-item{flex-direction:row!important}.v-application--is-ltr .v-timeline--reverse.v-timeline--dense .v-timeline-item .v-timeline-item__body .v-card:after,.v-application--is-ltr .v-timeline--reverse.v-timeline--dense .v-timeline-item .v-timeline-item__body>.v-card:before{transform:rotate(180deg);right:-10px;left:auto}.v-application--is-rtl .v-timeline--reverse.v-timeline--dense .v-timeline-item .v-timeline-item__body .v-card:after,.v-application--is-rtl .v-timeline--reverse.v-timeline--dense .v-timeline-item .v-timeline-item__body>.v-card:before{transform:rotate(0);right:auto;left:-10px}.v-timeline-item--fill-dot .v-timeline-item__inner-dot{height:inherit;margin:0;width:inherit}.theme--light.v-time-picker-clock{background:#e0e0e0}.theme--light.v-time-picker-clock .v-time-picker-clock__item--disabled{color:rgba(0,0,0,.26)}.theme--light.v-time-picker-clock .v-time-picker-clock__item--disabled.v-time-picker-clock__item--active{color:hsla(0,0%,100%,.3)}.theme--light.v-time-picker-clock--indeterminate .v-time-picker-clock__hand{background-color:#bdbdbd}.theme--light.v-time-picker-clock--indeterminate:after{color:#bdbdbd}.theme--light.v-time-picker-clock--indeterminate .v-time-picker-clock__item--active{background-color:#bdbdbd}.theme--dark.v-time-picker-clock{background:#616161}.theme--dark.v-time-picker-clock .v-time-picker-clock__item--disabled,.theme--dark.v-time-picker-clock .v-time-picker-clock__item--disabled.v-time-picker-clock__item--active{color:hsla(0,0%,100%,.3)}.theme--dark.v-time-picker-clock--indeterminate .v-time-picker-clock__hand{background-color:#757575}.theme--dark.v-time-picker-clock--indeterminate:after{color:#757575}.theme--dark.v-time-picker-clock--indeterminate .v-time-picker-clock__item--active{background-color:#757575}.v-time-picker-clock{border-radius:100%;position:relative;transition:.3s cubic-bezier(.25,.8,.5,1);-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;width:100%;padding-top:100%;flex:1 0 auto}.v-time-picker-clock__container{display:flex;flex-direction:column;justify-content:center;padding:10px}.v-time-picker-clock__ampm{display:flex;flex-direction:row;justify-content:space-between;align-items:flex-end;position:absolute;width:100%;height:100%;top:0;left:0;margin:0;padding:10px}.v-time-picker-clock__hand{height:calc(50% - 4px);width:2px;bottom:50%;left:calc(50% - 1px);transform-origin:center bottom;position:absolute;will-change:transform;z-index:1}.v-time-picker-clock__hand:before{background:transparent;border:2px solid;border-color:inherit;border-radius:100%;width:10px;height:10px;top:-4px}.v-time-picker-clock__hand:after,.v-time-picker-clock__hand:before{content:\"\";position:absolute;left:50%;transform:translate(-50%,-50%)}.v-time-picker-clock__hand:after{height:8px;width:8px;top:100%;border-radius:100%;border-style:solid;border-color:inherit;background-color:inherit}.v-time-picker-clock__hand--inner:after{height:14px}.v-picker--full-width .v-time-picker-clock__container{max-width:290px}.v-time-picker-clock__inner{position:absolute;bottom:27px;left:27px;right:27px;top:27px}.v-time-picker-clock__item{align-items:center;border-radius:100%;cursor:default;display:flex;font-size:16px;justify-content:center;height:40px;position:absolute;text-align:center;width:40px;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;transform:translate(-50%,-50%)}.v-time-picker-clock__item>span{z-index:1}.v-time-picker-clock__item:after,.v-time-picker-clock__item:before{content:\"\";border-radius:100%;position:absolute;top:50%;left:50%;height:14px;width:14px;transform:translate(-50%,-50%);height:40px;width:40px}.v-time-picker-clock__item--active{color:#fff;cursor:default;z-index:2}.v-time-picker-clock__item--disabled{pointer-events:none}.v-picker--landscape .v-time-picker-clock__container{flex-direction:row}.v-picker--landscape .v-time-picker-clock__ampm{flex-direction:column}.v-time-picker-title{color:#fff;display:flex;line-height:1;justify-content:flex-end}.v-time-picker-title__time{white-space:nowrap;direction:ltr}.v-time-picker-title__time .v-picker__title__btn,.v-time-picker-title__time span{align-items:center;display:inline-flex;height:70px;font-size:70px;justify-content:center}.v-time-picker-title__ampm{align-self:flex-end;display:flex;flex-direction:column;font-size:16px;text-transform:uppercase}.v-application--is-ltr .v-time-picker-title__ampm{margin:0 0 6px 8px}.v-application--is-rtl .v-time-picker-title__ampm{margin:0 8px 6px 0}.v-time-picker-title__ampm div:only-child{flex-direction:row}.v-picker__title--landscape .v-time-picker-title{flex-direction:column;justify-content:center;height:100%}.v-picker__title--landscape .v-time-picker-title__time{text-align:right}.v-picker__title--landscape .v-time-picker-title__time .v-picker__title__btn,.v-picker__title--landscape .v-time-picker-title__time span{height:55px;font-size:55px}.v-picker__title--landscape .v-time-picker-title__ampm{margin:16px 0 0;align-self:auto;text-align:center}.v-picker--time .v-picker__title--landscape{padding:0}.v-picker--time .v-picker__title--landscape .v-time-picker-title__time{text-align:center}.v-tooltip{display:none}.v-tooltip--attached{display:inline}.v-tooltip__content{background:rgba(97,97,97,.9);color:#fff;border-radius:4px;font-size:14px;line-height:22px;display:inline-block;padding:5px 16px;position:absolute;text-transform:none;width:auto;opacity:1;pointer-events:none}.v-tooltip__content--fixed{position:fixed}.v-tooltip__content[class*=-active]{transition-timing-function:cubic-bezier(0,0,.2,1)}.v-tooltip__content[class*=enter-active]{transition-duration:.15s}.v-tooltip__content[class*=leave-active]{transition-duration:75ms}.theme--light.v-treeview{color:rgba(0,0,0,.87)}.theme--light.v-treeview--hoverable .v-treeview-node__root:hover:before,.theme--light.v-treeview .v-treeview-node--click>.v-treeview-node__root:hover:before{opacity:.04}.theme--light.v-treeview--hoverable .v-treeview-node__root--active:before,.theme--light.v-treeview--hoverable .v-treeview-node__root--active:hover:before,.theme--light.v-treeview--hoverable .v-treeview-node__root:focus:before,.theme--light.v-treeview .v-treeview-node--click>.v-treeview-node__root--active:before,.theme--light.v-treeview .v-treeview-node--click>.v-treeview-node__root--active:hover:before,.theme--light.v-treeview .v-treeview-node--click>.v-treeview-node__root:focus:before{opacity:.12}.theme--light.v-treeview--hoverable .v-treeview-node__root--active:focus:before,.theme--light.v-treeview .v-treeview-node--click>.v-treeview-node__root--active:focus:before{opacity:.16}.theme--light.v-treeview .v-treeview-node__root.v-treeview-node--active:before,.theme--light.v-treeview .v-treeview-node__root.v-treeview-node--active:hover:before{opacity:.12}.theme--light.v-treeview .v-treeview-node__root.v-treeview-node--active:focus:before{opacity:.16}.theme--light.v-treeview .v-treeview-node--disabled{color:rgba(0,0,0,.38)}.theme--light.v-treeview .v-treeview-node--disabled .v-treeview-node__checkbox,.theme--light.v-treeview .v-treeview-node--disabled .v-treeview-node__toggle{color:rgba(0,0,0,.38)!important}.theme--dark.v-treeview{color:#fff}.theme--dark.v-treeview--hoverable .v-treeview-node__root:hover:before,.theme--dark.v-treeview .v-treeview-node--click>.v-treeview-node__root:hover:before{opacity:.08}.theme--dark.v-treeview--hoverable .v-treeview-node__root--active:before,.theme--dark.v-treeview--hoverable .v-treeview-node__root--active:hover:before,.theme--dark.v-treeview--hoverable .v-treeview-node__root:focus:before,.theme--dark.v-treeview .v-treeview-node--click>.v-treeview-node__root--active:before,.theme--dark.v-treeview .v-treeview-node--click>.v-treeview-node__root--active:hover:before,.theme--dark.v-treeview .v-treeview-node--click>.v-treeview-node__root:focus:before{opacity:.24}.theme--dark.v-treeview--hoverable .v-treeview-node__root--active:focus:before,.theme--dark.v-treeview .v-treeview-node--click>.v-treeview-node__root--active:focus:before{opacity:.32}.theme--dark.v-treeview .v-treeview-node__root.v-treeview-node--active:before,.theme--dark.v-treeview .v-treeview-node__root.v-treeview-node--active:hover:before{opacity:.24}.theme--dark.v-treeview .v-treeview-node__root.v-treeview-node--active:focus:before{opacity:.32}.theme--dark.v-treeview .v-treeview-node--disabled{color:hsla(0,0%,100%,.5)}.theme--dark.v-treeview .v-treeview-node--disabled .v-treeview-node__checkbox,.theme--dark.v-treeview .v-treeview-node--disabled .v-treeview-node__toggle{color:hsla(0,0%,100%,.5)!important}.v-treeview-node--disabled{pointer-events:none}.v-treeview-node.v-treeview-node--shaped .v-treeview-node__root,.v-treeview-node.v-treeview-node--shaped .v-treeview-node__root:before{border-bottom-right-radius:24px!important;border-top-right-radius:24px!important}.v-treeview-node.v-treeview-node--shaped .v-treeview-node__root{margin-top:8px;margin-bottom:8px}.v-treeview-node.v-treeview-node--rounded .v-treeview-node__root,.v-treeview-node.v-treeview-node--rounded .v-treeview-node__root:before{border-radius:24px!important}.v-treeview-node.v-treeview-node--rounded .v-treeview-node__root{margin-top:8px;margin-bottom:8px}.v-treeview-node--excluded{display:none}.v-treeview-node--click>.v-treeview-node__root,.v-treeview-node--click>.v-treeview-node__root>.v-treeview-node__content>*{cursor:pointer;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.v-treeview-node.v-treeview-node--active .v-treeview-node__content .v-icon{color:inherit}.v-treeview-node__root{display:flex;align-items:center;min-height:48px;padding-left:8px;padding-right:8px;position:relative}.v-treeview-node__root:before{background-color:currentColor;bottom:0;content:\"\";left:0;opacity:0;pointer-events:none;position:absolute;right:0;top:0;transition:.3s cubic-bezier(.25,.8,.5,1)}.v-treeview-node__children{transition:all .2s cubic-bezier(0,0,.2,1)}.v-treeview--dense .v-treeview-node__root{min-height:40px}.v-treeview--dense.v-treeview-node--shaped .v-treeview-node__root,.v-treeview--dense.v-treeview-node--shaped .v-treeview-node__root:before{border-bottom-right-radius:20px!important;border-top-right-radius:20px!important}.v-treeview--dense.v-treeview-node--shaped .v-treeview-node__root{margin-top:8px;margin-bottom:8px}.v-treeview--dense.v-treeview-node--rounded .v-treeview-node__root,.v-treeview--dense.v-treeview-node--rounded .v-treeview-node__root:before{border-radius:20px!important}.v-treeview--dense.v-treeview-node--rounded .v-treeview-node__root{margin-top:8px;margin-bottom:8px}.v-treeview-node__checkbox{width:24px;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.v-application--is-ltr .v-treeview-node__checkbox{margin-left:6px}.v-application--is-rtl .v-treeview-node__checkbox{margin-right:6px}.v-treeview-node__toggle{width:24px;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.v-treeview-node__toggle--loading{-webkit-animation:progress-circular-rotate 1s linear infinite;animation:progress-circular-rotate 1s linear infinite}.v-application--is-ltr .v-treeview-node__toggle{transform:rotate(-90deg)}.v-application--is-ltr .v-treeview-node__toggle--open{transform:none}.v-application--is-rtl .v-treeview-node__toggle{transform:rotate(90deg)}.v-application--is-rtl .v-treeview-node__toggle--open{transform:none}.v-treeview-node__prepend{min-width:24px}.v-application--is-ltr .v-treeview-node__prepend{margin-right:6px}.v-application--is-rtl .v-treeview-node__prepend{margin-left:6px}.v-treeview-node__append{min-width:24px}.v-application--is-ltr .v-treeview-node__append{margin-left:6px}.v-application--is-rtl .v-treeview-node__append{margin-right:6px}.v-treeview-node__level{width:24px}.v-treeview-node__label{flex:1;font-size:inherit;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.v-treeview-node__content{align-items:center;display:flex;flex-basis:0%;flex-grow:1;flex-shrink:0;min-width:0}.v-treeview-node__content .v-btn{flex-grow:0!important;flex-shrink:1!important}.v-application--is-ltr .v-treeview-node__content{margin-left:6px}.v-application--is-rtl .v-treeview-node__content{margin-right:6px}", ""]);
-
-// exports
-
-
-/***/ }),
-
-/***/ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/App.vue?vue&type=style&index=0&lang=css&":
-/*!**********************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/css-loader??ref--5-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--5-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/App.vue?vue&type=style&index=0&lang=css& ***!
-  \**********************************************************************************************************************************************************************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(/*! ../../node_modules/css-loader/lib/css-base.js */ "./node_modules/css-loader/lib/css-base.js")(false);
-// imports
-
-
-// module
-exports.push([module.i, "\nbody::-webkit-scrollbar {\r\n    width: 6px;\n}\nbody::-webkit-scrollbar-thumb {\r\n    background-color: #41b883;\n}\r\n", ""]);
 
 // exports
 
@@ -5841,6 +6850,36 @@ try {
 
 /***/ }),
 
+/***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/dist/cjs.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/App.vue?vue&type=style&index=0&lang=scss&":
+/*!******************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader!./node_modules/css-loader!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/sass-loader/dist/cjs.js??ref--6-3!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/App.vue?vue&type=style&index=0&lang=scss& ***!
+  \******************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+var content = __webpack_require__(/*! !../../node_modules/css-loader!../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../node_modules/postcss-loader/src??ref--6-2!../../node_modules/sass-loader/dist/cjs.js??ref--6-3!../../node_modules/vue-loader/lib??vue-loader-options!./App.vue?vue&type=style&index=0&lang=scss& */ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/dist/cjs.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/App.vue?vue&type=style&index=0&lang=scss&");
+
+if(typeof content === 'string') content = [[module.i, content, '']];
+
+var transform;
+var insertInto;
+
+
+
+var options = {"hmr":true}
+
+options.transform = transform
+options.insertInto = undefined;
+
+var update = __webpack_require__(/*! ../../node_modules/style-loader/lib/addStyles.js */ "./node_modules/style-loader/lib/addStyles.js")(content, options);
+
+if(content.locals) module.exports = content.locals;
+
+if(false) {}
+
+/***/ }),
+
 /***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/dist/cjs.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/auth/Account.vue?vue&type=style&index=0&lang=scss&":
 /*!**************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/style-loader!./node_modules/css-loader!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/sass-loader/dist/cjs.js??ref--6-3!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/auth/Account.vue?vue&type=style&index=0&lang=scss& ***!
@@ -5850,6 +6889,36 @@ try {
 
 
 var content = __webpack_require__(/*! !../../../../node_modules/css-loader!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/src??ref--6-2!../../../../node_modules/sass-loader/dist/cjs.js??ref--6-3!../../../../node_modules/vue-loader/lib??vue-loader-options!./Account.vue?vue&type=style&index=0&lang=scss& */ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/dist/cjs.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/auth/Account.vue?vue&type=style&index=0&lang=scss&");
+
+if(typeof content === 'string') content = [[module.i, content, '']];
+
+var transform;
+var insertInto;
+
+
+
+var options = {"hmr":true}
+
+options.transform = transform
+options.insertInto = undefined;
+
+var update = __webpack_require__(/*! ../../../../node_modules/style-loader/lib/addStyles.js */ "./node_modules/style-loader/lib/addStyles.js")(content, options);
+
+if(content.locals) module.exports = content.locals;
+
+if(false) {}
+
+/***/ }),
+
+/***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/dist/cjs.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/sucursales/SucursalesShow.vue?vue&type=style&index=0&lang=scss&":
+/*!***************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader!./node_modules/css-loader!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/sass-loader/dist/cjs.js??ref--6-3!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/sucursales/SucursalesShow.vue?vue&type=style&index=0&lang=scss& ***!
+  \***************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+var content = __webpack_require__(/*! !../../../../node_modules/css-loader!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/src??ref--6-2!../../../../node_modules/sass-loader/dist/cjs.js??ref--6-3!../../../../node_modules/vue-loader/lib??vue-loader-options!./SucursalesShow.vue?vue&type=style&index=0&lang=scss& */ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/dist/cjs.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/sucursales/SucursalesShow.vue?vue&type=style&index=0&lang=scss&");
 
 if(typeof content === 'string') content = [[module.i, content, '']];
 
@@ -5894,36 +6963,6 @@ options.transform = transform
 options.insertInto = undefined;
 
 var update = __webpack_require__(/*! ../../../node_modules/style-loader/lib/addStyles.js */ "./node_modules/style-loader/lib/addStyles.js")(content, options);
-
-if(content.locals) module.exports = content.locals;
-
-if(false) {}
-
-/***/ }),
-
-/***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/App.vue?vue&type=style&index=0&lang=css&":
-/*!**************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/style-loader!./node_modules/css-loader??ref--5-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--5-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/App.vue?vue&type=style&index=0&lang=css& ***!
-  \**************************************************************************************************************************************************************************************************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-
-var content = __webpack_require__(/*! !../../node_modules/css-loader??ref--5-1!../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../node_modules/postcss-loader/src??ref--5-2!../../node_modules/vue-loader/lib??vue-loader-options!./App.vue?vue&type=style&index=0&lang=css& */ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/App.vue?vue&type=style&index=0&lang=css&");
-
-if(typeof content === 'string') content = [[module.i, content, '']];
-
-var transform;
-var insertInto;
-
-
-
-var options = {"hmr":true}
-
-options.transform = transform
-options.insertInto = undefined;
-
-var update = __webpack_require__(/*! ../../node_modules/style-loader/lib/addStyles.js */ "./node_modules/style-loader/lib/addStyles.js")(content, options);
 
 if(content.locals) module.exports = content.locals;
 
@@ -8663,9 +9702,7 @@ var render = function() {
                   })
                 : _vm._e(),
               _vm._v(" "),
-              _c("v-toolbar-title", { staticStyle: { cursor: "pointer" } }, [
-                _vm._v("Grupo APC")
-              ]),
+              _c("v-toolbar-title", [_vm._v("Grupo APC")]),
               _vm._v(" "),
               _c("v-spacer"),
               _vm._v(" "),
@@ -10029,207 +11066,178 @@ var render = function() {
     "div",
     [
       _c(
-        "v-row",
-        { attrs: { justify: "center" } },
+        "v-card",
+        {
+          attrs: {
+            outlined: "",
+            shaped: "",
+            loading: _vm.$store.state.inProcess
+          }
+        },
         [
-          _c(
-            "v-col",
-            { attrs: { cols: "12", sm: "10", lg: "8" } },
-            [
-              _c(
-                "v-card",
-                {
-                  attrs: {
-                    outlined: "",
-                    shaped: "",
-                    loading: _vm.$store.state.inProcess
-                  }
-                },
+          _c("v-card-title", [_vm._v("Roles")]),
+          _vm._v(" "),
+          _c("v-divider"),
+          _vm._v(" "),
+          _vm.$store.state.roles.roles
+            ? _c(
+                "v-card-text",
+                { staticClass: "px-0" },
                 [
-                  _vm.$store.state.roles.roles
-                    ? _c(
-                        "v-card-text",
-                        { staticClass: "px-0" },
-                        [
-                          _c("v-data-table", {
-                            attrs: {
-                              "hide-default-footer": "",
-                              headers: _vm.headers,
-                              items: _vm.$store.state.roles.roles.roles,
-                              "items-per-page": _vm.limit,
-                              "mobile-breakpoint": 0
-                            },
-                            scopedSlots: _vm._u(
-                              [
-                                {
-                                  key: "item",
-                                  fn: function(item) {
-                                    return [
-                                      _c("tr", [
-                                        _c("td", [
-                                          _vm._v(_vm._s(item.item.role))
-                                        ]),
-                                        _vm._v(" "),
-                                        _c(
-                                          "td",
+                  _c("v-data-table", {
+                    attrs: {
+                      "hide-default-footer": "",
+                      headers: _vm.headers,
+                      items: _vm.$store.state.roles.roles.roles,
+                      "items-per-page": _vm.limit,
+                      "mobile-breakpoint": 0
+                    },
+                    scopedSlots: _vm._u(
+                      [
+                        {
+                          key: "item",
+                          fn: function(item) {
+                            return [
+                              _c("tr", [
+                                _c("td", [_vm._v(_vm._s(item.item.role))]),
+                                _vm._v(" "),
+                                _c(
+                                  "td",
+                                  [
+                                    _c(
+                                      "v-menu",
+                                      {
+                                        attrs: { "offset-y": "" },
+                                        scopedSlots: _vm._u(
                                           [
-                                            _c(
-                                              "v-menu",
-                                              {
-                                                attrs: { "offset-y": "" },
-                                                scopedSlots: _vm._u(
-                                                  [
-                                                    {
-                                                      key: "activator",
-                                                      fn: function(ref) {
-                                                        var on = ref.on
-                                                        return [
-                                                          _c(
-                                                            "v-btn",
-                                                            _vm._g(
-                                                              {
-                                                                attrs: {
-                                                                  color:
-                                                                    "secondary",
-                                                                  text: "",
-                                                                  icon: ""
-                                                                }
-                                                              },
-                                                              on
-                                                            ),
-                                                            [
-                                                              _c(
-                                                                "v-icon",
-                                                                {
-                                                                  attrs: {
-                                                                    size:
-                                                                      "medium"
-                                                                  }
-                                                                },
-                                                                [
-                                                                  _vm._v(
-                                                                    "fas fa-ellipsis-v"
-                                                                  )
-                                                                ]
-                                                              )
-                                                            ],
-                                                            1
+                                            {
+                                              key: "activator",
+                                              fn: function(ref) {
+                                                var on = ref.on
+                                                return [
+                                                  _c(
+                                                    "v-btn",
+                                                    _vm._g(
+                                                      {
+                                                        attrs: {
+                                                          color: "secondary",
+                                                          text: "",
+                                                          icon: ""
+                                                        }
+                                                      },
+                                                      on
+                                                    ),
+                                                    [
+                                                      _c(
+                                                        "v-icon",
+                                                        {
+                                                          attrs: {
+                                                            size: "medium"
+                                                          }
+                                                        },
+                                                        [
+                                                          _vm._v(
+                                                            "fas fa-ellipsis-v"
                                                           )
                                                         ]
-                                                      }
-                                                    }
-                                                  ],
-                                                  null,
-                                                  true
-                                                )
+                                                      )
+                                                    ],
+                                                    1
+                                                  )
+                                                ]
+                                              }
+                                            }
+                                          ],
+                                          null,
+                                          true
+                                        )
+                                      },
+                                      [
+                                        _vm._v(" "),
+                                        _c(
+                                          "v-list",
+                                          [
+                                            _c(
+                                              "v-list-item",
+                                              {
+                                                on: {
+                                                  click: function($event) {
+                                                    return _vm.setPermissions(
+                                                      item.item
+                                                    )
+                                                  }
+                                                }
                                               },
                                               [
-                                                _vm._v(" "),
-                                                _c(
-                                                  "v-list",
+                                                _c("v-list-item-title", [
+                                                  _vm._v("Permisos")
+                                                ])
+                                              ],
+                                              1
+                                            ),
+                                            _vm._v(" "),
+                                            _c(
+                                              "v-list-item",
+                                              {
+                                                on: {
+                                                  click: function($event) {
+                                                    return _vm.edit(item.item)
+                                                  }
+                                                }
+                                              },
+                                              [
+                                                _c("v-list-item-title", [
+                                                  _vm._v("Editar")
+                                                ])
+                                              ],
+                                              1
+                                            ),
+                                            _vm._v(" "),
+                                            item.item.id != 1
+                                              ? _c(
+                                                  "v-list-item",
+                                                  {
+                                                    on: {
+                                                      click: function($event) {
+                                                        return _vm.beforeDelete(
+                                                          item.item.id
+                                                        )
+                                                      }
+                                                    }
+                                                  },
                                                   [
-                                                    _c(
-                                                      "v-list-item",
-                                                      {
-                                                        on: {
-                                                          click: function(
-                                                            $event
-                                                          ) {
-                                                            return _vm.setPermissions(
-                                                              item.item
-                                                            )
-                                                          }
-                                                        }
-                                                      },
-                                                      [
-                                                        _c(
-                                                          "v-list-item-title",
-                                                          [_vm._v("Permisos")]
-                                                        )
-                                                      ],
-                                                      1
-                                                    ),
-                                                    _vm._v(" "),
-                                                    _c(
-                                                      "v-list-item",
-                                                      {
-                                                        on: {
-                                                          click: function(
-                                                            $event
-                                                          ) {
-                                                            return _vm.edit(
-                                                              item.item
-                                                            )
-                                                          }
-                                                        }
-                                                      },
-                                                      [
-                                                        _c(
-                                                          "v-list-item-title",
-                                                          [_vm._v("Editar")]
-                                                        )
-                                                      ],
-                                                      1
-                                                    ),
-                                                    _vm._v(" "),
-                                                    item.item.id != 1
-                                                      ? _c(
-                                                          "v-list-item",
-                                                          {
-                                                            on: {
-                                                              click: function(
-                                                                $event
-                                                              ) {
-                                                                return _vm.beforeDelete(
-                                                                  item.item.id
-                                                                )
-                                                              }
-                                                            }
-                                                          },
-                                                          [
-                                                            _c(
-                                                              "v-list-item-title",
-                                                              [
-                                                                _vm._v(
-                                                                  "Eliminar"
-                                                                )
-                                                              ]
-                                                            )
-                                                          ],
-                                                          1
-                                                        )
-                                                      : _vm._e()
+                                                    _c("v-list-item-title", [
+                                                      _vm._v("Eliminar")
+                                                    ])
                                                   ],
                                                   1
                                                 )
-                                              ],
-                                              1
-                                            )
+                                              : _vm._e()
                                           ],
                                           1
                                         )
-                                      ])
-                                    ]
-                                  }
-                                }
-                              ],
-                              null,
-                              false,
-                              1335097185
-                            )
-                          }),
-                          _vm._v(" "),
-                          _vm._t("default")
-                        ],
-                        2
-                      )
-                    : _vm._e()
+                                      ],
+                                      1
+                                    )
+                                  ],
+                                  1
+                                )
+                              ])
+                            ]
+                          }
+                        }
+                      ],
+                      null,
+                      false,
+                      1335097185
+                    )
+                  }),
+                  _vm._v(" "),
+                  _vm._t("default")
                 ],
-                1
+                2
               )
-            ],
-            1
-          )
+            : _vm._e()
         ],
         1
       ),
@@ -10405,6 +11413,1285 @@ var render = function() {
                 ],
                 1
               )
+            ],
+            1
+          )
+        ],
+        1
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/sucursales/SucursalesForm.vue?vue&type=template&id=f9af9610&":
+/*!****************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/sucursales/SucursalesForm.vue?vue&type=template&id=f9af9610& ***!
+  \****************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _c(
+        "v-row",
+        { attrs: { justify: "space-around" } },
+        [
+          _c(
+            "v-col",
+            { staticClass: "py-0", attrs: { cols: "12" } },
+            [
+              _c("v-text-field", {
+                attrs: {
+                  rules: [_vm.rules.required, _vm.rules.max],
+                  label: "Nombre",
+                  required: "",
+                  outlined: ""
+                },
+                model: {
+                  value: _vm.$store.state.sucursales.form.nombre,
+                  callback: function($$v) {
+                    _vm.$set(_vm.$store.state.sucursales.form, "nombre", $$v)
+                  },
+                  expression: "$store.state.sucursales.form.nombre"
+                }
+              })
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-col",
+            { staticClass: "py-0", attrs: { cols: "12", sm: "6" } },
+            [
+              _c("v-combobox", {
+                attrs: {
+                  items: _vm.provincias,
+                  rules: [_vm.rules.required],
+                  "item-text": "nombre",
+                  "item-value": "id",
+                  label: "Provincia",
+                  required: "",
+                  editable: "",
+                  outlined: "",
+                  "return-object": ""
+                },
+                model: {
+                  value: _vm.$store.state.sucursales.form.provincia,
+                  callback: function($$v) {
+                    _vm.$set(_vm.$store.state.sucursales.form, "provincia", $$v)
+                  },
+                  expression: "$store.state.sucursales.form.provincia"
+                }
+              })
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-col",
+            { staticClass: "py-0", attrs: { cols: "12", sm: "6" } },
+            [
+              _c("v-combobox", {
+                attrs: {
+                  items: _vm.localidades,
+                  rules: [_vm.rules.required],
+                  disabled: _vm.localidades.length == 0,
+                  "item-text": "nombre",
+                  "item-value": "id",
+                  label: "Localidad",
+                  required: "",
+                  editable: "",
+                  outlined: "",
+                  "return-object": ""
+                },
+                model: {
+                  value: _vm.$store.state.sucursales.form.localidad,
+                  callback: function($$v) {
+                    _vm.$set(_vm.$store.state.sucursales.form, "localidad", $$v)
+                  },
+                  expression: "$store.state.sucursales.form.localidad"
+                }
+              })
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-col",
+            { staticClass: "py-0", attrs: { cols: "12", sm: "6" } },
+            [
+              _c("v-text-field", {
+                attrs: {
+                  rules: [_vm.rules.required, _vm.rules.max],
+                  label: "Dirección",
+                  required: "",
+                  outlined: ""
+                },
+                model: {
+                  value: _vm.$store.state.sucursales.form.direccion,
+                  callback: function($$v) {
+                    _vm.$set(_vm.$store.state.sucursales.form, "direccion", $$v)
+                  },
+                  expression: "$store.state.sucursales.form.direccion"
+                }
+              })
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-col",
+            { staticClass: "py-0", attrs: { cols: "12", sm: "6" } },
+            [
+              _c("v-text-field", {
+                attrs: {
+                  rules:
+                    _vm.mode != "edit"
+                      ? [_vm.rules.required, _vm.rules.postal]
+                      : [_vm.rules.required],
+                  label: "Código Postal",
+                  required: "",
+                  outlined: "",
+                  type: "number"
+                },
+                model: {
+                  value: _vm.$store.state.sucursales.form.codigopostal,
+                  callback: function($$v) {
+                    _vm.$set(
+                      _vm.$store.state.sucursales.form,
+                      "codigopostal",
+                      $$v
+                    )
+                  },
+                  expression: "$store.state.sucursales.form.codigopostal"
+                }
+              })
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-col",
+            { staticClass: "py-0", attrs: { cols: "12" } },
+            [
+              _c("v-textarea", {
+                attrs: {
+                  outlined: "",
+                  label: "Observaciones",
+                  "no-resize": ""
+                },
+                model: {
+                  value: _vm.$store.state.sucursales.form.observaciones,
+                  callback: function($$v) {
+                    _vm.$set(
+                      _vm.$store.state.sucursales.form,
+                      "observaciones",
+                      $$v
+                    )
+                  },
+                  expression: "$store.state.sucursales.form.observaciones"
+                }
+              })
+            ],
+            1
+          )
+        ],
+        1
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/sucursales/SucursalesIndex.vue?vue&type=template&id=487e9e4e&":
+/*!*****************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/sucursales/SucursalesIndex.vue?vue&type=template&id=487e9e4e& ***!
+  \*****************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _vm.$store.state.sucursales.sucursales
+        ? _c(
+            "v-card",
+            {
+              attrs: {
+                shaped: "",
+                outlined: "",
+                loading: _vm.$store.state.inProcess
+              }
+            },
+            [
+              _c("v-card-title", [_vm._v("Sucursales")]),
+              _vm._v(" "),
+              _c("v-divider"),
+              _vm._v(" "),
+              _c(
+                "v-card-text",
+                { staticClass: "px-0" },
+                [
+                  _c("v-data-table", {
+                    attrs: {
+                      headers: _vm.headers,
+                      items: _vm.$store.state.sucursales.sucursales.negocios,
+                      "hide-default-footer": "",
+                      "items-per-page": _vm.limit,
+                      "mobile-breakpoint": 0
+                    },
+                    scopedSlots: _vm._u(
+                      [
+                        {
+                          key: "item",
+                          fn: function(ref) {
+                            var item = ref.item
+                            return [
+                              _c("tr", [
+                                _c("td", [_vm._v(_vm._s(item.nombre))]),
+                                _vm._v(" "),
+                                _c("td", [_vm._v(_vm._s(item.direccion))]),
+                                _vm._v(" "),
+                                _c("td", { staticClass: "hidden-xs-only" }, [
+                                  _vm._v(_vm._s(item.localidad))
+                                ]),
+                                _vm._v(" "),
+                                _c("td", { staticClass: "hidden-xs-only" }, [
+                                  _vm._v(_vm._s(item.provincia))
+                                ]),
+                                _vm._v(" "),
+                                _c(
+                                  "td",
+                                  [
+                                    _c(
+                                      "v-btn",
+                                      {
+                                        attrs: {
+                                          color: "secondary",
+                                          text: "",
+                                          icon: "",
+                                          to: "/sucursales/show/" + item.id
+                                        }
+                                      },
+                                      [
+                                        _c(
+                                          "v-icon",
+                                          { attrs: { size: "medium" } },
+                                          [_vm._v("fas fa-ellipsis-v")]
+                                        )
+                                      ],
+                                      1
+                                    )
+                                  ],
+                                  1
+                                )
+                              ])
+                            ]
+                          }
+                        }
+                      ],
+                      null,
+                      false,
+                      617776621
+                    )
+                  }),
+                  _vm._v(" "),
+                  _vm._t("default")
+                ],
+                2
+              )
+            ],
+            1
+          )
+        : _vm._e()
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/sucursales/SucursalesShow.vue?vue&type=template&id=52ba3eb1&":
+/*!****************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/sucursales/SucursalesShow.vue?vue&type=template&id=52ba3eb1& ***!
+  \****************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _c(
+        "v-row",
+        { attrs: { justify: "center" } },
+        [
+          _c(
+            "v-col",
+            { attrs: { cols: "12" } },
+            [
+              _vm.$store.state.sucursales.sucursal
+                ? _c(
+                    "v-card",
+                    {
+                      attrs: {
+                        shaped: "",
+                        outlined: "",
+                        loading: _vm.$store.state.inProcess
+                      }
+                    },
+                    [
+                      _vm.mode == "edit"
+                        ? _c(
+                            "div",
+                            [
+                              _c("v-card-title", [_vm._v("Editar sucursal")]),
+                              _vm._v(" "),
+                              _c("v-divider"),
+                              _vm._v(" "),
+                              _c(
+                                "v-card-text",
+                                [
+                                  _c(
+                                    "v-row",
+                                    { attrs: { justify: "center" } },
+                                    [
+                                      _c(
+                                        "v-col",
+                                        { attrs: { cols: "12", sm: "10" } },
+                                        [
+                                          _c(
+                                            "v-form",
+                                            {
+                                              ref: "sucursalesEditForm",
+                                              on: {
+                                                submit: function($event) {
+                                                  $event.preventDefault()
+                                                  return _vm.updateSucursal()
+                                                }
+                                              }
+                                            },
+                                            [
+                                              _c("SucursalesForm", {
+                                                ref: "SucursalesForm",
+                                                attrs: { mode: "edit" }
+                                              }),
+                                              _vm._v(" "),
+                                              _c(
+                                                "v-row",
+                                                {
+                                                  attrs: { justify: "center" }
+                                                },
+                                                [
+                                                  _c(
+                                                    "v-btn",
+                                                    {
+                                                      staticClass: "mx-2",
+                                                      attrs: {
+                                                        tile: "",
+                                                        text: "",
+                                                        outlined: "",
+                                                        color: "secondary",
+                                                        disabled:
+                                                          _vm.$store.state
+                                                            .inProcess
+                                                      },
+                                                      on: {
+                                                        click: function(
+                                                          $event
+                                                        ) {
+                                                          _vm.mode = "show"
+                                                        }
+                                                      }
+                                                    },
+                                                    [_vm._v("Cancelar")]
+                                                  ),
+                                                  _vm._v(" "),
+                                                  _c(
+                                                    "v-btn",
+                                                    {
+                                                      staticClass:
+                                                        "mx-2 elevation-0",
+                                                      attrs: {
+                                                        tile: "",
+                                                        type: "submit",
+                                                        color: "secondary",
+                                                        disabled:
+                                                          _vm.$store.state
+                                                            .inProcess,
+                                                        loading:
+                                                          _vm.$store.state
+                                                            .inProcess
+                                                      }
+                                                    },
+                                                    [_vm._v("Editar")]
+                                                  )
+                                                ],
+                                                1
+                                              ),
+                                              _vm._v(" "),
+                                              _c("br")
+                                            ],
+                                            1
+                                          )
+                                        ],
+                                        1
+                                      )
+                                    ],
+                                    1
+                                  )
+                                ],
+                                1
+                              )
+                            ],
+                            1
+                          )
+                        : _c("div", [
+                            _c(
+                              "div",
+                              [
+                                _c("br"),
+                                _vm._v(" "),
+                                _c(
+                                  "div",
+                                  [
+                                    _c(
+                                      "v-menu",
+                                      {
+                                        scopedSlots: _vm._u(
+                                          [
+                                            {
+                                              key: "activator",
+                                              fn: function(ref) {
+                                                var on = ref.on
+                                                return [
+                                                  _c(
+                                                    "v-btn",
+                                                    _vm._g(
+                                                      {
+                                                        attrs: {
+                                                          absolute: "",
+                                                          right: "",
+                                                          text: "",
+                                                          icon: "",
+                                                          dark: "",
+                                                          color: "secondary"
+                                                        }
+                                                      },
+                                                      on
+                                                    ),
+                                                    [
+                                                      _c(
+                                                        "v-icon",
+                                                        {
+                                                          attrs: {
+                                                            size: "medium"
+                                                          }
+                                                        },
+                                                        [
+                                                          _vm._v(
+                                                            "fas fa-ellipsis-v"
+                                                          )
+                                                        ]
+                                                      )
+                                                    ],
+                                                    1
+                                                  )
+                                                ]
+                                              }
+                                            }
+                                          ],
+                                          null,
+                                          false,
+                                          3544452297
+                                        )
+                                      },
+                                      [
+                                        _vm._v(" "),
+                                        _c(
+                                          "v-list",
+                                          [
+                                            _c(
+                                              "v-list-item",
+                                              {
+                                                on: {
+                                                  click: function($event) {
+                                                    return _vm.editSucursal()
+                                                  }
+                                                }
+                                              },
+                                              [
+                                                _c("v-list-item-title", [
+                                                  _vm._v("Editar")
+                                                ])
+                                              ],
+                                              1
+                                            ),
+                                            _vm._v(" "),
+                                            _c(
+                                              "v-list-item",
+                                              {
+                                                on: {
+                                                  click: function($event) {
+                                                    _vm.mode = "delete"
+                                                  }
+                                                }
+                                              },
+                                              [
+                                                _c("v-list-item-title", [
+                                                  _vm._v("Eliminar")
+                                                ])
+                                              ],
+                                              1
+                                            )
+                                          ],
+                                          1
+                                        )
+                                      ],
+                                      1
+                                    )
+                                  ],
+                                  1
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "v-row",
+                                  { attrs: { justify: "center" } },
+                                  [
+                                    _c(
+                                      "v-avatar",
+                                      {
+                                        attrs: {
+                                          size: "160",
+                                          color: "secondary"
+                                        }
+                                      },
+                                      [
+                                        _c(
+                                          "span",
+                                          {
+                                            staticClass:
+                                              "white--text text-uppercase",
+                                            staticStyle: { "font-size": "60px" }
+                                          },
+                                          [
+                                            _vm._v(
+                                              _vm._s(
+                                                _vm.$store.state.sucursales
+                                                  .sucursal.negocio.nombre[0]
+                                              )
+                                            )
+                                          ]
+                                        )
+                                      ]
+                                    ),
+                                    _vm._v(" "),
+                                    _c("br"),
+                                    _vm._v(" "),
+                                    _c("v-col", { attrs: { cols: "12" } }, [
+                                      _c(
+                                        "h1",
+                                        {
+                                          staticClass:
+                                            "text-center secondary--text"
+                                        },
+                                        [
+                                          _vm._v(
+                                            _vm._s(
+                                              _vm.$store.state.sucursales
+                                                .sucursal.negocio.nombre
+                                            )
+                                          )
+                                        ]
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "h3",
+                                        {
+                                          staticClass:
+                                            "text-center secondary--text"
+                                        },
+                                        [
+                                          _vm._v(
+                                            _vm._s(
+                                              _vm.$store.state.sucursales
+                                                .sucursal.negocio.direccion
+                                            ) +
+                                              " - " +
+                                              _vm._s(
+                                                _vm.$store.state.sucursales
+                                                  .sucursal.negocio.localidad
+                                              ) +
+                                              " - " +
+                                              _vm._s(
+                                                _vm.$store.state.sucursales
+                                                  .sucursal.negocio.provincia
+                                              )
+                                          )
+                                        ]
+                                      )
+                                    ])
+                                  ],
+                                  1
+                                )
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c("br"),
+                            _vm._v(" "),
+                            _vm.mode == "show"
+                              ? _c(
+                                  "div",
+                                  [
+                                    [
+                                      _c(
+                                        "div",
+                                        [
+                                          _c(
+                                            "v-tabs",
+                                            {
+                                              attrs: {
+                                                grow: "",
+                                                "slider-color": "secondary",
+                                                "active-class":
+                                                  "secondary--text"
+                                              }
+                                            },
+                                            [
+                                              _c("v-tab", [_vm._v("Datos")]),
+                                              _vm._v(" "),
+                                              _c("v-tab", [_vm._v("Ventas")]),
+                                              _vm._v(" "),
+                                              _c(
+                                                "v-tab-item",
+                                                {
+                                                  staticStyle: {
+                                                    background:
+                                                      "white !important"
+                                                  }
+                                                },
+                                                [
+                                                  _vm.$store.state.sucursales
+                                                    .sucursal
+                                                    ? _c(
+                                                        "div",
+                                                        [
+                                                          _c(
+                                                            "SucursalesShowData"
+                                                          )
+                                                        ],
+                                                        1
+                                                      )
+                                                    : _vm._e()
+                                                ]
+                                              ),
+                                              _vm._v(" "),
+                                              _c(
+                                                "v-tab-item",
+                                                {
+                                                  staticStyle: {
+                                                    background:
+                                                      "white !important"
+                                                  }
+                                                },
+                                                [_c("SucursalesShowVentas")],
+                                                1
+                                              )
+                                            ],
+                                            1
+                                          )
+                                        ],
+                                        1
+                                      ),
+                                      _vm._v(" "),
+                                      _c("br")
+                                    ]
+                                  ],
+                                  2
+                                )
+                              : _vm.mode == "delete"
+                              ? _c("div", [
+                                  _c(
+                                    "div",
+                                    { staticClass: "sucursal-delete" },
+                                    [
+                                      _c(
+                                        "h2",
+                                        {
+                                          staticClass: "text-center white--text"
+                                        },
+                                        [_vm._v("¿Estas Seguro?")]
+                                      ),
+                                      _vm._v(" "),
+                                      _c("br"),
+                                      _vm._v(" "),
+                                      _c("v-divider", { attrs: { dark: "" } }),
+                                      _vm._v(" "),
+                                      _c("br"),
+                                      _vm._v(" "),
+                                      _c(
+                                        "p",
+                                        {
+                                          staticClass: "text-center white--text"
+                                        },
+                                        [
+                                          _vm._v(
+                                            "¿Realmente deseas eliminar este Negocio?"
+                                          )
+                                        ]
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "p",
+                                        {
+                                          staticClass: "text-center white--text"
+                                        },
+                                        [_vm._v("Este Cambio es Irreversible")]
+                                      ),
+                                      _vm._v(" "),
+                                      _c("br"),
+                                      _vm._v(" "),
+                                      _c(
+                                        "v-row",
+                                        { attrs: { justify: "center" } },
+                                        [
+                                          _c(
+                                            "v-btn",
+                                            {
+                                              staticClass:
+                                                "mx-2 red--text elevation-0",
+                                              attrs: {
+                                                disabled:
+                                                  _vm.$store.state.inProcess,
+                                                tile: "",
+                                                color: "white"
+                                              },
+                                              on: {
+                                                click: function($event) {
+                                                  _vm.mode = "show"
+                                                }
+                                              }
+                                            },
+                                            [_vm._v("Cancelar")]
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "v-btn",
+                                            {
+                                              staticClass: "mx-2",
+                                              attrs: {
+                                                tile: "",
+                                                disabled:
+                                                  _vm.$store.state.inProcess,
+                                                loading:
+                                                  _vm.$store.state.inProcess,
+                                                outlined: "",
+                                                color: "white"
+                                              },
+                                              on: {
+                                                click: function($event) {
+                                                  return _vm.deleteSucursal()
+                                                }
+                                              }
+                                            },
+                                            [_vm._v("Eliminar")]
+                                          )
+                                        ],
+                                        1
+                                      ),
+                                      _vm._v(" "),
+                                      _c("br")
+                                    ],
+                                    1
+                                  )
+                                ])
+                              : _vm._e()
+                          ])
+                    ]
+                  )
+                : _vm._e()
+            ],
+            1
+          )
+        ],
+        1
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/sucursales/SucursalesShowData.vue?vue&type=template&id=6dc9f8fb&":
+/*!********************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/sucursales/SucursalesShowData.vue?vue&type=template&id=6dc9f8fb& ***!
+  \********************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _c(
+        "v-container",
+        { attrs: { fluid: "", "grid-list-md": "" } },
+        [
+          _c(
+            "v-row",
+            { attrs: { justify: "space-around" } },
+            [
+              _c(
+                "v-col",
+                { attrs: { cols: "12" } },
+                [
+                  _c(
+                    "v-card",
+                    { staticClass: "elevation-0" },
+                    [
+                      _c("v-card-title", [
+                        _c("h5", [_vm._v("Datos de la sucursal:")])
+                      ]),
+                      _vm._v(" "),
+                      _c("v-divider"),
+                      _vm._v(" "),
+                      _c(
+                        "v-list",
+                        { attrs: { dense: "" } },
+                        [
+                          _c(
+                            "v-list-item",
+                            { staticStyle: { margin: "10px 0px" } },
+                            [
+                              _c(
+                                "v-list-item-content",
+                                [
+                                  _c("v-list-item-title", [
+                                    _c("b", [_vm._v("Nombre:")])
+                                  ]),
+                                  _vm._v(" "),
+                                  _c(
+                                    "v-list-item-subtitle",
+                                    { staticClass: "black--text" },
+                                    [
+                                      _vm._v(
+                                        _vm._s(
+                                          _vm.$store.state.sucursales.sucursal
+                                            .negocio.nombre
+                                        )
+                                      )
+                                    ]
+                                  )
+                                ],
+                                1
+                              )
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-list-item",
+                            { staticStyle: { margin: "10px 0px" } },
+                            [
+                              _c(
+                                "v-list-item-content",
+                                [
+                                  _c("v-list-item-title", [
+                                    _c("b", [_vm._v("Dirección:")])
+                                  ]),
+                                  _vm._v(" "),
+                                  _c(
+                                    "v-list-item-subtitle",
+                                    { staticClass: "black--text" },
+                                    [
+                                      _vm._v(
+                                        _vm._s(
+                                          _vm.$store.state.sucursales.sucursal
+                                            .negocio.direccion
+                                        )
+                                      )
+                                    ]
+                                  )
+                                ],
+                                1
+                              )
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-list-item",
+                            { staticStyle: { margin: "10px 0px" } },
+                            [
+                              _c(
+                                "v-list-item-content",
+                                [
+                                  _c("v-list-item-title", [
+                                    _c("b", [_vm._v("Localidad:")])
+                                  ]),
+                                  _vm._v(" "),
+                                  _c(
+                                    "v-list-item-subtitle",
+                                    { staticClass: "black--text" },
+                                    [
+                                      _vm._v(
+                                        _vm._s(
+                                          _vm.$store.state.sucursales.sucursal
+                                            .negocio.localidad
+                                        )
+                                      )
+                                    ]
+                                  )
+                                ],
+                                1
+                              )
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-list-item",
+                            { staticStyle: { margin: "10px 0px" } },
+                            [
+                              _c(
+                                "v-list-item-content",
+                                [
+                                  _c("v-list-item-title", [
+                                    _c("b", [_vm._v("Provincia:")])
+                                  ]),
+                                  _vm._v(" "),
+                                  _c(
+                                    "v-list-item-subtitle",
+                                    { staticClass: "black--text" },
+                                    [
+                                      _vm._v(
+                                        _vm._s(
+                                          _vm.$store.state.sucursales.sucursal
+                                            .negocio.provincia
+                                        )
+                                      )
+                                    ]
+                                  )
+                                ],
+                                1
+                              )
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-list-item",
+                            { staticStyle: { margin: "10px 0px" } },
+                            [
+                              _c(
+                                "v-list-item-content",
+                                [
+                                  _c("v-list-item-title", [
+                                    _c("b", [_vm._v("Codigo Postal:")])
+                                  ]),
+                                  _vm._v(" "),
+                                  _c(
+                                    "v-list-item-subtitle",
+                                    { staticClass: "black--text" },
+                                    [
+                                      _vm._v(
+                                        _vm._s(
+                                          _vm.$store.state.sucursales.sucursal
+                                            .negocio.codigopostal
+                                        )
+                                      )
+                                    ]
+                                  )
+                                ],
+                                1
+                              )
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-list-item",
+                            { staticStyle: { margin: "10px 0px" } },
+                            [
+                              _c(
+                                "v-list-item-content",
+                                [
+                                  _c("v-list-item-title", [
+                                    _c("b", [_vm._v("Observaciones:")])
+                                  ]),
+                                  _vm._v(" "),
+                                  _c(
+                                    "v-list-item-subtitle",
+                                    { staticClass: "black--text" },
+                                    [
+                                      _vm._v(
+                                        _vm._s(
+                                          _vm.$store.state.sucursales.sucursal
+                                            .negocio.observaciones
+                                        )
+                                      )
+                                    ]
+                                  )
+                                ],
+                                1
+                              )
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  )
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ],
+        1
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/sucursales/SucursalesShowVentas.vue?vue&type=template&id=75f79838&":
+/*!**********************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/sucursales/SucursalesShowVentas.vue?vue&type=template&id=75f79838& ***!
+  \**********************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _c(
+        "v-container",
+        [
+          _c(
+            "v-row",
+            { attrs: { justify: "center" } },
+            [
+              _vm.$store.state.sucursales.sucursal.ventas.length > 0
+                ? _c(
+                    "v-col",
+                    { attrs: { cols: "12" } },
+                    [
+                      _c("v-simple-table", [
+                        _c("thead", [
+                          _c("tr", [
+                            _c("th", { staticClass: "text-xs-left" }, [
+                              _vm._v("Venta N°")
+                            ]),
+                            _vm._v(" "),
+                            _c("th", { staticClass: "text-xs-left" }, [
+                              _vm._v("Fecha")
+                            ]),
+                            _vm._v(" "),
+                            _c("th", { staticClass: "text-xs-left" }, [
+                              _vm._v("Importe")
+                            ]),
+                            _vm._v(" "),
+                            _c("th", { staticClass: "text-xs-left" })
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c(
+                          "tbody",
+                          _vm._l(
+                            _vm.$store.state.sucursales.sucursal.ventas,
+                            function(remito, index) {
+                              return _c("tr", { key: index }, [
+                                _c("td", [_vm._v(_vm._s(remito.numventa))]),
+                                _vm._v(" "),
+                                _c("td", [_vm._v(_vm._s(remito.fecha))]),
+                                _vm._v(" "),
+                                _c("td", [_vm._v(_vm._s(remito.total))]),
+                                _vm._v(" "),
+                                _c(
+                                  "td",
+                                  [
+                                    _c(
+                                      "v-menu",
+                                      {
+                                        attrs: { "offset-y": "" },
+                                        scopedSlots: _vm._u(
+                                          [
+                                            {
+                                              key: "activator",
+                                              fn: function(ref) {
+                                                var on = ref.on
+                                                return [
+                                                  _c(
+                                                    "v-btn",
+                                                    _vm._g(
+                                                      {
+                                                        attrs: {
+                                                          color: "secondary",
+                                                          text: "",
+                                                          icon: ""
+                                                        }
+                                                      },
+                                                      on
+                                                    ),
+                                                    [
+                                                      _c(
+                                                        "v-icon",
+                                                        {
+                                                          attrs: {
+                                                            size: "medium"
+                                                          }
+                                                        },
+                                                        [
+                                                          _vm._v(
+                                                            "fas fa-ellipsis-v"
+                                                          )
+                                                        ]
+                                                      )
+                                                    ],
+                                                    1
+                                                  )
+                                                ]
+                                              }
+                                            }
+                                          ],
+                                          null,
+                                          true
+                                        )
+                                      },
+                                      [
+                                        _vm._v(" "),
+                                        _c(
+                                          "v-list",
+                                          [
+                                            _c(
+                                              "v-list-item",
+                                              {
+                                                attrs: {
+                                                  to:
+                                                    "/ventas/show/" + remito.id
+                                                }
+                                              },
+                                              [
+                                                _c("v-list-item-title", [
+                                                  _vm._v("Detalles")
+                                                ])
+                                              ],
+                                              1
+                                            ),
+                                            _vm._v(" "),
+                                            _c(
+                                              "v-list-item",
+                                              {
+                                                on: {
+                                                  click: function($event) {
+                                                    return _vm.print(remito.id)
+                                                  }
+                                                }
+                                              },
+                                              [
+                                                _c("v-list-item-title", [
+                                                  _vm._v("Imprimir")
+                                                ])
+                                              ],
+                                              1
+                                            )
+                                          ],
+                                          1
+                                        )
+                                      ],
+                                      1
+                                    )
+                                  ],
+                                  1
+                                )
+                              ])
+                            }
+                          ),
+                          0
+                        )
+                      ])
+                    ],
+                    1
+                  )
+                : _c("v-col", { attrs: { cols: "12" } }, [
+                    _c("h2", { staticClass: "text-center" }, [
+                      _vm._v(
+                        "No se han registrado ventas a nombre de esta sucursal"
+                      )
+                    ])
+                  ])
             ],
             1
           )
@@ -10655,6 +12942,10 @@ var render = function() {
                   }
                 },
                 [
+                  _c("v-card-title", [_vm._v("Usuarios")]),
+                  _vm._v(" "),
+                  _c("v-divider"),
+                  _vm._v(" "),
                   _vm.$store.state.users.users
                     ? _c(
                         "v-card-text",
@@ -11262,10 +13553,7 @@ var render = function() {
                                   }
                                 },
                                 [
-                                  _c("RolesForm", {
-                                    ref: "RolesForm",
-                                    attrs: { mode: "create" }
-                                  }),
+                                  _c("RolesForm", { ref: "RolesForm" }),
                                   _vm._v(" "),
                                   _c(
                                     "v-row",
@@ -11418,10 +13706,7 @@ var render = function() {
                                   }
                                 },
                                 [
-                                  _c("RolesForm", {
-                                    ref: "RolesForm",
-                                    attrs: { mode: "create" }
-                                  }),
+                                  _c("RolesForm", { ref: "RolesForm" }),
                                   _vm._v(" "),
                                   _c(
                                     "v-row",
@@ -11508,7 +13793,7 @@ var render = function() {
             right: "",
             bottom: "",
             large: "",
-            to: "roles/create"
+            to: "roles/nuevo"
           }
         },
         [_c("v-icon", [_vm._v("fas fa-plus")])],
@@ -11516,38 +13801,425 @@ var render = function() {
       ),
       _vm._v(" "),
       _c(
-        "RolesIndex",
+        "v-container",
         [
-          _c("br"),
-          _vm._v(" "),
-          _vm.$store.state.roles.roles
-            ? _c(
-                "v-row",
-                { attrs: { justify: "center" } },
+          _c(
+            "v-row",
+            { attrs: { justify: "center" } },
+            [
+              _c(
+                "v-col",
+                { attrs: { cols: "12", md: "10", lg: "8" } },
                 [
                   _c(
-                    "v-btn",
-                    {
-                      attrs: {
-                        disabled:
-                          _vm.limit >= _vm.$store.state.roles.roles.total,
-                        loading: _vm.$store.state.inProcess,
-                        color: "primary",
-                        outlined: "",
-                        tile: ""
-                      },
-                      on: {
-                        click: function($event) {
-                          return _vm.loadMore()
-                        }
-                      }
-                    },
-                    [_vm._v("Cargar Más")]
+                    "RolesIndex",
+                    [
+                      _c("br"),
+                      _vm._v(" "),
+                      _vm.$store.state.roles.roles
+                        ? _c(
+                            "v-row",
+                            { attrs: { justify: "center" } },
+                            [
+                              _c(
+                                "v-btn",
+                                {
+                                  attrs: {
+                                    disabled:
+                                      _vm.limit >=
+                                      _vm.$store.state.roles.roles.total,
+                                    loading: _vm.$store.state.inProcess,
+                                    color: "primary",
+                                    outlined: "",
+                                    tile: ""
+                                  },
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.loadMore()
+                                    }
+                                  }
+                                },
+                                [_vm._v("Cargar Más")]
+                              )
+                            ],
+                            1
+                          )
+                        : _vm._e()
+                    ],
+                    1
                   )
                 ],
                 1
               )
-            : _vm._e()
+            ],
+            1
+          )
+        ],
+        1
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/sucursales/Create.vue?vue&type=template&id=04dd34a4&":
+/*!***************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/sucursales/Create.vue?vue&type=template&id=04dd34a4& ***!
+  \***************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _c(
+        "v-tooltip",
+        {
+          attrs: { left: "" },
+          scopedSlots: _vm._u([
+            {
+              key: "activator",
+              fn: function(ref) {
+                var on = ref.on
+                return [
+                  _c(
+                    "v-btn",
+                    _vm._g(
+                      {
+                        attrs: {
+                          color: "secondary",
+                          dark: "",
+                          fab: "",
+                          fixed: "",
+                          right: "",
+                          bottom: "",
+                          large: "",
+                          to: "/sucursales"
+                        }
+                      },
+                      on
+                    ),
+                    [_c("v-icon", [_vm._v("fas fa-chevron-left")])],
+                    1
+                  )
+                ]
+              }
+            }
+          ])
+        },
+        [_vm._v(" "), _c("span", [_vm._v("Volver")])]
+      ),
+      _vm._v(" "),
+      _c(
+        "v-row",
+        { attrs: { justify: "center" } },
+        [
+          _c(
+            "v-col",
+            { attrs: { cols: "12", md: "10", lg: "8" } },
+            [
+              _c(
+                "v-card",
+                { attrs: { shaped: "", outlined: "" } },
+                [
+                  _c("v-card-title", [_vm._v("Nueva Sucursal")]),
+                  _vm._v(" "),
+                  _c("v-divider"),
+                  _vm._v(" "),
+                  _c(
+                    "v-card-text",
+                    [
+                      _c(
+                        "v-row",
+                        { attrs: { justify: "center" } },
+                        [
+                          _c(
+                            "v-col",
+                            { attrs: { cols: "12", sm: "10" } },
+                            [
+                              _c(
+                                "v-form",
+                                {
+                                  ref: "CreateSucursal",
+                                  on: {
+                                    submit: function($event) {
+                                      $event.preventDefault()
+                                      return _vm.saveSucursal()
+                                    }
+                                  }
+                                },
+                                [
+                                  _c("SucursalesForm", {
+                                    ref: "SucursalesForm",
+                                    attrs: { mode: "create" }
+                                  }),
+                                  _vm._v(" "),
+                                  _c(
+                                    "v-row",
+                                    { attrs: { justify: "center" } },
+                                    [
+                                      _c(
+                                        "v-btn",
+                                        {
+                                          staticClass: "elevation-0",
+                                          attrs: {
+                                            type: "submit",
+                                            tile: "",
+                                            disabled:
+                                              _vm.$store.state.inProcess,
+                                            loading: _vm.$store.state.inProcess,
+                                            color: "secondary"
+                                          }
+                                        },
+                                        [_vm._v("Guardar")]
+                                      )
+                                    ],
+                                    1
+                                  ),
+                                  _vm._v(" "),
+                                  _c("br")
+                                ],
+                                1
+                              )
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  )
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ],
+        1
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/sucursales/Show.vue?vue&type=template&id=fe5814a2&":
+/*!*************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/sucursales/Show.vue?vue&type=template&id=fe5814a2& ***!
+  \*************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _c(
+        "v-tooltip",
+        {
+          attrs: { left: "" },
+          scopedSlots: _vm._u([
+            {
+              key: "activator",
+              fn: function(ref) {
+                var on = ref.on
+                return [
+                  _c(
+                    "v-btn",
+                    _vm._g(
+                      {
+                        attrs: {
+                          color: "secondary",
+                          dark: "",
+                          fab: "",
+                          fixed: "",
+                          right: "",
+                          bottom: "",
+                          large: "",
+                          to: "/sucursales"
+                        }
+                      },
+                      on
+                    ),
+                    [_c("v-icon", [_vm._v("fas fa-chevron-left")])],
+                    1
+                  )
+                ]
+              }
+            }
+          ])
+        },
+        [_vm._v(" "), _c("span", [_vm._v("Volver")])]
+      ),
+      _vm._v(" "),
+      _c(
+        "v-container",
+        [
+          _c(
+            "v-row",
+            { attrs: { justify: "center" } },
+            [
+              _c(
+                "v-col",
+                { attrs: { cols: "12", md: "10", lg: "8" } },
+                [_c("SucursalesShow", { attrs: { id: _vm.id } })],
+                1
+              )
+            ],
+            1
+          )
+        ],
+        1
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/sucursales/Sucursales.vue?vue&type=template&id=c93b0c40&":
+/*!*******************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/sucursales/Sucursales.vue?vue&type=template&id=c93b0c40& ***!
+  \*******************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _c(
+        "v-tooltip",
+        {
+          attrs: { left: "" },
+          scopedSlots: _vm._u([
+            {
+              key: "activator",
+              fn: function(ref) {
+                var on = ref.on
+                return [
+                  _c(
+                    "v-btn",
+                    _vm._g(
+                      {
+                        attrs: {
+                          color: "secondary",
+                          dark: "",
+                          fab: "",
+                          fixed: "",
+                          right: "",
+                          bottom: "",
+                          large: "",
+                          to: "/sucursales/nueva"
+                        }
+                      },
+                      on
+                    ),
+                    [_c("v-icon", [_vm._v("fas fa-plus")])],
+                    1
+                  )
+                ]
+              }
+            }
+          ])
+        },
+        [_vm._v(" "), _c("span", [_vm._v("Nueva sucursal")])]
+      ),
+      _vm._v(" "),
+      _c(
+        "v-container",
+        [
+          _c(
+            "v-row",
+            { attrs: { justify: "center" } },
+            [
+              _c(
+                "v-col",
+                { attrs: { cols: "12", md: "10", lg: "8" } },
+                [
+                  _c(
+                    "SucursalesIndex",
+                    [
+                      _c("br"),
+                      _vm._v(" "),
+                      _vm.$store.state.sucursales.sucursales
+                        ? _c(
+                            "v-row",
+                            { attrs: { justify: "center" } },
+                            [
+                              _c(
+                                "v-btn",
+                                {
+                                  attrs: {
+                                    disabled:
+                                      _vm.limit >=
+                                      _vm.$store.state.sucursales.sucursales
+                                        .total,
+                                    color: "secondary",
+                                    outlined: "",
+                                    tile: ""
+                                  },
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.loadMore()
+                                    }
+                                  }
+                                },
+                                [_vm._v("Cargar Más")]
+                              )
+                            ],
+                            1
+                          )
+                        : _vm._e()
+                    ],
+                    1
+                  )
+                ],
+                1
+              )
+            ],
+            1
+          )
         ],
         1
       )
@@ -69242,7 +71914,7 @@ module.exports = g;
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _App_vue_vue_type_template_id_f348271a___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./App.vue?vue&type=template&id=f348271a& */ "./resources/js/App.vue?vue&type=template&id=f348271a&");
 /* harmony import */ var _App_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./App.vue?vue&type=script&lang=js& */ "./resources/js/App.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _App_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./App.vue?vue&type=style&index=0&lang=css& */ "./resources/js/App.vue?vue&type=style&index=0&lang=css&");
+/* empty/unused harmony star reexport *//* harmony import */ var _App_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./App.vue?vue&type=style&index=0&lang=scss& */ "./resources/js/App.vue?vue&type=style&index=0&lang=scss&");
 /* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
@@ -69284,19 +71956,19 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/App.vue?vue&type=style&index=0&lang=css&":
-/*!***************************************************************!*\
-  !*** ./resources/js/App.vue?vue&type=style&index=0&lang=css& ***!
-  \***************************************************************/
+/***/ "./resources/js/App.vue?vue&type=style&index=0&lang=scss&":
+/*!****************************************************************!*\
+  !*** ./resources/js/App.vue?vue&type=style&index=0&lang=scss& ***!
+  \****************************************************************/
 /*! no static exports found */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_5_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_5_2_node_modules_vue_loader_lib_index_js_vue_loader_options_App_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../node_modules/style-loader!../../node_modules/css-loader??ref--5-1!../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../node_modules/postcss-loader/src??ref--5-2!../../node_modules/vue-loader/lib??vue-loader-options!./App.vue?vue&type=style&index=0&lang=css& */ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/App.vue?vue&type=style&index=0&lang=css&");
-/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_5_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_5_2_node_modules_vue_loader_lib_index_js_vue_loader_options_App_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_5_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_5_2_node_modules_vue_loader_lib_index_js_vue_loader_options_App_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__);
-/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_5_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_5_2_node_modules_vue_loader_lib_index_js_vue_loader_options_App_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_5_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_5_2_node_modules_vue_loader_lib_index_js_vue_loader_options_App_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
- /* harmony default export */ __webpack_exports__["default"] = (_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_5_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_5_2_node_modules_vue_loader_lib_index_js_vue_loader_options_App_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0___default.a); 
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_sass_loader_dist_cjs_js_ref_6_3_node_modules_vue_loader_lib_index_js_vue_loader_options_App_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../node_modules/style-loader!../../node_modules/css-loader!../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../node_modules/postcss-loader/src??ref--6-2!../../node_modules/sass-loader/dist/cjs.js??ref--6-3!../../node_modules/vue-loader/lib??vue-loader-options!./App.vue?vue&type=style&index=0&lang=scss& */ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/dist/cjs.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/App.vue?vue&type=style&index=0&lang=scss&");
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_sass_loader_dist_cjs_js_ref_6_3_node_modules_vue_loader_lib_index_js_vue_loader_options_App_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_sass_loader_dist_cjs_js_ref_6_3_node_modules_vue_loader_lib_index_js_vue_loader_options_App_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_sass_loader_dist_cjs_js_ref_6_3_node_modules_vue_loader_lib_index_js_vue_loader_options_App_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_sass_loader_dist_cjs_js_ref_6_3_node_modules_vue_loader_lib_index_js_vue_loader_options_App_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_sass_loader_dist_cjs_js_ref_6_3_node_modules_vue_loader_lib_index_js_vue_loader_options_App_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_0___default.a); 
 
 /***/ }),
 
@@ -69821,6 +72493,369 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/sucursales/SucursalesForm.vue":
+/*!***************************************************************!*\
+  !*** ./resources/js/components/sucursales/SucursalesForm.vue ***!
+  \***************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _SucursalesForm_vue_vue_type_template_id_f9af9610___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./SucursalesForm.vue?vue&type=template&id=f9af9610& */ "./resources/js/components/sucursales/SucursalesForm.vue?vue&type=template&id=f9af9610&");
+/* harmony import */ var _SucursalesForm_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./SucursalesForm.vue?vue&type=script&lang=js& */ "./resources/js/components/sucursales/SucursalesForm.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _SucursalesForm_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _SucursalesForm_vue_vue_type_template_id_f9af9610___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _SucursalesForm_vue_vue_type_template_id_f9af9610___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/sucursales/SucursalesForm.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/sucursales/SucursalesForm.vue?vue&type=script&lang=js&":
+/*!****************************************************************************************!*\
+  !*** ./resources/js/components/sucursales/SucursalesForm.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_SucursalesForm_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./SucursalesForm.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/sucursales/SucursalesForm.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_SucursalesForm_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/sucursales/SucursalesForm.vue?vue&type=template&id=f9af9610&":
+/*!**********************************************************************************************!*\
+  !*** ./resources/js/components/sucursales/SucursalesForm.vue?vue&type=template&id=f9af9610& ***!
+  \**********************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SucursalesForm_vue_vue_type_template_id_f9af9610___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./SucursalesForm.vue?vue&type=template&id=f9af9610& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/sucursales/SucursalesForm.vue?vue&type=template&id=f9af9610&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SucursalesForm_vue_vue_type_template_id_f9af9610___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SucursalesForm_vue_vue_type_template_id_f9af9610___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/sucursales/SucursalesIndex.vue":
+/*!****************************************************************!*\
+  !*** ./resources/js/components/sucursales/SucursalesIndex.vue ***!
+  \****************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _SucursalesIndex_vue_vue_type_template_id_487e9e4e___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./SucursalesIndex.vue?vue&type=template&id=487e9e4e& */ "./resources/js/components/sucursales/SucursalesIndex.vue?vue&type=template&id=487e9e4e&");
+/* harmony import */ var _SucursalesIndex_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./SucursalesIndex.vue?vue&type=script&lang=js& */ "./resources/js/components/sucursales/SucursalesIndex.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _SucursalesIndex_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _SucursalesIndex_vue_vue_type_template_id_487e9e4e___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _SucursalesIndex_vue_vue_type_template_id_487e9e4e___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/sucursales/SucursalesIndex.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/sucursales/SucursalesIndex.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************************!*\
+  !*** ./resources/js/components/sucursales/SucursalesIndex.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_SucursalesIndex_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./SucursalesIndex.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/sucursales/SucursalesIndex.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_SucursalesIndex_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/sucursales/SucursalesIndex.vue?vue&type=template&id=487e9e4e&":
+/*!***********************************************************************************************!*\
+  !*** ./resources/js/components/sucursales/SucursalesIndex.vue?vue&type=template&id=487e9e4e& ***!
+  \***********************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SucursalesIndex_vue_vue_type_template_id_487e9e4e___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./SucursalesIndex.vue?vue&type=template&id=487e9e4e& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/sucursales/SucursalesIndex.vue?vue&type=template&id=487e9e4e&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SucursalesIndex_vue_vue_type_template_id_487e9e4e___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SucursalesIndex_vue_vue_type_template_id_487e9e4e___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/sucursales/SucursalesShow.vue":
+/*!***************************************************************!*\
+  !*** ./resources/js/components/sucursales/SucursalesShow.vue ***!
+  \***************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _SucursalesShow_vue_vue_type_template_id_52ba3eb1___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./SucursalesShow.vue?vue&type=template&id=52ba3eb1& */ "./resources/js/components/sucursales/SucursalesShow.vue?vue&type=template&id=52ba3eb1&");
+/* harmony import */ var _SucursalesShow_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./SucursalesShow.vue?vue&type=script&lang=js& */ "./resources/js/components/sucursales/SucursalesShow.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _SucursalesShow_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./SucursalesShow.vue?vue&type=style&index=0&lang=scss& */ "./resources/js/components/sucursales/SucursalesShow.vue?vue&type=style&index=0&lang=scss&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
+  _SucursalesShow_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _SucursalesShow_vue_vue_type_template_id_52ba3eb1___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _SucursalesShow_vue_vue_type_template_id_52ba3eb1___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/sucursales/SucursalesShow.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/sucursales/SucursalesShow.vue?vue&type=script&lang=js&":
+/*!****************************************************************************************!*\
+  !*** ./resources/js/components/sucursales/SucursalesShow.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_SucursalesShow_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./SucursalesShow.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/sucursales/SucursalesShow.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_SucursalesShow_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/sucursales/SucursalesShow.vue?vue&type=style&index=0&lang=scss&":
+/*!*************************************************************************************************!*\
+  !*** ./resources/js/components/sucursales/SucursalesShow.vue?vue&type=style&index=0&lang=scss& ***!
+  \*************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_sass_loader_dist_cjs_js_ref_6_3_node_modules_vue_loader_lib_index_js_vue_loader_options_SucursalesShow_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/style-loader!../../../../node_modules/css-loader!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/src??ref--6-2!../../../../node_modules/sass-loader/dist/cjs.js??ref--6-3!../../../../node_modules/vue-loader/lib??vue-loader-options!./SucursalesShow.vue?vue&type=style&index=0&lang=scss& */ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/dist/cjs.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/sucursales/SucursalesShow.vue?vue&type=style&index=0&lang=scss&");
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_sass_loader_dist_cjs_js_ref_6_3_node_modules_vue_loader_lib_index_js_vue_loader_options_SucursalesShow_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_sass_loader_dist_cjs_js_ref_6_3_node_modules_vue_loader_lib_index_js_vue_loader_options_SucursalesShow_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_sass_loader_dist_cjs_js_ref_6_3_node_modules_vue_loader_lib_index_js_vue_loader_options_SucursalesShow_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_sass_loader_dist_cjs_js_ref_6_3_node_modules_vue_loader_lib_index_js_vue_loader_options_SucursalesShow_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_sass_loader_dist_cjs_js_ref_6_3_node_modules_vue_loader_lib_index_js_vue_loader_options_SucursalesShow_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_0___default.a); 
+
+/***/ }),
+
+/***/ "./resources/js/components/sucursales/SucursalesShow.vue?vue&type=template&id=52ba3eb1&":
+/*!**********************************************************************************************!*\
+  !*** ./resources/js/components/sucursales/SucursalesShow.vue?vue&type=template&id=52ba3eb1& ***!
+  \**********************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SucursalesShow_vue_vue_type_template_id_52ba3eb1___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./SucursalesShow.vue?vue&type=template&id=52ba3eb1& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/sucursales/SucursalesShow.vue?vue&type=template&id=52ba3eb1&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SucursalesShow_vue_vue_type_template_id_52ba3eb1___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SucursalesShow_vue_vue_type_template_id_52ba3eb1___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/sucursales/SucursalesShowData.vue":
+/*!*******************************************************************!*\
+  !*** ./resources/js/components/sucursales/SucursalesShowData.vue ***!
+  \*******************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _SucursalesShowData_vue_vue_type_template_id_6dc9f8fb___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./SucursalesShowData.vue?vue&type=template&id=6dc9f8fb& */ "./resources/js/components/sucursales/SucursalesShowData.vue?vue&type=template&id=6dc9f8fb&");
+/* harmony import */ var _SucursalesShowData_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./SucursalesShowData.vue?vue&type=script&lang=js& */ "./resources/js/components/sucursales/SucursalesShowData.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _SucursalesShowData_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _SucursalesShowData_vue_vue_type_template_id_6dc9f8fb___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _SucursalesShowData_vue_vue_type_template_id_6dc9f8fb___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/sucursales/SucursalesShowData.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/sucursales/SucursalesShowData.vue?vue&type=script&lang=js&":
+/*!********************************************************************************************!*\
+  !*** ./resources/js/components/sucursales/SucursalesShowData.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_SucursalesShowData_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./SucursalesShowData.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/sucursales/SucursalesShowData.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_SucursalesShowData_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/sucursales/SucursalesShowData.vue?vue&type=template&id=6dc9f8fb&":
+/*!**************************************************************************************************!*\
+  !*** ./resources/js/components/sucursales/SucursalesShowData.vue?vue&type=template&id=6dc9f8fb& ***!
+  \**************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SucursalesShowData_vue_vue_type_template_id_6dc9f8fb___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./SucursalesShowData.vue?vue&type=template&id=6dc9f8fb& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/sucursales/SucursalesShowData.vue?vue&type=template&id=6dc9f8fb&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SucursalesShowData_vue_vue_type_template_id_6dc9f8fb___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SucursalesShowData_vue_vue_type_template_id_6dc9f8fb___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/sucursales/SucursalesShowVentas.vue":
+/*!*********************************************************************!*\
+  !*** ./resources/js/components/sucursales/SucursalesShowVentas.vue ***!
+  \*********************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _SucursalesShowVentas_vue_vue_type_template_id_75f79838___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./SucursalesShowVentas.vue?vue&type=template&id=75f79838& */ "./resources/js/components/sucursales/SucursalesShowVentas.vue?vue&type=template&id=75f79838&");
+/* harmony import */ var _SucursalesShowVentas_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./SucursalesShowVentas.vue?vue&type=script&lang=js& */ "./resources/js/components/sucursales/SucursalesShowVentas.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _SucursalesShowVentas_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _SucursalesShowVentas_vue_vue_type_template_id_75f79838___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _SucursalesShowVentas_vue_vue_type_template_id_75f79838___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/sucursales/SucursalesShowVentas.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/sucursales/SucursalesShowVentas.vue?vue&type=script&lang=js&":
+/*!**********************************************************************************************!*\
+  !*** ./resources/js/components/sucursales/SucursalesShowVentas.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_SucursalesShowVentas_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./SucursalesShowVentas.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/sucursales/SucursalesShowVentas.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_SucursalesShowVentas_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/sucursales/SucursalesShowVentas.vue?vue&type=template&id=75f79838&":
+/*!****************************************************************************************************!*\
+  !*** ./resources/js/components/sucursales/SucursalesShowVentas.vue?vue&type=template&id=75f79838& ***!
+  \****************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SucursalesShowVentas_vue_vue_type_template_id_75f79838___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./SucursalesShowVentas.vue?vue&type=template&id=75f79838& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/sucursales/SucursalesShowVentas.vue?vue&type=template&id=75f79838&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SucursalesShowVentas_vue_vue_type_template_id_75f79838___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SucursalesShowVentas_vue_vue_type_template_id_75f79838___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./resources/js/components/users/UsersForm.vue":
 /*!*****************************************************!*\
   !*** ./resources/js/components/users/UsersForm.vue ***!
@@ -70181,12 +73216,19 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _views_Home_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../views/Home.vue */ "./resources/js/views/Home.vue");
 /* harmony import */ var _views_Welcome_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../views/Welcome.vue */ "./resources/js/views/Welcome.vue");
 /* harmony import */ var _views_NotFound_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../views/NotFound.vue */ "./resources/js/views/NotFound.vue");
-/* harmony import */ var _views_roles_Roles__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../views/roles/Roles */ "./resources/js/views/roles/Roles.vue");
-/* harmony import */ var _views_roles_Create__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../views/roles/Create */ "./resources/js/views/roles/Create.vue");
-/* harmony import */ var _views_roles_Edit__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../views/roles/Edit */ "./resources/js/views/roles/Edit.vue");
-/* harmony import */ var _views_users_Users__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../views/users/Users */ "./resources/js/views/users/Users.vue");
-/* harmony import */ var _views_users_Create__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../views/users/Create */ "./resources/js/views/users/Create.vue");
+/* harmony import */ var _views_sucursales_Sucursales__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../views/sucursales/Sucursales */ "./resources/js/views/sucursales/Sucursales.vue");
+/* harmony import */ var _views_sucursales_Create__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../views/sucursales/Create */ "./resources/js/views/sucursales/Create.vue");
+/* harmony import */ var _views_sucursales_Show__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../views/sucursales/Show */ "./resources/js/views/sucursales/Show.vue");
+/* harmony import */ var _views_roles_Roles__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../views/roles/Roles */ "./resources/js/views/roles/Roles.vue");
+/* harmony import */ var _views_roles_Create__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../views/roles/Create */ "./resources/js/views/roles/Create.vue");
+/* harmony import */ var _views_roles_Edit__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../views/roles/Edit */ "./resources/js/views/roles/Edit.vue");
+/* harmony import */ var _views_users_Users__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../views/users/Users */ "./resources/js/views/users/Users.vue");
+/* harmony import */ var _views_users_Create__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../views/users/Create */ "./resources/js/views/users/Create.vue");
 
+
+
+
+ // Sucursales
 
 
 
@@ -70220,28 +73262,42 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_router__WEBPACK_IMPORTED_MODU
       permission: "authenticated",
       redirect: "home"
     }
+  }, // Sucursales
+  {
+    path: "/sucursales",
+    name: "sucursales",
+    component: _views_sucursales_Sucursales__WEBPACK_IMPORTED_MODULE_5__["default"]
+  }, {
+    path: "/sucursales/nueva",
+    name: "sucursales_create",
+    component: _views_sucursales_Create__WEBPACK_IMPORTED_MODULE_6__["default"]
+  }, {
+    path: "/sucursales/show/:id",
+    name: "sucursales_show",
+    component: _views_sucursales_Show__WEBPACK_IMPORTED_MODULE_7__["default"],
+    props: true
   }, // Roles
   {
     path: "/roles",
     name: "roles",
-    component: _views_roles_Roles__WEBPACK_IMPORTED_MODULE_5__["default"]
+    component: _views_roles_Roles__WEBPACK_IMPORTED_MODULE_8__["default"]
   }, {
-    path: "/roles/create",
+    path: "/roles/nuevo",
     name: "roles_create",
-    component: _views_roles_Create__WEBPACK_IMPORTED_MODULE_6__["default"]
+    component: _views_roles_Create__WEBPACK_IMPORTED_MODULE_9__["default"]
   }, {
-    path: "/roles/edit",
+    path: "/roles/editar",
     name: "roles_edit",
-    component: _views_roles_Edit__WEBPACK_IMPORTED_MODULE_7__["default"]
+    component: _views_roles_Edit__WEBPACK_IMPORTED_MODULE_10__["default"]
   }, // Users
   {
     path: "/users",
     name: "users",
-    component: _views_users_Users__WEBPACK_IMPORTED_MODULE_8__["default"]
+    component: _views_users_Users__WEBPACK_IMPORTED_MODULE_11__["default"]
   }, {
-    path: "/users/create",
+    path: "/users/nuevo",
     name: "users_create",
-    component: _views_users_Create__WEBPACK_IMPORTED_MODULE_9__["default"]
+    component: _views_users_Create__WEBPACK_IMPORTED_MODULE_12__["default"]
   }]
 }));
 
@@ -70482,6 +73538,132 @@ var actions = {
 
 /***/ }),
 
+/***/ "./resources/js/store/modules/sucursales.js":
+/*!**************************************************!*\
+  !*** ./resources/js/store/modules/sucursales.js ***!
+  \**************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+var state = {
+  sucursales: null,
+  sucursal: null,
+  form: {}
+};
+var mutations = {
+  fillSucursales: function fillSucursales(state, sucursales) {
+    state.sucursales = sucursales;
+  },
+  fillSucursal: function fillSucursal(state, sucursal) {
+    state.sucursal = sucursal;
+  },
+  fillForm: function fillForm(state, form) {
+    state.form = form;
+  },
+  resetForm: function resetForm(state) {
+    state.form = {};
+  }
+};
+var actions = {
+  index: function index(_ref, params) {
+    var commit = _ref.commit,
+        dispatch = _ref.dispatch;
+    return new Promise(function (resolve, reject) {
+      axios.get("/api/negocios", {
+        params: params
+      }).then(function (response) {
+        console.log(response.data);
+        commit("fillSucursales", response.data);
+        resolve(response.data);
+      })["catch"](function (error) {
+        dispatch("errorHandle", error.response, {
+          root: true
+        });
+        reject(error.response.data);
+      });
+    });
+  },
+  show: function show(_ref2, params) {
+    var commit = _ref2.commit,
+        dispatch = _ref2.dispatch;
+    return new Promise(function (resolve, reject) {
+      axios.get("/api/negocios/" + params.id, {
+        params: params
+      }).then(function (response) {
+        console.log(response.data);
+        commit("fillSucursal", response.data);
+        resolve(response.data);
+      })["catch"](function (error) {
+        dispatch("errorHandle", error.response, {
+          root: true
+        });
+        reject(error.response.data);
+      });
+    });
+  },
+  save: function save(_ref3) {
+    var state = _ref3.state,
+        commit = _ref3.commit,
+        dispatch = _ref3.dispatch;
+    return new Promise(function (resolve, reject) {
+      axios.post("/api/negocios", state.form).then(function (response) {
+        commit("resetForm");
+        resolve(response.data);
+      })["catch"](function (error) {
+        dispatch("errorHandle", error.response, {
+          root: true
+        });
+        reject(error.response.data);
+      });
+    });
+  },
+  edit: function edit(_ref4, params) {
+    var state = _ref4.state,
+        commit = _ref4.commit;
+    commit("fillForm", params.data);
+  },
+  update: function update(_ref5, params) {
+    var state = _ref5.state,
+        commit = _ref5.commit,
+        dispatch = _ref5.dispatch;
+    return new Promise(function (resolve, reject) {
+      axios.put("/api/negocios/" + params.id, state.form).then(function (response) {
+        commit("resetForm");
+        resolve(response.data);
+      })["catch"](function (error) {
+        dispatch("errorHandle", error.response, {
+          root: true
+        });
+        reject(error.response.data);
+      });
+    });
+  },
+  destroy: function destroy(_ref6, params) {
+    var commit = _ref6.commit,
+        dispatch = _ref6.dispatch;
+    return new Promise(function (resolve, reject) {
+      axios["delete"]("/api/negocios/" + params.id).then(function (response) {
+        resolve(response.data);
+      })["catch"](function (error) {
+        dispatch("errorHandle", error.response, {
+          root: true
+        });
+        reject(error.response.data);
+      });
+    });
+  }
+};
+/* harmony default export */ __webpack_exports__["default"] = ({
+  namespaced: true,
+  state: state,
+  mutations: mutations,
+  actions: actions
+});
+
+/***/ }),
+
 /***/ "./resources/js/store/modules/users.js":
 /*!*********************************************!*\
   !*** ./resources/js/store/modules/users.js ***!
@@ -70620,11 +73802,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 /* harmony import */ var _modules_auth__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/auth */ "./resources/js/store/modules/auth.js");
-/* harmony import */ var _modules_users__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/users */ "./resources/js/store/modules/users.js");
-/* harmony import */ var _modules_roles__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modules/roles */ "./resources/js/store/modules/roles.js");
-/* harmony import */ var _plugins_processHandle__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./plugins/processHandle */ "./resources/js/store/plugins/processHandle.js");
+/* harmony import */ var _modules_sucursales__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/sucursales */ "./resources/js/store/modules/sucursales.js");
+/* harmony import */ var _modules_users__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modules/users */ "./resources/js/store/modules/users.js");
+/* harmony import */ var _modules_roles__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./modules/roles */ "./resources/js/store/modules/roles.js");
+/* harmony import */ var _plugins_processHandle__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./plugins/processHandle */ "./resources/js/store/plugins/processHandle.js");
 
  // Modules
+
 
 
 
@@ -70674,11 +73858,12250 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
   },
   modules: {
     auth: _modules_auth__WEBPACK_IMPORTED_MODULE_2__["default"],
-    users: _modules_users__WEBPACK_IMPORTED_MODULE_3__["default"],
-    roles: _modules_roles__WEBPACK_IMPORTED_MODULE_4__["default"]
+    sucursales: _modules_sucursales__WEBPACK_IMPORTED_MODULE_3__["default"],
+    users: _modules_users__WEBPACK_IMPORTED_MODULE_4__["default"],
+    roles: _modules_roles__WEBPACK_IMPORTED_MODULE_5__["default"]
   },
-  plugins: [_plugins_processHandle__WEBPACK_IMPORTED_MODULE_5__["processHandle"]]
+  plugins: [_plugins_processHandle__WEBPACK_IMPORTED_MODULE_6__["processHandle"]]
 }));
+
+/***/ }),
+
+/***/ "./resources/js/utils/localidades.js":
+/*!*******************************************!*\
+  !*** ./resources/js/utils/localidades.js ***!
+  \*******************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ([{
+  "id": 6,
+  "nombre": "Buenos Aires",
+  "ciudades": [{
+    "id": "429",
+    "nombre": "Abasto"
+  }, {
+    "id": "553",
+    "nombre": "Abbott"
+  }, {
+    "id": "754",
+    "nombre": "Acassuso"
+  }, {
+    "id": "625",
+    "nombre": "Acevedo"
+  }, {
+    "id": "13",
+    "nombre": "Adolfo Gonzales Chaves (Est. Chaves)"
+  }, {
+    "id": "25",
+    "nombre": "Adrogue"
+  }, {
+    "id": "250",
+    "nombre": "Aeropuerto Internacional Ezeiza"
+  }, {
+    "id": "397",
+    "nombre": "Aguas Verdes"
+  }, {
+    "id": "850",
+    "nombre": "Agustin Mosconi"
+  }, {
+    "id": "388",
+    "nombre": "Agustin Roca"
+  }, {
+    "id": "389",
+    "nombre": "Agustina"
+  }, {
+    "id": "465",
+    "nombre": "Alberdi Viejo"
+  }, {
+    "id": "17",
+    "nombre": "Alberti (Est. Andres Vaccarezza)"
+  }, {
+    "id": "406",
+    "nombre": "Aldo Bonzi"
+  }, {
+    "id": "782",
+    "nombre": "Alejandro Korn"
+  }, {
+    "id": "133",
+    "nombre": "Alejandro Petion"
+  }, {
+    "id": "580",
+    "nombre": "Alfredo Demarchi (Est. Facundo Quiroga)"
+  }, {
+    "id": "24",
+    "nombre": "Almirante Brown"
+  }, {
+    "id": "120",
+    "nombre": "Altamirano"
+  }, {
+    "id": "129",
+    "nombre": "Alto Los Cardales"
+  }, {
+    "id": "724",
+    "nombre": "Álvarez De Toledo"
+  }, {
+    "id": "677",
+    "nombre": "Alvarez Jonte"
+  }, {
+    "id": "698",
+    "nombre": "America"
+  }, {
+    "id": "212",
+    "nombre": "Andant"
+  }, {
+    "id": "430",
+    "nombre": "Angel Etcheverry"
+  }, {
+    "id": "487",
+    "nombre": "Antonio Carboni"
+  }, {
+    "id": "173",
+    "nombre": "Aparicio"
+  }, {
+    "id": "431",
+    "nombre": "Arana"
+  }, {
+    "id": "213",
+    "nombre": "Arboledas"
+  }, {
+    "id": "37",
+    "nombre": "Área Cinturon Ecologico"
+  }, {
+    "id": "520",
+    "nombre": "Area De Promocion El Triangulo"
+  }, {
+    "id": "481",
+    "nombre": "Arenas Verdes"
+  }, {
+    "id": "471",
+    "nombre": "Arenaza"
+  }, {
+    "id": "872",
+    "nombre": "Argerich"
+  }, {
+    "id": "50",
+    "nombre": "Ariel"
+  }, {
+    "id": "72",
+    "nombre": "Arrecifes"
+  }, {
+    "id": "274",
+    "nombre": "Arribeños"
+  }, {
+    "id": "717",
+    "nombre": "Arroyo Corto"
+  }, {
+    "id": "241",
+    "nombre": "Arroyo De La Cruz"
+  }, {
+    "id": "730",
+    "nombre": "Arroyo Dulce"
+  }, {
+    "id": "372",
+    "nombre": "Arroyo Venado"
+  }, {
+    "id": "432",
+    "nombre": "Arturo Segui"
+  }, {
+    "id": "275",
+    "nombre": "Ascension"
+  }, {
+    "id": "511",
+    "nombre": "Atalaya"
+  }, {
+    "id": "535",
+    "nombre": "Atlantida"
+  }, {
+    "id": "38",
+    "nombre": "Avellaneda"
+  }, {
+    "id": "46",
+    "nombre": "Ayacucho"
+  }, {
+    "id": "738",
+    "nombre": "Azcuenaga"
+  }, {
+    "id": "666",
+    "nombre": "Azopardo"
+  }, {
+    "id": "51",
+    "nombre": "Azul"
+  }, {
+    "id": "55",
+    "nombre": "Bahia Blanca"
+  }, {
+    "id": "606",
+    "nombre": "Bahia San Blas"
+  }, {
+    "id": "355",
+    "nombre": "Baigorrita"
+  }, {
+    "id": "168",
+    "nombre": "Bajo Hondo"
+  }, {
+    "id": "62",
+    "nombre": "Balcarce"
+  }, {
+    "id": "390",
+    "nombre": "Balneario Laguna De Gomez"
+  }, {
+    "id": "174",
+    "nombre": "Balneario Marisol"
+  }, {
+    "id": "820",
+    "nombre": "Balneario Orense"
+  }, {
+    "id": "169",
+    "nombre": "Balneario Pehuen Co"
+  }, {
+    "id": "748",
+    "nombre": "Balneario San Cayetano"
+  }, {
+    "id": "556",
+    "nombre": "Balneario Sauce Grande"
+  }, {
+    "id": "360",
+    "nombre": "Banderalo"
+  }, {
+    "id": "492",
+    "nombre": "Banfield"
+  }, {
+    "id": "68",
+    "nombre": "Baradero"
+  }, {
+    "id": "75",
+    "nombre": "Barker"
+  }, {
+    "id": "664",
+    "nombre": "Barrio America Unida"
+  }, {
+    "id": "90",
+    "nombre": "Barrio Banco Provincia"
+  }, {
+    "id": "137",
+    "nombre": "Barrio Belgrano"
+  }, {
+    "id": "310",
+    "nombre": "Barrio Colinas Verdes"
+  }, {
+    "id": "311",
+    "nombre": "Barrio El Boqueron"
+  }, {
+    "id": "91",
+    "nombre": "Barrio El Carmen (Este)"
+  }, {
+    "id": "433",
+    "nombre": "Barrio El Carmen (Oeste)"
+  }, {
+    "id": "312",
+    "nombre": "Barrio El Casal"
+  }, {
+    "id": "313",
+    "nombre": "Barrio El Coyunco"
+  }, {
+    "id": "134",
+    "nombre": "Barrio El Taladro"
+  }, {
+    "id": "434",
+    "nombre": "Barrio Gambier"
+  }, {
+    "id": "285",
+    "nombre": "Barrio Kennedy"
+  }, {
+    "id": "314",
+    "nombre": "Barrio La Gloria"
+  }, {
+    "id": "499",
+    "nombre": "Barrio Las Casuarinas"
+  }, {
+    "id": "121",
+    "nombre": "Barrio Las Golondrinas"
+  }, {
+    "id": "435",
+    "nombre": "Barrio Las Malvinas"
+  }, {
+    "id": "436",
+    "nombre": "Barrio Las Quintas"
+  }, {
+    "id": "122",
+    "nombre": "Barrio Los Bosquecitos"
+  }, {
+    "id": "130",
+    "nombre": "Barrio Los Pioneros"
+  }, {
+    "id": "641",
+    "nombre": "Barrio Parque Almirante Irizar (Ap. Kilometro 61)"
+  }, {
+    "id": "328",
+    "nombre": "Barrio Parque General San Martin"
+  }, {
+    "id": "123",
+    "nombre": "Barrio Parque Las Acacias"
+  }, {
+    "id": "301",
+    "nombre": "Barrio Rio Salado"
+  }, {
+    "id": "325",
+    "nombre": "Barrio Ruta 24 Kilometro 10"
+  }, {
+    "id": "881",
+    "nombre": "Barrio Saavedra"
+  }, {
+    "id": "315",
+    "nombre": "Barrio Santa Paula"
+  }, {
+    "id": "542",
+    "nombre": "Barrio Santa Rosa"
+  }, {
+    "id": "92",
+    "nombre": "Barrio Universitario"
+  }, {
+    "id": "543",
+    "nombre": "Barrios Lisandro De La Torre Y Santa Marta"
+  }, {
+    "id": "316",
+    "nombre": "Batan"
+  }, {
+    "id": "472",
+    "nombre": "Bayauca"
+  }, {
+    "id": "755",
+    "nombre": "Beccar"
+  }, {
+    "id": "226",
+    "nombre": "Belen De Escobar"
+  }, {
+    "id": "760",
+    "nombre": "Bella Vista"
+  }, {
+    "id": "144",
+    "nombre": "Bellocq"
+  }, {
+    "id": "794",
+    "nombre": "Benavidez"
+  }, {
+    "id": "76",
+    "nombre": "Benito Juarez (Est. Juarez)"
+  }, {
+    "id": "80",
+    "nombre": "Berazategui"
+  }, {
+    "id": "81",
+    "nombre": "Berazategui Oeste"
+  }, {
+    "id": "731",
+    "nombre": "Berdier"
+  }, {
+    "id": "93",
+    "nombre": "Berisso"
+  }, {
+    "id": "473",
+    "nombre": "Bermudez"
+  }, {
+    "id": "682",
+    "nombre": "Bernal"
+  }, {
+    "id": "683",
+    "nombre": "Bernal Oeste"
+  }, {
+    "id": "814",
+    "nombre": "Berutti"
+  }, {
+    "id": "329",
+    "nombre": "Billinghurst"
+  }, {
+    "id": "592",
+    "nombre": "Blancagrande"
+  }, {
+    "id": "266",
+    "nombre": "Blaquier"
+  }, {
+    "id": "725",
+    "nombre": "Blaquier"
+  }, {
+    "id": "622",
+    "nombre": "Bocayuva"
+  }, {
+    "id": "667",
+    "nombre": "Bordenave"
+  }, {
+    "id": "256",
+    "nombre": "Bosques"
+  }, {
+    "id": "756",
+    "nombre": "Boulogne Sur Mer"
+  }, {
+    "id": "111",
+    "nombre": "Bragado"
+  }, {
+    "id": "26",
+    "nombre": "Burzaco"
+  }, {
+    "id": "60",
+    "nombre": "Cabildo"
+  }, {
+    "id": "52",
+    "nombre": "Cachari"
+  }, {
+    "id": "145",
+    "nombre": "Cadret"
+  }, {
+    "id": "320",
+    "nombre": "Camet"
+  }, {
+    "id": "536",
+    "nombre": "Camet Norte"
+  }, {
+    "id": "131",
+    "nombre": "Campana"
+  }, {
+    "id": "761",
+    "nombre": "Campo De Mayo"
+  }, {
+    "id": "772",
+    "nombre": "Campos Salles"
+  }, {
+    "id": "251",
+    "nombre": "Canning"
+  }, {
+    "id": "235",
+    "nombre": "Canning"
+  }, {
+    "id": "361",
+    "nombre": "Cañada Seca"
+  }, {
+    "id": "135",
+    "nombre": "Cañuelas"
+  }, {
+    "id": "242",
+    "nombre": "Capilla Del Señor (Est. Capilla)"
+  }, {
+    "id": "613",
+    "nombre": "Capitan Castro"
+  }, {
+    "id": "142",
+    "nombre": "Capitan Sarmiento"
+  }, {
+    "id": "860",
+    "nombre": "Carapachay"
+  }, {
+    "id": "607",
+    "nombre": "Cardenal Cagliero"
+  }, {
+    "id": "2",
+    "nombre": "Carhue"
+  }, {
+    "id": "659",
+    "nombre": "Carilo"
+  }, {
+    "id": "715",
+    "nombre": "Carlos Beguerie"
+  }, {
+    "id": "146",
+    "nombre": "Carlos Casares"
+  }, {
+    "id": "500",
+    "nombre": "Carlos Keen"
+  }, {
+    "id": "581",
+    "nombre": "Carlos Maria Naon"
+  }, {
+    "id": "474",
+    "nombre": "Carlos Salas"
+  }, {
+    "id": "252",
+    "nombre": "Carlos Spegazzini"
+  }, {
+    "id": "154",
+    "nombre": "Carlos Tejedor"
+  }, {
+    "id": "82",
+    "nombre": "Carlos Tomas Sourigues"
+  }, {
+    "id": "159",
+    "nombre": "Carmen De Areco"
+  }, {
+    "id": "608",
+    "nombre": "Carmen De Patagones"
+  }, {
+    "id": "639",
+    "nombre": "Casalins"
+  }, {
+    "id": "373",
+    "nombre": "Casbas"
+  }, {
+    "id": "186",
+    "nombre": "Cascadas"
+  }, {
+    "id": "833",
+    "nombre": "Caseros"
+  }, {
+    "id": "564",
+    "nombre": "Castelar"
+  }, {
+    "id": "162",
+    "nombre": "Castelli"
+  }, {
+    "id": "196",
+    "nombre": "Castilla"
+  }, {
+    "id": "726",
+    "nombre": "Cazon"
+  }, {
+    "id": "163",
+    "nombre": "Centro Guerrero"
+  }, {
+    "id": "197",
+    "nombre": "Chacabuco"
+  }, {
+    "id": "298",
+    "nombre": "Chacras De San Clemente"
+  }, {
+    "id": "317",
+    "nombre": "Chapadmalal"
+  }, {
+    "id": "201",
+    "nombre": "Chascomus"
+  }, {
+    "id": "202",
+    "nombre": "Chascomus Country Club"
+  }, {
+    "id": "806",
+    "nombre": "Chasico"
+  }, {
+    "id": "614",
+    "nombre": "Chiclana"
+  }, {
+    "id": "53",
+    "nombre": "Chillar"
+  }, {
+    "id": "205",
+    "nombre": "Chivilcoy"
+  }, {
+    "id": "834",
+    "nombre": "Churruca"
+  }, {
+    "id": "437",
+    "nombre": "City Bell"
+  }, {
+    "id": "407",
+    "nombre": "Ciudad Evita"
+  }, {
+    "id": "331",
+    "nombre": "Ciudad Jardin El Libertador"
+  }, {
+    "id": "835",
+    "nombre": "Ciudad Jardin Lomas Del Palomar"
+  }, {
+    "id": "836",
+    "nombre": "Ciudadela"
+  }, {
+    "id": "573",
+    "nombre": "Claraz"
+  }, {
+    "id": "821",
+    "nombre": "Claromeco"
+  }, {
+    "id": "27",
+    "nombre": "Claypole"
+  }, {
+    "id": "642",
+    "nombre": "Club De Campo Larena - Los Quinchos"
+  }, {
+    "id": "164",
+    "nombre": "Colon"
+  }, {
+    "id": "593",
+    "nombre": "Colonia Hinojo"
+  }, {
+    "id": "147",
+    "nombre": "Colonia Mauricio"
+  }, {
+    "id": "594",
+    "nombre": "Colonia Nievas"
+  }, {
+    "id": "873",
+    "nombre": "Colonia San Adolfo"
+  }, {
+    "id": "718",
+    "nombre": "Colonia San Martin"
+  }, {
+    "id": "595",
+    "nombre": "Colonia San Miguel"
+  }, {
+    "id": "3",
+    "nombre": "Colonia San Miguel Arcangel"
+  }, {
+    "id": "305",
+    "nombre": "Colonia San Ricardo (Est. Iriarte)"
+  }, {
+    "id": "155",
+    "nombre": "Colonia Sere"
+  }, {
+    "id": "269",
+    "nombre": "Comandante Nicanor Otamendi"
+  }, {
+    "id": "112",
+    "nombre": "Comodoro Py"
+  }, {
+    "id": "764",
+    "nombre": "Conesa"
+  }, {
+    "id": "823",
+    "nombre": "Copetonas"
+  }, {
+    "id": "461",
+    "nombre": "Coronel Boerr"
+  }, {
+    "id": "124",
+    "nombre": "Coronel Brandsen"
+  }, {
+    "id": "362",
+    "nombre": "Coronel Charlone"
+  }, {
+    "id": "175",
+    "nombre": "Coronel Dorrego"
+  }, {
+    "id": "475",
+    "nombre": "Coronel Martinez De Hoz (Ap. Kilometro 322)"
+  }, {
+    "id": "181",
+    "nombre": "Coronel Pringles (Est. Pringles)"
+  }, {
+    "id": "18",
+    "nombre": "Coronel Segui"
+  }, {
+    "id": "187",
+    "nombre": "Coronel Suarez"
+  }, {
+    "id": "528",
+    "nombre": "Coronel Vidal"
+  }, {
+    "id": "501",
+    "nombre": "Cortines"
+  }, {
+    "id": "574",
+    "nombre": "Costa Bonita"
+  }, {
+    "id": "326",
+    "nombre": "Country Club Bosque Real - Barrio Morabo"
+  }, {
+    "id": "882",
+    "nombre": "Country Club El Casco"
+  }, {
+    "id": "643",
+    "nombre": "Country Club El JagÜEL"
+  }, {
+    "id": "427",
+    "nombre": "Country Club El Rodeo"
+  }, {
+    "id": "508",
+    "nombre": "Country Club Las Praderas"
+  }, {
+    "id": "877",
+    "nombre": "Country Los Medanos"
+  }, {
+    "id": "791",
+    "nombre": "Crotto"
+  }, {
+    "id": "39",
+    "nombre": "Crucesita"
+  }, {
+    "id": "558",
+    "nombre": "Cuartel V"
+  }, {
+    "id": "739",
+    "nombre": "Cucullu"
+  }, {
+    "id": "188",
+    "nombre": "Cura Malal"
+  }, {
+    "id": "156",
+    "nombre": "Curaru"
+  }, {
+    "id": "214",
+    "nombre": "Daireaux"
+  }, {
+    "id": "668",
+    "nombre": "Darregueira"
+  }, {
+    "id": "623",
+    "nombre": "De Bary"
+  }, {
+    "id": "786",
+    "nombre": "De La Canal"
+  }, {
+    "id": "14",
+    "nombre": "De La Garma"
+  }, {
+    "id": "727",
+    "nombre": "Del Carril"
+  }, {
+    "id": "851",
+    "nombre": "Del Valle"
+  }, {
+    "id": "644",
+    "nombre": "Del Viso"
+  }, {
+    "id": "385",
+    "nombre": "Del Viso"
+  }, {
+    "id": "4",
+    "nombre": "Delfin Huergo"
+  }, {
+    "id": "787",
+    "nombre": "Desvio Aguirre"
+  }, {
+    "id": "243",
+    "nombre": "Diego Gaynor"
+  }, {
+    "id": "795",
+    "nombre": "Dique Lujan"
+  }, {
+    "id": "220",
+    "nombre": "Dique N 1"
+  }, {
+    "id": "40",
+    "nombre": "Dock Sud"
+  }, {
+    "id": "218",
+    "nombre": "Dolores"
+  }, {
+    "id": "781",
+    "nombre": "Domselaar"
+  }, {
+    "id": "684",
+    "nombre": "Don Bosco"
+  }, {
+    "id": "28",
+    "nombre": "Don Orione"
+  }, {
+    "id": "796",
+    "nombre": "Don Torcuato Este"
+  }, {
+    "id": "797",
+    "nombre": "Don Torcuato Oeste"
+  }, {
+    "id": "189",
+    "nombre": "D'Orbigny"
+  }, {
+    "id": "583",
+    "nombre": "Dudignac"
+  }, {
+    "id": "719",
+    "nombre": "Dufaur"
+  }, {
+    "id": "745",
+    "nombre": "Duggan"
+  }, {
+    "id": "822",
+    "nombre": "Dunamar"
+  }, {
+    "id": "165",
+    "nombre": "El Arbolito"
+  }, {
+    "id": "227",
+    "nombre": "El Cazador"
+  }, {
+    "id": "182",
+    "nombre": "El Divisorio"
+  }, {
+    "id": "466",
+    "nombre": "El Dorado"
+  }, {
+    "id": "236",
+    "nombre": "El JagÜEL"
+  }, {
+    "id": "837",
+    "nombre": "El Libertador"
+  }, {
+    "id": "318",
+    "nombre": "El Marquesado"
+  }, {
+    "id": "565",
+    "nombre": "El Palomar"
+  }, {
+    "id": "691",
+    "nombre": "El Paraiso"
+  }, {
+    "id": "83",
+    "nombre": "El Pato"
+  }, {
+    "id": "183",
+    "nombre": "El Pensamiento"
+  }, {
+    "id": "176",
+    "nombre": "El Perdido (Est. Jose A. Guisasola)"
+  }, {
+    "id": "247",
+    "nombre": "El Remanso"
+  }, {
+    "id": "438",
+    "nombre": "El Retiro"
+  }, {
+    "id": "798",
+    "nombre": "El Talar"
+  }, {
+    "id": "462",
+    "nombre": "El Trigo"
+  }, {
+    "id": "476",
+    "nombre": "El Triunfo"
+  }, {
+    "id": "488",
+    "nombre": "Elvira"
+  }, {
+    "id": "206",
+    "nombre": "Emilio Ayarza"
+  }, {
+    "id": "363",
+    "nombre": "Emilio V. Bunge"
+  }, {
+    "id": "221",
+    "nombre": "Ensenada"
+  }, {
+    "id": "765",
+    "nombre": "Erezcano"
+  }, {
+    "id": "852",
+    "nombre": "Ernestina"
+  }, {
+    "id": "883",
+    "nombre": "Escalada"
+  }, {
+    "id": "225",
+    "nombre": "Escobar"
+  }, {
+    "id": "5",
+    "nombre": "Espartillar"
+  }, {
+    "id": "720",
+    "nombre": "Espartillar"
+  }, {
+    "id": "596",
+    "nombre": "Espigas"
+  }, {
+    "id": "276",
+    "nombre": "Estacion Arenales"
+  }, {
+    "id": "321",
+    "nombre": "Estacion Camet"
+  }, {
+    "id": "319",
+    "nombre": "Estacion Chapadmalal"
+  }, {
+    "id": "257",
+    "nombre": "Estanislao Severo Zeballos"
+  }, {
+    "id": "6",
+    "nombre": "Esteban Agustin Gascon"
+  }, {
+    "id": "234",
+    "nombre": "Esteban Echeverria"
+  }, {
+    "id": "670",
+    "nombre": "Estela"
+  }, {
+    "id": "685",
+    "nombre": "Ezpeleta"
+  }, {
+    "id": "686",
+    "nombre": "Ezpeleta Oeste"
+  }, {
+    "id": "177",
+    "nombre": "Faro"
+  }, {
+    "id": "645",
+    "nombre": "Fatima"
+  }, {
+    "id": "671",
+    "nombre": "Felipe Sola"
+  }, {
+    "id": "277",
+    "nombre": "Ferre"
+  }, {
+    "id": "258",
+    "nombre": "Florencio Varela"
+  }, {
+    "id": "267",
+    "nombre": "Florentino Ameghino"
+  }, {
+    "id": "861",
+    "nombre": "Florida"
+  }, {
+    "id": "862",
+    "nombre": "Florida Oeste"
+  }, {
+    "id": "626",
+    "nombre": "Fontezuela"
+  }, {
+    "id": "467",
+    "nombre": "Fortin Acha"
+  }, {
+    "id": "699",
+    "nombre": "Fortin Olavarria"
+  }, {
+    "id": "391",
+    "nombre": "Fortin Tiburcio"
+  }, {
+    "id": "559",
+    "nombre": "Francisco Alvarez"
+  }, {
+    "id": "615",
+    "nombre": "Francisco Madero"
+  }, {
+    "id": "740",
+    "nombre": "Franklin"
+  }, {
+    "id": "537",
+    "nombre": "Frente Mar"
+  }, {
+    "id": "732",
+    "nombre": "Gahan"
+  }, {
+    "id": "788",
+    "nombre": "Gardey"
+  }, {
+    "id": "228",
+    "nombre": "Garin"
+  }, {
+    "id": "374",
+    "nombre": "Garre"
+  }, {
+    "id": "273",
+    "nombre": "General Alvear"
+  }, {
+    "id": "278",
+    "nombre": "General Arenales"
+  }, {
+    "id": "281",
+    "nombre": "General Belgrano"
+  }, {
+    "id": "804",
+    "nombre": "General Conesa"
+  }, {
+    "id": "61",
+    "nombre": "General Daniel Cerri (Est. General Cerri)"
+  }, {
+    "id": "283",
+    "nombre": "General Guido"
+  }, {
+    "id": "292",
+    "nombre": "General Hornos"
+  }, {
+    "id": "286",
+    "nombre": "General Juan Madariaga"
+  }, {
+    "id": "287",
+    "nombre": "General La Madrid"
+  }, {
+    "id": "293",
+    "nombre": "General Las Heras (Est. Las Heras)"
+  }, {
+    "id": "299",
+    "nombre": "General Lavalle"
+  }, {
+    "id": "512",
+    "nombre": "General Mansilla (Est. Bartolome Bavio)"
+  }, {
+    "id": "113",
+    "nombre": "General O'Brien"
+  }, {
+    "id": "799",
+    "nombre": "General Pacheco"
+  }, {
+    "id": "306",
+    "nombre": "General Pinto"
+  }, {
+    "id": "529",
+    "nombre": "General Piran"
+  }, {
+    "id": "784",
+    "nombre": "General Rivas"
+  }, {
+    "id": "327",
+    "nombre": "General Rodriguez"
+  }, {
+    "id": "766",
+    "nombre": "General Rojo"
+  }, {
+    "id": "330",
+    "nombre": "General San Martin"
+  }, {
+    "id": "364",
+    "nombre": "General Villegas (Est. Villegas)"
+  }, {
+    "id": "41",
+    "nombre": "Gerli"
+  }, {
+    "id": "421",
+    "nombre": "Gerli"
+  }, {
+    "id": "307",
+    "nombre": "Germania (Est. Mayor Jose Orellano)"
+  }, {
+    "id": "815",
+    "nombre": "Girodias"
+  }, {
+    "id": "29",
+    "nombre": "Glew"
+  }, {
+    "id": "775",
+    "nombre": "Gobernador Castro"
+  }, {
+    "id": "259",
+    "nombre": "Gobernador Julio A. Costa"
+  }, {
+    "id": "136",
+    "nombre": "Gobernador Udaondo"
+  }, {
+    "id": "853",
+    "nombre": "Gobernador Ugarte"
+  }, {
+    "id": "125",
+    "nombre": "Gomez"
+  }, {
+    "id": "408",
+    "nombre": "Gonzalez Catan"
+  }, {
+    "id": "700",
+    "nombre": "Gonzalez Moreno"
+  }, {
+    "id": "282",
+    "nombre": "Gorchs"
+  }, {
+    "id": "207",
+    "nombre": "Gorostiaga"
+  }, {
+    "id": "545",
+    "nombre": "Gowland"
+  }, {
+    "id": "721",
+    "nombre": "Goyena"
+  }, {
+    "id": "521",
+    "nombre": "Grand Bourg"
+  }, {
+    "id": "409",
+    "nombre": "Gregorio De Laferrere"
+  }, {
+    "id": "56",
+    "nombre": "GrÜNBEIN"
+  }, {
+    "id": "375",
+    "nombre": "Guamini"
+  }, {
+    "id": "665",
+    "nombre": "Guernica"
+  }, {
+    "id": "627",
+    "nombre": "Guerrico"
+  }, {
+    "id": "84",
+    "nombre": "Guillermo Enrique Hudson"
+  }, {
+    "id": "566",
+    "nombre": "Haedo"
+  }, {
+    "id": "103",
+    "nombre": "Hale"
+  }, {
+    "id": "377",
+    "nombre": "Henderson"
+  }, {
+    "id": "378",
+    "nombre": "Herrera Vegas"
+  }, {
+    "id": "874",
+    "nombre": "Hilario Ascasubi"
+  }, {
+    "id": "597",
+    "nombre": "Hinojo"
+  }, {
+    "id": "148",
+    "nombre": "Hortensia"
+  }, {
+    "id": "190",
+    "nombre": "Huanguelen"
+  }, {
+    "id": "379",
+    "nombre": "Hurlingham"
+  }, {
+    "id": "428",
+    "nombre": "Ignacio Correas"
+  }, {
+    "id": "184",
+    "nombre": "Indio Rico"
+  }, {
+    "id": "733",
+    "nombre": "Ines Indart"
+  }, {
+    "id": "522",
+    "nombre": "Ingeniero Adolfo Sourdeaux"
+  }, {
+    "id": "260",
+    "nombre": "Ingeniero Juan Allan"
+  }, {
+    "id": "229",
+    "nombre": "Ingeniero Maschwitz"
+  }, {
+    "id": "523",
+    "nombre": "Ingeniero Pablo Nogues"
+  }, {
+    "id": "848",
+    "nombre": "Ingeniero Thompson"
+  }, {
+    "id": "57",
+    "nombre": "Ingeniero White"
+  }, {
+    "id": "114",
+    "nombre": "Irala"
+  }, {
+    "id": "178",
+    "nombre": "Irene"
+  }, {
+    "id": "69",
+    "nombre": "Irineo Portela"
+  }, {
+    "id": "410",
+    "nombre": "Isidro Casanova"
+  }, {
+    "id": "222",
+    "nombre": "Isla Santiago (Oeste)"
+  }, {
+    "id": "382",
+    "nombre": "Ituzaingo Centro"
+  }, {
+    "id": "383",
+    "nombre": "Ituzaingo Sur"
+  }, {
+    "id": "126",
+    "nombre": "Jeppener"
+  }, {
+    "id": "439",
+    "nombre": "Joaquin Gorina"
+  }, {
+    "id": "609",
+    "nombre": "Jose B. Casas"
+  }, {
+    "id": "386",
+    "nombre": "Jose C. Paz"
+  }, {
+    "id": "440",
+    "nombre": "Jose Hernandez"
+  }, {
+    "id": "838",
+    "nombre": "Jose Ingenieros"
+  }, {
+    "id": "569",
+    "nombre": "Jose Juan Almeyra"
+  }, {
+    "id": "253",
+    "nombre": "Jose Maria Ezeiza"
+  }, {
+    "id": "502",
+    "nombre": "Jose Maria Jauregui (Est. Jauregui)"
+  }, {
+    "id": "30",
+    "nombre": "Jose Marmol"
+  }, {
+    "id": "441",
+    "nombre": "Jose Melchor Romero"
+  }, {
+    "id": "628",
+    "nombre": "Juan A. De La Peña"
+  }, {
+    "id": "610",
+    "nombre": "Juan A. Pradere"
+  }, {
+    "id": "629",
+    "nombre": "Juan Anchorena (Est. Urquiza)"
+  }, {
+    "id": "468",
+    "nombre": "Juan Bautista Alberdi (Est. Alberdi)"
+  }, {
+    "id": "875",
+    "nombre": "Juan Couste (Est. Algarrobo)"
+  }, {
+    "id": "15",
+    "nombre": "Juan E. Barra"
+  }, {
+    "id": "104",
+    "nombre": "Juan F. Ibarra"
+  }, {
+    "id": "616",
+    "nombre": "Juan Jose Paso"
+  }, {
+    "id": "85",
+    "nombre": "Juan Maria Gutierrez"
+  }, {
+    "id": "575",
+    "nombre": "Juan N. Fernandez"
+  }, {
+    "id": "392",
+    "nombre": "Junin"
+  }, {
+    "id": "279",
+    "nombre": "La Angelita"
+  }, {
+    "id": "530",
+    "nombre": "La Armonia"
+  }, {
+    "id": "584",
+    "nombre": "La Aurora (Est. La Niña)"
+  }, {
+    "id": "532",
+    "nombre": "La Baliza"
+  }, {
+    "id": "706",
+    "nombre": "La Beba"
+  }, {
+    "id": "533",
+    "nombre": "La Caleta"
+  }, {
+    "id": "265",
+    "nombre": "La Capilla"
+  }, {
+    "id": "816",
+    "nombre": "La Carreta"
+  }, {
+    "id": "294",
+    "nombre": "La Choza"
+  }, {
+    "id": "288",
+    "nombre": "La Colina"
+  }, {
+    "id": "47",
+    "nombre": "La Constancia"
+  }, {
+    "id": "442",
+    "nombre": "La Cumbre"
+  }, {
+    "id": "356",
+    "nombre": "La Delfina"
+  }, {
+    "id": "767",
+    "nombre": "La Emilia"
+  }, {
+    "id": "734",
+    "nombre": "La Invencible"
+  }, {
+    "id": "215",
+    "nombre": "La Larga"
+  }, {
+    "id": "115",
+    "nombre": "La Limpia"
+  }, {
+    "id": "646",
+    "nombre": "La Lonja"
+  }, {
+    "id": "863",
+    "nombre": "La Lucila"
+  }, {
+    "id": "143",
+    "nombre": "La Luisa"
+  }, {
+    "id": "216",
+    "nombre": "La Manuela"
+  }, {
+    "id": "405",
+    "nombre": "La Matanza"
+  }, {
+    "id": "7",
+    "nombre": "La Pala"
+  }, {
+    "id": "443",
+    "nombre": "La Plata"
+  }, {
+    "id": "560",
+    "nombre": "La Reja"
+  }, {
+    "id": "208",
+    "nombre": "La Rica"
+  }, {
+    "id": "149",
+    "nombre": "La Sofia"
+  }, {
+    "id": "411",
+    "nombre": "La Tablada"
+  }, {
+    "id": "280",
+    "nombre": "La Trinidad"
+  }, {
+    "id": "254",
+    "nombre": "La Union"
+  }, {
+    "id": "630",
+    "nombre": "La Violeta"
+  }, {
+    "id": "284",
+    "nombre": "Labarden"
+  }, {
+    "id": "376",
+    "nombre": "Laguna Alsina (Est. Bonifacio)"
+  }, {
+    "id": "489",
+    "nombre": "Laguna De Lobos"
+  }, {
+    "id": "422",
+    "nombre": "Lanus Este"
+  }, {
+    "id": "423",
+    "nombre": "Lanus Oeste"
+  }, {
+    "id": "393",
+    "nombre": "Laplacette"
+  }, {
+    "id": "458",
+    "nombre": "Laprida"
+  }, {
+    "id": "185",
+    "nombre": "Lartigau"
+  }, {
+    "id": "517",
+    "nombre": "Las Armas"
+  }, {
+    "id": "692",
+    "nombre": "Las Bahamas"
+  }, {
+    "id": "707",
+    "nombre": "Las Carabelas"
+  }, {
+    "id": "463",
+    "nombre": "Las Flores"
+  }, {
+    "id": "570",
+    "nombre": "Las Marianas"
+  }, {
+    "id": "289",
+    "nombre": "Las Martinetas"
+  }, {
+    "id": "678",
+    "nombre": "Las Tahonas"
+  }, {
+    "id": "396",
+    "nombre": "Las Toninas"
+  }, {
+    "id": "477",
+    "nombre": "Las Toscas"
+  }, {
+    "id": "469",
+    "nombre": "Leandro N. Alem"
+  }, {
+    "id": "505",
+    "nombre": "Lezica Y Torrezuri"
+  }, {
+    "id": "290",
+    "nombre": "Libano"
+  }, {
+    "id": "548",
+    "nombre": "Libertad"
+  }, {
+    "id": "482",
+    "nombre": "Licenciado Matienzo"
+  }, {
+    "id": "884",
+    "nombre": "Lima"
+  }, {
+    "id": "824",
+    "nombre": "Lin Calel"
+  }, {
+    "id": "478",
+    "nombre": "Lincoln"
+  }, {
+    "id": "444",
+    "nombre": "Lisandro Olmos"
+  }, {
+    "id": "493",
+    "nombre": "Llavallol"
+  }, {
+    "id": "483",
+    "nombre": "Loberia"
+  }, {
+    "id": "490",
+    "nombre": "Lobos"
+  }, {
+    "id": "839",
+    "nombre": "Loma Hermosa"
+  }, {
+    "id": "302",
+    "nombre": "Loma Verde"
+  }, {
+    "id": "230",
+    "nombre": "Loma Verde"
+  }, {
+    "id": "456",
+    "nombre": "Lomas De Copello"
+  }, {
+    "id": "494",
+    "nombre": "Lomas De Zamora"
+  }, {
+    "id": "412",
+    "nombre": "Lomas Del Mirador"
+  }, {
+    "id": "132",
+    "nombre": "Lomas Del Rio Lujan (Est. Rio Lujan)"
+  }, {
+    "id": "31",
+    "nombre": "Longchamps"
+  }, {
+    "id": "77",
+    "nombre": "Lopez"
+  }, {
+    "id": "672",
+    "nombre": "Lopez Lecube"
+  }, {
+    "id": "198",
+    "nombre": "Los Angeles"
+  }, {
+    "id": "647",
+    "nombre": "Los Cachorros"
+  }, {
+    "id": "244",
+    "nombre": "Los Cardales"
+  }, {
+    "id": "445",
+    "nombre": "Los Hornos"
+  }, {
+    "id": "708",
+    "nombre": "Los Indios"
+  }, {
+    "id": "513",
+    "nombre": "Los Naranjos"
+  }, {
+    "id": "63",
+    "nombre": "Los Pinos"
+  }, {
+    "id": "524",
+    "nombre": "Los Polvorines"
+  }, {
+    "id": "94",
+    "nombre": "Los Talas"
+  }, {
+    "id": "357",
+    "nombre": "Los Toldos"
+  }, {
+    "id": "800",
+    "nombre": "Los Troncos Del Talar"
+  }, {
+    "id": "295",
+    "nombre": "Lozano"
+  }, {
+    "id": "854",
+    "nombre": "Lucas Monteverde"
+  }, {
+    "id": "398",
+    "nombre": "Lucila Del Mar"
+  }, {
+    "id": "237",
+    "nombre": "Luis Guillon"
+  }, {
+    "id": "506",
+    "nombre": "Lujan"
+  }, {
+    "id": "617",
+    "nombre": "Magdala"
+  }, {
+    "id": "514",
+    "nombre": "Magdalena"
+  }, {
+    "id": "518",
+    "nombre": "Maipu"
+  }, {
+    "id": "32",
+    "nombre": "Malvinas Argentinas"
+  }, {
+    "id": "525",
+    "nombre": "Malvinas Argentinas"
+  }, {
+    "id": "446",
+    "nombre": "Manuel B. Gonnet"
+  }, {
+    "id": "585",
+    "nombre": "Manuel B. Gonnet (Est. French)"
+  }, {
+    "id": "203",
+    "nombre": "Manuel J. Cobo (Est. Lezama)"
+  }, {
+    "id": "631",
+    "nombre": "Manuel Ocampo"
+  }, {
+    "id": "648",
+    "nombre": "Manzanares"
+  }, {
+    "id": "649",
+    "nombre": "Manzone"
+  }, {
+    "id": "232",
+    "nombre": "Maquinista F. Savio Este"
+  }, {
+    "id": "650",
+    "nombre": "Maquinista F. Savio Oeste"
+  }, {
+    "id": "869",
+    "nombre": "Mar Azul"
+  }, {
+    "id": "531",
+    "nombre": "Mar Chiquita"
+  }, {
+    "id": "399",
+    "nombre": "Mar De Ajo"
+  }, {
+    "id": "400",
+    "nombre": "Mar De Ajo Norte"
+  }, {
+    "id": "534",
+    "nombre": "Mar De Cobo"
+  }, {
+    "id": "870",
+    "nombre": "Mar De Las Pampas"
+  }, {
+    "id": "322",
+    "nombre": "Mar Del Plata"
+  }, {
+    "id": "270",
+    "nombre": "Mar Del Sur"
+  }, {
+    "id": "403",
+    "nombre": "Mar Del Tuyu"
+  }, {
+    "id": "586",
+    "nombre": "Marcelino Ugarte (Est. Dennehy)"
+  }, {
+    "id": "544",
+    "nombre": "Marcos Paz"
+  }, {
+    "id": "789",
+    "nombre": "Maria Ignacia (Est. Vela)"
+  }, {
+    "id": "549",
+    "nombre": "Mariano Acosta"
+  }, {
+    "id": "632",
+    "nombre": "Mariano Benitez"
+  }, {
+    "id": "633",
+    "nombre": "Mariano H. Alfonzo (Est. San Patricio)"
+  }, {
+    "id": "105",
+    "nombre": "Mariano Unzue"
+  }, {
+    "id": "840",
+    "nombre": "Martin Coronado"
+  }, {
+    "id": "757",
+    "nombre": "Martinez"
+  }, {
+    "id": "365",
+    "nombre": "Massey (Est. Elordi)"
+  }, {
+    "id": "231",
+    "nombre": "Matheu"
+  }, {
+    "id": "150",
+    "nombre": "Mauricio Hirsch"
+  }, {
+    "id": "116",
+    "nombre": "Maximo Fernandez (Est. Juan F. Salaberry)"
+  }, {
+    "id": "138",
+    "nombre": "Maximo Paz"
+  }, {
+    "id": "876",
+    "nombre": "Mayor Buratovich"
+  }, {
+    "id": "8",
+    "nombre": "Maza"
+  }, {
+    "id": "19",
+    "nombre": "Mechita"
+  }, {
+    "id": "117",
+    "nombre": "Mechita (Est. Mecha)"
+  }, {
+    "id": "271",
+    "nombre": "Mechongue"
+  }, {
+    "id": "878",
+    "nombre": "Medanos"
+  }, {
+    "id": "546",
+    "nombre": "Mercedes"
+  }, {
+    "id": "550",
+    "nombre": "Merlo"
+  }, {
+    "id": "825",
+    "nombre": "Micaela Cascallares (Est. Cascallares)"
+  }, {
+    "id": "33",
+    "nombre": "Ministro Rivadavia"
+  }, {
+    "id": "701",
+    "nombre": "Mira Pampa"
+  }, {
+    "id": "272",
+    "nombre": "Miramar"
+  }, {
+    "id": "151",
+    "nombre": "Moctezuma"
+  }, {
+    "id": "618",
+    "nombre": "Mones Cazon"
+  }, {
+    "id": "424",
+    "nombre": "Monte Chingolo"
+  }, {
+    "id": "238",
+    "nombre": "Monte Grande"
+  }, {
+    "id": "557",
+    "nombre": "Monte Hermoso"
+  }, {
+    "id": "209",
+    "nombre": "Moquehua"
+  }, {
+    "id": "587",
+    "nombre": "Morea"
+  }, {
+    "id": "561",
+    "nombre": "Moreno"
+  }, {
+    "id": "567",
+    "nombre": "Moron"
+  }, {
+    "id": "394",
+    "nombre": "Morse"
+  }, {
+    "id": "864",
+    "nombre": "Munro"
+  }, {
+    "id": "762",
+    "nombre": "Muñiz"
+  }, {
+    "id": "64",
+    "nombre": "Napaleofu"
+  }, {
+    "id": "571",
+    "nombre": "Navarro"
+  }, {
+    "id": "576",
+    "nombre": "Necochea"
+  }, {
+    "id": "578",
+    "nombre": "Nicanor Olivera (Est. La Dulce)"
+  }, {
+    "id": "855",
+    "nombre": "Norberto De La Riestra"
+  }, {
+    "id": "588",
+    "nombre": "Norumbega"
+  }, {
+    "id": "619",
+    "nombre": "Nueva Plata"
+  }, {
+    "id": "776",
+    "nombre": "Obligado"
+  }, {
+    "id": "749",
+    "nombre": "Ochandio"
+  }, {
+    "id": "199",
+    "nombre": "O'Higgins"
+  }, {
+    "id": "118",
+    "nombre": "Olascoaga"
+  }, {
+    "id": "598",
+    "nombre": "Olavarria"
+  }, {
+    "id": "127",
+    "nombre": "Oliden"
+  }, {
+    "id": "507",
+    "nombre": "Olivera"
+  }, {
+    "id": "865",
+    "nombre": "Olivos"
+  }, {
+    "id": "509",
+    "nombre": "Open Door"
+  }, {
+    "id": "152",
+    "nombre": "Ordoqui"
+  }, {
+    "id": "826",
+    "nombre": "Orense"
+  }, {
+    "id": "179",
+    "nombre": "Oriente"
+  }, {
+    "id": "660",
+    "nombre": "Ostende"
+  }, {
+    "id": "842",
+    "nombre": "Pablo Podesta"
+  }, {
+    "id": "245",
+    "nombre": "Parada Orlando"
+  }, {
+    "id": "248",
+    "nombre": "Parada Robles"
+  }, {
+    "id": "246",
+    "nombre": "Parada Robles - Pavon"
+  }, {
+    "id": "464",
+    "nombre": "Pardo"
+  }, {
+    "id": "191",
+    "nombre": "Pasman"
+  }, {
+    "id": "562",
+    "nombre": "Paso Del Rey"
+  }, {
+    "id": "479",
+    "nombre": "Pasteur"
+  }, {
+    "id": "590",
+    "nombre": "Patricios"
+  }, {
+    "id": "106",
+    "nombre": "Paula"
+  }, {
+    "id": "249",
+    "nombre": "Pavon"
+  }, {
+    "id": "300",
+    "nombre": "Pavon"
+  }, {
+    "id": "166",
+    "nombre": "Pearson"
+  }, {
+    "id": "856",
+    "nombre": "Pedernales"
+  }, {
+    "id": "879",
+    "nombre": "Pedro Luro"
+  }, {
+    "id": "620",
+    "nombre": "Pehuajo"
+  }, {
+    "id": "624",
+    "nombre": "Pellegrini"
+  }, {
+    "id": "86",
+    "nombre": "Pereyra"
+  }, {
+    "id": "693",
+    "nombre": "Perez Millan"
+  }, {
+    "id": "634",
+    "nombre": "Pergamino"
+  }, {
+    "id": "366",
+    "nombre": "Pichincha"
+  }, {
+    "id": "367",
+    "nombre": "Piedritas"
+  }, {
+    "id": "484",
+    "nombre": "Pieres"
+  }, {
+    "id": "722",
+    "nombre": "PigÜE"
+  }, {
+    "id": "640",
+    "nombre": "Pila"
+  }, {
+    "id": "651",
+    "nombre": "Pilar"
+  }, {
+    "id": "661",
+    "nombre": "Pinamar"
+  }, {
+    "id": "635",
+    "nombre": "Pinzon"
+  }, {
+    "id": "42",
+    "nombre": "Piñeyro"
+  }, {
+    "id": "679",
+    "nombre": "Pipinas"
+  }, {
+    "id": "107",
+    "nombre": "Pirovano"
+  }, {
+    "id": "20",
+    "nombre": "Pla"
+  }, {
+    "id": "87",
+    "nombre": "Platanos"
+  }, {
+    "id": "538",
+    "nombre": "Playa Dorada"
+  }, {
+    "id": "296",
+    "nombre": "Plomer"
+  }, {
+    "id": "728",
+    "nombre": "Polvaredas"
+  }, {
+    "id": "291",
+    "nombre": "Pontaut"
+  }, {
+    "id": "551",
+    "nombre": "Pontevedra"
+  }, {
+    "id": "268",
+    "nombre": "Porvenir"
+  }, {
+    "id": "652",
+    "nombre": "Presidente Derqui"
+  }, {
+    "id": "663",
+    "nombre": "Presidente Peron"
+  }, {
+    "id": "673",
+    "nombre": "Puan"
+  }, {
+    "id": "777",
+    "nombre": "Pueblo Doyle"
+  }, {
+    "id": "160",
+    "nombre": "Pueblo Gouin"
+  }, {
+    "id": "459",
+    "nombre": "Pueblo Nuevo"
+  }, {
+    "id": "460",
+    "nombre": "Pueblo San Jorge"
+  }, {
+    "id": "233",
+    "nombre": "Puerto Parana"
+  }, {
+    "id": "170",
+    "nombre": "Punta Alta (Est. Almirante Solier)"
+  }, {
+    "id": "680",
+    "nombre": "Punta Indio"
+  }, {
+    "id": "223",
+    "nombre": "Punta Lara"
+  }, {
+    "id": "323",
+    "nombre": "Punta Mogotes"
+  }, {
+    "id": "736",
+    "nombre": "Quenuma"
+  }, {
+    "id": "577",
+    "nombre": "Quequen"
+  }, {
+    "id": "687",
+    "nombre": "Quilmes"
+  }, {
+    "id": "688",
+    "nombre": "Quilmes Oeste"
+  }, {
+    "id": "34",
+    "nombre": "Rafael Calzada"
+  }, {
+    "id": "413",
+    "nombre": "Rafael Castillo"
+  }, {
+    "id": "709",
+    "nombre": "Rafael Obligado"
+  }, {
+    "id": "694",
+    "nombre": "Ramallo"
+  }, {
+    "id": "210",
+    "nombre": "Ramon Biaus"
+  }, {
+    "id": "579",
+    "nombre": "Ramon Santamarina"
+  }, {
+    "id": "414",
+    "nombre": "Ramos Mejia"
+  }, {
+    "id": "65",
+    "nombre": "Ramos Otero"
+  }, {
+    "id": "636",
+    "nombre": "Rancagua"
+  }, {
+    "id": "303",
+    "nombre": "Ranchos"
+  }, {
+    "id": "88",
+    "nombre": "Ranelagh"
+  }, {
+    "id": "697",
+    "nombre": "Rauch"
+  }, {
+    "id": "200",
+    "nombre": "Rawson"
+  }, {
+    "id": "599",
+    "nombre": "Recalde"
+  }, {
+    "id": "843",
+    "nombre": "Remedios De Escalada"
+  }, {
+    "id": "425",
+    "nombre": "Remedios Escalada De San Martin"
+  }, {
+    "id": "827",
+    "nombre": "Reta"
+  }, {
+    "id": "801",
+    "nombre": "Ricardo Rojas"
+  }, {
+    "id": "802",
+    "nombre": "Rincon De Milberg"
+  }, {
+    "id": "447",
+    "nombre": "Ringuelet"
+  }, {
+    "id": "778",
+    "nombre": "Rio Tala"
+  }, {
+    "id": "9",
+    "nombre": "Rivera"
+  }, {
+    "id": "710",
+    "nombre": "Roberto Cano"
+  }, {
+    "id": "653",
+    "nombre": "Roberto De Vicenzo"
+  }, {
+    "id": "515",
+    "nombre": "Roberto J. Payro"
+  }, {
+    "id": "480",
+    "nombre": "Roberts"
+  }, {
+    "id": "711",
+    "nombre": "Rojas"
+  }, {
+    "id": "702",
+    "nombre": "Roosevelt"
+  }, {
+    "id": "716",
+    "nombre": "Roque Perez"
+  }, {
+    "id": "448",
+    "nombre": "Rufino De Elizalde"
+  }, {
+    "id": "457",
+    "nombre": "Ruta Sol"
+  }, {
+    "id": "723",
+    "nombre": "Saavedra"
+  }, {
+    "id": "844",
+    "nombre": "Saenz Peña"
+  }, {
+    "id": "395",
+    "nombre": "Saforcada"
+  }, {
+    "id": "729",
+    "nombre": "Saladillo"
+  }, {
+    "id": "217",
+    "nombre": "Salazar"
+  }, {
+    "id": "807",
+    "nombre": "Saldungaray"
+  }, {
+    "id": "737",
+    "nombre": "Salliquelo"
+  }, {
+    "id": "735",
+    "nombre": "Salto"
+  }, {
+    "id": "491",
+    "nombre": "Salvador Maria"
+  }, {
+    "id": "128",
+    "nombre": "Samborombon"
+  }, {
+    "id": "66",
+    "nombre": "San Agustin"
+  }, {
+    "id": "741",
+    "nombre": "San Andres De Giles"
+  }, {
+    "id": "746",
+    "nombre": "San Antonio De Areco"
+  }, {
+    "id": "552",
+    "nombre": "San Antonio De Padua"
+  }, {
+    "id": "401",
+    "nombre": "San Bernardo"
+  }, {
+    "id": "621",
+    "nombre": "San Bernardo (Est. Guanaco)"
+  }, {
+    "id": "108",
+    "nombre": "San Carlos De Bolivar (Est. Bolivar)"
+  }, {
+    "id": "750",
+    "nombre": "San Cayetano"
+  }, {
+    "id": "402",
+    "nombre": "San Clemente Del Tuyu"
+  }, {
+    "id": "358",
+    "nombre": "San Emilio"
+  }, {
+    "id": "857",
+    "nombre": "San Enrique"
+  }, {
+    "id": "751",
+    "nombre": "San Fernando"
+  }, {
+    "id": "828",
+    "nombre": "San Francisco De Bellocq"
+  }, {
+    "id": "35",
+    "nombre": "San Francisco Solano"
+  }, {
+    "id": "689",
+    "nombre": "San Francisco Solano"
+  }, {
+    "id": "674",
+    "nombre": "San German"
+  }, {
+    "id": "758",
+    "nombre": "San Isidro"
+  }, {
+    "id": "192",
+    "nombre": "San Jose"
+  }, {
+    "id": "36",
+    "nombre": "San Jose"
+  }, {
+    "id": "415",
+    "nombre": "San Justo"
+  }, {
+    "id": "485",
+    "nombre": "San Manuel"
+  }, {
+    "id": "703",
+    "nombre": "San Mauricio"
+  }, {
+    "id": "829",
+    "nombre": "San Mayol"
+  }, {
+    "id": "763",
+    "nombre": "San Miguel"
+  }, {
+    "id": "554",
+    "nombre": "San Miguel Del Monte (Est. Monte)"
+  }, {
+    "id": "773",
+    "nombre": "San Nicolas De Los Arroyos"
+  }, {
+    "id": "779",
+    "nombre": "San Pedro"
+  }, {
+    "id": "180",
+    "nombre": "San Roman"
+  }, {
+    "id": "211",
+    "nombre": "San Sebastian"
+  }, {
+    "id": "783",
+    "nombre": "San Vicente"
+  }, {
+    "id": "704",
+    "nombre": "Sansinena"
+  }, {
+    "id": "539",
+    "nombre": "Santa Clara Del Mar"
+  }, {
+    "id": "70",
+    "nombre": "Santa Coloma"
+  }, {
+    "id": "540",
+    "nombre": "Santa Elena"
+  }, {
+    "id": "368",
+    "nombre": "Santa Eleodora"
+  }, {
+    "id": "780",
+    "nombre": "Santa Lucia"
+  }, {
+    "id": "600",
+    "nombre": "Santa Luisa"
+  }, {
+    "id": "193",
+    "nombre": "Santa Maria"
+  }, {
+    "id": "369",
+    "nombre": "Santa Regina"
+  }, {
+    "id": "139",
+    "nombre": "Santa Rosa"
+  }, {
+    "id": "654",
+    "nombre": "Santa Teresa"
+  }, {
+    "id": "404",
+    "nombre": "Santa Teresita"
+  }, {
+    "id": "194",
+    "nombre": "Santa Trinidad"
+  }, {
+    "id": "519",
+    "nombre": "Santo Domingo"
+  }, {
+    "id": "845",
+    "nombre": "Santos Lugares"
+  }, {
+    "id": "43",
+    "nombre": "Sarandi"
+  }, {
+    "id": "167",
+    "nombre": "Sarasa"
+  }, {
+    "id": "219",
+    "nombre": "Sevigne"
+  }, {
+    "id": "601",
+    "nombre": "Sierra Chica"
+  }, {
+    "id": "808",
+    "nombre": "Sierra De La Ventana"
+  }, {
+    "id": "324",
+    "nombre": "Sierra De Los Padres"
+  }, {
+    "id": "602",
+    "nombre": "Sierras Bayas"
+  }, {
+    "id": "153",
+    "nombre": "Smith"
+  }, {
+    "id": "712",
+    "nombre": "Sol De Mayo"
+  }, {
+    "id": "48",
+    "nombre": "Solanet"
+  }, {
+    "id": "742",
+    "nombre": "Solis"
+  }, {
+    "id": "611",
+    "nombre": "Stroeder"
+  }, {
+    "id": "785",
+    "nombre": "Suipacha"
+  }, {
+    "id": "705",
+    "nombre": "Sundblad"
+  }, {
+    "id": "486",
+    "nombre": "Tamangueyu"
+  }, {
+    "id": "790",
+    "nombre": "Tandil"
+  }, {
+    "id": "792",
+    "nombre": "Tapalque"
+  }, {
+    "id": "416",
+    "nombre": "Tapiales"
+  }, {
+    "id": "78",
+    "nombre": "Tedin Uriburu"
+  }, {
+    "id": "495",
+    "nombre": "Temperley"
+  }, {
+    "id": "880",
+    "nombre": "Teniente Origone"
+  }, {
+    "id": "10",
+    "nombre": "Thames"
+  }, {
+    "id": "803",
+    "nombre": "Tigre"
+  }, {
+    "id": "157",
+    "nombre": "Timote"
+  }, {
+    "id": "73",
+    "nombre": "Todd"
+  }, {
+    "id": "449",
+    "nombre": "Tolosa"
+  }, {
+    "id": "547",
+    "nombre": "Tomas Jofre"
+  }, {
+    "id": "809",
+    "nombre": "Tornquist"
+  }, {
+    "id": "510",
+    "nombre": "Torres"
+  }, {
+    "id": "526",
+    "nombre": "Tortuguitas"
+  }, {
+    "id": "655",
+    "nombre": "Tortuguitas"
+  }, {
+    "id": "387",
+    "nombre": "Tortuguitas"
+  }, {
+    "id": "450",
+    "nombre": "Transradio"
+  }, {
+    "id": "818",
+    "nombre": "Trenque Lauquen"
+  }, {
+    "id": "158",
+    "nombre": "Tres Algarrobos (Est. Cuenca)"
+  }, {
+    "id": "830",
+    "nombre": "Tres Arroyos"
+  }, {
+    "id": "832",
+    "nombre": "Tres De Febrero"
+  }, {
+    "id": "849",
+    "nombre": "Tres Lomas"
+  }, {
+    "id": "810",
+    "nombre": "Tres Picos"
+  }, {
+    "id": "161",
+    "nombre": "Tres Sargentos"
+  }, {
+    "id": "255",
+    "nombre": "Tristan Suarez"
+  }, {
+    "id": "819",
+    "nombre": "Tronge"
+  }, {
+    "id": "563",
+    "nombre": "Trujui"
+  }, {
+    "id": "496",
+    "nombre": "Turdera"
+  }, {
+    "id": "49",
+    "nombre": "Udaquiola"
+  }, {
+    "id": "109",
+    "nombre": "Urdampilleta"
+  }, {
+    "id": "140",
+    "nombre": "Uribelarrea"
+  }, {
+    "id": "858",
+    "nombre": "Valdes"
+  }, {
+    "id": "426",
+    "nombre": "Valentin Alsina"
+  }, {
+    "id": "662",
+    "nombre": "Valeria Del Mar"
+  }, {
+    "id": "16",
+    "nombre": "Vasquez"
+  }, {
+    "id": "470",
+    "nombre": "Vedia"
+  }, {
+    "id": "793",
+    "nombre": "Velloso"
+  }, {
+    "id": "681",
+    "nombre": "Veronica"
+  }, {
+    "id": "141",
+    "nombre": "Vicente Casares"
+  }, {
+    "id": "866",
+    "nombre": "Vicente Lopez"
+  }, {
+    "id": "752",
+    "nombre": "Victoria"
+  }, {
+    "id": "516",
+    "nombre": "Vieytes"
+  }, {
+    "id": "418",
+    "nombre": "Villa  Eduardo Madero"
+  }, {
+    "id": "867",
+    "nombre": "Villa Adelina"
+  }, {
+    "id": "759",
+    "nombre": "Villa Adelina"
+  }, {
+    "id": "604",
+    "nombre": "Villa Alfredo Fortabat"
+  }, {
+    "id": "71",
+    "nombre": "Villa Alsina (Est. Alsina)"
+  }, {
+    "id": "637",
+    "nombre": "Villa Angelica (Est. El Socorro)"
+  }, {
+    "id": "95",
+    "nombre": "Villa ArgÜELLO"
+  }, {
+    "id": "603",
+    "nombre": "Villa Arrieta"
+  }, {
+    "id": "656",
+    "nombre": "Villa Astolfi"
+  }, {
+    "id": "332",
+    "nombre": "Villa Ayacucho"
+  }, {
+    "id": "333",
+    "nombre": "Villa Ballester"
+  }, {
+    "id": "334",
+    "nombre": "Villa Bernardo Monteagudo"
+  }, {
+    "id": "58",
+    "nombre": "Villa Bordeau"
+  }, {
+    "id": "846",
+    "nombre": "Villa Bosch (Est. Juan Maria Bosch)"
+  }, {
+    "id": "261",
+    "nombre": "Villa Brown"
+  }, {
+    "id": "79",
+    "nombre": "Villa Cacique (Est. Alfredo Fortabat)"
+  }, {
+    "id": "768",
+    "nombre": "Villa Campi"
+  }, {
+    "id": "769",
+    "nombre": "Villa Canto"
+  }, {
+    "id": "675",
+    "nombre": "Villa Castelar (Est. Erize)"
+  }, {
+    "id": "224",
+    "nombre": "Villa Catela"
+  }, {
+    "id": "497",
+    "nombre": "Villa Centenario"
+  }, {
+    "id": "335",
+    "nombre": "Villa Chacabuco"
+  }, {
+    "id": "336",
+    "nombre": "Villa Coronel Jose M. Zapiola"
+  }, {
+    "id": "527",
+    "nombre": "Villa De Mayo"
+  }, {
+    "id": "171",
+    "nombre": "Villa Del Mar"
+  }, {
+    "id": "96",
+    "nombre": "Villa Dolores"
+  }, {
+    "id": "44",
+    "nombre": "Villa Dominico"
+  }, {
+    "id": "451",
+    "nombre": "Villa Elisa"
+  }, {
+    "id": "452",
+    "nombre": "Villa Elvira"
+  }, {
+    "id": "89",
+    "nombre": "Villa España"
+  }, {
+    "id": "774",
+    "nombre": "Villa Esperanza"
+  }, {
+    "id": "743",
+    "nombre": "Villa Espil"
+  }, {
+    "id": "59",
+    "nombre": "Villa Espora"
+  }, {
+    "id": "498",
+    "nombre": "Villa Fiorito"
+  }, {
+    "id": "503",
+    "nombre": "Villa Flandria Norte"
+  }, {
+    "id": "504",
+    "nombre": "Villa Flandria Sur"
+  }, {
+    "id": "308",
+    "nombre": "Villa Francia (Est. Coronel Granada)"
+  }, {
+    "id": "453",
+    "nombre": "Villa Garibaldi"
+  }, {
+    "id": "337",
+    "nombre": "Villa General Antonio J. De Sucre"
+  }, {
+    "id": "172",
+    "nombre": "Villa General Arias (Est. Kilometro 638)"
+  }, {
+    "id": "338",
+    "nombre": "Villa General Eugenio Necochea"
+  }, {
+    "id": "591",
+    "nombre": "Villa General Fournier (Est. 9 De Julio Sud)"
+  }, {
+    "id": "339",
+    "nombre": "Villa General Jose Tomas Guido"
+  }, {
+    "id": "340",
+    "nombre": "Villa General Juan G. Las Heras"
+  }, {
+    "id": "695",
+    "nombre": "Villa General Savio (Est. Sanchez)"
+  }, {
+    "id": "871",
+    "nombre": "Villa Gesell"
+  }, {
+    "id": "384",
+    "nombre": "Villa Gobernador Udaondo"
+  }, {
+    "id": "341",
+    "nombre": "Villa Godoy Cruz"
+  }, {
+    "id": "342",
+    "nombre": "Villa Granaderos De San Martin"
+  }, {
+    "id": "343",
+    "nombre": "Villa Gregoria Matorras"
+  }, {
+    "id": "21",
+    "nombre": "Villa Grisolia (Est. Achupallas)"
+  }, {
+    "id": "771",
+    "nombre": "Villa Hermosa"
+  }, {
+    "id": "97",
+    "nombre": "Villa Independencia"
+  }, {
+    "id": "676",
+    "nombre": "Villa Iris"
+  }, {
+    "id": "344",
+    "nombre": "Villa Jose Leon Suarez"
+  }, {
+    "id": "345",
+    "nombre": "Villa Juan Martin De Pueyrredon"
+  }, {
+    "id": "195",
+    "nombre": "Villa La Arcadia"
+  }, {
+    "id": "690",
+    "nombre": "Villa La Florida"
+  }, {
+    "id": "605",
+    "nombre": "Villa La Serrania"
+  }, {
+    "id": "67",
+    "nombre": "Villa Laguna La Brava"
+  }, {
+    "id": "811",
+    "nombre": "Villa Las Encadenadas"
+  }, {
+    "id": "747",
+    "nombre": "Villa Lia"
+  }, {
+    "id": "346",
+    "nombre": "Villa Libertad"
+  }, {
+    "id": "419",
+    "nombre": "Villa Luzuriaga"
+  }, {
+    "id": "347",
+    "nombre": "Villa Lynch"
+  }, {
+    "id": "110",
+    "nombre": "Villa Lynch Pueyrredon"
+  }, {
+    "id": "348",
+    "nombre": "Villa Maipu"
+  }, {
+    "id": "713",
+    "nombre": "Villa Manuel Pomar"
+  }, {
+    "id": "11",
+    "nombre": "Villa Margarita"
+  }, {
+    "id": "22",
+    "nombre": "Villa Maria"
+  }, {
+    "id": "349",
+    "nombre": "Villa Maria Irene De Los Remedios De Escalada"
+  }, {
+    "id": "350",
+    "nombre": "Villa Marques Alejandro Maria De Aguado"
+  }, {
+    "id": "868",
+    "nombre": "Villa Martelli"
+  }, {
+    "id": "572",
+    "nombre": "Villa Moll (Est. Moll)"
+  }, {
+    "id": "454",
+    "nombre": "Villa Montoro"
+  }, {
+    "id": "98",
+    "nombre": "Villa Nueva"
+  }, {
+    "id": "23",
+    "nombre": "Villa Ortiz (Est. Coronel Mom)"
+  }, {
+    "id": "714",
+    "nombre": "Villa Parque Cecir"
+  }, {
+    "id": "204",
+    "nombre": "Villa Parque Girado"
+  }, {
+    "id": "351",
+    "nombre": "Villa Parque Presidente Figueroa Alcorta"
+  }, {
+    "id": "352",
+    "nombre": "Villa Parque San Lorenzo"
+  }, {
+    "id": "455",
+    "nombre": "Villa Parque Sicardi"
+  }, {
+    "id": "99",
+    "nombre": "Villa Porteña"
+  }, {
+    "id": "100",
+    "nombre": "Villa Progreso"
+  }, {
+    "id": "847",
+    "nombre": "Villa Raffo"
+  }, {
+    "id": "696",
+    "nombre": "Villa Ramallo"
+  }, {
+    "id": "770",
+    "nombre": "Villa Riccio"
+  }, {
+    "id": "805",
+    "nombre": "Villa Roch"
+  }, {
+    "id": "831",
+    "nombre": "Villa Rodriguez (Est. Barrow)"
+  }, {
+    "id": "657",
+    "nombre": "Villa Rosa"
+  }, {
+    "id": "309",
+    "nombre": "Villa Roth (Est. Ingeniero Balbin)"
+  }, {
+    "id": "744",
+    "nombre": "Villa Ruiz"
+  }, {
+    "id": "370",
+    "nombre": "Villa Saboya"
+  }, {
+    "id": "353",
+    "nombre": "Villa San Andres"
+  }, {
+    "id": "101",
+    "nombre": "Villa San Carlos"
+  }, {
+    "id": "638",
+    "nombre": "Villa San Jose"
+  }, {
+    "id": "262",
+    "nombre": "Villa San Luis"
+  }, {
+    "id": "263",
+    "nombre": "Villa Santa Rosa"
+  }, {
+    "id": "380",
+    "nombre": "Villa Santos Tesei"
+  }, {
+    "id": "568",
+    "nombre": "Villa Sarmiento"
+  }, {
+    "id": "371",
+    "nombre": "Villa Sauze"
+  }, {
+    "id": "812",
+    "nombre": "Villa Serrana La Gruta"
+  }, {
+    "id": "264",
+    "nombre": "Villa Vatteone"
+  }, {
+    "id": "813",
+    "nombre": "Villa Ventana"
+  }, {
+    "id": "354",
+    "nombre": "Villa Yapeyu"
+  }, {
+    "id": "102",
+    "nombre": "Villa Zula"
+  }, {
+    "id": "612",
+    "nombre": "Villalonga"
+  }, {
+    "id": "304",
+    "nombre": "Villanueva  (Ap. Rio Salado)"
+  }, {
+    "id": "297",
+    "nombre": "Villars"
+  }, {
+    "id": "74",
+    "nombre": "Viña"
+  }, {
+    "id": "420",
+    "nombre": "Virrey Del Pino"
+  }, {
+    "id": "753",
+    "nombre": "Virreyes"
+  }, {
+    "id": "541",
+    "nombre": "Vivorata"
+  }, {
+    "id": "119",
+    "nombre": "Warnes"
+  }, {
+    "id": "45",
+    "nombre": "Wilde"
+  }, {
+    "id": "381",
+    "nombre": "William C. Morris"
+  }, {
+    "id": "12",
+    "nombre": "Yutuyaco"
+  }, {
+    "id": "885",
+    "nombre": "Zarate"
+  }, {
+    "id": "359",
+    "nombre": "Zavalia"
+  }, {
+    "id": "658",
+    "nombre": "Zelaya"
+  }, {
+    "id": "555",
+    "nombre": "Zenon Videla Dorna"
+  }, {
+    "id": "240",
+    "nombre": "Zona Aeropuerto Internacional Ezeiza"
+  }, {
+    "id": "841",
+    "nombre": "11 De Septiembre"
+  }, {
+    "id": "582",
+    "nombre": "12 De Octubre"
+  }, {
+    "id": "54",
+    "nombre": "16 De Julio"
+  }, {
+    "id": "669",
+    "nombre": "17 De Agosto"
+  }, {
+    "id": "417",
+    "nombre": "20 De Junio"
+  }, {
+    "id": "859",
+    "nombre": "25 De Mayo"
+  }, {
+    "id": "817",
+    "nombre": "30 De Agosto"
+  }, {
+    "id": "239",
+    "nombre": "9 De Abril"
+  }, {
+    "id": "589",
+    "nombre": "9 De Julio"
+  }]
+}, {
+  "id": 10,
+  "nombre": "Catamarca",
+  "ciudades": [{
+    "id": "909",
+    "nombre": "Aconquija"
+  }, {
+    "id": "934",
+    "nombre": "Adolfo E. Carranza"
+  }, {
+    "id": "1030",
+    "nombre": "Alijilan"
+  }, {
+    "id": "910",
+    "nombre": "Alto De Las Juntas"
+  }, {
+    "id": "983",
+    "nombre": "Amadores"
+  }, {
+    "id": "902",
+    "nombre": "Amanao"
+  }, {
+    "id": "898",
+    "nombre": "Ancasti"
+  }, {
+    "id": "903",
+    "nombre": "Andalgala"
+  }, {
+    "id": "1005",
+    "nombre": "Andalhuala"
+  }, {
+    "id": "1037",
+    "nombre": "Anillaco"
+  }, {
+    "id": "899",
+    "nombre": "Anquincila"
+  }, {
+    "id": "1038",
+    "nombre": "Antinaco"
+  }, {
+    "id": "915",
+    "nombre": "Antofagasta De La Sierra"
+  }, {
+    "id": "916",
+    "nombre": "Antofalla"
+  }, {
+    "id": "994",
+    "nombre": "Apoyaco"
+  }, {
+    "id": "935",
+    "nombre": "Balde De La Punta"
+  }, {
+    "id": "1039",
+    "nombre": "Banda De Lucero"
+  }, {
+    "id": "1031",
+    "nombre": "Bañado De Ovanta"
+  }, {
+    "id": "919",
+    "nombre": "Barranca Larga"
+  }, {
+    "id": "949",
+    "nombre": "Barrio Bancario"
+  }, {
+    "id": "920",
+    "nombre": "Belen"
+  }, {
+    "id": "907",
+    "nombre": "Buena Vista"
+  }, {
+    "id": "936",
+    "nombre": "Capayan"
+  }, {
+    "id": "968",
+    "nombre": "Casa De Piedra"
+  }, {
+    "id": "1023",
+    "nombre": "Casa De Piedra"
+  }, {
+    "id": "1006",
+    "nombre": "Caspichango"
+  }, {
+    "id": "1040",
+    "nombre": "Cerro Negro"
+  }, {
+    "id": "1007",
+    "nombre": "Chañar Punco"
+  }, {
+    "id": "904",
+    "nombre": "Chaquiago"
+  }, {
+    "id": "905",
+    "nombre": "Choya"
+  }, {
+    "id": "886",
+    "nombre": "Chuchucaruana"
+  }, {
+    "id": "937",
+    "nombre": "Chumbicha"
+  }, {
+    "id": "995",
+    "nombre": "Colana"
+  }, {
+    "id": "958",
+    "nombre": "Collagasta"
+  }, {
+    "id": "938",
+    "nombre": "Colonia Del Valle"
+  }, {
+    "id": "939",
+    "nombre": "Colonia Nueva Coneta"
+  }, {
+    "id": "996",
+    "nombre": "Colpes"
+  }, {
+    "id": "887",
+    "nombre": "Colpes"
+  }, {
+    "id": "940",
+    "nombre": "Concepcion"
+  }, {
+    "id": "921",
+    "nombre": "Condor Huasi"
+  }, {
+    "id": "941",
+    "nombre": "Coneta"
+  }, {
+    "id": "1041",
+    "nombre": "Copacabana"
+  }, {
+    "id": "1043",
+    "nombre": "Cordobita"
+  }, {
+    "id": "922",
+    "nombre": "Corral Quemado"
+  }, {
+    "id": "1044",
+    "nombre": "Costa De Reyes"
+  }, {
+    "id": "906",
+    "nombre": "El Alamito"
+  }, {
+    "id": "908",
+    "nombre": "El Alamito"
+  }, {
+    "id": "952",
+    "nombre": "El Alto"
+  }, {
+    "id": "969",
+    "nombre": "El Aybal"
+  }, {
+    "id": "1061",
+    "nombre": "El Bañado"
+  }, {
+    "id": "970",
+    "nombre": "El Bañado"
+  }, {
+    "id": "942",
+    "nombre": "El Bañado"
+  }, {
+    "id": "888",
+    "nombre": "El Bolson"
+  }, {
+    "id": "1010",
+    "nombre": "El Cajon"
+  }, {
+    "id": "1018",
+    "nombre": "El Cerrito"
+  }, {
+    "id": "1011",
+    "nombre": "El Desmonte"
+  }, {
+    "id": "971",
+    "nombre": "El Divisadero"
+  }, {
+    "id": "923",
+    "nombre": "El Durazno"
+  }, {
+    "id": "961",
+    "nombre": "El Hueco"
+  }, {
+    "id": "911",
+    "nombre": "El Lindero"
+  }, {
+    "id": "997",
+    "nombre": "El Pajonal (Est. Poman)"
+  }, {
+    "id": "950",
+    "nombre": "El Pantanillo"
+  }, {
+    "id": "917",
+    "nombre": "El Peñon"
+  }, {
+    "id": "1058",
+    "nombre": "El Portezuelo"
+  }, {
+    "id": "913",
+    "nombre": "El Potrero"
+  }, {
+    "id": "1045",
+    "nombre": "El Pueblito"
+  }, {
+    "id": "1012",
+    "nombre": "El Puesto"
+  }, {
+    "id": "1046",
+    "nombre": "El Puesto"
+  }, {
+    "id": "972",
+    "nombre": "El Quimilo"
+  }, {
+    "id": "889",
+    "nombre": "El Rodeo"
+  }, {
+    "id": "984",
+    "nombre": "El Rosario"
+  }, {
+    "id": "1047",
+    "nombre": "El Salado"
+  }, {
+    "id": "973",
+    "nombre": "Esquiu"
+  }, {
+    "id": "1013",
+    "nombre": "Famatanca"
+  }, {
+    "id": "924",
+    "nombre": "Farallon Negro"
+  }, {
+    "id": "1048",
+    "nombre": "Fiambala"
+  }, {
+    "id": "1015",
+    "nombre": "Fuerte Quemado"
+  }, {
+    "id": "953",
+    "nombre": "Guayamba"
+  }, {
+    "id": "925",
+    "nombre": "Hualfin"
+  }, {
+    "id": "1059",
+    "nombre": "Huaycama"
+  }, {
+    "id": "890",
+    "nombre": "Huaycama"
+  }, {
+    "id": "943",
+    "nombre": "Huillapima"
+  }, {
+    "id": "974",
+    "nombre": "Icaño"
+  }, {
+    "id": "954",
+    "nombre": "Infanzon"
+  }, {
+    "id": "926",
+    "nombre": "Jacipunco"
+  }, {
+    "id": "998",
+    "nombre": "Joyango"
+  }, {
+    "id": "914",
+    "nombre": "La Aguada"
+  }, {
+    "id": "985",
+    "nombre": "La Bajada"
+  }, {
+    "id": "900",
+    "nombre": "La Candelaria"
+  }, {
+    "id": "962",
+    "nombre": "La Carrera"
+  }, {
+    "id": "975",
+    "nombre": "La Dorada"
+  }, {
+    "id": "963",
+    "nombre": "La Falda De San Antonio"
+  }, {
+    "id": "976",
+    "nombre": "La Guardia"
+  }, {
+    "id": "986",
+    "nombre": "La Higuera"
+  }, {
+    "id": "1016",
+    "nombre": "La Hoyada"
+  }, {
+    "id": "1017",
+    "nombre": "La Loma"
+  }, {
+    "id": "901",
+    "nombre": "La Majada"
+  }, {
+    "id": "987",
+    "nombre": "La Merced"
+  }, {
+    "id": "912",
+    "nombre": "La Mesada"
+  }, {
+    "id": "891",
+    "nombre": "La Puerta"
+  }, {
+    "id": "927",
+    "nombre": "La Puntilla"
+  }, {
+    "id": "1024",
+    "nombre": "La Puntilla"
+  }, {
+    "id": "1042",
+    "nombre": "La Puntilla"
+  }, {
+    "id": "1049",
+    "nombre": "La Ramadita"
+  }, {
+    "id": "964",
+    "nombre": "La Tercena"
+  }, {
+    "id": "988",
+    "nombre": "La Viña"
+  }, {
+    "id": "1008",
+    "nombre": "Lampacito"
+  }, {
+    "id": "1032",
+    "nombre": "Las Cañas"
+  }, {
+    "id": "892",
+    "nombre": "Las Chacritas"
+  }, {
+    "id": "977",
+    "nombre": "Las Esquinas"
+  }, {
+    "id": "893",
+    "nombre": "Las Juntas"
+  }, {
+    "id": "928",
+    "nombre": "Las Juntas"
+  }, {
+    "id": "989",
+    "nombre": "Las Lajas"
+  }, {
+    "id": "1019",
+    "nombre": "Las Mojarras"
+  }, {
+    "id": "978",
+    "nombre": "Las Palmitas"
+  }, {
+    "id": "1060",
+    "nombre": "Las Tejas"
+  }, {
+    "id": "1033",
+    "nombre": "Lavalle"
+  }, {
+    "id": "929",
+    "nombre": "Londres"
+  }, {
+    "id": "1020",
+    "nombre": "Loro Huasi"
+  }, {
+    "id": "1034",
+    "nombre": "Los Altos"
+  }, {
+    "id": "944",
+    "nombre": "Los Angeles"
+  }, {
+    "id": "1051",
+    "nombre": "Los Balverdis"
+  }, {
+    "id": "894",
+    "nombre": "Los Castillos"
+  }, {
+    "id": "955",
+    "nombre": "Los Corrales"
+  }, {
+    "id": "918",
+    "nombre": "Los Nacimientos"
+  }, {
+    "id": "930",
+    "nombre": "Los Nacimientos"
+  }, {
+    "id": "895",
+    "nombre": "Los Talas"
+  }, {
+    "id": "896",
+    "nombre": "Los Varela"
+  }, {
+    "id": "1035",
+    "nombre": "Manantiales"
+  }, {
+    "id": "1052",
+    "nombre": "Medanitos"
+  }, {
+    "id": "1009",
+    "nombre": "Medanitos"
+  }, {
+    "id": "945",
+    "nombre": "Miraflores"
+  }, {
+    "id": "990",
+    "nombre": "Monte Potrero"
+  }, {
+    "id": "999",
+    "nombre": "Mutquin"
+  }, {
+    "id": "1053",
+    "nombre": "Palo Blanco"
+  }, {
+    "id": "991",
+    "nombre": "Palo Labrado"
+  }, {
+    "id": "1025",
+    "nombre": "Palo Seco"
+  }, {
+    "id": "1050",
+    "nombre": "Pampa Blanca"
+  }, {
+    "id": "1062",
+    "nombre": "Polcos"
+  }, {
+    "id": "1000",
+    "nombre": "Poman"
+  }, {
+    "id": "959",
+    "nombre": "Pomancillo Este"
+  }, {
+    "id": "960",
+    "nombre": "Pomancillo Oeste"
+  }, {
+    "id": "1063",
+    "nombre": "Pozo Del Mistol"
+  }, {
+    "id": "931",
+    "nombre": "Puerta De Corral Quemado"
+  }, {
+    "id": "932",
+    "nombre": "Puerta De San Jose"
+  }, {
+    "id": "1021",
+    "nombre": "Punta De Balasto"
+  }, {
+    "id": "1054",
+    "nombre": "Punta Del Agua"
+  }, {
+    "id": "979",
+    "nombre": "Quiros"
+  }, {
+    "id": "980",
+    "nombre": "Ramblones"
+  }, {
+    "id": "981",
+    "nombre": "Recreo"
+  }, {
+    "id": "1001",
+    "nombre": "Rincon"
+  }, {
+    "id": "951",
+    "nombre": "S. F. Del V. De Catamarca"
+  }, {
+    "id": "965",
+    "nombre": "San Antonio"
+  }, {
+    "id": "992",
+    "nombre": "San Antonio"
+  }, {
+    "id": "982",
+    "nombre": "San Antonio"
+  }, {
+    "id": "1064",
+    "nombre": "San Isidro"
+  }, {
+    "id": "966",
+    "nombre": "San Jose"
+  }, {
+    "id": "1022",
+    "nombre": "San Jose"
+  }, {
+    "id": "1014",
+    "nombre": "San Jose Banda"
+  }, {
+    "id": "1026",
+    "nombre": "San Jose Norte"
+  }, {
+    "id": "1027",
+    "nombre": "San Jose Villa"
+  }, {
+    "id": "946",
+    "nombre": "San Martin"
+  }, {
+    "id": "1002",
+    "nombre": "San Miguel"
+  }, {
+    "id": "947",
+    "nombre": "San Pablo"
+  }, {
+    "id": "1036",
+    "nombre": "San Pedro"
+  }, {
+    "id": "948",
+    "nombre": "San Pedro"
+  }, {
+    "id": "1068",
+    "nombre": "Santa Cruz"
+  }, {
+    "id": "1028",
+    "nombre": "Santa Maria"
+  }, {
+    "id": "1065",
+    "nombre": "Santa Rosa"
+  }, {
+    "id": "1003",
+    "nombre": "Saujil"
+  }, {
+    "id": "1055",
+    "nombre": "Saujil"
+  }, {
+    "id": "1004",
+    "nombre": "Sijan"
+  }, {
+    "id": "897",
+    "nombre": "Singuil"
+  }, {
+    "id": "1066",
+    "nombre": "Sumalao"
+  }, {
+    "id": "956",
+    "nombre": "Tapso"
+  }, {
+    "id": "1056",
+    "nombre": "Taton"
+  }, {
+    "id": "1057",
+    "nombre": "Tinogasta"
+  }, {
+    "id": "957",
+    "nombre": "Vilisman"
+  }, {
+    "id": "993",
+    "nombre": "Villa De Balcozna"
+  }, {
+    "id": "1067",
+    "nombre": "Villa Dolores"
+  }, {
+    "id": "967",
+    "nombre": "Villa Las Pirquitas"
+  }, {
+    "id": "933",
+    "nombre": "Villa Vil"
+  }, {
+    "id": "1029",
+    "nombre": "Yapes"
+  }]
+}, {
+  "id": 22,
+  "nombre": "Chaco",
+  "ciudades": [{
+    "id": "1728",
+    "nombre": "Avia Terai"
+  }, {
+    "id": "1758",
+    "nombre": "Barranqueras"
+  }, {
+    "id": "1753",
+    "nombre": "Barrio De Los Pescadores"
+  }, {
+    "id": "1759",
+    "nombre": "Basail"
+  }, {
+    "id": "1729",
+    "nombre": "Campo Largo"
+  }, {
+    "id": "1766",
+    "nombre": "Capitan Solari"
+  }, {
+    "id": "1771",
+    "nombre": "Charadai"
+  }, {
+    "id": "1700",
+    "nombre": "Charata"
+  }, {
+    "id": "1708",
+    "nombre": "Chorotis"
+  }, {
+    "id": "1736",
+    "nombre": "Ciervo Petiso"
+  }, {
+    "id": "1776",
+    "nombre": "Colonia Aborigen"
+  }, {
+    "id": "1760",
+    "nombre": "Colonia Baranda"
+  }, {
+    "id": "1754",
+    "nombre": "Colonia Benitez"
+  }, {
+    "id": "1767",
+    "nombre": "Colonia Elisa"
+  }, {
+    "id": "1732",
+    "nombre": "Colonia Popular"
+  }, {
+    "id": "1768",
+    "nombre": "Colonias Unidas"
+  }, {
+    "id": "1687",
+    "nombre": "Concepcion Del Bermejo"
+  }, {
+    "id": "1745",
+    "nombre": "Coronel Du Graty"
+  }, {
+    "id": "1711",
+    "nombre": "Corzuela"
+  }, {
+    "id": "1772",
+    "nombre": "Cote Lai"
+  }, {
+    "id": "1716",
+    "nombre": "El Espinillo"
+  }, {
+    "id": "1717",
+    "nombre": "El Sauzal"
+  }, {
+    "id": "1718",
+    "nombre": "El Sauzalito"
+  }, {
+    "id": "1746",
+    "nombre": "Enrique Urien"
+  }, {
+    "id": "1733",
+    "nombre": "Estacion Estacion General Obligado"
+  }, {
+    "id": "1761",
+    "nombre": "Fontana"
+  }, {
+    "id": "1730",
+    "nombre": "Fortin Las Chuñas"
+  }, {
+    "id": "1719",
+    "nombre": "Fortin Lavalle"
+  }, {
+    "id": "1720",
+    "nombre": "Fuerte Esperanza"
+  }, {
+    "id": "1701",
+    "nombre": "Gancedo"
+  }, {
+    "id": "1702",
+    "nombre": "General Capdevila"
+  }, {
+    "id": "1737",
+    "nombre": "General Jose De San Martin"
+  }, {
+    "id": "1703",
+    "nombre": "General Pinedo"
+  }, {
+    "id": "1692",
+    "nombre": "General Vedia"
+  }, {
+    "id": "1773",
+    "nombre": "Haumonia"
+  }, {
+    "id": "1706",
+    "nombre": "Hermoso Campo"
+  }, {
+    "id": "1774",
+    "nombre": "Horquilla"
+  }, {
+    "id": "1769",
+    "nombre": "Ingeniero Barbet"
+  }, {
+    "id": "1693",
+    "nombre": "Isla Del Cerrito"
+  }, {
+    "id": "1707",
+    "nombre": "Itin"
+  }, {
+    "id": "1721",
+    "nombre": "Juan Jose Castelli"
+  }, {
+    "id": "1749",
+    "nombre": "La Clotilde"
+  }, {
+    "id": "1738",
+    "nombre": "La Eduvigis"
+  }, {
+    "id": "1712",
+    "nombre": "La Escondida"
+  }, {
+    "id": "1694",
+    "nombre": "La Leonesa"
+  }, {
+    "id": "1775",
+    "nombre": "La Sabana"
+  }, {
+    "id": "1750",
+    "nombre": "La Tigra"
+  }, {
+    "id": "1713",
+    "nombre": "La Verde"
+  }, {
+    "id": "1734",
+    "nombre": "Laguna Blanca"
+  }, {
+    "id": "1739",
+    "nombre": "Laguna Limpia"
+  }, {
+    "id": "1714",
+    "nombre": "Lapachito"
+  }, {
+    "id": "1748",
+    "nombre": "Las Breñas"
+  }, {
+    "id": "1770",
+    "nombre": "Las Garcitas"
+  }, {
+    "id": "1695",
+    "nombre": "Las Palmas"
+  }, {
+    "id": "1688",
+    "nombre": "Los Frentones"
+  }, {
+    "id": "1777",
+    "nombre": "Machagai"
+  }, {
+    "id": "1715",
+    "nombre": "Makalle"
+  }, {
+    "id": "1755",
+    "nombre": "Margarita Belen"
+  }, {
+    "id": "1704",
+    "nombre": "Meson De Fierro"
+  }, {
+    "id": "1722",
+    "nombre": "Miraflores"
+  }, {
+    "id": "1778",
+    "nombre": "Napalpi"
+  }, {
+    "id": "1731",
+    "nombre": "Napenay"
+  }, {
+    "id": "1723",
+    "nombre": "Nueva Pompeya"
+  }, {
+    "id": "1740",
+    "nombre": "Pampa Almiron"
+  }, {
+    "id": "1741",
+    "nombre": "Pampa Del Indio"
+  }, {
+    "id": "1689",
+    "nombre": "Pampa Del Infierno"
+  }, {
+    "id": "1705",
+    "nombre": "Pampa Landriel"
+  }, {
+    "id": "1752",
+    "nombre": "Presidencia De La Plaza"
+  }, {
+    "id": "1742",
+    "nombre": "Presidencia Roca"
+  }, {
+    "id": "1699",
+    "nombre": "Presidencia Roque Saenz Peña"
+  }, {
+    "id": "1696",
+    "nombre": "Puerto Bermejo Nuevo"
+  }, {
+    "id": "1697",
+    "nombre": "Puerto Bermejo Viejo"
+  }, {
+    "id": "1698",
+    "nombre": "Puerto Eva Peron"
+  }, {
+    "id": "1724",
+    "nombre": "Puerto Lavalle"
+  }, {
+    "id": "1735",
+    "nombre": "Puerto Tirol"
+  }, {
+    "id": "1762",
+    "nombre": "Puerto Vilelas"
+  }, {
+    "id": "1756",
+    "nombre": "Quitilipi"
+  }, {
+    "id": "1763",
+    "nombre": "Resistencia"
+  }, {
+    "id": "1690",
+    "nombre": "Rio Muerto"
+  }, {
+    "id": "1764",
+    "nombre": "Samuhu"
+  }, {
+    "id": "1751",
+    "nombre": "San Bernardo"
+  }, {
+    "id": "1709",
+    "nombre": "Santa Sylvina"
+  }, {
+    "id": "1743",
+    "nombre": "Selvas Del Rio De Oro"
+  }, {
+    "id": "1691",
+    "nombre": "Taco Pozo"
+  }, {
+    "id": "1744",
+    "nombre": "Tres Isletas"
+  }, {
+    "id": "1710",
+    "nombre": "Venados Grandes"
+  }, {
+    "id": "1747",
+    "nombre": "Villa Angela"
+  }, {
+    "id": "1765",
+    "nombre": "Villa Berthet"
+  }, {
+    "id": "1757",
+    "nombre": "Villa El Palmar"
+  }, {
+    "id": "1725",
+    "nombre": "Villa Rio Bermejito"
+  }, {
+    "id": "1726",
+    "nombre": "Wichi"
+  }, {
+    "id": "1727",
+    "nombre": "Zaparinqui"
+  }]
+}, {
+  "id": 26,
+  "nombre": "Chubut",
+  "ciudades": [{
+    "id": "1791",
+    "nombre": "Acceso Norte"
+  }, {
+    "id": "1848",
+    "nombre": "Aldea Apeleg"
+  }, {
+    "id": "1849",
+    "nombre": "Aldea Beleiro"
+  }, {
+    "id": "1833",
+    "nombre": "Aldea Epulef"
+  }, {
+    "id": "1817",
+    "nombre": "Aldea Escolar"
+  }, {
+    "id": "1850",
+    "nombre": "Alto Rio Senguer"
+  }, {
+    "id": "1863",
+    "nombre": "Arroyo Verde"
+  }, {
+    "id": "1789",
+    "nombre": "Astra"
+  }, {
+    "id": "1790",
+    "nombre": "Bahia Bustamante"
+  }, {
+    "id": "1792",
+    "nombre": "Barrio Caleta Cordova"
+  }, {
+    "id": "1793",
+    "nombre": "Barrio Caleta Olivares"
+  }, {
+    "id": "1794",
+    "nombre": "Barrio Castelli"
+  }, {
+    "id": "1795",
+    "nombre": "Barrio Ciudadela"
+  }, {
+    "id": "1796",
+    "nombre": "Barrio Gasoducto"
+  }, {
+    "id": "1797",
+    "nombre": "Barrio GÜEMES"
+  }, {
+    "id": "1798",
+    "nombre": "Barrio Laprida"
+  }, {
+    "id": "1799",
+    "nombre": "Barrio Manantial Rosales"
+  }, {
+    "id": "1800",
+    "nombre": "Barrio Militar - Aeropuerto Militar"
+  }, {
+    "id": "1801",
+    "nombre": "Barrio Prospero Palazzo"
+  }, {
+    "id": "1802",
+    "nombre": "Barrio Restinga Ali"
+  }, {
+    "id": "1803",
+    "nombre": "Barrio Rodriguez Peña"
+  }, {
+    "id": "1804",
+    "nombre": "Barrio Saavedra"
+  }, {
+    "id": "1805",
+    "nombre": "Barrio Sarmiento"
+  }, {
+    "id": "1807",
+    "nombre": "Barrio Villa S.U.P.E."
+  }, {
+    "id": "1806",
+    "nombre": "Barrio 25 De Mayo"
+  }, {
+    "id": "1828",
+    "nombre": "Blancuntre"
+  }, {
+    "id": "1855",
+    "nombre": "Buen Pasto"
+  }, {
+    "id": "1779",
+    "nombre": "Buenos Aires Chico"
+  }, {
+    "id": "1815",
+    "nombre": "Camarones"
+  }, {
+    "id": "1834",
+    "nombre": "Carrenleufu"
+  }, {
+    "id": "1840",
+    "nombre": "Cerro Condor"
+  }, {
+    "id": "1780",
+    "nombre": "Cholila"
+  }, {
+    "id": "1835",
+    "nombre": "Colan Conhue"
+  }, {
+    "id": "1808",
+    "nombre": "Comodoro Rivadavia"
+  }, {
+    "id": "1818",
+    "nombre": "Corcovado"
+  }, {
+    "id": "1781",
+    "nombre": "Cushamen Centro"
+  }, {
+    "id": "1813",
+    "nombre": "Diadema Argentina"
+  }, {
+    "id": "1824",
+    "nombre": "Dique Florentino Ameghino"
+  }, {
+    "id": "1851",
+    "nombre": "Doctor Ricardo Rojas"
+  }, {
+    "id": "1825",
+    "nombre": "Dolavon"
+  }, {
+    "id": "1829",
+    "nombre": "El Escorial"
+  }, {
+    "id": "1782",
+    "nombre": "El Hoyo"
+  }, {
+    "id": "1783",
+    "nombre": "El Maiten"
+  }, {
+    "id": "1838",
+    "nombre": "El Mirasol"
+  }, {
+    "id": "1784",
+    "nombre": "Epuyen"
+  }, {
+    "id": "1819",
+    "nombre": "Esquel"
+  }, {
+    "id": "1852",
+    "nombre": "Facundo"
+  }, {
+    "id": "1857",
+    "nombre": "Frontera De Rio Pico"
+  }, {
+    "id": "1826",
+    "nombre": "Gaiman"
+  }, {
+    "id": "1861",
+    "nombre": "Gan Gan"
+  }, {
+    "id": "1816",
+    "nombre": "Garayalde"
+  }, {
+    "id": "1830",
+    "nombre": "Gastre"
+  }, {
+    "id": "1858",
+    "nombre": "Gobernador Costa"
+  }, {
+    "id": "1785",
+    "nombre": "Gualjaina"
+  }, {
+    "id": "1859",
+    "nombre": "Jose De San Martin"
+  }, {
+    "id": "1811",
+    "nombre": "Km. 11 - Cuarteles"
+  }, {
+    "id": "1812",
+    "nombre": "Km. 3 - General Mosconi"
+  }, {
+    "id": "1809",
+    "nombre": "Km. 5 - Presidente Ortiz"
+  }, {
+    "id": "1810",
+    "nombre": "Km. 8 - Don Bosco"
+  }, {
+    "id": "1853",
+    "nombre": "Lago Blanco"
+  }, {
+    "id": "1786",
+    "nombre": "Lago Epuyen"
+  }, {
+    "id": "1787",
+    "nombre": "Lago Puelo"
+  }, {
+    "id": "1820",
+    "nombre": "Lago Rosario"
+  }, {
+    "id": "1831",
+    "nombre": "Lagunita Salada"
+  }, {
+    "id": "1839",
+    "nombre": "Las Plumas"
+  }, {
+    "id": "1788",
+    "nombre": "Leleque"
+  }, {
+    "id": "1841",
+    "nombre": "Los Altares"
+  }, {
+    "id": "1821",
+    "nombre": "Los Cipreses"
+  }, {
+    "id": "1842",
+    "nombre": "Paso De Indios"
+  }, {
+    "id": "1836",
+    "nombre": "Paso Del Sapo"
+  }, {
+    "id": "1843",
+    "nombre": "Playa Magagna"
+  }, {
+    "id": "1844",
+    "nombre": "Playa Union"
+  }, {
+    "id": "1864",
+    "nombre": "Puerto Madryn"
+  }, {
+    "id": "1865",
+    "nombre": "Puerto Piramide"
+  }, {
+    "id": "1845",
+    "nombre": "Puerto Rawson"
+  }, {
+    "id": "1866",
+    "nombre": "Quinta El Mirador"
+  }, {
+    "id": "1814",
+    "nombre": "Rada Tilly"
+  }, {
+    "id": "1846",
+    "nombre": "Rawson"
+  }, {
+    "id": "1854",
+    "nombre": "Rio Mayo"
+  }, {
+    "id": "1860",
+    "nombre": "Rio Pico"
+  }, {
+    "id": "1856",
+    "nombre": "Sarmiento"
+  }, {
+    "id": "1837",
+    "nombre": "Tecka"
+  }, {
+    "id": "1862",
+    "nombre": "Telsen"
+  }, {
+    "id": "1847",
+    "nombre": "Trelew"
+  }, {
+    "id": "1822",
+    "nombre": "Trevelin"
+  }, {
+    "id": "1823",
+    "nombre": "Villa Futalaufquen"
+  }, {
+    "id": "1832",
+    "nombre": "Yala Laubat"
+  }, {
+    "id": "1827",
+    "nombre": "28 De Julio"
+  }]
+}, {
+  "id": 2,
+  "nombre": "Ciudad Autonoma De Bs As",
+  "ciudades": [{
+    "id": "3961",
+    "nombre": "Agronomia"
+  }, {
+    "id": "3962",
+    "nombre": "Almagro"
+  }, {
+    "id": "3963",
+    "nombre": "Balvanera"
+  }, {
+    "id": "3964",
+    "nombre": "Barracas"
+  }, {
+    "id": "3965",
+    "nombre": "Belgrano"
+  }, {
+    "id": "3966",
+    "nombre": "Boedo"
+  }, {
+    "id": "3967",
+    "nombre": "Caballito"
+  }, {
+    "id": "3968",
+    "nombre": "Chacarita"
+  }, {
+    "id": "3969",
+    "nombre": "Coghlan"
+  }, {
+    "id": "3970",
+    "nombre": "Colegiales"
+  }, {
+    "id": "3971",
+    "nombre": "Constitucion"
+  }, {
+    "id": "3972",
+    "nombre": "Flores"
+  }, {
+    "id": "3973",
+    "nombre": "Floresta"
+  }, {
+    "id": "3974",
+    "nombre": "La Boca"
+  }, {
+    "id": "3975",
+    "nombre": "Liniers"
+  }, {
+    "id": "3976",
+    "nombre": "Mataderos"
+  }, {
+    "id": "3977",
+    "nombre": "Monserrat"
+  }, {
+    "id": "3978",
+    "nombre": "Monte Castro"
+  }, {
+    "id": "3979",
+    "nombre": "Nueva Pompeya"
+  }, {
+    "id": "3980",
+    "nombre": "Nuñez"
+  }, {
+    "id": "3981",
+    "nombre": "Palermo"
+  }, {
+    "id": "3982",
+    "nombre": "Parque Avellaneda"
+  }, {
+    "id": "3983",
+    "nombre": "Parque Chacabuco"
+  }, {
+    "id": "3984",
+    "nombre": "Parque Chas"
+  }, {
+    "id": "3985",
+    "nombre": "Parque Patricios"
+  }, {
+    "id": "3986",
+    "nombre": "Paternal"
+  }, {
+    "id": "3987",
+    "nombre": "Puerto Madero"
+  }, {
+    "id": "3988",
+    "nombre": "Recoleta"
+  }, {
+    "id": "1",
+    "nombre": "Retiro"
+  }, {
+    "id": "3989",
+    "nombre": "Saavedra"
+  }, {
+    "id": "3990",
+    "nombre": "San Cristobal"
+  }, {
+    "id": "3991",
+    "nombre": "San Nicolas"
+  }, {
+    "id": "3992",
+    "nombre": "San Telmo"
+  }, {
+    "id": "3994",
+    "nombre": "Velez Sarsfield"
+  }, {
+    "id": "3993",
+    "nombre": "Versalles"
+  }, {
+    "id": "3996",
+    "nombre": "Villa Crespo"
+  }, {
+    "id": "3997",
+    "nombre": "Villa Del Parque"
+  }, {
+    "id": "3998",
+    "nombre": "Villa Devoto"
+  }, {
+    "id": "3995",
+    "nombre": "Villa Gral Mitre"
+  }, {
+    "id": "3999",
+    "nombre": "Villa Lugano"
+  }, {
+    "id": "4000",
+    "nombre": "Villa Luro"
+  }, {
+    "id": "4001",
+    "nombre": "Villa Ortuzar"
+  }, {
+    "id": "4002",
+    "nombre": "Villa Pueyrredon"
+  }, {
+    "id": "4003",
+    "nombre": "Villa Real"
+  }, {
+    "id": "4004",
+    "nombre": "Villa Riachuelo"
+  }, {
+    "id": "4005",
+    "nombre": "Villa Santa Rita"
+  }, {
+    "id": "4006",
+    "nombre": "Villa Soldati"
+  }, {
+    "id": "4007",
+    "nombre": "Villa Urquiza"
+  }]
+}, {
+  "id": 14,
+  "nombre": "Cordoba",
+  "ciudades": [{
+    "id": "1310",
+    "nombre": "Achiras"
+  }, {
+    "id": "1311",
+    "nombre": "Adelia Maria"
+  }, {
+    "id": "1109",
+    "nombre": "Agua De Oro"
+  }, {
+    "id": "1312",
+    "nombre": "Alcira (Est. Gigena)"
+  }, {
+    "id": "1584",
+    "nombre": "Aldea Santa Maria"
+  }, {
+    "id": "1212",
+    "nombre": "Alejandro Roca (Est. Alejandro)"
+  }, {
+    "id": "1229",
+    "nombre": "Alejo Ledesma"
+  }, {
+    "id": "1452",
+    "nombre": "Alicia"
+  }, {
+    "id": "1544",
+    "nombre": "Almafuerte"
+  }, {
+    "id": "1313",
+    "nombre": "Alpa Corral"
+  }, {
+    "id": "1496",
+    "nombre": "Alta Gracia"
+  }, {
+    "id": "1585",
+    "nombre": "Alto Alegre"
+  }, {
+    "id": "1146",
+    "nombre": "Alto De Los Quebrachos"
+  }, {
+    "id": "1445",
+    "nombre": "Alto Resbaloso - El Barrial"
+  }, {
+    "id": "1453",
+    "nombre": "Altos De Chipion"
+  }, {
+    "id": "1069",
+    "nombre": "Amboy"
+  }, {
+    "id": "1403",
+    "nombre": "Ambul"
+  }, {
+    "id": "1586",
+    "nombre": "Ana Zumaran"
+  }, {
+    "id": "1497",
+    "nombre": "Anisacate"
+  }, {
+    "id": "1230",
+    "nombre": "Arias"
+  }, {
+    "id": "1454",
+    "nombre": "Arroyito"
+  }, {
+    "id": "1180",
+    "nombre": "Arroyo Algodon"
+  }, {
+    "id": "1181",
+    "nombre": "Arroyo Cabral"
+  }, {
+    "id": "1404",
+    "nombre": "Arroyo Los Patos"
+  }, {
+    "id": "1070",
+    "nombre": "Arroyo San Antonio"
+  }, {
+    "id": "1110",
+    "nombre": "Ascochinga"
+  }, {
+    "id": "1213",
+    "nombre": "Assunta"
+  }, {
+    "id": "1342",
+    "nombre": "Atahona"
+  }, {
+    "id": "1182",
+    "nombre": "Ausonia"
+  }, {
+    "id": "1199",
+    "nombre": "Avellaneda"
+  }, {
+    "id": "1587",
+    "nombre": "Ballesteros"
+  }, {
+    "id": "1588",
+    "nombre": "Ballesteros Sur"
+  }, {
+    "id": "1455",
+    "nombre": "Balnearia"
+  }, {
+    "id": "1147",
+    "nombre": "Bañado De Soto"
+  }, {
+    "id": "1498",
+    "nombre": "Barrio Gilbert"
+  }, {
+    "id": "1514",
+    "nombre": "Barrio Las Quintas"
+  }, {
+    "id": "1278",
+    "nombre": "Barrio Santa Isabel"
+  }, {
+    "id": "1499",
+    "nombre": "Barrio Villa Del Parque"
+  }, {
+    "id": "1589",
+    "nombre": "Bell Ville"
+  }, {
+    "id": "1214",
+    "nombre": "Bengolea"
+  }, {
+    "id": "1590",
+    "nombre": "Benjamin Gould"
+  }, {
+    "id": "1314",
+    "nombre": "Berrotaran"
+  }, {
+    "id": "1279",
+    "nombre": "Bialet Masse"
+  }, {
+    "id": "1500",
+    "nombre": "Bouwer"
+  }, {
+    "id": "1456",
+    "nombre": "Brinkmann"
+  }, {
+    "id": "1315",
+    "nombre": "Bulnes"
+  }, {
+    "id": "1280",
+    "nombre": "Cabalango"
+  }, {
+    "id": "1382",
+    "nombre": "Calchin"
+  }, {
+    "id": "1383",
+    "nombre": "Calchin Oeste"
+  }, {
+    "id": "1231",
+    "nombre": "Camilo Aldao"
+  }, {
+    "id": "1539",
+    "nombre": "Caminiaga"
+  }, {
+    "id": "1591",
+    "nombre": "Canals"
+  }, {
+    "id": "1561",
+    "nombre": "Candelaria Sur"
+  }, {
+    "id": "1111",
+    "nombre": "Canteras El Sauce"
+  }, {
+    "id": "1148",
+    "nombre": "Canteras Quilpo"
+  }, {
+    "id": "1562",
+    "nombre": "Cañada De Luque"
+  }, {
+    "id": "1343",
+    "nombre": "Cañada De Machado"
+  }, {
+    "id": "1200",
+    "nombre": "Cañada De Rio Pinto"
+  }, {
+    "id": "1071",
+    "nombre": "Cañada Del Sauce"
+  }, {
+    "id": "1344",
+    "nombre": "Capilla De Los Remedios"
+  }, {
+    "id": "1563",
+    "nombre": "Capilla De Siton"
+  }, {
+    "id": "1384",
+    "nombre": "Capilla Del Carmen"
+  }, {
+    "id": "1281",
+    "nombre": "Capilla Del Monte"
+  }, {
+    "id": "1072",
+    "nombre": "Capilla Vieja"
+  }, {
+    "id": "1232",
+    "nombre": "Capitan General Bernardo O Higgins"
+  }, {
+    "id": "1215",
+    "nombre": "Carnerillo"
+  }, {
+    "id": "1385",
+    "nombre": "Carrilobo"
+  }, {
+    "id": "1112",
+    "nombre": "Casa Bamba"
+  }, {
+    "id": "1282",
+    "nombre": "Casa Grande"
+  }, {
+    "id": "1501",
+    "nombre": "Caseros Centro"
+  }, {
+    "id": "1233",
+    "nombre": "Cavanagh"
+  }, {
+    "id": "1573",
+    "nombre": "Cerro Colorado"
+  }, {
+    "id": "1369",
+    "nombre": "Cerro Colorado"
+  }, {
+    "id": "1540",
+    "nombre": "Cerro Colorado"
+  }, {
+    "id": "1316",
+    "nombre": "Chajan"
+  }, {
+    "id": "1345",
+    "nombre": "Chalacea"
+  }, {
+    "id": "1260",
+    "nombre": "Chancani"
+  }, {
+    "id": "1370",
+    "nombre": "Chañar Viejo"
+  }, {
+    "id": "1283",
+    "nombre": "Charbonier"
+  }, {
+    "id": "1216",
+    "nombre": "Charras"
+  }, {
+    "id": "1183",
+    "nombre": "Chazon"
+  }, {
+    "id": "1592",
+    "nombre": "Chilibroste"
+  }, {
+    "id": "1317",
+    "nombre": "Chucul"
+  }, {
+    "id": "1201",
+    "nombre": "Chuña"
+  }, {
+    "id": "1541",
+    "nombre": "Chuña Huasi"
+  }, {
+    "id": "1574",
+    "nombre": "Churqui Cañada"
+  }, {
+    "id": "1252",
+    "nombre": "Cienaga Del Coro"
+  }, {
+    "id": "1593",
+    "nombre": "Cintra"
+  }, {
+    "id": "1386",
+    "nombre": "Colazo"
+  }, {
+    "id": "1545",
+    "nombre": "Colonia Almada"
+  }, {
+    "id": "1457",
+    "nombre": "Colonia Anita"
+  }, {
+    "id": "1234",
+    "nombre": "Colonia Barge"
+  }, {
+    "id": "1594",
+    "nombre": "Colonia Bismarck"
+  }, {
+    "id": "1595",
+    "nombre": "Colonia Bremen"
+  }, {
+    "id": "1113",
+    "nombre": "Colonia Caroya"
+  }, {
+    "id": "1235",
+    "nombre": "Colonia Italiana"
+  }, {
+    "id": "1346",
+    "nombre": "Colonia Las Cuatro Esquinas"
+  }, {
+    "id": "1459",
+    "nombre": "Colonia Las Pichanas"
+  }, {
+    "id": "1460",
+    "nombre": "Colonia Marina"
+  }, {
+    "id": "1461",
+    "nombre": "Colonia Prosperidad"
+  }, {
+    "id": "1462",
+    "nombre": "Colonia San Bartolome"
+  }, {
+    "id": "1463",
+    "nombre": "Colonia San Pedro"
+  }, {
+    "id": "1464",
+    "nombre": "Colonia Santa Maria"
+  }, {
+    "id": "1114",
+    "nombre": "Colonia Tirolesa"
+  }, {
+    "id": "1465",
+    "nombre": "Colonia Valtelina"
+  }, {
+    "id": "1236",
+    "nombre": "Colonia Veinticinco"
+  }, {
+    "id": "1115",
+    "nombre": "Colonia Vicente AgÜERO"
+  }, {
+    "id": "1387",
+    "nombre": "Colonia Videla"
+  }, {
+    "id": "1466",
+    "nombre": "Colonia Vignaud"
+  }, {
+    "id": "1458",
+    "nombre": "Colonia 10 De Julio"
+  }, {
+    "id": "1424",
+    "nombre": "Conlara"
+  }, {
+    "id": "1202",
+    "nombre": "Copacabana"
+  }, {
+    "id": "1106",
+    "nombre": "Cordoba"
+  }, {
+    "id": "1318",
+    "nombre": "Coronel Baigorria"
+  }, {
+    "id": "1319",
+    "nombre": "Coronel Moldes"
+  }, {
+    "id": "1237",
+    "nombre": "Corral De Bustos"
+  }, {
+    "id": "1116",
+    "nombre": "Corral Quemado"
+  }, {
+    "id": "1546",
+    "nombre": "Corralito"
+  }, {
+    "id": "1425",
+    "nombre": "Corralito"
+  }, {
+    "id": "1284",
+    "nombre": "Cosquin"
+  }, {
+    "id": "1502",
+    "nombre": "Costa Azul"
+  }, {
+    "id": "1388",
+    "nombre": "Costasacate"
+  }, {
+    "id": "1117",
+    "nombre": "Country Chacras De La Villa"
+  }, {
+    "id": "1118",
+    "nombre": "Country San Isidro"
+  }, {
+    "id": "1238",
+    "nombre": "Cruz Alta"
+  }, {
+    "id": "1426",
+    "nombre": "Cruz Caña"
+  }, {
+    "id": "1149",
+    "nombre": "Cruz De Caña"
+  }, {
+    "id": "1150",
+    "nombre": "Cruz Del Eje"
+  }, {
+    "id": "1285",
+    "nombre": "Cuesta Blanca"
+  }, {
+    "id": "1547",
+    "nombre": "Dalmacio Velez"
+  }, {
+    "id": "1203",
+    "nombre": "Dean Funes"
+  }, {
+    "id": "1166",
+    "nombre": "Del Campillo"
+  }, {
+    "id": "1503",
+    "nombre": "Despeñaderos (Est. Dr. Lucas A. De Olmos)"
+  }, {
+    "id": "1467",
+    "nombre": "Devoto"
+  }, {
+    "id": "1347",
+    "nombre": "Diego De Rojas"
+  }, {
+    "id": "1504",
+    "nombre": "Dique Chico"
+  }, {
+    "id": "1427",
+    "nombre": "Dos Arroyos"
+  }, {
+    "id": "1124",
+    "nombre": "Dumesnil"
+  }, {
+    "id": "1348",
+    "nombre": "El Alcalde (Est. Tala Norte)"
+  }, {
+    "id": "1468",
+    "nombre": "El Arañado"
+  }, {
+    "id": "1151",
+    "nombre": "El Brete"
+  }, {
+    "id": "1253",
+    "nombre": "El Chacho"
+  }, {
+    "id": "1073",
+    "nombre": "El Corcovado - El Torreon"
+  }, {
+    "id": "1349",
+    "nombre": "El Crispin"
+  }, {
+    "id": "1119",
+    "nombre": "El Diquecito"
+  }, {
+    "id": "1469",
+    "nombre": "El Fortin"
+  }, {
+    "id": "1470",
+    "nombre": "El Fuertecito"
+  }, {
+    "id": "1405",
+    "nombre": "El Huayco"
+  }, {
+    "id": "1120",
+    "nombre": "El Manzano"
+  }, {
+    "id": "1428",
+    "nombre": "El Pantanillo"
+  }, {
+    "id": "1446",
+    "nombre": "El Pueblito"
+  }, {
+    "id": "1135",
+    "nombre": "El Pueblito"
+  }, {
+    "id": "1217",
+    "nombre": "El Rastreador"
+  }, {
+    "id": "1152",
+    "nombre": "El Rincon"
+  }, {
+    "id": "1575",
+    "nombre": "El Rodeo"
+  }, {
+    "id": "1471",
+    "nombre": "El Tio"
+  }, {
+    "id": "1576",
+    "nombre": "El Tuscal"
+  }, {
+    "id": "1447",
+    "nombre": "El Valle"
+  }, {
+    "id": "1320",
+    "nombre": "Elena"
+  }, {
+    "id": "1074",
+    "nombre": "Embalse"
+  }, {
+    "id": "1350",
+    "nombre": "Esquina"
+  }, {
+    "id": "1204",
+    "nombre": "Esquina Del Alambre"
+  }, {
+    "id": "1121",
+    "nombre": "Estacion Colonia Tirolesa"
+  }, {
+    "id": "1167",
+    "nombre": "Estacion Lecueder"
+  }, {
+    "id": "1472",
+    "nombre": "Estacion Luxardo"
+  }, {
+    "id": "1254",
+    "nombre": "Estancia De Guadalupe"
+  }, {
+    "id": "1286",
+    "nombre": "Estancia Vieja"
+  }, {
+    "id": "1184",
+    "nombre": "Etruria"
+  }, {
+    "id": "1371",
+    "nombre": "Eufrasio Loza"
+  }, {
+    "id": "1505",
+    "nombre": "Falda Del Cañete"
+  }, {
+    "id": "1506",
+    "nombre": "Falda Del Carmen"
+  }, {
+    "id": "1473",
+    "nombre": "Freyre"
+  }, {
+    "id": "1239",
+    "nombre": "General Baldissera"
+  }, {
+    "id": "1218",
+    "nombre": "General Cabrera"
+  }, {
+    "id": "1219",
+    "nombre": "General Deheza"
+  }, {
+    "id": "1548",
+    "nombre": "General Fotheringham"
+  }, {
+    "id": "1268",
+    "nombre": "General Levalle"
+  }, {
+    "id": "1122",
+    "nombre": "General Paz"
+  }, {
+    "id": "1240",
+    "nombre": "General Roca"
+  }, {
+    "id": "1153",
+    "nombre": "Guanaco Muerto"
+  }, {
+    "id": "1255",
+    "nombre": "Guasapampa"
+  }, {
+    "id": "1241",
+    "nombre": "Guatimozin"
+  }, {
+    "id": "1372",
+    "nombre": "GÜTEMBERG"
+  }, {
+    "id": "1549",
+    "nombre": "Hernando"
+  }, {
+    "id": "1168",
+    "nombre": "Hipolito Bouchard"
+  }, {
+    "id": "1220",
+    "nombre": "Huanchillas"
+  }, {
+    "id": "1287",
+    "nombre": "Huerta Grande"
+  }, {
+    "id": "1169",
+    "nombre": "Huinca Renanco"
+  }, {
+    "id": "1596",
+    "nombre": "Idiazabal"
+  }, {
+    "id": "1389",
+    "nombre": "Impira"
+  }, {
+    "id": "1242",
+    "nombre": "Inriville"
+  }, {
+    "id": "1243",
+    "nombre": "Isla Verde"
+  }, {
+    "id": "1170",
+    "nombre": "Italo"
+  }, {
+    "id": "1550",
+    "nombre": "James Craik"
+  }, {
+    "id": "1107",
+    "nombre": "Jardin Arenales"
+  }, {
+    "id": "1123",
+    "nombre": "Jesus Maria"
+  }, {
+    "id": "1535",
+    "nombre": "Jose De La Quintana"
+  }, {
+    "id": "1144",
+    "nombre": "Juarez Celman"
+  }, {
+    "id": "1597",
+    "nombre": "Justiniano Posse"
+  }, {
+    "id": "1351",
+    "nombre": "Kilometro 658"
+  }, {
+    "id": "1154",
+    "nombre": "La Banda"
+  }, {
+    "id": "1155",
+    "nombre": "La Batea"
+  }, {
+    "id": "1507",
+    "nombre": "La Boca Del Rio"
+  }, {
+    "id": "1125",
+    "nombre": "La Calera"
+  }, {
+    "id": "1508",
+    "nombre": "La Carbonada"
+  }, {
+    "id": "1221",
+    "nombre": "La Carlota"
+  }, {
+    "id": "1321",
+    "nombre": "La Carolina"
+  }, {
+    "id": "1322",
+    "nombre": "La Cautiva"
+  }, {
+    "id": "1269",
+    "nombre": "La Cesira"
+  }, {
+    "id": "1406",
+    "nombre": "La Cortadera"
+  }, {
+    "id": "1075",
+    "nombre": "La Cruz"
+  }, {
+    "id": "1288",
+    "nombre": "La Cumbre"
+  }, {
+    "id": "1509",
+    "nombre": "La Cumbrecita"
+  }, {
+    "id": "1076",
+    "nombre": "La Cumbrecita"
+  }, {
+    "id": "1289",
+    "nombre": "La Falda"
+  }, {
+    "id": "1108",
+    "nombre": "La Floresta"
+  }, {
+    "id": "1474",
+    "nombre": "La Francia"
+  }, {
+    "id": "1323",
+    "nombre": "La Gilda"
+  }, {
+    "id": "1126",
+    "nombre": "La Granja"
+  }, {
+    "id": "1156",
+    "nombre": "La Higuera"
+  }, {
+    "id": "1185",
+    "nombre": "La Laguna"
+  }, {
+    "id": "1510",
+    "nombre": "La Paisanita"
+  }, {
+    "id": "1186",
+    "nombre": "La Palestina"
+  }, {
+    "id": "1564",
+    "nombre": "La Pampa"
+  }, {
+    "id": "1475",
+    "nombre": "La Paquita"
+  }, {
+    "id": "1352",
+    "nombre": "La Para"
+  }, {
+    "id": "1429",
+    "nombre": "La Paz"
+  }, {
+    "id": "1565",
+    "nombre": "La Paz"
+  }, {
+    "id": "1511",
+    "nombre": "La Perla"
+  }, {
+    "id": "1256",
+    "nombre": "La Playa"
+  }, {
+    "id": "1187",
+    "nombre": "La Playosa"
+  }, {
+    "id": "1433",
+    "nombre": "La Poblacion"
+  }, {
+    "id": "1353",
+    "nombre": "La Posta"
+  }, {
+    "id": "1354",
+    "nombre": "La Puerta"
+  }, {
+    "id": "1127",
+    "nombre": "La Puerta"
+  }, {
+    "id": "1355",
+    "nombre": "La Quinta"
+  }, {
+    "id": "1434",
+    "nombre": "La Ramada"
+  }, {
+    "id": "1512",
+    "nombre": "La Rancherita"
+  }, {
+    "id": "1373",
+    "nombre": "La Rinconada"
+  }, {
+    "id": "1513",
+    "nombre": "La Serranita"
+  }, {
+    "id": "1476",
+    "nombre": "La Tordilla"
+  }, {
+    "id": "1435",
+    "nombre": "La Travesia"
+  }, {
+    "id": "1598",
+    "nombre": "Laborde"
+  }, {
+    "id": "1270",
+    "nombre": "Laboulaye"
+  }, {
+    "id": "1390",
+    "nombre": "Laguna Larga"
+  }, {
+    "id": "1324",
+    "nombre": "Las Acequias"
+  }, {
+    "id": "1325",
+    "nombre": "Las Albahacas"
+  }, {
+    "id": "1577",
+    "nombre": "Las Arrias"
+  }, {
+    "id": "1077",
+    "nombre": "Las Bajadas"
+  }, {
+    "id": "1078",
+    "nombre": "Las Caleras"
+  }, {
+    "id": "1407",
+    "nombre": "Las Calles"
+  }, {
+    "id": "1157",
+    "nombre": "Las Cañadas"
+  }, {
+    "id": "1430",
+    "nombre": "Las Chacras"
+  }, {
+    "id": "1448",
+    "nombre": "Las Chacras"
+  }, {
+    "id": "1356",
+    "nombre": "Las Gramillas"
+  }, {
+    "id": "1326",
+    "nombre": "Las Higueras"
+  }, {
+    "id": "1551",
+    "nombre": "Las Isletillas"
+  }, {
+    "id": "1290",
+    "nombre": "Las Jarillas"
+  }, {
+    "id": "1391",
+    "nombre": "Las Junturas"
+  }, {
+    "id": "1188",
+    "nombre": "Las Mojarras"
+  }, {
+    "id": "1408",
+    "nombre": "Las Oscuras"
+  }, {
+    "id": "1261",
+    "nombre": "Las Palmas"
+  }, {
+    "id": "1566",
+    "nombre": "Las Peñas"
+  }, {
+    "id": "1327",
+    "nombre": "Las Peñas"
+  }, {
+    "id": "1552",
+    "nombre": "Las Perdices"
+  }, {
+    "id": "1158",
+    "nombre": "Las Playas"
+  }, {
+    "id": "1409",
+    "nombre": "Las Rabonas"
+  }, {
+    "id": "1357",
+    "nombre": "Las Saladas"
+  }, {
+    "id": "1436",
+    "nombre": "Las Tapias"
+  }, {
+    "id": "1477",
+    "nombre": "Las Varas"
+  }, {
+    "id": "1478",
+    "nombre": "Las Varillas"
+  }, {
+    "id": "1328",
+    "nombre": "Las Vertientes"
+  }, {
+    "id": "1271",
+    "nombre": "Leguizamon"
+  }, {
+    "id": "1244",
+    "nombre": "Leones"
+  }, {
+    "id": "1431",
+    "nombre": "Loma Bola"
+  }, {
+    "id": "1410",
+    "nombre": "Los Callejones"
+  }, {
+    "id": "1515",
+    "nombre": "Los Cedros"
+  }, {
+    "id": "1437",
+    "nombre": "Los Cerrillos"
+  }, {
+    "id": "1392",
+    "nombre": "Los Chañaritos"
+  }, {
+    "id": "1205",
+    "nombre": "Los Chañaritos"
+  }, {
+    "id": "1159",
+    "nombre": "Los Chañaritos"
+  }, {
+    "id": "1222",
+    "nombre": "Los Cisnes"
+  }, {
+    "id": "1291",
+    "nombre": "Los Cocos"
+  }, {
+    "id": "1079",
+    "nombre": "Los Condores"
+  }, {
+    "id": "1438",
+    "nombre": "Los Hornillos"
+  }, {
+    "id": "1374",
+    "nombre": "Los Hoyos"
+  }, {
+    "id": "1567",
+    "nombre": "Los Mistoles"
+  }, {
+    "id": "1080",
+    "nombre": "Los Molinos"
+  }, {
+    "id": "1439",
+    "nombre": "Los Molles"
+  }, {
+    "id": "1128",
+    "nombre": "Los Molles"
+  }, {
+    "id": "1206",
+    "nombre": "Los Pozos"
+  }, {
+    "id": "1081",
+    "nombre": "Los Reartes"
+  }, {
+    "id": "1440",
+    "nombre": "Los Romeros"
+  }, {
+    "id": "1245",
+    "nombre": "Los Surgentes"
+  }, {
+    "id": "1262",
+    "nombre": "Los Talares"
+  }, {
+    "id": "1553",
+    "nombre": "Los Zorros"
+  }, {
+    "id": "1516",
+    "nombre": "Lozada"
+  }, {
+    "id": "1189",
+    "nombre": "Luca"
+  }, {
+    "id": "1578",
+    "nombre": "Lucio V. Mansilla"
+  }, {
+    "id": "1393",
+    "nombre": "Luque"
+  }, {
+    "id": "1082",
+    "nombre": "Lutti"
+  }, {
+    "id": "1441",
+    "nombre": "Luyaba"
+  }, {
+    "id": "1517",
+    "nombre": "Malagueño"
+  }, {
+    "id": "1329",
+    "nombre": "Malena"
+  }, {
+    "id": "1292",
+    "nombre": "Mallin"
+  }, {
+    "id": "1129",
+    "nombre": "Malvinas Argentinas"
+  }, {
+    "id": "1394",
+    "nombre": "Manfredi"
+  }, {
+    "id": "1358",
+    "nombre": "Maquinista Gallini"
+  }, {
+    "id": "1246",
+    "nombre": "Marcos Juarez"
+  }, {
+    "id": "1479",
+    "nombre": "Marull"
+  }, {
+    "id": "1395",
+    "nombre": "Matorrales"
+  }, {
+    "id": "1171",
+    "nombre": "Mattaldi"
+  }, {
+    "id": "1293",
+    "nombre": "Mayu Sumaj"
+  }, {
+    "id": "1160",
+    "nombre": "Media Naranja"
+  }, {
+    "id": "1272",
+    "nombre": "Melo"
+  }, {
+    "id": "1130",
+    "nombre": "Mendiolaza"
+  }, {
+    "id": "1131",
+    "nombre": "Mi Granja"
+  }, {
+    "id": "1533",
+    "nombre": "Mi Valle"
+  }, {
+    "id": "1411",
+    "nombre": "Mina Clavero"
+  }, {
+    "id": "1480",
+    "nombre": "Miramar"
+  }, {
+    "id": "1247",
+    "nombre": "Monte Buey"
+  }, {
+    "id": "1330",
+    "nombre": "Monte De Los Gauchos"
+  }, {
+    "id": "1359",
+    "nombre": "Monte Del Rosario"
+  }, {
+    "id": "1599",
+    "nombre": "Monte Leña"
+  }, {
+    "id": "1600",
+    "nombre": "Monte Maiz"
+  }, {
+    "id": "1519",
+    "nombre": "Monte Ralo"
+  }, {
+    "id": "1083",
+    "nombre": "Monte Ralo"
+  }, {
+    "id": "1360",
+    "nombre": "Montecristo"
+  }, {
+    "id": "1601",
+    "nombre": "Morrison"
+  }, {
+    "id": "1481",
+    "nombre": "Morteros"
+  }, {
+    "id": "1412",
+    "nombre": "Mussi"
+  }, {
+    "id": "1172",
+    "nombre": "Nicolas Bruzzone"
+  }, {
+    "id": "1602",
+    "nombre": "Noetinger"
+  }, {
+    "id": "1248",
+    "nombre": "Noetinger"
+  }, {
+    "id": "1413",
+    "nombre": "Nono"
+  }, {
+    "id": "1361",
+    "nombre": "Obispo Trejo"
+  }, {
+    "id": "1223",
+    "nombre": "Olaeta"
+  }, {
+    "id": "1554",
+    "nombre": "Oliva"
+  }, {
+    "id": "1207",
+    "nombre": "Olivares De San Nicolas"
+  }, {
+    "id": "1173",
+    "nombre": "Onagoity"
+  }, {
+    "id": "1396",
+    "nombre": "Oncativo"
+  }, {
+    "id": "1603",
+    "nombre": "Ordoñez"
+  }, {
+    "id": "1224",
+    "nombre": "Pacheco De Melo"
+  }, {
+    "id": "1132",
+    "nombre": "Pajas Blancas"
+  }, {
+    "id": "1555",
+    "nombre": "Pampayasta Norte"
+  }, {
+    "id": "1556",
+    "nombre": "Pampayasta Sur"
+  }, {
+    "id": "1414",
+    "nombre": "Panaholma"
+  }, {
+    "id": "1084",
+    "nombre": "Parque Calmayo"
+  }, {
+    "id": "1142",
+    "nombre": "Parque Norte"
+  }, {
+    "id": "1604",
+    "nombre": "Pascanas"
+  }, {
+    "id": "1190",
+    "nombre": "Pasco"
+  }, {
+    "id": "1331",
+    "nombre": "Paso Del Durazno"
+  }, {
+    "id": "1225",
+    "nombre": "Paso Del Durazno"
+  }, {
+    "id": "1161",
+    "nombre": "Paso Viejo"
+  }, {
+    "id": "1397",
+    "nombre": "Pilar"
+  }, {
+    "id": "1174",
+    "nombre": "Pincen"
+  }, {
+    "id": "1362",
+    "nombre": "Piquillin"
+  }, {
+    "id": "1363",
+    "nombre": "Plaza De Mercedes"
+  }, {
+    "id": "1482",
+    "nombre": "Plaza Luxardo"
+  }, {
+    "id": "1483",
+    "nombre": "Plaza San Francisco"
+  }, {
+    "id": "1484",
+    "nombre": "Porteña"
+  }, {
+    "id": "1520",
+    "nombre": "Potrero De Garay"
+  }, {
+    "id": "1398",
+    "nombre": "Pozo Del Molle"
+  }, {
+    "id": "1542",
+    "nombre": "Pozo Nuevo"
+  }, {
+    "id": "1364",
+    "nombre": "Pueblo Comechingones"
+  }, {
+    "id": "1605",
+    "nombre": "Pueblo Italiano"
+  }, {
+    "id": "1375",
+    "nombre": "Puesto De Castro"
+  }, {
+    "id": "1557",
+    "nombre": "Punta Del Agua"
+  }, {
+    "id": "1485",
+    "nombre": "Quebracho Herrado"
+  }, {
+    "id": "1432",
+    "nombre": "Quebracho Ladeado"
+  }, {
+    "id": "1442",
+    "nombre": "Quebrada De Los Pozos"
+  }, {
+    "id": "1294",
+    "nombre": "Quebrada De Luna"
+  }, {
+    "id": "1208",
+    "nombre": "Quilino"
+  }, {
+    "id": "1521",
+    "nombre": "Rafael Garcia"
+  }, {
+    "id": "1606",
+    "nombre": "Ramon J. Carcano"
+  }, {
+    "id": "1175",
+    "nombre": "Ranqueles"
+  }, {
+    "id": "1376",
+    "nombre": "Rayo Cortado"
+  }, {
+    "id": "1399",
+    "nombre": "Rincon"
+  }, {
+    "id": "1273",
+    "nombre": "Rio Bamba"
+  }, {
+    "id": "1133",
+    "nombre": "Rio Ceballos"
+  }, {
+    "id": "1332",
+    "nombre": "Rio Cuarto"
+  }, {
+    "id": "1085",
+    "nombre": "Rio De Los Sauces"
+  }, {
+    "id": "1365",
+    "nombre": "Rio Primero"
+  }, {
+    "id": "1400",
+    "nombre": "Rio Segundo"
+  }, {
+    "id": "1558",
+    "nombre": "Rio Tercero"
+  }, {
+    "id": "1274",
+    "nombre": "Rosales"
+  }, {
+    "id": "1579",
+    "nombre": "Rosario Del Saladillo"
+  }, {
+    "id": "1486",
+    "nombre": "Sacanta"
+  }, {
+    "id": "1366",
+    "nombre": "Sagrada Familia"
+  }, {
+    "id": "1249",
+    "nombre": "Saira"
+  }, {
+    "id": "1250",
+    "nombre": "Saladillo"
+  }, {
+    "id": "1134",
+    "nombre": "Saldan"
+  }, {
+    "id": "1263",
+    "nombre": "Salsacate"
+  }, {
+    "id": "1136",
+    "nombre": "Salsipuedes"
+  }, {
+    "id": "1333",
+    "nombre": "Sampacho"
+  }, {
+    "id": "1086",
+    "nombre": "San Agustin"
+  }, {
+    "id": "1295",
+    "nombre": "San Antonio De Arredondo"
+  }, {
+    "id": "1607",
+    "nombre": "San Antonio De Litin"
+  }, {
+    "id": "1334",
+    "nombre": "San Basilio"
+  }, {
+    "id": "1257",
+    "nombre": "San Carlos Minas"
+  }, {
+    "id": "1522",
+    "nombre": "San Clemente"
+  }, {
+    "id": "1296",
+    "nombre": "San Esteban"
+  }, {
+    "id": "1487",
+    "nombre": "San Francisco"
+  }, {
+    "id": "1543",
+    "nombre": "San Francisco Del Chañar"
+  }, {
+    "id": "1264",
+    "nombre": "San Geronimo"
+  }, {
+    "id": "1415",
+    "nombre": "San Huberto"
+  }, {
+    "id": "1087",
+    "nombre": "San Ignacio (Loteo San Javier)"
+  }, {
+    "id": "1088",
+    "nombre": "San Ignacio (Loteo Velez Crespo)"
+  }, {
+    "id": "1443",
+    "nombre": "San Javier Y Yacanto"
+  }, {
+    "id": "1275",
+    "nombre": "San Joaquin"
+  }, {
+    "id": "1444",
+    "nombre": "San Jose"
+  }, {
+    "id": "1580",
+    "nombre": "San Jose De La Dormida"
+  }, {
+    "id": "1581",
+    "nombre": "San Jose De Las Salinas"
+  }, {
+    "id": "1416",
+    "nombre": "San Lorenzo"
+  }, {
+    "id": "1608",
+    "nombre": "San Marcos"
+  }, {
+    "id": "1162",
+    "nombre": "San Marcos Sierra"
+  }, {
+    "id": "1417",
+    "nombre": "San Martin"
+  }, {
+    "id": "1523",
+    "nombre": "San Nicolas"
+  }, {
+    "id": "1418",
+    "nombre": "San Pedro"
+  }, {
+    "id": "1377",
+    "nombre": "San Pedro De GÜTEMBERG"
+  }, {
+    "id": "1209",
+    "nombre": "San Pedro De Toyos"
+  }, {
+    "id": "1582",
+    "nombre": "San Pedro Norte"
+  }, {
+    "id": "1297",
+    "nombre": "San Roque"
+  }, {
+    "id": "1609",
+    "nombre": "San Severo"
+  }, {
+    "id": "1419",
+    "nombre": "San Vicente"
+  }, {
+    "id": "1191",
+    "nombre": "Sanabria"
+  }, {
+    "id": "1568",
+    "nombre": "Santa Catalina"
+  }, {
+    "id": "1335",
+    "nombre": "Santa Catalina (Est. Holmberg)"
+  }, {
+    "id": "1378",
+    "nombre": "Santa Elena"
+  }, {
+    "id": "1137",
+    "nombre": "Santa Elena"
+  }, {
+    "id": "1226",
+    "nombre": "Santa Eufemia"
+  }, {
+    "id": "1176",
+    "nombre": "Santa Magdalena (Est. Jovita)"
+  }, {
+    "id": "1298",
+    "nombre": "Santa Maria De Punilla"
+  }, {
+    "id": "1089",
+    "nombre": "Santa Monica"
+  }, {
+    "id": "1090",
+    "nombre": "Santa Rosa De Calamuchita"
+  }, {
+    "id": "1367",
+    "nombre": "Santa Rosa De Rio Primero (Est. Villa Santa Rosa)"
+  }, {
+    "id": "1401",
+    "nombre": "Santiago Temple"
+  }, {
+    "id": "1569",
+    "nombre": "Sarmiento"
+  }, {
+    "id": "1488",
+    "nombre": "Saturnino Maria Laspiur"
+  }, {
+    "id": "1420",
+    "nombre": "Sauce Arriba"
+  }, {
+    "id": "1379",
+    "nombre": "Sebastian Elcano"
+  }, {
+    "id": "1489",
+    "nombre": "Seeber"
+  }, {
+    "id": "1091",
+    "nombre": "Segunda Usina"
+  }, {
+    "id": "1276",
+    "nombre": "Serrano"
+  }, {
+    "id": "1163",
+    "nombre": "Serrezuela"
+  }, {
+    "id": "1192",
+    "nombre": "Silvio Pellico"
+  }, {
+    "id": "1570",
+    "nombre": "Simbolar"
+  }, {
+    "id": "1571",
+    "nombre": "Sinsacate"
+  }, {
+    "id": "1524",
+    "nombre": "Socavones"
+  }, {
+    "id": "1092",
+    "nombre": "Solar De Los Molinos"
+  }, {
+    "id": "1336",
+    "nombre": "Suco"
+  }, {
+    "id": "1265",
+    "nombre": "Tala Cañada"
+  }, {
+    "id": "1299",
+    "nombre": "Tala Huasi"
+  }, {
+    "id": "1258",
+    "nombre": "Talaini"
+  }, {
+    "id": "1559",
+    "nombre": "Tancacha"
+  }, {
+    "id": "1266",
+    "nombre": "Taninga"
+  }, {
+    "id": "1300",
+    "nombre": "Tanti"
+  }, {
+    "id": "1421",
+    "nombre": "Tasna"
+  }, {
+    "id": "1193",
+    "nombre": "Ticino"
+  }, {
+    "id": "1138",
+    "nombre": "Tinoco"
+  }, {
+    "id": "1194",
+    "nombre": "Tio Pujio"
+  }, {
+    "id": "1525",
+    "nombre": "Toledo"
+  }, {
+    "id": "1490",
+    "nombre": "Toro Pujio"
+  }, {
+    "id": "1259",
+    "nombre": "Tosno"
+  }, {
+    "id": "1337",
+    "nombre": "Tosquitas"
+  }, {
+    "id": "1491",
+    "nombre": "Transito"
+  }, {
+    "id": "1492",
+    "nombre": "Trinchera"
+  }, {
+    "id": "1164",
+    "nombre": "Tuclame"
+  }, {
+    "id": "1227",
+    "nombre": "Ucacha"
+  }, {
+    "id": "1139",
+    "nombre": "Unquillo"
+  }, {
+    "id": "1526",
+    "nombre": "Valle Alegre"
+  }, {
+    "id": "1527",
+    "nombre": "Valle De Anisacate"
+  }, {
+    "id": "1301",
+    "nombre": "Valle Hermoso"
+  }, {
+    "id": "1610",
+    "nombre": "Viamonte"
+  }, {
+    "id": "1338",
+    "nombre": "Vicuña Mackenna"
+  }, {
+    "id": "1531",
+    "nombre": "Villa  La Bolsa"
+  }, {
+    "id": "1532",
+    "nombre": "Villa  Los Aromos"
+  }, {
+    "id": "1195",
+    "nombre": "Villa Albertina"
+  }, {
+    "id": "1140",
+    "nombre": "Villa Allende"
+  }, {
+    "id": "1093",
+    "nombre": "Villa Alpina"
+  }, {
+    "id": "1094",
+    "nombre": "Villa Amancay"
+  }, {
+    "id": "1560",
+    "nombre": "Villa Ascasubi"
+  }, {
+    "id": "1095",
+    "nombre": "Villa Berna"
+  }, {
+    "id": "1380",
+    "nombre": "Villa Candelaria Norte"
+  }, {
+    "id": "1302",
+    "nombre": "Villa Carlos Paz"
+  }, {
+    "id": "1141",
+    "nombre": "Villa Cerro Azul"
+  }, {
+    "id": "1528",
+    "nombre": "Villa Ciudad De America (Loteo Diego De Rojas)"
+  }, {
+    "id": "1096",
+    "nombre": "Villa Ciudad Parque Los Reartes (1A. Seccion)"
+  }, {
+    "id": "1097",
+    "nombre": "Villa Ciudad Parque Los Reartes (3A. Seccion)"
+  }, {
+    "id": "1493",
+    "nombre": "Villa Concepcion Del Tio"
+  }, {
+    "id": "1422",
+    "nombre": "Villa Cura Brochero"
+  }, {
+    "id": "1449",
+    "nombre": "Villa De Las Rosas"
+  }, {
+    "id": "1381",
+    "nombre": "Villa De Maria"
+  }, {
+    "id": "1267",
+    "nombre": "Villa De Pocho"
+  }, {
+    "id": "1165",
+    "nombre": "Villa De Soto"
+  }, {
+    "id": "1098",
+    "nombre": "Villa Del Dique"
+  }, {
+    "id": "1529",
+    "nombre": "Villa Del Prado"
+  }, {
+    "id": "1402",
+    "nombre": "Villa Del Rosario"
+  }, {
+    "id": "1572",
+    "nombre": "Villa Del Totoral"
+  }, {
+    "id": "1494",
+    "nombre": "Villa Del Transito"
+  }, {
+    "id": "1450",
+    "nombre": "Villa Dolores"
+  }, {
+    "id": "1339",
+    "nombre": "Villa El Chacay"
+  }, {
+    "id": "1143",
+    "nombre": "Villa El Fachinal"
+  }, {
+    "id": "1099",
+    "nombre": "Villa El Tala"
+  }, {
+    "id": "1251",
+    "nombre": "Villa Elisa"
+  }, {
+    "id": "1303",
+    "nombre": "Villa Flor Serrana"
+  }, {
+    "id": "1368",
+    "nombre": "Villa Fontana"
+  }, {
+    "id": "1100",
+    "nombre": "Villa General Belgrano"
+  }, {
+    "id": "1304",
+    "nombre": "Villa Giardino"
+  }, {
+    "id": "1210",
+    "nombre": "Villa Gutierrez"
+  }, {
+    "id": "1177",
+    "nombre": "Villa Huidobro (Est. Cañada Verde)"
+  }, {
+    "id": "1530",
+    "nombre": "Villa La Donosa"
+  }, {
+    "id": "1101",
+    "nombre": "Villa La Rivera"
+  }, {
+    "id": "1451",
+    "nombre": "Villa La Viña"
+  }, {
+    "id": "1305",
+    "nombre": "Villa Lago Azul"
+  }, {
+    "id": "1145",
+    "nombre": "Villa Los Llanos"
+  }, {
+    "id": "1611",
+    "nombre": "Villa Los Patos"
+  }, {
+    "id": "1196",
+    "nombre": "Villa Maria"
+  }, {
+    "id": "1197",
+    "nombre": "Villa Nueva"
+  }, {
+    "id": "1198",
+    "nombre": "Villa Oeste"
+  }, {
+    "id": "1534",
+    "nombre": "Villa Parque Santa Ana"
+  }, {
+    "id": "1306",
+    "nombre": "Villa Parque Siquiman"
+  }, {
+    "id": "1211",
+    "nombre": "Villa Quilino"
+  }, {
+    "id": "1102",
+    "nombre": "Villa Quillinzo"
+  }, {
+    "id": "1228",
+    "nombre": "Villa Reduccion"
+  }, {
+    "id": "1307",
+    "nombre": "Villa Rio Icho Cruz"
+  }, {
+    "id": "1277",
+    "nombre": "Villa Rossi"
+  }, {
+    "id": "1103",
+    "nombre": "Villa Rumipal"
+  }, {
+    "id": "1495",
+    "nombre": "Villa San Esteban"
+  }, {
+    "id": "1536",
+    "nombre": "Villa San Isidro"
+  }, {
+    "id": "1308",
+    "nombre": "Villa San Jose"
+  }, {
+    "id": "1104",
+    "nombre": "Villa San Miguel"
+  }, {
+    "id": "1309",
+    "nombre": "Villa Santa Cruz Del Lago"
+  }, {
+    "id": "1340",
+    "nombre": "Villa Santa Eugenia"
+  }, {
+    "id": "1423",
+    "nombre": "Villa Sarmiento"
+  }, {
+    "id": "1178",
+    "nombre": "Villa Sarmiento"
+  }, {
+    "id": "1537",
+    "nombre": "Villa Sierras De Oro"
+  }, {
+    "id": "1583",
+    "nombre": "Villa Tulumba"
+  }, {
+    "id": "1179",
+    "nombre": "Villa Valeria"
+  }, {
+    "id": "1105",
+    "nombre": "Villa Yacanto"
+  }, {
+    "id": "1341",
+    "nombre": "Washington"
+  }, {
+    "id": "1612",
+    "nombre": "Wenceslao Escalante"
+  }, {
+    "id": "1538",
+    "nombre": "Yocsina"
+  }]
+}, {
+  "id": 18,
+  "nombre": "Corrientes",
+  "ciudades": [{
+    "id": "1630",
+    "nombre": "Alvear"
+  }, {
+    "id": "1616",
+    "nombre": "Barrio Esperanza"
+  }, {
+    "id": "1613",
+    "nombre": "Bella Vista"
+  }, {
+    "id": "1614",
+    "nombre": "Beron De Astrada"
+  }, {
+    "id": "1660",
+    "nombre": "Bonpland"
+  }, {
+    "id": "1624",
+    "nombre": "Cazadores Correntinos"
+  }, {
+    "id": "1677",
+    "nombre": "Chavarria"
+  }, {
+    "id": "1671",
+    "nombre": "Colonia Carlos Pellegrini"
+  }, {
+    "id": "1636",
+    "nombre": "Colonia Carolina"
+  }, {
+    "id": "1654",
+    "nombre": "Colonia Libertad"
+  }, {
+    "id": "1640",
+    "nombre": "Colonia Liebig'S"
+  }, {
+    "id": "1678",
+    "nombre": "Colonia Pando"
+  }, {
+    "id": "1621",
+    "nombre": "Concepcion"
+  }, {
+    "id": "1617",
+    "nombre": "Corrientes"
+  }, {
+    "id": "1645",
+    "nombre": "Cruz De Los Milagros"
+  }, {
+    "id": "1625",
+    "nombre": "Curuzu Cuatia"
+  }, {
+    "id": "1627",
+    "nombre": "El Sombrero"
+  }, {
+    "id": "1628",
+    "nombre": "Empedrado"
+  }, {
+    "id": "1629",
+    "nombre": "Esquina"
+  }, {
+    "id": "1655",
+    "nombre": "Estacion Libertad"
+  }, {
+    "id": "1631",
+    "nombre": "Estacion Torrent"
+  }, {
+    "id": "1651",
+    "nombre": "Felipe Yofre"
+  }, {
+    "id": "1683",
+    "nombre": "Garruchos"
+  }, {
+    "id": "1684",
+    "nombre": "Gobernador Igr. Valentin Virasoro"
+  }, {
+    "id": "1646",
+    "nombre": "Gobernador Juan E. Martinez"
+  }, {
+    "id": "1637",
+    "nombre": "Goya"
+  }, {
+    "id": "1672",
+    "nombre": "Guaviravi"
+  }, {
+    "id": "1666",
+    "nombre": "Ingenio Primer Correntino"
+  }, {
+    "id": "1632",
+    "nombre": "Ita Ibate"
+  }, {
+    "id": "1638",
+    "nombre": "Itati"
+  }, {
+    "id": "1641",
+    "nombre": "Ituzaingo"
+  }, {
+    "id": "1682",
+    "nombre": "Jose Rafael Gomez (Garabi)"
+  }, {
+    "id": "1656",
+    "nombre": "Juan Pujol"
+  }, {
+    "id": "1673",
+    "nombre": "La Cruz"
+  }, {
+    "id": "1618",
+    "nombre": "Laguna Brava"
+  }, {
+    "id": "1647",
+    "nombre": "Lavalle"
+  }, {
+    "id": "1633",
+    "nombre": "Lomas De Vallejos"
+  }, {
+    "id": "1675",
+    "nombre": "Loreto"
+  }, {
+    "id": "1652",
+    "nombre": "Mariano I. Loza (Est. Justino Solari)"
+  }, {
+    "id": "1650",
+    "nombre": "Mburucuya"
+  }, {
+    "id": "1653",
+    "nombre": "Mercedes"
+  }, {
+    "id": "1657",
+    "nombre": "Mocoreta"
+  }, {
+    "id": "1658",
+    "nombre": "Monte Caseros"
+  }, {
+    "id": "1634",
+    "nombre": "Nuestra Señora Del Rosario De Caa Cati"
+  }, {
+    "id": "1635",
+    "nombre": "Palmar Grande"
+  }, {
+    "id": "1659",
+    "nombre": "Parada Acuña"
+  }, {
+    "id": "1661",
+    "nombre": "Parada Pucheta"
+  }, {
+    "id": "1667",
+    "nombre": "Paso De La Patria"
+  }, {
+    "id": "1662",
+    "nombre": "Paso De Los Libres"
+  }, {
+    "id": "1680",
+    "nombre": "Pedro R. Fernandez (Est. Manuel F. Mantilla)"
+  }, {
+    "id": "1626",
+    "nombre": "Perugorria"
+  }, {
+    "id": "1639",
+    "nombre": "Ramada Paso"
+  }, {
+    "id": "1619",
+    "nombre": "Riachuelo"
+  }, {
+    "id": "1664",
+    "nombre": "Saladas"
+  }, {
+    "id": "1642",
+    "nombre": "San Antonio"
+  }, {
+    "id": "1643",
+    "nombre": "San Carlos"
+  }, {
+    "id": "1620",
+    "nombre": "San Cayetano"
+  }, {
+    "id": "1668",
+    "nombre": "San Cosme"
+  }, {
+    "id": "1665",
+    "nombre": "San Lorenzo"
+  }, {
+    "id": "1670",
+    "nombre": "San Luis Del Palmar"
+  }, {
+    "id": "1676",
+    "nombre": "San Miguel"
+  }, {
+    "id": "1681",
+    "nombre": "San Roque"
+  }, {
+    "id": "1669",
+    "nombre": "Santa Ana"
+  }, {
+    "id": "1648",
+    "nombre": "Santa Lucia"
+  }, {
+    "id": "1622",
+    "nombre": "Santa Rosa"
+  }, {
+    "id": "1685",
+    "nombre": "Santo Tome"
+  }, {
+    "id": "1686",
+    "nombre": "Sauce"
+  }, {
+    "id": "1623",
+    "nombre": "Tabay"
+  }, {
+    "id": "1663",
+    "nombre": "Tapebicua"
+  }, {
+    "id": "1649",
+    "nombre": "Villa Cordoba"
+  }, {
+    "id": "1644",
+    "nombre": "Villa Olivari"
+  }, {
+    "id": "1615",
+    "nombre": "Yahape"
+  }, {
+    "id": "1674",
+    "nombre": "Yapeyu"
+  }, {
+    "id": "1679",
+    "nombre": "9 De Julio (Est. Pueblo 9 De Julio)"
+  }]
+}, {
+  "id": 30,
+  "nombre": "Entre Rios",
+  "ciudades": [{
+    "id": "1934",
+    "nombre": "Aldea Asuncion"
+  }, {
+    "id": "1898",
+    "nombre": "Aldea Brasilera"
+  }, {
+    "id": "1973",
+    "nombre": "Aldea Maria Luisa"
+  }, {
+    "id": "1899",
+    "nombre": "Aldea Protestante"
+  }, {
+    "id": "1900",
+    "nombre": "Aldea Salto"
+  }, {
+    "id": "1939",
+    "nombre": "Aldea San Antonio"
+  }, {
+    "id": "1901",
+    "nombre": "Aldea San Francisco"
+  }, {
+    "id": "1940",
+    "nombre": "Aldea San Juan"
+  }, {
+    "id": "1974",
+    "nombre": "Aldea San Rafael"
+  }, {
+    "id": "1975",
+    "nombre": "Aldea Santa Maria"
+  }, {
+    "id": "1976",
+    "nombre": "Aldea Santa Rosa"
+  }, {
+    "id": "1902",
+    "nombre": "Aldea Spatzenkutter"
+  }, {
+    "id": "1903",
+    "nombre": "Aldea Valle Maria"
+  }, {
+    "id": "2006",
+    "nombre": "Altamirano Sur"
+  }, {
+    "id": "2031",
+    "nombre": "Antelo"
+  }, {
+    "id": "1965",
+    "nombre": "Aranguren"
+  }, {
+    "id": "1867",
+    "nombre": "Arroyo Baru"
+  }, {
+    "id": "1950",
+    "nombre": "Arroyo Martinez"
+  }, {
+    "id": "2016",
+    "nombre": "Basavilbaso"
+  }, {
+    "id": "1885",
+    "nombre": "Benito Legeren"
+  }, {
+    "id": "1966",
+    "nombre": "Betbeder"
+  }, {
+    "id": "1956",
+    "nombre": "Bovril"
+  }, {
+    "id": "1880",
+    "nombre": "Calabacilla"
+  }, {
+    "id": "2017",
+    "nombre": "Caseros"
+  }, {
+    "id": "1951",
+    "nombre": "Ceibas"
+  }, {
+    "id": "1977",
+    "nombre": "Cerrito"
+  }, {
+    "id": "1915",
+    "nombre": "Chajari"
+  }, {
+    "id": "2032",
+    "nombre": "CharigÜE"
+  }, {
+    "id": "1881",
+    "nombre": "Clodomiro Ledesma"
+  }, {
+    "id": "1868",
+    "nombre": "Colon"
+  }, {
+    "id": "1916",
+    "nombre": "Colonia Alemana"
+  }, {
+    "id": "1979",
+    "nombre": "Colonia Avellaneda"
+  }, {
+    "id": "1957",
+    "nombre": "Colonia Avigdor"
+  }, {
+    "id": "1882",
+    "nombre": "Colonia Ayui"
+  }, {
+    "id": "2018",
+    "nombre": "Colonia Elia"
+  }, {
+    "id": "1917",
+    "nombre": "Colonia Ensanche Sauce"
+  }, {
+    "id": "1904",
+    "nombre": "Colonia Ensayo"
+  }, {
+    "id": "1883",
+    "nombre": "Colonia General Roca"
+  }, {
+    "id": "1869",
+    "nombre": "Colonia Hugues"
+  }, {
+    "id": "1918",
+    "nombre": "Colonia La Argentina"
+  }, {
+    "id": "1919",
+    "nombre": "Colonia Peña"
+  }, {
+    "id": "1920",
+    "nombre": "Colonia Santa Maria"
+  }, {
+    "id": "1884",
+    "nombre": "Colonia Yerua"
+  }, {
+    "id": "2019",
+    "nombre": "Concepcion Del Uruguay"
+  }, {
+    "id": "1886",
+    "nombre": "Concordia"
+  }, {
+    "id": "1927",
+    "nombre": "Conscripto Bernardi"
+  }, {
+    "id": "1980",
+    "nombre": "Crespo"
+  }, {
+    "id": "1905",
+    "nombre": "Diamante"
+  }, {
+    "id": "1967",
+    "nombre": "Don Cristobal"
+  }, {
+    "id": "2007",
+    "nombre": "Durazno"
+  }, {
+    "id": "1875",
+    "nombre": "El Brillante"
+  }, {
+    "id": "1928",
+    "nombre": "El Cimarron"
+  }, {
+    "id": "1876",
+    "nombre": "El Colorado"
+  }, {
+    "id": "1981",
+    "nombre": "El Palenque"
+  }, {
+    "id": "1982",
+    "nombre": "El Pingo"
+  }, {
+    "id": "1890",
+    "nombre": "El Redomon"
+  }, {
+    "id": "1958",
+    "nombre": "El Solar"
+  }, {
+    "id": "1941",
+    "nombre": "Enrique Carbo"
+  }, {
+    "id": "2008",
+    "nombre": "Estacion Arroyo Cle"
+  }, {
+    "id": "1907",
+    "nombre": "Estacion Camps"
+  }, {
+    "id": "1935",
+    "nombre": "Estacion Lazo"
+  }, {
+    "id": "1913",
+    "nombre": "Estacion Puiggari"
+  }, {
+    "id": "2037",
+    "nombre": "Estacion Raices"
+  }, {
+    "id": "1891",
+    "nombre": "Estacion Yerua"
+  }, {
+    "id": "2020",
+    "nombre": "Estancia San Pedro"
+  }, {
+    "id": "1942",
+    "nombre": "Faustino M. Parera"
+  }, {
+    "id": "1968",
+    "nombre": "Febre"
+  }, {
+    "id": "1921",
+    "nombre": "Federacion"
+  }, {
+    "id": "1929",
+    "nombre": "Federal"
+  }, {
+    "id": "1943",
+    "nombre": "General Almada"
+  }, {
+    "id": "1908",
+    "nombre": "General Alvear"
+  }, {
+    "id": "2004",
+    "nombre": "General Campos"
+  }, {
+    "id": "1936",
+    "nombre": "General Galarza"
+  }, {
+    "id": "1909",
+    "nombre": "General Racedo"
+  }, {
+    "id": "1910",
+    "nombre": "General Ramirez"
+  }, {
+    "id": "1944",
+    "nombre": "Gilbert"
+  }, {
+    "id": "2009",
+    "nombre": "Gobernador EchagÜE"
+  }, {
+    "id": "2010",
+    "nombre": "Gobernador Mansilla"
+  }, {
+    "id": "2011",
+    "nombre": "Gobernador Sola"
+  }, {
+    "id": "1937",
+    "nombre": "Gualeguay"
+  }, {
+    "id": "1945",
+    "nombre": "Gualeguaychu"
+  }, {
+    "id": "2012",
+    "nombre": "Guardamonte"
+  }, {
+    "id": "1870",
+    "nombre": "Hambis"
+  }, {
+    "id": "1983",
+    "nombre": "Hasenkamp"
+  }, {
+    "id": "1984",
+    "nombre": "Hernandarias"
+  }, {
+    "id": "1969",
+    "nombre": "Hernandez"
+  }, {
+    "id": "2021",
+    "nombre": "Herrera"
+  }, {
+    "id": "1871",
+    "nombre": "Hocker"
+  }, {
+    "id": "1952",
+    "nombre": "Ibicuy"
+  }, {
+    "id": "2038",
+    "nombre": "Ingeniero Miguel Sajaroff"
+  }, {
+    "id": "1946",
+    "nombre": "Irazusta"
+  }, {
+    "id": "2039",
+    "nombre": "Jubileo"
+  }, {
+    "id": "1872",
+    "nombre": "La Clarita"
+  }, {
+    "id": "1892",
+    "nombre": "La Criolla"
+  }, {
+    "id": "1959",
+    "nombre": "La Paz"
+  }, {
+    "id": "1985",
+    "nombre": "La Picada"
+  }, {
+    "id": "2033",
+    "nombre": "Laguna Del Pescado"
+  }, {
+    "id": "1947",
+    "nombre": "Larroque"
+  }, {
+    "id": "2013",
+    "nombre": "Las Guachas"
+  }, {
+    "id": "2022",
+    "nombre": "Las Moscas"
+  }, {
+    "id": "1887",
+    "nombre": "Las Tejas"
+  }, {
+    "id": "1986",
+    "nombre": "Las Tunas"
+  }, {
+    "id": "2023",
+    "nombre": "Libaros"
+  }, {
+    "id": "1893",
+    "nombre": "Los Charruas"
+  }, {
+    "id": "1922",
+    "nombre": "Los Conquistadores"
+  }, {
+    "id": "1970",
+    "nombre": "Lucas Gonzalez"
+  }, {
+    "id": "2014",
+    "nombre": "Macia"
+  }, {
+    "id": "1987",
+    "nombre": "Maria Grande"
+  }, {
+    "id": "1953",
+    "nombre": "Medanos"
+  }, {
+    "id": "2040",
+    "nombre": "Mojones Norte"
+  }, {
+    "id": "2034",
+    "nombre": "Molino Doll"
+  }, {
+    "id": "1971",
+    "nombre": "Nogoya"
+  }, {
+    "id": "1894",
+    "nombre": "Nueva Escocia"
+  }, {
+    "id": "1930",
+    "nombre": "Nueva Vizcaya"
+  }, {
+    "id": "1954",
+    "nombre": "ñANCAY"
+  }, {
+    "id": "1988",
+    "nombre": "Oro Verde"
+  }, {
+    "id": "1895",
+    "nombre": "Osvaldo Magnasco"
+  }, {
+    "id": "1911",
+    "nombre": "Paraje La Virgen"
+  }, {
+    "id": "1989",
+    "nombre": "Parana"
+  }, {
+    "id": "2041",
+    "nombre": "Paso De La Laguna"
+  }, {
+    "id": "1896",
+    "nombre": "Pedernal"
+  }, {
+    "id": "1960",
+    "nombre": "Piedras Blancas"
+  }, {
+    "id": "2025",
+    "nombre": "Pronunciamiento"
+  }, {
+    "id": "1961",
+    "nombre": "Pueblo Arrua"
+  }, {
+    "id": "1990",
+    "nombre": "Pueblo Bellocq (Est. Las Garzas)"
+  }, {
+    "id": "1991",
+    "nombre": "Pueblo Brugo"
+  }, {
+    "id": "1873",
+    "nombre": "Pueblo Cazes"
+  }, {
+    "id": "1948",
+    "nombre": "Pueblo General Belgrano"
+  }, {
+    "id": "1992",
+    "nombre": "Pueblo General San Martin"
+  }, {
+    "id": "1874",
+    "nombre": "Pueblo Liebig'S"
+  }, {
+    "id": "1978",
+    "nombre": "Pueblo Moreno"
+  }, {
+    "id": "1912",
+    "nombre": "Puerto Las Cuevas"
+  }, {
+    "id": "1938",
+    "nombre": "Puerto Ruiz"
+  }, {
+    "id": "1897",
+    "nombre": "Puerto Yerua"
+  }, {
+    "id": "2035",
+    "nombre": "Rincon De Nogoya"
+  }, {
+    "id": "2026",
+    "nombre": "Rocamora"
+  }, {
+    "id": "2015",
+    "nombre": "Rosario Del Tala"
+  }, {
+    "id": "1993",
+    "nombre": "San Benito"
+  }, {
+    "id": "1962",
+    "nombre": "San Gustavo"
+  }, {
+    "id": "1923",
+    "nombre": "San Jaime De La Frontera"
+  }, {
+    "id": "1877",
+    "nombre": "San Jose"
+  }, {
+    "id": "1932",
+    "nombre": "San Jose De Feliciano"
+  }, {
+    "id": "1924",
+    "nombre": "San Pedro"
+  }, {
+    "id": "2005",
+    "nombre": "San Salvador"
+  }, {
+    "id": "1933",
+    "nombre": "San Victor"
+  }, {
+    "id": "1925",
+    "nombre": "Santa Ana"
+  }, {
+    "id": "2027",
+    "nombre": "Santa Anita"
+  }, {
+    "id": "1963",
+    "nombre": "Santa Elena"
+  }, {
+    "id": "1931",
+    "nombre": "Sauce De Luna"
+  }, {
+    "id": "1994",
+    "nombre": "Sauce Montrull"
+  }, {
+    "id": "1995",
+    "nombre": "Sauce Pinto"
+  }, {
+    "id": "1996",
+    "nombre": "Segui"
+  }, {
+    "id": "1964",
+    "nombre": "Sir Leonard"
+  }, {
+    "id": "1997",
+    "nombre": "Sosa"
+  }, {
+    "id": "1906",
+    "nombre": "Strobel"
+  }, {
+    "id": "1998",
+    "nombre": "Tabossi"
+  }, {
+    "id": "1999",
+    "nombre": "Tezanos Pinto"
+  }, {
+    "id": "1878",
+    "nombre": "Ubajay"
+  }, {
+    "id": "1949",
+    "nombre": "Urdinarrain"
+  }, {
+    "id": "2000",
+    "nombre": "Viale"
+  }, {
+    "id": "2036",
+    "nombre": "Victoria"
+  }, {
+    "id": "1879",
+    "nombre": "Villa  Elisa"
+  }, {
+    "id": "1888",
+    "nombre": "Villa Adela"
+  }, {
+    "id": "2042",
+    "nombre": "Villa Clara"
+  }, {
+    "id": "1926",
+    "nombre": "Villa Del Rosario"
+  }, {
+    "id": "2043",
+    "nombre": "Villa Dominguez"
+  }, {
+    "id": "2001",
+    "nombre": "Villa Fontana"
+  }, {
+    "id": "2002",
+    "nombre": "Villa Gdor. Luis F. Etchevehere"
+  }, {
+    "id": "1914",
+    "nombre": "Villa Libertador San Martin"
+  }, {
+    "id": "2028",
+    "nombre": "Villa Mantero"
+  }, {
+    "id": "1955",
+    "nombre": "Villa Paranacito"
+  }, {
+    "id": "2029",
+    "nombre": "Villa San Justo"
+  }, {
+    "id": "2030",
+    "nombre": "Villa San Marcial (Est. Gobernador Urquiza)"
+  }, {
+    "id": "2003",
+    "nombre": "Villa Urquiza"
+  }, {
+    "id": "1889",
+    "nombre": "Villa Zorraquin"
+  }, {
+    "id": "2044",
+    "nombre": "Villaguay"
+  }, {
+    "id": "1972",
+    "nombre": "Xx De Setiembre"
+  }, {
+    "id": "2024",
+    "nombre": "1º De Mayo"
+  }]
+}, {
+  "id": 34,
+  "nombre": "Formosa",
+  "ciudades": [{
+    "id": "2057",
+    "nombre": "Banco Payagua"
+  }, {
+    "id": "2064",
+    "nombre": "Bartolome De Las Casas"
+  }, {
+    "id": "2081",
+    "nombre": "Buena Vista"
+  }, {
+    "id": "2087",
+    "nombre": "Clorinda"
+  }, {
+    "id": "2095",
+    "nombre": "Colonia Campo Villafañe"
+  }, {
+    "id": "2049",
+    "nombre": "Colonia Pastoril"
+  }, {
+    "id": "2065",
+    "nombre": "Colonia Sarmiento"
+  }, {
+    "id": "2066",
+    "nombre": "Comandante Fontana"
+  }, {
+    "id": "2096",
+    "nombre": "El Colorado"
+  }, {
+    "id": "2082",
+    "nombre": "El Espinillo"
+  }, {
+    "id": "2100",
+    "nombre": "El Potrillo"
+  }, {
+    "id": "2067",
+    "nombre": "El Recreo"
+  }, {
+    "id": "2068",
+    "nombre": "Estanislao Del Campo"
+  }, {
+    "id": "2050",
+    "nombre": "Formosa"
+  }, {
+    "id": "2069",
+    "nombre": "Fortin Cabo 1º Lugones"
+  }, {
+    "id": "2070",
+    "nombre": "Fortin Sargento 1º Leyes"
+  }, {
+    "id": "2058",
+    "nombre": "General Lucio V. Mansilla"
+  }, {
+    "id": "2101",
+    "nombre": "General Mosconi"
+  }, {
+    "id": "2051",
+    "nombre": "Gran Guardia"
+  }, {
+    "id": "2059",
+    "nombre": "Herradura"
+  }, {
+    "id": "2071",
+    "nombre": "Ibarreta"
+  }, {
+    "id": "2063",
+    "nombre": "Ingeniero Guillermo N. Juarez"
+  }, {
+    "id": "2072",
+    "nombre": "Juan G. Bazan"
+  }, {
+    "id": "2088",
+    "nombre": "Laguna Blanca"
+  }, {
+    "id": "2083",
+    "nombre": "Laguna Gallo"
+  }, {
+    "id": "2089",
+    "nombre": "Laguna Naick-Neck"
+  }, {
+    "id": "2045",
+    "nombre": "Laguna Yema"
+  }, {
+    "id": "2073",
+    "nombre": "Las Lomitas"
+  }, {
+    "id": "2046",
+    "nombre": "Los Chiriguanos"
+  }, {
+    "id": "2052",
+    "nombre": "Mariano Boedo"
+  }, {
+    "id": "2084",
+    "nombre": "Mision Tacaagle"
+  }, {
+    "id": "2053",
+    "nombre": "Mojon De Fierro"
+  }, {
+    "id": "2090",
+    "nombre": "Palma Sola"
+  }, {
+    "id": "2097",
+    "nombre": "Palo Santo"
+  }, {
+    "id": "2098",
+    "nombre": "Pirane"
+  }, {
+    "id": "2085",
+    "nombre": "Porton Negro"
+  }, {
+    "id": "2074",
+    "nombre": "Posta Cambio Zalazar"
+  }, {
+    "id": "2047",
+    "nombre": "Pozo De Maza"
+  }, {
+    "id": "2048",
+    "nombre": "Pozo Del Mortero"
+  }, {
+    "id": "2075",
+    "nombre": "Pozo Del Tigre"
+  }, {
+    "id": "2091",
+    "nombre": "Puerto Pilcomayo"
+  }, {
+    "id": "2092",
+    "nombre": "Riacho He-He"
+  }, {
+    "id": "2093",
+    "nombre": "Riacho Negro"
+  }, {
+    "id": "2060",
+    "nombre": "San Francisco De Laishi"
+  }, {
+    "id": "2054",
+    "nombre": "San Hilario"
+  }, {
+    "id": "2076",
+    "nombre": "San Martin I"
+  }, {
+    "id": "2077",
+    "nombre": "San Martin Ii"
+  }, {
+    "id": "2094",
+    "nombre": "Siete Palmas"
+  }, {
+    "id": "2078",
+    "nombre": "Subteniente Perin"
+  }, {
+    "id": "2061",
+    "nombre": "Tatane"
+  }, {
+    "id": "2086",
+    "nombre": "Tres Lagunas"
+  }, {
+    "id": "2055",
+    "nombre": "Villa Del Carmen"
+  }, {
+    "id": "2062",
+    "nombre": "Villa Escolar"
+  }, {
+    "id": "2079",
+    "nombre": "Villa General GÜEMES"
+  }, {
+    "id": "2080",
+    "nombre": "Villa General Manuel Belgrano"
+  }, {
+    "id": "2099",
+    "nombre": "Villa Kilometro 213"
+  }, {
+    "id": "2056",
+    "nombre": "Villa Trinidad"
+  }]
+}, {
+  "id": 38,
+  "nombre": "Jujuy",
+  "ciudades": [{
+    "id": "2102",
+    "nombre": "Abdon Castro Tolay"
+  }, {
+    "id": "2103",
+    "nombre": "Abra Pampa"
+  }, {
+    "id": "2104",
+    "nombre": "Abralaite"
+  }, {
+    "id": "2112",
+    "nombre": "Aguas Calientes"
+  }, {
+    "id": "2165",
+    "nombre": "Arrayanal"
+  }, {
+    "id": "2166",
+    "nombre": "Arroyo Colorado"
+  }, {
+    "id": "2142",
+    "nombre": "Bananal"
+  }, {
+    "id": "2218",
+    "nombre": "Barcena"
+  }, {
+    "id": "2115",
+    "nombre": "Barrio El Milagro"
+  }, {
+    "id": "2116",
+    "nombre": "Barrio La Union"
+  }, {
+    "id": "2120",
+    "nombre": "Barrio Tabacaleros"
+  }, {
+    "id": "2229",
+    "nombre": "Barrios"
+  }, {
+    "id": "2143",
+    "nombre": "Bermejito"
+  }, {
+    "id": "2144",
+    "nombre": "Caimancito"
+  }, {
+    "id": "2145",
+    "nombre": "Calilegua"
+  }, {
+    "id": "2230",
+    "nombre": "Cangrejillos"
+  }, {
+    "id": "2153",
+    "nombre": "Carahunco"
+  }, {
+    "id": "2105",
+    "nombre": "Casabindo"
+  }, {
+    "id": "2191",
+    "nombre": "Casira"
+  }, {
+    "id": "2223",
+    "nombre": "Caspala"
+  }, {
+    "id": "2202",
+    "nombre": "Catua"
+  }, {
+    "id": "2154",
+    "nombre": "Centro Forestal"
+  }, {
+    "id": "2146",
+    "nombre": "Chalican"
+  }, {
+    "id": "2192",
+    "nombre": "Cienega"
+  }, {
+    "id": "2193",
+    "nombre": "Cieneguillas"
+  }, {
+    "id": "2106",
+    "nombre": "Cochinoca"
+  }, {
+    "id": "2136",
+    "nombre": "Coctaca"
+  }, {
+    "id": "2212",
+    "nombre": "Colonia San Jose"
+  }, {
+    "id": "2203",
+    "nombre": "Coranzuli"
+  }, {
+    "id": "2194",
+    "nombre": "Cusi Cusi"
+  }, {
+    "id": "2167",
+    "nombre": "Don Emilio"
+  }, {
+    "id": "2168",
+    "nombre": "El Acheral"
+  }, {
+    "id": "2137",
+    "nombre": "El Aguilar"
+  }, {
+    "id": "2117",
+    "nombre": "El Carmen"
+  }, {
+    "id": "2162",
+    "nombre": "El Ceibal"
+  }, {
+    "id": "2231",
+    "nombre": "El Condor"
+  }, {
+    "id": "2184",
+    "nombre": "El Fuerte"
+  }, {
+    "id": "2219",
+    "nombre": "El Moreno"
+  }, {
+    "id": "2185",
+    "nombre": "El Piquete"
+  }, {
+    "id": "2169",
+    "nombre": "El Puesto"
+  }, {
+    "id": "2170",
+    "nombre": "El Quemado"
+  }, {
+    "id": "2186",
+    "nombre": "El Talar"
+  }, {
+    "id": "2204",
+    "nombre": "El Toro"
+  }, {
+    "id": "2113",
+    "nombre": "Fleming"
+  }, {
+    "id": "2147",
+    "nombre": "Fraile Pintado"
+  }, {
+    "id": "2127",
+    "nombre": "Guerrero"
+  }, {
+    "id": "2138",
+    "nombre": "Hipolito Yrigoyen (Est. Iturbe)"
+  }, {
+    "id": "2214",
+    "nombre": "Huacalera"
+  }, {
+    "id": "2205",
+    "nombre": "Huancar"
+  }, {
+    "id": "2139",
+    "nombre": "Humahuaca"
+  }, {
+    "id": "2215",
+    "nombre": "Juella"
+  }, {
+    "id": "2128",
+    "nombre": "La Almona"
+  }, {
+    "id": "2195",
+    "nombre": "La Cienega"
+  }, {
+    "id": "2171",
+    "nombre": "La Esperanza"
+  }, {
+    "id": "2232",
+    "nombre": "La Intermedia"
+  }, {
+    "id": "2172",
+    "nombre": "La Manga"
+  }, {
+    "id": "2173",
+    "nombre": "La Mendieta"
+  }, {
+    "id": "2233",
+    "nombre": "La Quiaca"
+  }, {
+    "id": "2158",
+    "nombre": "Lagunillas De Farallon"
+  }, {
+    "id": "2129",
+    "nombre": "Leon"
+  }, {
+    "id": "2148",
+    "nombre": "Libertad"
+  }, {
+    "id": "2149",
+    "nombre": "Libertador Grl. San Martin (Est. Ledesma)"
+  }, {
+    "id": "2159",
+    "nombre": "Liviara"
+  }, {
+    "id": "2234",
+    "nombre": "Llulluchayoc"
+  }, {
+    "id": "2118",
+    "nombre": "Los Lapachos (Est. Maquinista Veron)"
+  }, {
+    "id": "2133",
+    "nombre": "Los Nogales"
+  }, {
+    "id": "2163",
+    "nombre": "Loteo Navea"
+  }, {
+    "id": "2130",
+    "nombre": "Lozano"
+  }, {
+    "id": "2216",
+    "nombre": "Maimara"
+  }, {
+    "id": "2150",
+    "nombre": "Maiz Negro"
+  }, {
+    "id": "2119",
+    "nombre": "Manantiales"
+  }, {
+    "id": "2206",
+    "nombre": "Mina Providencia"
+  }, {
+    "id": "2155",
+    "nombre": "Mina 9 De Octubre"
+  }, {
+    "id": "2174",
+    "nombre": "Miraflores"
+  }, {
+    "id": "2196",
+    "nombre": "Misarrumi"
+  }, {
+    "id": "2121",
+    "nombre": "Monterrico"
+  }, {
+    "id": "2160",
+    "nombre": "Nuevo Pirquitas"
+  }, {
+    "id": "2131",
+    "nombre": "Ocloyas"
+  }, {
+    "id": "2207",
+    "nombre": "Olaroz Chico"
+  }, {
+    "id": "2197",
+    "nombre": "Oratorio"
+  }, {
+    "id": "2198",
+    "nombre": "Paicone"
+  }, {
+    "id": "2187",
+    "nombre": "Palma Sola"
+  }, {
+    "id": "2175",
+    "nombre": "Palos Blancos"
+  }, {
+    "id": "2156",
+    "nombre": "Palpala"
+  }, {
+    "id": "2122",
+    "nombre": "Pampa Blanca"
+  }, {
+    "id": "2224",
+    "nombre": "Pampichuela"
+  }, {
+    "id": "2176",
+    "nombre": "Parapeti"
+  }, {
+    "id": "2208",
+    "nombre": "Pastos Chicos"
+  }, {
+    "id": "2151",
+    "nombre": "Paulina"
+  }, {
+    "id": "2123",
+    "nombre": "Perico"
+  }, {
+    "id": "2177",
+    "nombre": "Piedritas"
+  }, {
+    "id": "2114",
+    "nombre": "Pila Pardo"
+  }, {
+    "id": "2188",
+    "nombre": "Puente Lavayen"
+  }, {
+    "id": "2107",
+    "nombre": "Puesto Del Marquez"
+  }, {
+    "id": "2209",
+    "nombre": "Puesto Sey"
+  }, {
+    "id": "2124",
+    "nombre": "Puesto Viejo"
+  }, {
+    "id": "2235",
+    "nombre": "Pumahuasi"
+  }, {
+    "id": "2220",
+    "nombre": "Purmamarca"
+  }, {
+    "id": "2161",
+    "nombre": "Rinconada"
+  }, {
+    "id": "2108",
+    "nombre": "Rinconadillas"
+  }, {
+    "id": "2157",
+    "nombre": "Rio Blanco"
+  }, {
+    "id": "2178",
+    "nombre": "Rodeito"
+  }, {
+    "id": "2179",
+    "nombre": "Rosario De Rio Grande"
+  }, {
+    "id": "2164",
+    "nombre": "San Antonio"
+  }, {
+    "id": "2180",
+    "nombre": "San Antonio"
+  }, {
+    "id": "2225",
+    "nombre": "San Francisco"
+  }, {
+    "id": "2109",
+    "nombre": "San Francisco De Alfarcito"
+  }, {
+    "id": "2125",
+    "nombre": "San Isidro"
+  }, {
+    "id": "2236",
+    "nombre": "San Jose"
+  }, {
+    "id": "2199",
+    "nombre": "San Juan De Oros"
+  }, {
+    "id": "2210",
+    "nombre": "San Juan De Quillaques"
+  }, {
+    "id": "2126",
+    "nombre": "San Juancito"
+  }, {
+    "id": "2181",
+    "nombre": "San Lucas"
+  }, {
+    "id": "2134",
+    "nombre": "San Pablo De Reyes"
+  }, {
+    "id": "2182",
+    "nombre": "San Pedro (Est. San Pedro De Jujuy)"
+  }, {
+    "id": "2132",
+    "nombre": "San Salvador De Jujuy (Est. Jujuy)"
+  }, {
+    "id": "2226",
+    "nombre": "Santa Ana"
+  }, {
+    "id": "2200",
+    "nombre": "Santa Catalina"
+  }, {
+    "id": "2189",
+    "nombre": "Santa Clara"
+  }, {
+    "id": "2110",
+    "nombre": "Santuario De Tres Pozos"
+  }, {
+    "id": "2183",
+    "nombre": "Sauzal"
+  }, {
+    "id": "2211",
+    "nombre": "Susques"
+  }, {
+    "id": "2217",
+    "nombre": "Tilcara"
+  }, {
+    "id": "2140",
+    "nombre": "Tres Cruces"
+  }, {
+    "id": "2221",
+    "nombre": "Tumbaya"
+  }, {
+    "id": "2111",
+    "nombre": "Tusaquillas"
+  }, {
+    "id": "2141",
+    "nombre": "Uquia (Est. Senador Perez)"
+  }, {
+    "id": "2227",
+    "nombre": "Valle Colorado"
+  }, {
+    "id": "2228",
+    "nombre": "Valle Grande"
+  }, {
+    "id": "2190",
+    "nombre": "Vinalito"
+  }, {
+    "id": "2222",
+    "nombre": "Volcan"
+  }, {
+    "id": "2213",
+    "nombre": "Yacoraite"
+  }, {
+    "id": "2135",
+    "nombre": "Yala"
+  }, {
+    "id": "2237",
+    "nombre": "Yavi"
+  }, {
+    "id": "2238",
+    "nombre": "Yavi Chico"
+  }, {
+    "id": "2201",
+    "nombre": "Yoscaba"
+  }, {
+    "id": "2152",
+    "nombre": "Yuto"
+  }]
+}, {
+  "id": 42,
+  "nombre": "La Pampa",
+  "ciudades": [{
+    "id": "2274",
+    "nombre": "Abramo"
+  }, {
+    "id": "2307",
+    "nombre": "Adolfo Van Praet"
+  }, {
+    "id": "2287",
+    "nombre": "Agustoni"
+  }, {
+    "id": "2267",
+    "nombre": "Algarrobo Del Aguila"
+  }, {
+    "id": "2269",
+    "nombre": "Alpachiri"
+  }, {
+    "id": "2308",
+    "nombre": "Alta Italia"
+  }, {
+    "id": "2246",
+    "nombre": "Anguil"
+  }, {
+    "id": "2244",
+    "nombre": "Anzoategui"
+  }, {
+    "id": "2317",
+    "nombre": "Arata"
+  }, {
+    "id": "2320",
+    "nombre": "Ataliva Roca"
+  }, {
+    "id": "2261",
+    "nombre": "Bernardo Larroude"
+  }, {
+    "id": "2275",
+    "nombre": "Bernasconi"
+  }, {
+    "id": "2300",
+    "nombre": "Caleufu"
+  }, {
+    "id": "2282",
+    "nombre": "Carro Quemado"
+  }, {
+    "id": "2248",
+    "nombre": "Catrilo"
+  }, {
+    "id": "2262",
+    "nombre": "Ceballos"
+  }, {
+    "id": "2321",
+    "nombre": "Chacharramendi"
+  }, {
+    "id": "2294",
+    "nombre": "Colonia Baron"
+  }, {
+    "id": "2295",
+    "nombre": "Colonia San Jose"
+  }, {
+    "id": "2322",
+    "nombre": "Colonia Santa Maria"
+  }, {
+    "id": "2252",
+    "nombre": "Conhelo"
+  }, {
+    "id": "2263",
+    "nombre": "Coronel Hilario Lagos  (Est. Aguas Buenas)"
+  }, {
+    "id": "2279",
+    "nombre": "Cuchillo Co"
+  }, {
+    "id": "2309",
+    "nombre": "Damian Maisonave (Est. Simson)"
+  }, {
+    "id": "2239",
+    "nombre": "Doblas"
+  }, {
+    "id": "2288",
+    "nombre": "Dorila"
+  }, {
+    "id": "2253",
+    "nombre": "Eduardo Castex"
+  }, {
+    "id": "2310",
+    "nombre": "Embajador Martini"
+  }, {
+    "id": "2311",
+    "nombre": "Falucho"
+  }, {
+    "id": "2323",
+    "nombre": "General Acha"
+  }, {
+    "id": "2270",
+    "nombre": "General Manuel J. Campos"
+  }, {
+    "id": "2289",
+    "nombre": "General Pico"
+  }, {
+    "id": "2276",
+    "nombre": "General San Martin (Est. Villa Alba)"
+  }, {
+    "id": "2258",
+    "nombre": "Gobernador Duval"
+  }, {
+    "id": "2271",
+    "nombre": "Guatrache"
+  }, {
+    "id": "2277",
+    "nombre": "Hucal"
+  }, {
+    "id": "2301",
+    "nombre": "Ingeniero Foster"
+  }, {
+    "id": "2312",
+    "nombre": "Ingeniero Luiggi"
+  }, {
+    "id": "2264",
+    "nombre": "Intendente Alvear"
+  }, {
+    "id": "2278",
+    "nombre": "Jacinto Arauz"
+  }, {
+    "id": "2245",
+    "nombre": "La Adela"
+  }, {
+    "id": "2249",
+    "nombre": "La Gloria"
+  }, {
+    "id": "2268",
+    "nombre": "La Humada"
+  }, {
+    "id": "2302",
+    "nombre": "La Maruja"
+  }, {
+    "id": "2280",
+    "nombre": "La Reforma"
+  }, {
+    "id": "2281",
+    "nombre": "Limay Mahuida"
+  }, {
+    "id": "2250",
+    "nombre": "Lonquimay"
+  }, {
+    "id": "2283",
+    "nombre": "Loventue"
+  }, {
+    "id": "2284",
+    "nombre": "Luan Toro"
+  }, {
+    "id": "2240",
+    "nombre": "Macachin"
+  }, {
+    "id": "2254",
+    "nombre": "Mauricio Mayer"
+  }, {
+    "id": "2318",
+    "nombre": "Metileo"
+  }, {
+    "id": "2296",
+    "nombre": "Miguel Cane"
+  }, {
+    "id": "2241",
+    "nombre": "Miguel Riglos"
+  }, {
+    "id": "2255",
+    "nombre": "Monte Nievas"
+  }, {
+    "id": "2315",
+    "nombre": "Naico"
+  }, {
+    "id": "2313",
+    "nombre": "Ojeda"
+  }, {
+    "id": "2303",
+    "nombre": "Parera"
+  }, {
+    "id": "2272",
+    "nombre": "Peru"
+  }, {
+    "id": "2304",
+    "nombre": "Pichi Huinca"
+  }, {
+    "id": "2259",
+    "nombre": "Puelches"
+  }, {
+    "id": "2292",
+    "nombre": "Puelen"
+  }, {
+    "id": "2324",
+    "nombre": "Quehue"
+  }, {
+    "id": "2297",
+    "nombre": "Quemu Quemu"
+  }, {
+    "id": "2305",
+    "nombre": "Quetrequen"
+  }, {
+    "id": "2306",
+    "nombre": "Rancul"
+  }, {
+    "id": "2314",
+    "nombre": "Realico"
+  }, {
+    "id": "2298",
+    "nombre": "Relmo"
+  }, {
+    "id": "2242",
+    "nombre": "Rolon"
+  }, {
+    "id": "2256",
+    "nombre": "Rucanelo"
+  }, {
+    "id": "2260",
+    "nombre": "Santa Isabel"
+  }, {
+    "id": "2247",
+    "nombre": "Santa Rosa"
+  }, {
+    "id": "2273",
+    "nombre": "Santa Teresa"
+  }, {
+    "id": "2265",
+    "nombre": "Sarah"
+  }, {
+    "id": "2290",
+    "nombre": "Speluzzi"
+  }, {
+    "id": "2285",
+    "nombre": "Telen"
+  }, {
+    "id": "2316",
+    "nombre": "Toay"
+  }, {
+    "id": "2243",
+    "nombre": "Tomas M. Anchorena"
+  }, {
+    "id": "2291",
+    "nombre": "Trebolares"
+  }, {
+    "id": "2319",
+    "nombre": "Trenel"
+  }, {
+    "id": "2325",
+    "nombre": "Unanue"
+  }, {
+    "id": "2251",
+    "nombre": "Uriburu"
+  }, {
+    "id": "2266",
+    "nombre": "Vertiz"
+  }, {
+    "id": "2286",
+    "nombre": "Victorica"
+  }, {
+    "id": "2299",
+    "nombre": "Villa Mirasol"
+  }, {
+    "id": "2257",
+    "nombre": "Winifreda"
+  }, {
+    "id": "2293",
+    "nombre": "25 De Mayo"
+  }]
+}, {
+  "id": 46,
+  "nombre": "La Rioja",
+  "ciudades": [{
+    "id": "2342",
+    "nombre": "Aicuña"
+  }, {
+    "id": "2326",
+    "nombre": "Aimogasta"
+  }, {
+    "id": "2406",
+    "nombre": "Alpasinche"
+  }, {
+    "id": "2369",
+    "nombre": "Alto Carrizal"
+  }, {
+    "id": "2399",
+    "nombre": "Alto JagÜE"
+  }, {
+    "id": "2402",
+    "nombre": "Amana"
+  }, {
+    "id": "2392",
+    "nombre": "Ambil"
+  }, {
+    "id": "2334",
+    "nombre": "Aminga"
+  }, {
+    "id": "2407",
+    "nombre": "Amuschina"
+  }, {
+    "id": "2408",
+    "nombre": "Andolucas"
+  }, {
+    "id": "2351",
+    "nombre": "Anguinan"
+  }, {
+    "id": "2370",
+    "nombre": "Angulos"
+  }, {
+    "id": "2335",
+    "nombre": "Anillaco"
+  }, {
+    "id": "2336",
+    "nombre": "Anjullon"
+  }, {
+    "id": "2371",
+    "nombre": "Antinaco"
+  }, {
+    "id": "2329",
+    "nombre": "Arauco"
+  }, {
+    "id": "2372",
+    "nombre": "Bajo Carrizal"
+  }, {
+    "id": "2400",
+    "nombre": "Bajo JagÜE"
+  }, {
+    "id": "2347",
+    "nombre": "Banda Florida"
+  }, {
+    "id": "2330",
+    "nombre": "Bañado De Los Pantanos"
+  }, {
+    "id": "2373",
+    "nombre": "Campanas"
+  }, {
+    "id": "2383",
+    "nombre": "Castro Barros"
+  }, {
+    "id": "2349",
+    "nombre": "Chamical"
+  }, {
+    "id": "2384",
+    "nombre": "Chañar"
+  }, {
+    "id": "2374",
+    "nombre": "Chañarmuyo"
+  }, {
+    "id": "2409",
+    "nombre": "Chaupihuasi"
+  }, {
+    "id": "2404",
+    "nombre": "Chepes"
+  }, {
+    "id": "2352",
+    "nombre": "Chilecito"
+  }, {
+    "id": "2337",
+    "nombre": "Chuquis"
+  }, {
+    "id": "2356",
+    "nombre": "Colonia Anguinan"
+  }, {
+    "id": "2357",
+    "nombre": "Colonia Catinzaco"
+  }, {
+    "id": "2358",
+    "nombre": "Colonia Malligasta"
+  }, {
+    "id": "2393",
+    "nombre": "Colonia Ortiz De Ocampo"
+  }, {
+    "id": "2359",
+    "nombre": "Colonia Vichigasta"
+  }, {
+    "id": "2410",
+    "nombre": "Cuipan"
+  }, {
+    "id": "2405",
+    "nombre": "Desiderio Tello"
+  }, {
+    "id": "2331",
+    "nombre": "Estacion Mazan"
+  }, {
+    "id": "2375",
+    "nombre": "Famatina"
+  }, {
+    "id": "2360",
+    "nombre": "Guanchin"
+  }, {
+    "id": "2343",
+    "nombre": "Guandacol"
+  }, {
+    "id": "2398",
+    "nombre": "JagÜE"
+  }, {
+    "id": "2376",
+    "nombre": "La Cuadra"
+  }, {
+    "id": "2353",
+    "nombre": "La Puntilla"
+  }, {
+    "id": "2333",
+    "nombre": "La Rioja"
+  }, {
+    "id": "2411",
+    "nombre": "Las Talas"
+  }, {
+    "id": "2385",
+    "nombre": "Loma Blanca"
+  }, {
+    "id": "2338",
+    "nombre": "Los Molinos"
+  }, {
+    "id": "2345",
+    "nombre": "Los Palacios"
+  }, {
+    "id": "2412",
+    "nombre": "Los Robles"
+  }, {
+    "id": "2354",
+    "nombre": "Los Sarmientos"
+  }, {
+    "id": "2327",
+    "nombre": "Machigasta"
+  }, {
+    "id": "2387",
+    "nombre": "Malanzan"
+  }, {
+    "id": "2361",
+    "nombre": "Malligasta"
+  }, {
+    "id": "2394",
+    "nombre": "Milagro"
+  }, {
+    "id": "2362",
+    "nombre": "Miranda"
+  }, {
+    "id": "2388",
+    "nombre": "Nacate"
+  }, {
+    "id": "2363",
+    "nombre": "Nonogasta"
+  }, {
+    "id": "2395",
+    "nombre": "Olpas"
+  }, {
+    "id": "2386",
+    "nombre": "Olta"
+  }, {
+    "id": "2346",
+    "nombre": "Pagancillo"
+  }, {
+    "id": "2403",
+    "nombre": "Patquia"
+  }, {
+    "id": "2339",
+    "nombre": "Pinchas"
+  }, {
+    "id": "2377",
+    "nombre": "Pituil"
+  }, {
+    "id": "2378",
+    "nombre": "Plaza Vieja"
+  }, {
+    "id": "2350",
+    "nombre": "Polco"
+  }, {
+    "id": "2389",
+    "nombre": "Portezuelo"
+  }, {
+    "id": "2381",
+    "nombre": "Punta De Los Llanos"
+  }, {
+    "id": "2413",
+    "nombre": "Salicas"
+  }, {
+    "id": "2328",
+    "nombre": "San Antonio"
+  }, {
+    "id": "2390",
+    "nombre": "San Antonio"
+  }, {
+    "id": "2414",
+    "nombre": "San Blas"
+  }, {
+    "id": "2355",
+    "nombre": "San Miguel"
+  }, {
+    "id": "2364",
+    "nombre": "San Nicolas"
+  }, {
+    "id": "2340",
+    "nombre": "San Pedro"
+  }, {
+    "id": "2344",
+    "nombre": "Santa Clara"
+  }, {
+    "id": "2379",
+    "nombre": "Santa Cruz"
+  }, {
+    "id": "2365",
+    "nombre": "Santa Florentina"
+  }, {
+    "id": "2396",
+    "nombre": "Santa Rita De Catuna"
+  }, {
+    "id": "2341",
+    "nombre": "Santa Vera Cruz"
+  }, {
+    "id": "2380",
+    "nombre": "Santo Domingo"
+  }, {
+    "id": "2366",
+    "nombre": "Sañogasta"
+  }, {
+    "id": "2415",
+    "nombre": "Shaqui"
+  }, {
+    "id": "2416",
+    "nombre": "Suriyaco"
+  }, {
+    "id": "2382",
+    "nombre": "Tama"
+  }, {
+    "id": "2367",
+    "nombre": "Tilimuqui"
+  }, {
+    "id": "2417",
+    "nombre": "Tuyubil"
+  }, {
+    "id": "2397",
+    "nombre": "Ulapes"
+  }, {
+    "id": "2368",
+    "nombre": "Vichigasta"
+  }, {
+    "id": "2391",
+    "nombre": "Villa Castelli"
+  }, {
+    "id": "2332",
+    "nombre": "Villa Mazan"
+  }, {
+    "id": "2401",
+    "nombre": "Villa San Jose De Vinchina"
+  }, {
+    "id": "2418",
+    "nombre": "Villa Sanagasta"
+  }, {
+    "id": "2348",
+    "nombre": "Villa Union"
+  }]
+}, {
+  "id": 50,
+  "nombre": "Mendoza",
+  "ciudades": [{
+    "id": "2496",
+    "nombre": "Agrelo"
+  }, {
+    "id": "2534",
+    "nombre": "Agua Escondida"
+  }, {
+    "id": "2560",
+    "nombre": "Alto Salvador"
+  }, {
+    "id": "2561",
+    "nombre": "Alto Verde"
+  }, {
+    "id": "2538",
+    "nombre": "Andrade"
+  }, {
+    "id": "2535",
+    "nombre": "Bardas Blancas"
+  }, {
+    "id": "2521",
+    "nombre": "Barrancas"
+  }, {
+    "id": "2516",
+    "nombre": "Barrio Adina I Y Ii"
+  }, {
+    "id": "2479",
+    "nombre": "Barrio Alto Del Olvido"
+  }, {
+    "id": "2614",
+    "nombre": "Barrio Belgrano Norte"
+  }, {
+    "id": "2572",
+    "nombre": "Barrio Campos El Toledano"
+  }, {
+    "id": "2562",
+    "nombre": "Barrio Chivilcoy"
+  }, {
+    "id": "2539",
+    "nombre": "Barrio Cooperativa Los Campamentos"
+  }, {
+    "id": "2578",
+    "nombre": "Barrio Echeverria"
+  }, {
+    "id": "2554",
+    "nombre": "Barrio El Cepillo"
+  }, {
+    "id": "2573",
+    "nombre": "Barrio El Nevado"
+  }, {
+    "id": "2563",
+    "nombre": "Barrio Emanuel"
+  }, {
+    "id": "2574",
+    "nombre": "Barrio Empleados De Comercio"
+  }, {
+    "id": "2575",
+    "nombre": "Barrio Intendencia"
+  }, {
+    "id": "2522",
+    "nombre": "Barrio Jesus De Nazaret"
+  }, {
+    "id": "2480",
+    "nombre": "Barrio Jocoli Ii"
+  }, {
+    "id": "2489",
+    "nombre": "Barrio La Esperanza"
+  }, {
+    "id": "2481",
+    "nombre": "Barrio La Palmera"
+  }, {
+    "id": "2482",
+    "nombre": "Barrio La Pega"
+  }, {
+    "id": "2483",
+    "nombre": "Barrio Lagunas De Bartoluzzi"
+  }, {
+    "id": "2579",
+    "nombre": "Barrio Las Rosas"
+  }, {
+    "id": "2564",
+    "nombre": "Barrio Los Charabones"
+  }, {
+    "id": "2484",
+    "nombre": "Barrio Los Jarilleros"
+  }, {
+    "id": "2485",
+    "nombre": "Barrio Los Olivos"
+  }, {
+    "id": "2602",
+    "nombre": "Barrio Maria Auxiliadora"
+  }, {
+    "id": "2603",
+    "nombre": "Barrio Molina Cabrera"
+  }, {
+    "id": "2497",
+    "nombre": "Barrio Perdriel Iv"
+  }, {
+    "id": "2580",
+    "nombre": "Barrio Primavera"
+  }, {
+    "id": "2540",
+    "nombre": "Barrio Rivadavia"
+  }, {
+    "id": "2607",
+    "nombre": "Barrio San Cayetano"
+  }, {
+    "id": "2601",
+    "nombre": "Barrio 12 De Octubre"
+  }, {
+    "id": "2431",
+    "nombre": "Bermejo"
+  }, {
+    "id": "2458",
+    "nombre": "Blanco Encalada"
+  }, {
+    "id": "2420",
+    "nombre": "Bowen"
+  }, {
+    "id": "2432",
+    "nombre": "Buena Nueva"
+  }, {
+    "id": "2498",
+    "nombre": "Cacheuta"
+  }, {
+    "id": "2608",
+    "nombre": "Campo Los Andes"
+  }, {
+    "id": "2462",
+    "nombre": "Capdevila"
+  }, {
+    "id": "2459",
+    "nombre": "Capdeville"
+  }, {
+    "id": "2433",
+    "nombre": "Capilla Del Rosario"
+  }, {
+    "id": "2576",
+    "nombre": "Capitan Montoya"
+  }, {
+    "id": "2421",
+    "nombre": "Carmensa"
+  }, {
+    "id": "2510",
+    "nombre": "Carrodilla"
+  }, {
+    "id": "2511",
+    "nombre": "Chacras De Coria"
+  }, {
+    "id": "2565",
+    "nombre": "Chapanay"
+  }, {
+    "id": "2555",
+    "nombre": "Chilecito"
+  }, {
+    "id": "2566",
+    "nombre": "Chivilcoy"
+  }, {
+    "id": "2570",
+    "nombre": "Ciudad De San Martin"
+  }, {
+    "id": "2597",
+    "nombre": "Ciudad De San Rafael"
+  }, {
+    "id": "2609",
+    "nombre": "Colonia Las Rosas"
+  }, {
+    "id": "2429",
+    "nombre": "Colonia Segovia (Est. Amigorena)"
+  }, {
+    "id": "2526",
+    "nombre": "Coquimbito"
+  }, {
+    "id": "2615",
+    "nombre": "Cordon Del Plata"
+  }, {
+    "id": "2486",
+    "nombre": "Costa De Araujo"
+  }, {
+    "id": "2499",
+    "nombre": "Costa Flores"
+  }, {
+    "id": "2523",
+    "nombre": "Cruz De Piedra"
+  }, {
+    "id": "2577",
+    "nombre": "Cuadro Benegas"
+  }, {
+    "id": "2595",
+    "nombre": "Cuadro Nacional"
+  }, {
+    "id": "2544",
+    "nombre": "Cuadro Ortega"
+  }, {
+    "id": "2455",
+    "nombre": "Desaguadero"
+  }, {
+    "id": "2434",
+    "nombre": "Dorrego"
+  }, {
+    "id": "2464",
+    "nombre": "El Algarrobal"
+  }, {
+    "id": "2465",
+    "nombre": "El Borbollon"
+  }, {
+    "id": "2501",
+    "nombre": "El Carmelo"
+  }, {
+    "id": "2500",
+    "nombre": "El Carrizal"
+  }, {
+    "id": "2466",
+    "nombre": "El Challao"
+  }, {
+    "id": "2610",
+    "nombre": "El Manzano"
+  }, {
+    "id": "2541",
+    "nombre": "El Mirador"
+  }, {
+    "id": "2581",
+    "nombre": "El Nihuil"
+  }, {
+    "id": "2487",
+    "nombre": "El Paramillo"
+  }, {
+    "id": "2467",
+    "nombre": "El Pastal"
+  }, {
+    "id": "2524",
+    "nombre": "El Pedregal"
+  }, {
+    "id": "2616",
+    "nombre": "El Peral"
+  }, {
+    "id": "2468",
+    "nombre": "El Plumerillo"
+  }, {
+    "id": "2469",
+    "nombre": "El Resguardo"
+  }, {
+    "id": "2502",
+    "nombre": "El Salto"
+  }, {
+    "id": "2435",
+    "nombre": "El Sauce"
+  }, {
+    "id": "2582",
+    "nombre": "El Sosneado"
+  }, {
+    "id": "2583",
+    "nombre": "El Tropezon"
+  }, {
+    "id": "2488",
+    "nombre": "El Vergel"
+  }, {
+    "id": "2470",
+    "nombre": "El Zapallar"
+  }, {
+    "id": "2556",
+    "nombre": "Eugenio Bustos"
+  }, {
+    "id": "2525",
+    "nombre": "Fray Luis Beltran"
+  }, {
+    "id": "2422",
+    "nombre": "General Alvear (Est.Colonia Alvear Norte)"
+  }, {
+    "id": "2436",
+    "nombre": "General Belgrano"
+  }, {
+    "id": "2527",
+    "nombre": "General Gutierrez"
+  }, {
+    "id": "2425",
+    "nombre": "Gobernador Benegas"
+  }, {
+    "id": "2424",
+    "nombre": "Godoy Cruz"
+  }, {
+    "id": "2584",
+    "nombre": "Goudge"
+  }, {
+    "id": "2430",
+    "nombre": "Guaymallen"
+  }, {
+    "id": "2448",
+    "nombre": "Ingeniero Giagnoni"
+  }, {
+    "id": "2490",
+    "nombre": "Ingeniero Gustavo Andre"
+  }, {
+    "id": "2585",
+    "nombre": "Jaime Prats"
+  }, {
+    "id": "2437",
+    "nombre": "Jesus Nazareno"
+  }, {
+    "id": "2460",
+    "nombre": "Jocoli"
+  }, {
+    "id": "2491",
+    "nombre": "Jocoli"
+  }, {
+    "id": "2492",
+    "nombre": "Jocoli Viejo"
+  }, {
+    "id": "2449",
+    "nombre": "Junin"
+  }, {
+    "id": "2617",
+    "nombre": "La Arboleda"
+  }, {
+    "id": "2542",
+    "nombre": "La Central"
+  }, {
+    "id": "2471",
+    "nombre": "La Cieneguita"
+  }, {
+    "id": "2450",
+    "nombre": "La Colonia"
+  }, {
+    "id": "2557",
+    "nombre": "La Consulta"
+  }, {
+    "id": "2604",
+    "nombre": "La Dormida"
+  }, {
+    "id": "2543",
+    "nombre": "La Esperanza"
+  }, {
+    "id": "2545",
+    "nombre": "La Florida"
+  }, {
+    "id": "2546",
+    "nombre": "La Libertad"
+  }, {
+    "id": "2586",
+    "nombre": "La Llave Nueva"
+  }, {
+    "id": "2456",
+    "nombre": "La Paz"
+  }, {
+    "id": "2445",
+    "nombre": "La Primavera"
+  }, {
+    "id": "2513",
+    "nombre": "La Puntilla"
+  }, {
+    "id": "2438",
+    "nombre": "Las Cañas"
+  }, {
+    "id": "2503",
+    "nombre": "Las Carditas"
+  }, {
+    "id": "2605",
+    "nombre": "Las Catitas (Est. J. N. Lencinas)"
+  }, {
+    "id": "2505",
+    "nombre": "Las Compuertas"
+  }, {
+    "id": "2461",
+    "nombre": "Las Cuevas"
+  }, {
+    "id": "2463",
+    "nombre": "Las Heras"
+  }, {
+    "id": "2536",
+    "nombre": "Las Leñas"
+  }, {
+    "id": "2587",
+    "nombre": "Las Malvinas"
+  }, {
+    "id": "2596",
+    "nombre": "Las Paredes"
+  }, {
+    "id": "2426",
+    "nombre": "Las Tortugas"
+  }, {
+    "id": "2506",
+    "nombre": "Las Vegas"
+  }, {
+    "id": "2493",
+    "nombre": "Las Violetas"
+  }, {
+    "id": "2547",
+    "nombre": "Los Arboles"
+  }, {
+    "id": "2451",
+    "nombre": "Los Barriales"
+  }, {
+    "id": "2548",
+    "nombre": "Los Campamentos"
+  }, {
+    "id": "2423",
+    "nombre": "Los Compartos"
+  }, {
+    "id": "2446",
+    "nombre": "Los Corralitos"
+  }, {
+    "id": "2504",
+    "nombre": "Los Manantiales"
+  }, {
+    "id": "2473",
+    "nombre": "Los Penitentes"
+  }, {
+    "id": "2588",
+    "nombre": "Los Reyunos"
+  }, {
+    "id": "2611",
+    "nombre": "Los Sauces"
+  }, {
+    "id": "2512",
+    "nombre": "Lujan De Cuyo"
+  }, {
+    "id": "2528",
+    "nombre": "Luzuriaga"
+  }, {
+    "id": "2529",
+    "nombre": "Maipu"
+  }, {
+    "id": "2537",
+    "nombre": "MalargÜE"
+  }, {
+    "id": "2514",
+    "nombre": "Mayor Drummond"
+  }, {
+    "id": "2549",
+    "nombre": "Medrano"
+  }, {
+    "id": "2452",
+    "nombre": "Medrano"
+  }, {
+    "id": "2419",
+    "nombre": "Mendoza"
+  }, {
+    "id": "2589",
+    "nombre": "Monte Coman"
+  }, {
+    "id": "2567",
+    "nombre": "Montecaseros"
+  }, {
+    "id": "2550",
+    "nombre": "Mundo Nuevo"
+  }, {
+    "id": "2568",
+    "nombre": "Nueva California (Est. Moluches)"
+  }, {
+    "id": "2439",
+    "nombre": "Nueva Ciudad"
+  }, {
+    "id": "2569",
+    "nombre": "Palmira"
+  }, {
+    "id": "2472",
+    "nombre": "Panquehua"
+  }, {
+    "id": "2474",
+    "nombre": "Papagayos"
+  }, {
+    "id": "2558",
+    "nombre": "Pareditas"
+  }, {
+    "id": "2440",
+    "nombre": "Pedro Molina"
+  }, {
+    "id": "2517",
+    "nombre": "Perdriel"
+  }, {
+    "id": "2453",
+    "nombre": "Phillips"
+  }, {
+    "id": "2507",
+    "nombre": "Piedras Blancas"
+  }, {
+    "id": "2590",
+    "nombre": "Pobre Diablo"
+  }, {
+    "id": "2475",
+    "nombre": "Polvaredas"
+  }, {
+    "id": "2519",
+    "nombre": "Potrerillos"
+  }, {
+    "id": "2427",
+    "nombre": "Presidente Sarmiento"
+  }, {
+    "id": "2447",
+    "nombre": "Puente De Hierro"
+  }, {
+    "id": "2476",
+    "nombre": "Puente Del Inca"
+  }, {
+    "id": "2477",
+    "nombre": "Punta De Vacas"
+  }, {
+    "id": "2591",
+    "nombre": "Punta Del Agua"
+  }, {
+    "id": "2592",
+    "nombre": "Rama Caida"
+  }, {
+    "id": "2593",
+    "nombre": "Real Del Padre"
+  }, {
+    "id": "2551",
+    "nombre": "Reduccion De Abajo"
+  }, {
+    "id": "2552",
+    "nombre": "Rivadavia"
+  }, {
+    "id": "2441",
+    "nombre": "Rodeo De La Cruz"
+  }, {
+    "id": "2530",
+    "nombre": "Rodeo Del Medio"
+  }, {
+    "id": "2454",
+    "nombre": "Rodriguez Peña"
+  }, {
+    "id": "2531",
+    "nombre": "Russell"
+  }, {
+    "id": "2594",
+    "nombre": "Salto De Las Rosas"
+  }, {
+    "id": "2559",
+    "nombre": "San Carlos"
+  }, {
+    "id": "2442",
+    "nombre": "San Francisco Del Monte"
+  }, {
+    "id": "2428",
+    "nombre": "San Francisco Del Monte"
+  }, {
+    "id": "2618",
+    "nombre": "San Jose"
+  }, {
+    "id": "2443",
+    "nombre": "San Jose"
+  }, {
+    "id": "2532",
+    "nombre": "San Roque"
+  }, {
+    "id": "2553",
+    "nombre": "Santa Maria De Oro"
+  }, {
+    "id": "2606",
+    "nombre": "Santa Rosa"
+  }, {
+    "id": "2518",
+    "nombre": "Tres Esquinas"
+  }, {
+    "id": "2571",
+    "nombre": "Tres Porteñas"
+  }, {
+    "id": "2612",
+    "nombre": "Tunuyan"
+  }, {
+    "id": "2619",
+    "nombre": "Tupungato"
+  }, {
+    "id": "2520",
+    "nombre": "Ugarteche"
+  }, {
+    "id": "2478",
+    "nombre": "Uspallata"
+  }, {
+    "id": "2508",
+    "nombre": "Valle Del Sol"
+  }, {
+    "id": "2457",
+    "nombre": "Villa Antigua"
+  }, {
+    "id": "2599",
+    "nombre": "Villa Atuel"
+  }, {
+    "id": "2600",
+    "nombre": "Villa Atuel Norte"
+  }, {
+    "id": "2620",
+    "nombre": "Villa Bastias"
+  }, {
+    "id": "2509",
+    "nombre": "Villa El Refugio"
+  }, {
+    "id": "2444",
+    "nombre": "Villa Nueva"
+  }, {
+    "id": "2533",
+    "nombre": "Villa Teresa"
+  }, {
+    "id": "2495",
+    "nombre": "Villa Tulumaya"
+  }, {
+    "id": "2613",
+    "nombre": "Vista Flores"
+  }, {
+    "id": "2515",
+    "nombre": "Vistalba"
+  }, {
+    "id": "2598",
+    "nombre": "25 De Mayo"
+  }, {
+    "id": "2494",
+    "nombre": "3 De Mayo"
+  }]
+}, {
+  "id": 54,
+  "nombre": "Misiones",
+  "ciudades": [{
+    "id": "2733",
+    "nombre": "Alba Posse"
+  }, {
+    "id": "2700",
+    "nombre": "Alberdi"
+  }, {
+    "id": "2673",
+    "nombre": "Almafuerte"
+  }, {
+    "id": "2661",
+    "nombre": "Almirante Brown"
+  }, {
+    "id": "2621",
+    "nombre": "Apostoles"
+  }, {
+    "id": "2628",
+    "nombre": "Aristobulo Del Valle"
+  }, {
+    "id": "2674",
+    "nombre": "Arroyo Del Medio"
+  }, {
+    "id": "2622",
+    "nombre": "Azara"
+  }, {
+    "id": "2647",
+    "nombre": "Barra Concepcion"
+  }, {
+    "id": "2662",
+    "nombre": "Bernardo De Irigoyen"
+  }, {
+    "id": "2636",
+    "nombre": "Bonpland"
+  }, {
+    "id": "2675",
+    "nombre": "Caa - Yari"
+  }, {
+    "id": "2629",
+    "nombre": "Campo Grande"
+  }, {
+    "id": "2701",
+    "nombre": "Campo Ramon"
+  }, {
+    "id": "2702",
+    "nombre": "Campo Viera"
+  }, {
+    "id": "2637",
+    "nombre": "Candelaria"
+  }, {
+    "id": "2682",
+    "nombre": "Capiovi"
+  }, {
+    "id": "2693",
+    "nombre": "Caraguatay"
+  }, {
+    "id": "2676",
+    "nombre": "Cerro Azul"
+  }, {
+    "id": "2638",
+    "nombre": "Cerro Cora"
+  }, {
+    "id": "2734",
+    "nombre": "Colonia Alicia"
+  }, {
+    "id": "2735",
+    "nombre": "Colonia Aurora"
+  }, {
+    "id": "2712",
+    "nombre": "Colonia Polana"
+  }, {
+    "id": "2651",
+    "nombre": "Colonia Victoria"
+  }, {
+    "id": "2648",
+    "nombre": "Concepcion De La Sierra"
+  }, {
+    "id": "2713",
+    "nombre": "Corpus"
+  }, {
+    "id": "2728",
+    "nombre": "Cruce Caballero"
+  }, {
+    "id": "2714",
+    "nombre": "Domingo Savio"
+  }, {
+    "id": "2677",
+    "nombre": "Dos Arroyos"
+  }, {
+    "id": "2630",
+    "nombre": "Dos De Mayo Nucleo I"
+  }, {
+    "id": "2631",
+    "nombre": "Dos De Mayo Nucleo Ii"
+  }, {
+    "id": "2632",
+    "nombre": "Dos De Mayo Nucleo Iii"
+  }, {
+    "id": "2663",
+    "nombre": "Dos Hermanas"
+  }, {
+    "id": "2683",
+    "nombre": "El Alcazar"
+  }, {
+    "id": "2703",
+    "nombre": "El Salto"
+  }, {
+    "id": "2666",
+    "nombre": "El Soberbio"
+  }, {
+    "id": "2652",
+    "nombre": "Eldorado"
+  }, {
+    "id": "2669",
+    "nombre": "Esperanza"
+  }, {
+    "id": "2623",
+    "nombre": "Estacion Apostoles"
+  }, {
+    "id": "2724",
+    "nombre": "Florentino Ameghino"
+  }, {
+    "id": "2667",
+    "nombre": "Fracran"
+  }, {
+    "id": "2684",
+    "nombre": "Garuhape"
+  }, {
+    "id": "2644",
+    "nombre": "Garupa"
+  }, {
+    "id": "2704",
+    "nombre": "General Alvear"
+  }, {
+    "id": "2715",
+    "nombre": "General Urquiza"
+  }, {
+    "id": "2678",
+    "nombre": "Gobernador Lopez"
+  }, {
+    "id": "2716",
+    "nombre": "Gobernador Roca"
+  }, {
+    "id": "2705",
+    "nombre": "Guarani"
+  }, {
+    "id": "2717",
+    "nombre": "Helvecia"
+  }, {
+    "id": "2718",
+    "nombre": "Hipolito Yrigoyen"
+  }, {
+    "id": "2664",
+    "nombre": "Integracion"
+  }, {
+    "id": "2725",
+    "nombre": "Itacaruare"
+  }, {
+    "id": "2719",
+    "nombre": "Jardin America"
+  }, {
+    "id": "2649",
+    "nombre": "La Corita"
+  }, {
+    "id": "2694",
+    "nombre": "Laharrague"
+  }, {
+    "id": "2679",
+    "nombre": "Leandro N. Alem"
+  }, {
+    "id": "2670",
+    "nombre": "Libertad"
+  }, {
+    "id": "2639",
+    "nombre": "Loreto"
+  }, {
+    "id": "2706",
+    "nombre": "Los Helechos"
+  }, {
+    "id": "2653",
+    "nombre": "Maria Magdalena"
+  }, {
+    "id": "2640",
+    "nombre": "Martires"
+  }, {
+    "id": "2685",
+    "nombre": "Mbopicua"
+  }, {
+    "id": "2726",
+    "nombre": "Mojon Grande"
+  }, {
+    "id": "2695",
+    "nombre": "Montecarlo"
+  }, {
+    "id": "2645",
+    "nombre": "Nemesio Parma"
+  }, {
+    "id": "2720",
+    "nombre": "Oasis"
+  }, {
+    "id": "2707",
+    "nombre": "Obera"
+  }, {
+    "id": "2680",
+    "nombre": "Olegario V. Andrade"
+  }, {
+    "id": "2708",
+    "nombre": "Panambi"
+  }, {
+    "id": "2709",
+    "nombre": "Panambi Kilometro 8"
+  }, {
+    "id": "2729",
+    "nombre": "Paraiso"
+  }, {
+    "id": "2624",
+    "nombre": "Pindapoy"
+  }, {
+    "id": "2730",
+    "nombre": "Piñalito Sur"
+  }, {
+    "id": "2696",
+    "nombre": "Piray Kilometro 18"
+  }, {
+    "id": "2646",
+    "nombre": "Posadas"
+  }, {
+    "id": "2641",
+    "nombre": "Profundidad"
+  }, {
+    "id": "2634",
+    "nombre": "Pueblo Illia"
+  }, {
+    "id": "2671",
+    "nombre": "Puerto Iguazu"
+  }, {
+    "id": "2686",
+    "nombre": "Puerto Leoni"
+  }, {
+    "id": "2656",
+    "nombre": "Puerto Mado"
+  }, {
+    "id": "2657",
+    "nombre": "Puerto Pinares"
+  }, {
+    "id": "2697",
+    "nombre": "Puerto Piray"
+  }, {
+    "id": "2687",
+    "nombre": "Puerto Rico"
+  }, {
+    "id": "2642",
+    "nombre": "Puerto Santa Ana"
+  }, {
+    "id": "2625",
+    "nombre": "Rincon De Azara"
+  }, {
+    "id": "2721",
+    "nombre": "Roca Chica"
+  }, {
+    "id": "2688",
+    "nombre": "Ruiz De Montoya"
+  }, {
+    "id": "2635",
+    "nombre": "Salto Encantado"
+  }, {
+    "id": "2689",
+    "nombre": "San Alberto"
+  }, {
+    "id": "2665",
+    "nombre": "San Antonio"
+  }, {
+    "id": "2736",
+    "nombre": "San Francisco De Asis"
+  }, {
+    "id": "2690",
+    "nombre": "San Gotardo"
+  }, {
+    "id": "2722",
+    "nombre": "San Ignacio"
+  }, {
+    "id": "2727",
+    "nombre": "San Javier"
+  }, {
+    "id": "2626",
+    "nombre": "San Jose"
+  }, {
+    "id": "2710",
+    "nombre": "San Martin"
+  }, {
+    "id": "2691",
+    "nombre": "San Miguel"
+  }, {
+    "id": "2731",
+    "nombre": "San Pedro"
+  }, {
+    "id": "2668",
+    "nombre": "San Vicente"
+  }, {
+    "id": "2643",
+    "nombre": "Santa Ana"
+  }, {
+    "id": "2650",
+    "nombre": "Santa Maria"
+  }, {
+    "id": "2737",
+    "nombre": "Santa Rita"
+  }, {
+    "id": "2658",
+    "nombre": "Santiago De Liniers"
+  }, {
+    "id": "2723",
+    "nombre": "Santo Pipo"
+  }, {
+    "id": "2698",
+    "nombre": "Taruma"
+  }, {
+    "id": "2732",
+    "nombre": "Tobuna"
+  }, {
+    "id": "2627",
+    "nombre": "Tres Capones"
+  }, {
+    "id": "2659",
+    "nombre": "Valle Hermoso"
+  }, {
+    "id": "2692",
+    "nombre": "Villa Akerman"
+  }, {
+    "id": "2711",
+    "nombre": "Villa Bonita"
+  }, {
+    "id": "2681",
+    "nombre": "Villa Libertad"
+  }, {
+    "id": "2699",
+    "nombre": "Villa Parodi"
+  }, {
+    "id": "2660",
+    "nombre": "Villa Roulet"
+  }, {
+    "id": "2672",
+    "nombre": "Wanda"
+  }, {
+    "id": "2633",
+    "nombre": "1º De Mayo"
+  }, {
+    "id": "2738",
+    "nombre": "25 De Mayo"
+  }, {
+    "id": "2654",
+    "nombre": "9 De Julio"
+  }, {
+    "id": "2655",
+    "nombre": "9 De Julio Kilometro 20"
+  }]
+}, {
+  "id": 58,
+  "nombre": "Neuquen",
+  "ciudades": [{
+    "id": "2739",
+    "nombre": "Alumine"
+  }, {
+    "id": "2769",
+    "nombre": "Andacollo"
+  }, {
+    "id": "2741",
+    "nombre": "Añelo"
+  }, {
+    "id": "2746",
+    "nombre": "Arroyito"
+  }, {
+    "id": "2786",
+    "nombre": "Bajada Del Agrio"
+  }, {
+    "id": "2780",
+    "nombre": "Barrancas"
+  }, {
+    "id": "2747",
+    "nombre": "Barrio Ruca Luhe"
+  }, {
+    "id": "2781",
+    "nombre": "Buta Ranquil"
+  }, {
+    "id": "2775",
+    "nombre": "Caviahue"
+  }, {
+    "id": "2748",
+    "nombre": "Centenario"
+  }, {
+    "id": "2765",
+    "nombre": "Chorriaca"
+  }, {
+    "id": "2760",
+    "nombre": "Chos Malal"
+  }, {
+    "id": "2776",
+    "nombre": "Copahue"
+  }, {
+    "id": "2791",
+    "nombre": "Covunco Centro"
+  }, {
+    "id": "2749",
+    "nombre": "Cutral Co"
+  }, {
+    "id": "2750",
+    "nombre": "El Chocon"
+  }, {
+    "id": "2777",
+    "nombre": "El Cholar"
+  }, {
+    "id": "2778",
+    "nombre": "El Huecu"
+  }, {
+    "id": "2770",
+    "nombre": "Huinganco"
+  }, {
+    "id": "2763",
+    "nombre": "Junin De Los Andes"
+  }, {
+    "id": "2787",
+    "nombre": "La Buitrera"
+  }, {
+    "id": "2743",
+    "nombre": "Las Coloradas"
+  }, {
+    "id": "2788",
+    "nombre": "Las Lajas"
+  }, {
+    "id": "2771",
+    "nombre": "Las Ovejas"
+  }, {
+    "id": "2766",
+    "nombre": "Loncopue"
+  }, {
+    "id": "2790",
+    "nombre": "Los Catutos"
+  }, {
+    "id": "2772",
+    "nombre": "Los Miches"
+  }, {
+    "id": "2773",
+    "nombre": "Manzano Amargo"
+  }, {
+    "id": "2751",
+    "nombre": "Mari Menuco"
+  }, {
+    "id": "2792",
+    "nombre": "Mariano Moreno"
+  }, {
+    "id": "2752",
+    "nombre": "Neuquen"
+  }, {
+    "id": "2782",
+    "nombre": "Octavio Pico"
+  }, {
+    "id": "2784",
+    "nombre": "Paso Aguerre"
+  }, {
+    "id": "2785",
+    "nombre": "Picun Leufu"
+  }, {
+    "id": "2744",
+    "nombre": "Piedra Del Aguila"
+  }, {
+    "id": "2754",
+    "nombre": "Plaza Huincul"
+  }, {
+    "id": "2755",
+    "nombre": "Plottier"
+  }, {
+    "id": "2789",
+    "nombre": "Quili Malal"
+  }, {
+    "id": "2793",
+    "nombre": "Ramon M. Castro"
+  }, {
+    "id": "2783",
+    "nombre": "Rincon De Los Sauces"
+  }, {
+    "id": "2764",
+    "nombre": "San Martin De Los Andes"
+  }, {
+    "id": "2742",
+    "nombre": "San Patricio Del Chañar"
+  }, {
+    "id": "2745",
+    "nombre": "Santo Tomas"
+  }, {
+    "id": "2756",
+    "nombre": "Senillosa"
+  }, {
+    "id": "2779",
+    "nombre": "Taquimilan"
+  }, {
+    "id": "2761",
+    "nombre": "Tricao Malal"
+  }, {
+    "id": "2774",
+    "nombre": "Varvarco"
+  }, {
+    "id": "2762",
+    "nombre": "Villa Del Curi Leuvu"
+  }, {
+    "id": "2757",
+    "nombre": "Villa El Chocon"
+  }, {
+    "id": "2767",
+    "nombre": "Villa La Angostura"
+  }, {
+    "id": "2740",
+    "nombre": "Villa Pehuenia"
+  }, {
+    "id": "2768",
+    "nombre": "Villa Traful"
+  }, {
+    "id": "2758",
+    "nombre": "Vista Alegre Norte"
+  }, {
+    "id": "2759",
+    "nombre": "Vista Alegre Sur"
+  }, {
+    "id": "2794",
+    "nombre": "Zapala"
+  }, {
+    "id": "2753",
+    "nombre": "11 De Octubre"
+  }]
+}, {
+  "id": 62,
+  "nombre": "Rio Negro",
+  "ciudades": [{
+    "id": "2921",
+    "nombre": "Aguada Cecilio"
+  }, {
+    "id": "2927",
+    "nombre": "Aguada De Guerra"
+  }, {
+    "id": "2825",
+    "nombre": "Aguada Guzman"
+  }, {
+    "id": "2833",
+    "nombre": "Allen"
+  }, {
+    "id": "2922",
+    "nombre": "Arroyo Los Berros"
+  }, {
+    "id": "2923",
+    "nombre": "Arroyo Ventana"
+  }, {
+    "id": "2795",
+    "nombre": "Bahia Creek"
+  }, {
+    "id": "2834",
+    "nombre": "Bajo San Cayetano"
+  }, {
+    "id": "2835",
+    "nombre": "Barda Del Medio"
+  }, {
+    "id": "2836",
+    "nombre": "Barrio Blanco"
+  }, {
+    "id": "2837",
+    "nombre": "Barrio Calle Ciega Nº 10"
+  }, {
+    "id": "2838",
+    "nombre": "Barrio Calle Ciega Nº 6"
+  }, {
+    "id": "2839",
+    "nombre": "Barrio Canale"
+  }, {
+    "id": "2840",
+    "nombre": "Barrio Chacra Monte"
+  }, {
+    "id": "2823",
+    "nombre": "Barrio Colonia Conesa"
+  }, {
+    "id": "2841",
+    "nombre": "Barrio Costa Este"
+  }, {
+    "id": "2842",
+    "nombre": "Barrio Costa Linda"
+  }, {
+    "id": "2843",
+    "nombre": "Barrio Costa Oeste"
+  }, {
+    "id": "2844",
+    "nombre": "Barrio El Labrador"
+  }, {
+    "id": "2845",
+    "nombre": "Barrio El Maruchito"
+  }, {
+    "id": "2846",
+    "nombre": "Barrio El Petroleo"
+  }, {
+    "id": "2813",
+    "nombre": "Barrio El Pilar"
+  }, {
+    "id": "2863",
+    "nombre": "Barrio El Treinta"
+  }, {
+    "id": "2847",
+    "nombre": "Barrio Frontera"
+  }, {
+    "id": "2864",
+    "nombre": "Barrio Goretti"
+  }, {
+    "id": "2848",
+    "nombre": "Barrio Guerrico"
+  }, {
+    "id": "2849",
+    "nombre": "Barrio Isla 10"
+  }, {
+    "id": "2850",
+    "nombre": "Barrio La Barda"
+  }, {
+    "id": "2851",
+    "nombre": "Barrio La Costa"
+  }, {
+    "id": "2852",
+    "nombre": "Barrio La Defensa"
+  }, {
+    "id": "2853",
+    "nombre": "Barrio La Lor"
+  }, {
+    "id": "2854",
+    "nombre": "Barrio La Ribera - Barrio Apycar"
+  }, {
+    "id": "2855",
+    "nombre": "Barrio Las Angustias"
+  }, {
+    "id": "2856",
+    "nombre": "Barrio Mar Del Plata"
+  }, {
+    "id": "2857",
+    "nombre": "Barrio Maria Elvira"
+  }, {
+    "id": "2858",
+    "nombre": "Barrio Mosconi"
+  }, {
+    "id": "2859",
+    "nombre": "Barrio Norte"
+  }, {
+    "id": "2860",
+    "nombre": "Barrio Pino Azul"
+  }, {
+    "id": "2861",
+    "nombre": "Barrio Porvenir"
+  }, {
+    "id": "2862",
+    "nombre": "Barrio Presidente Peron"
+  }, {
+    "id": "2866",
+    "nombre": "Barrio Puente De Madera"
+  }, {
+    "id": "2865",
+    "nombre": "Barrio Puente 83"
+  }, {
+    "id": "2868",
+    "nombre": "Barrio Santa Rita"
+  }, {
+    "id": "2867",
+    "nombre": "Barrio Tres Luces"
+  }, {
+    "id": "2804",
+    "nombre": "Barrio Union"
+  }, {
+    "id": "2869",
+    "nombre": "Barrio Union"
+  }, {
+    "id": "2870",
+    "nombre": "Barrio Virgen De Lujan"
+  }, {
+    "id": "2871",
+    "nombre": "Catriel"
+  }, {
+    "id": "2826",
+    "nombre": "Cerro Policia"
+  }, {
+    "id": "2872",
+    "nombre": "Cervantes"
+  }, {
+    "id": "2805",
+    "nombre": "Chelforo"
+  }, {
+    "id": "2873",
+    "nombre": "Chichinales"
+  }, {
+    "id": "2806",
+    "nombre": "Chimpay"
+  }, {
+    "id": "2807",
+    "nombre": "Choele Choel"
+  }, {
+    "id": "2874",
+    "nombre": "Cinco Saltos"
+  }, {
+    "id": "2875",
+    "nombre": "Cipolletti"
+  }, {
+    "id": "2928",
+    "nombre": "Clemente Onelli"
+  }, {
+    "id": "2929",
+    "nombre": "Colan Conhue"
+  }, {
+    "id": "2905",
+    "nombre": "Colonia Julia Y Echarren"
+  }, {
+    "id": "2814",
+    "nombre": "Colonia Suiza"
+  }, {
+    "id": "2907",
+    "nombre": "Comallo"
+  }, {
+    "id": "2893",
+    "nombre": "Comico"
+  }, {
+    "id": "2894",
+    "nombre": "Cona Niyeu"
+  }, {
+    "id": "2876",
+    "nombre": "Contralmirante Cordero"
+  }, {
+    "id": "2808",
+    "nombre": "Coronel Belisle"
+  }, {
+    "id": "2809",
+    "nombre": "Darwin"
+  }, {
+    "id": "2908",
+    "nombre": "Dina Huapi"
+  }, {
+    "id": "2815",
+    "nombre": "El Bolson"
+  }, {
+    "id": "2930",
+    "nombre": "El Cain"
+  }, {
+    "id": "2796",
+    "nombre": "El Condor"
+  }, {
+    "id": "2827",
+    "nombre": "El Cuy"
+  }, {
+    "id": "2816",
+    "nombre": "El Foyel"
+  }, {
+    "id": "2797",
+    "nombre": "El Juncal"
+  }, {
+    "id": "2877",
+    "nombre": "Ferri"
+  }, {
+    "id": "2824",
+    "nombre": "General Conesa"
+  }, {
+    "id": "2878",
+    "nombre": "General Enrique Godoy"
+  }, {
+    "id": "2879",
+    "nombre": "General Fernandez Oro"
+  }, {
+    "id": "2880",
+    "nombre": "General Roca"
+  }, {
+    "id": "2798",
+    "nombre": "Guardia Mitre"
+  }, {
+    "id": "2931",
+    "nombre": "Ingeniero Jacobacci"
+  }, {
+    "id": "2881",
+    "nombre": "Ingeniero Luis A. Huergo"
+  }, {
+    "id": "2882",
+    "nombre": "Ingeniero Otto Krause"
+  }, {
+    "id": "2799",
+    "nombre": "La Loberia"
+  }, {
+    "id": "2909",
+    "nombre": "Laguna Blanca"
+  }, {
+    "id": "2810",
+    "nombre": "Lamarque"
+  }, {
+    "id": "2900",
+    "nombre": "Las Bayas"
+  }, {
+    "id": "2915",
+    "nombre": "Las Grutas"
+  }, {
+    "id": "2828",
+    "nombre": "Las Perlas"
+  }, {
+    "id": "2932",
+    "nombre": "Los Menucos"
+  }, {
+    "id": "2800",
+    "nombre": "Loteo Costa De Rio"
+  }, {
+    "id": "2811",
+    "nombre": "Luis Beltran"
+  }, {
+    "id": "2883",
+    "nombre": "Mainque"
+  }, {
+    "id": "2901",
+    "nombre": "Mamuel Choique"
+  }, {
+    "id": "2933",
+    "nombre": "Maquinchao"
+  }, {
+    "id": "2829",
+    "nombre": "Mencue"
+  }, {
+    "id": "2934",
+    "nombre": "Mina Santa Teresita"
+  }, {
+    "id": "2895",
+    "nombre": "Ministro Ramos Mexia"
+  }, {
+    "id": "2924",
+    "nombre": "Nahuel Niyeu"
+  }, {
+    "id": "2830",
+    "nombre": "Naupa Huen"
+  }, {
+    "id": "2910",
+    "nombre": "ñIRIHUAU"
+  }, {
+    "id": "2902",
+    "nombre": "ñORQUINCO"
+  }, {
+    "id": "2903",
+    "nombre": "Ojos De Agua"
+  }, {
+    "id": "2831",
+    "nombre": "Paso Cordova"
+  }, {
+    "id": "2884",
+    "nombre": "Paso Cordova"
+  }, {
+    "id": "2911",
+    "nombre": "Paso Flores"
+  }, {
+    "id": "2885",
+    "nombre": "Peninsula Ruca Co"
+  }, {
+    "id": "2886",
+    "nombre": "Peñas Blancas"
+  }, {
+    "id": "2912",
+    "nombre": "Pilcaniyeu"
+  }, {
+    "id": "2935",
+    "nombre": "Pilquiniyeu"
+  }, {
+    "id": "2913",
+    "nombre": "Pilquiniyeu Del Limay"
+  }, {
+    "id": "2916",
+    "nombre": "Playas Doradas"
+  }, {
+    "id": "2812",
+    "nombre": "Pomona"
+  }, {
+    "id": "2801",
+    "nombre": "Pozo Salado"
+  }, {
+    "id": "2896",
+    "nombre": "Prahuaniyeu"
+  }, {
+    "id": "2917",
+    "nombre": "Puerto San Antonio Este"
+  }, {
+    "id": "2918",
+    "nombre": "Punta Colorada"
+  }, {
+    "id": "2904",
+    "nombre": "Rio Chico (Est. Cerro Mesa)"
+  }, {
+    "id": "2906",
+    "nombre": "Rio Colorado"
+  }, {
+    "id": "2817",
+    "nombre": "Rio Villegas"
+  }, {
+    "id": "2919",
+    "nombre": "San Antonio Oeste"
+  }, {
+    "id": "2818",
+    "nombre": "San Carlos De Bariloche"
+  }, {
+    "id": "2802",
+    "nombre": "San Javier"
+  }, {
+    "id": "2887",
+    "nombre": "Sargento Vidal"
+  }, {
+    "id": "2897",
+    "nombre": "Sierra Colorada"
+  }, {
+    "id": "2920",
+    "nombre": "Sierra Grande"
+  }, {
+    "id": "2925",
+    "nombre": "Sierra Paileman"
+  }, {
+    "id": "2898",
+    "nombre": "Treneta"
+  }, {
+    "id": "2926",
+    "nombre": "Valcheta"
+  }, {
+    "id": "2832",
+    "nombre": "Valle Azul"
+  }, {
+    "id": "2803",
+    "nombre": "Viedma"
+  }, {
+    "id": "2888",
+    "nombre": "Villa Alberdi"
+  }, {
+    "id": "2819",
+    "nombre": "Villa Campanario"
+  }, {
+    "id": "2820",
+    "nombre": "Villa Catedral"
+  }, {
+    "id": "2889",
+    "nombre": "Villa Del Parque"
+  }, {
+    "id": "2914",
+    "nombre": "Villa Llanquin"
+  }, {
+    "id": "2821",
+    "nombre": "Villa Llao Llao"
+  }, {
+    "id": "2822",
+    "nombre": "Villa Los Coihues"
+  }, {
+    "id": "2890",
+    "nombre": "Villa Manzano"
+  }, {
+    "id": "2891",
+    "nombre": "Villa Regina"
+  }, {
+    "id": "2892",
+    "nombre": "Villa San Isidro"
+  }, {
+    "id": "2899",
+    "nombre": "Yaminue"
+  }]
+}, {
+  "id": 66,
+  "nombre": "Salta",
+  "ciudades": [{
+    "id": "3069",
+    "nombre": "Acoyte"
+  }, {
+    "id": "2974",
+    "nombre": "Aguaray"
+  }, {
+    "id": "3038",
+    "nombre": "Aguas Blancas"
+  }, {
+    "id": "3046",
+    "nombre": "Alto De La Sierra"
+  }, {
+    "id": "3018",
+    "nombre": "Ampascachi"
+  }, {
+    "id": "3065",
+    "nombre": "Angastaco"
+  }, {
+    "id": "3066",
+    "nombre": "Animana"
+  }, {
+    "id": "3056",
+    "nombre": "Antilla"
+  }, {
+    "id": "2936",
+    "nombre": "Apolinario Saravia"
+  }, {
+    "id": "2956",
+    "nombre": "Atocha"
+  }, {
+    "id": "2988",
+    "nombre": "Barrio El Jardin De San Martin"
+  }, {
+    "id": "2987",
+    "nombre": "Barrio El Milagro"
+  }, {
+    "id": "2959",
+    "nombre": "Barrio San Rafael"
+  }, {
+    "id": "3019",
+    "nombre": "Cabra Corral"
+  }, {
+    "id": "2952",
+    "nombre": "Cachi"
+  }, {
+    "id": "2954",
+    "nombre": "Cafayate"
+  }, {
+    "id": "2975",
+    "nombre": "Campamento Vespucio"
+  }, {
+    "id": "2976",
+    "nombre": "Campichuelo"
+  }, {
+    "id": "3003",
+    "nombre": "Campo Blanco"
+  }, {
+    "id": "2977",
+    "nombre": "Campo Duran"
+  }, {
+    "id": "3070",
+    "nombre": "Campo La Cruz"
+  }, {
+    "id": "3062",
+    "nombre": "Campo Quijano"
+  }, {
+    "id": "2970",
+    "nombre": "Campo Santo"
+  }, {
+    "id": "2978",
+    "nombre": "Capiazuti"
+  }, {
+    "id": "3047",
+    "nombre": "Capitan Juan Page"
+  }, {
+    "id": "2979",
+    "nombre": "Carboncito"
+  }, {
+    "id": "2937",
+    "nombre": "Ceibalito"
+  }, {
+    "id": "2938",
+    "nombre": "Centro 25 De Junio"
+  }, {
+    "id": "2964",
+    "nombre": "Cerrillos"
+  }, {
+    "id": "2968",
+    "nombre": "Chicoana"
+  }, {
+    "id": "2971",
+    "nombre": "Cobos"
+  }, {
+    "id": "3016",
+    "nombre": "Cobres"
+  }, {
+    "id": "3039",
+    "nombre": "Colonia Santa Rosa"
+  }, {
+    "id": "3057",
+    "nombre": "Copo Quile"
+  }, {
+    "id": "2980",
+    "nombre": "Coronel Cornejo"
+  }, {
+    "id": "3048",
+    "nombre": "Coronel Juan Sola (Est. Morillo)"
+  }, {
+    "id": "3020",
+    "nombre": "Coronel Moldes"
+  }, {
+    "id": "2939",
+    "nombre": "Coronel Mollinedo"
+  }, {
+    "id": "2940",
+    "nombre": "Coronel Olleros"
+  }, {
+    "id": "2957",
+    "nombre": "Country Club El Tipal"
+  }, {
+    "id": "2958",
+    "nombre": "Country Club La Almudena"
+  }, {
+    "id": "2981",
+    "nombre": "Dragones"
+  }, {
+    "id": "3067",
+    "nombre": "El Barrial"
+  }, {
+    "id": "2972",
+    "nombre": "El Bordo"
+  }, {
+    "id": "2969",
+    "nombre": "El Carril"
+  }, {
+    "id": "3027",
+    "nombre": "El Galpon (Est. Foguista J. F. Juarez)"
+  }, {
+    "id": "3013",
+    "nombre": "El Jardin"
+  }, {
+    "id": "3058",
+    "nombre": "El Naranjo"
+  }, {
+    "id": "3059",
+    "nombre": "El Potrero (Apeadero Cochabamba)"
+  }, {
+    "id": "2941",
+    "nombre": "El Quebrachal"
+  }, {
+    "id": "3040",
+    "nombre": "El Tabacal"
+  }, {
+    "id": "3014",
+    "nombre": "El Tala (Est. Ruiz De Los Llanos)"
+  }, {
+    "id": "3028",
+    "nombre": "El Tunal"
+  }, {
+    "id": "2982",
+    "nombre": "Embarcacion"
+  }, {
+    "id": "2942",
+    "nombre": "Gaona"
+  }, {
+    "id": "2983",
+    "nombre": "General Ballivian"
+  }, {
+    "id": "2973",
+    "nombre": "General GÜEMES (Est. GÜEMES)"
+  }, {
+    "id": "2984",
+    "nombre": "General Mosconi (Est. Vespucio)"
+  }, {
+    "id": "2943",
+    "nombre": "General Pizarro"
+  }, {
+    "id": "3007",
+    "nombre": "Guachipas"
+  }, {
+    "id": "2985",
+    "nombre": "Hickman"
+  }, {
+    "id": "3041",
+    "nombre": "Hipolito Yrigoyen (Est. Tabacal)"
+  }, {
+    "id": "3008",
+    "nombre": "Iruya"
+  }, {
+    "id": "3009",
+    "nombre": "Isla De Cañas"
+  }, {
+    "id": "2944",
+    "nombre": "Joaquin V. Gonzalez"
+  }, {
+    "id": "3011",
+    "nombre": "La Caldera"
+  }, {
+    "id": "3015",
+    "nombre": "La Candelaria"
+  }, {
+    "id": "2960",
+    "nombre": "La Cienaga"
+  }, {
+    "id": "2965",
+    "nombre": "La Merced"
+  }, {
+    "id": "3042",
+    "nombre": "La Mision"
+  }, {
+    "id": "3017",
+    "nombre": "La Poma"
+  }, {
+    "id": "3035",
+    "nombre": "La Puerta"
+  }, {
+    "id": "3063",
+    "nombre": "La Silleta"
+  }, {
+    "id": "3049",
+    "nombre": "La Union"
+  }, {
+    "id": "3021",
+    "nombre": "La Viña"
+  }, {
+    "id": "2961",
+    "nombre": "Las Costas"
+  }, {
+    "id": "2945",
+    "nombre": "Las Lajitas"
+  }, {
+    "id": "3050",
+    "nombre": "Los Blancos"
+  }, {
+    "id": "3071",
+    "nombre": "Los Toldos"
+  }, {
+    "id": "2946",
+    "nombre": "Luis Burela"
+  }, {
+    "id": "3029",
+    "nombre": "Lumbreras"
+  }, {
+    "id": "2947",
+    "nombre": "Macapillo"
+  }, {
+    "id": "3031",
+    "nombre": "Metan Viejo"
+  }, {
+    "id": "2986",
+    "nombre": "Mision Chaqueña"
+  }, {
+    "id": "2997",
+    "nombre": "Mision Curva El Talar"
+  }, {
+    "id": "2989",
+    "nombre": "Mision El Cruce"
+  }, {
+    "id": "2998",
+    "nombre": "Mision El Siwok"
+  }, {
+    "id": "2990",
+    "nombre": "Mision Kilometro 6"
+  }, {
+    "id": "2999",
+    "nombre": "Mision La Mora"
+  }, {
+    "id": "3000",
+    "nombre": "Mision Lapacho I"
+  }, {
+    "id": "3001",
+    "nombre": "Mision Lapacho Ii"
+  }, {
+    "id": "2991",
+    "nombre": "Mision Tierras Fiscales"
+  }, {
+    "id": "3036",
+    "nombre": "Molinos"
+  }, {
+    "id": "3072",
+    "nombre": "Nazareno"
+  }, {
+    "id": "2948",
+    "nombre": "Nuestra Señora De Talavera"
+  }, {
+    "id": "3023",
+    "nombre": "Olacapato"
+  }, {
+    "id": "2992",
+    "nombre": "Pacara"
+  }, {
+    "id": "2993",
+    "nombre": "Padre Lozano"
+  }, {
+    "id": "2953",
+    "nombre": "Payogasta"
+  }, {
+    "id": "3043",
+    "nombre": "Pichanal"
+  }, {
+    "id": "2949",
+    "nombre": "Piquete Cabado"
+  }, {
+    "id": "2994",
+    "nombre": "Piquirenda"
+  }, {
+    "id": "3051",
+    "nombre": "Pluma De Pato"
+  }, {
+    "id": "3073",
+    "nombre": "Poscaya"
+  }, {
+    "id": "3032",
+    "nombre": "Presa El Tunal"
+  }, {
+    "id": "2995",
+    "nombre": "Profesor Salvador Mazza (Est. Pocitos)"
+  }, {
+    "id": "3010",
+    "nombre": "Pueblo Viejo"
+  }, {
+    "id": "2996",
+    "nombre": "Recaredo"
+  }, {
+    "id": "2950",
+    "nombre": "Rio Del Valle"
+  }, {
+    "id": "3033",
+    "nombre": "Rio Piedras"
+  }, {
+    "id": "3052",
+    "nombre": "Rivadavia"
+  }, {
+    "id": "3060",
+    "nombre": "Rosario De La Frontera"
+  }, {
+    "id": "3064",
+    "nombre": "Rosario De Lerma"
+  }, {
+    "id": "2962",
+    "nombre": "Salta"
+  }, {
+    "id": "2966",
+    "nombre": "San Agustin"
+  }, {
+    "id": "3024",
+    "nombre": "San Antonio De Los Cobres"
+  }, {
+    "id": "3068",
+    "nombre": "San Carlos"
+  }, {
+    "id": "3061",
+    "nombre": "San Felipe"
+  }, {
+    "id": "3030",
+    "nombre": "San Jose De Metan (Est. Metan)"
+  }, {
+    "id": "3034",
+    "nombre": "San Jose De Orquera"
+  }, {
+    "id": "3074",
+    "nombre": "San Marcos"
+  }, {
+    "id": "3044",
+    "nombre": "San Ramon De La Nueva Oran (Est. Oran)"
+  }, {
+    "id": "3053",
+    "nombre": "Santa Maria"
+  }, {
+    "id": "3054",
+    "nombre": "Santa Rosa"
+  }, {
+    "id": "3025",
+    "nombre": "Santa Rosa De Los Pastos Grandes"
+  }, {
+    "id": "3075",
+    "nombre": "Santa Victoria"
+  }, {
+    "id": "3055",
+    "nombre": "Santa Victoria Este"
+  }, {
+    "id": "3037",
+    "nombre": "Seclantas"
+  }, {
+    "id": "3022",
+    "nombre": "Talapampa"
+  }, {
+    "id": "3002",
+    "nombre": "Tartagal"
+  }, {
+    "id": "3004",
+    "nombre": "Tobantirenda"
+  }, {
+    "id": "3026",
+    "nombre": "Tolar Grande"
+  }, {
+    "id": "2951",
+    "nombre": "Tolloche"
+  }, {
+    "id": "2955",
+    "nombre": "Tolombon"
+  }, {
+    "id": "3005",
+    "nombre": "Tranquitas"
+  }, {
+    "id": "3045",
+    "nombre": "Urundel"
+  }, {
+    "id": "3012",
+    "nombre": "Vaqueros"
+  }, {
+    "id": "2967",
+    "nombre": "Villa Los Alamos"
+  }, {
+    "id": "2963",
+    "nombre": "Villa San Lorenzo"
+  }, {
+    "id": "3006",
+    "nombre": "Yacuy"
+  }]
+}, {
+  "id": 70,
+  "nombre": "San Juan",
+  "ciudades": [{
+    "id": "3146",
+    "nombre": "Alto De Sierra"
+  }, {
+    "id": "3121",
+    "nombre": "Alto De Sierra"
+  }, {
+    "id": "3101",
+    "nombre": "Angualasto"
+  }, {
+    "id": "3160",
+    "nombre": "Astica"
+  }, {
+    "id": "3161",
+    "nombre": "Balde Del Rosario"
+  }, {
+    "id": "3084",
+    "nombre": "Barreal"
+  }, {
+    "id": "3125",
+    "nombre": "Barrio Ruta 40"
+  }, {
+    "id": "3138",
+    "nombre": "Barrio Sadop"
+  }, {
+    "id": "3102",
+    "nombre": "Bella Vista"
+  }, {
+    "id": "3089",
+    "nombre": "Bermejo"
+  }, {
+    "id": "3086",
+    "nombre": "Calingasta"
+  }, {
+    "id": "3077",
+    "nombre": "Campo Afuera"
+  }, {
+    "id": "3149",
+    "nombre": "Cañada Honda"
+  }, {
+    "id": "3126",
+    "nombre": "Carpinteria"
+  }, {
+    "id": "3090",
+    "nombre": "Caucete"
+  }, {
+    "id": "3098",
+    "nombre": "Chimbas"
+  }, {
+    "id": "3162",
+    "nombre": "Chucuma"
+  }, {
+    "id": "3150",
+    "nombre": "Cienaguita"
+  }, {
+    "id": "3122",
+    "nombre": "Colonia Fiorito"
+  }, {
+    "id": "3151",
+    "nombre": "Colonia Fiscal"
+  }, {
+    "id": "3145",
+    "nombre": "Colonia Gutierrez"
+  }, {
+    "id": "3147",
+    "nombre": "Colonia Gutierrez"
+  }, {
+    "id": "3152",
+    "nombre": "Divisadero"
+  }, {
+    "id": "3139",
+    "nombre": "Dos Acequias (Est. Los Angacos)"
+  }, {
+    "id": "3166",
+    "nombre": "El Encon"
+  }, {
+    "id": "3113",
+    "nombre": "El Fiscal"
+  }, {
+    "id": "3133",
+    "nombre": "El Medanito"
+  }, {
+    "id": "3108",
+    "nombre": "El Medano"
+  }, {
+    "id": "3099",
+    "nombre": "El Mogote"
+  }, {
+    "id": "3076",
+    "nombre": "El Rincon"
+  }, {
+    "id": "3091",
+    "nombre": "El Rincon"
+  }, {
+    "id": "3109",
+    "nombre": "Gran China"
+  }, {
+    "id": "3153",
+    "nombre": "Guanacache"
+  }, {
+    "id": "3110",
+    "nombre": "Huaco"
+  }, {
+    "id": "3103",
+    "nombre": "Iglesia"
+  }, {
+    "id": "3078",
+    "nombre": "La Cañada"
+  }, {
+    "id": "3168",
+    "nombre": "La Chimbera"
+  }, {
+    "id": "3114",
+    "nombre": "La Falda"
+  }, {
+    "id": "3128",
+    "nombre": "La Rinconada"
+  }, {
+    "id": "3123",
+    "nombre": "Las Chacritas"
+  }, {
+    "id": "3104",
+    "nombre": "Las Flores"
+  }, {
+    "id": "3154",
+    "nombre": "Las Lagunas"
+  }, {
+    "id": "3092",
+    "nombre": "Las Talas"
+  }, {
+    "id": "3081",
+    "nombre": "Las Tapias"
+  }, {
+    "id": "3163",
+    "nombre": "Los Baldecitos"
+  }, {
+    "id": "3155",
+    "nombre": "Los Berros"
+  }, {
+    "id": "3093",
+    "nombre": "Los Medanos"
+  }, {
+    "id": "3094",
+    "nombre": "Marayes"
+  }, {
+    "id": "3111",
+    "nombre": "Mogna"
+  }, {
+    "id": "3112",
+    "nombre": "Niquivil"
+  }, {
+    "id": "3115",
+    "nombre": "Pampa Vieja"
+  }, {
+    "id": "3156",
+    "nombre": "Pedernal"
+  }, {
+    "id": "3095",
+    "nombre": "Pie De Palo"
+  }, {
+    "id": "3105",
+    "nombre": "Pismanta"
+  }, {
+    "id": "3157",
+    "nombre": "Punta Del Medano"
+  }, {
+    "id": "3127",
+    "nombre": "Quinto Cuartel"
+  }, {
+    "id": "3134",
+    "nombre": "Rawson"
+  }, {
+    "id": "3137",
+    "nombre": "Rivadavia"
+  }, {
+    "id": "3106",
+    "nombre": "Rodeo"
+  }, {
+    "id": "3116",
+    "nombre": "San Isidro"
+  }, {
+    "id": "3140",
+    "nombre": "San Isidro (Est. Los Angacos)"
+  }, {
+    "id": "3117",
+    "nombre": "San Jose De Jachal"
+  }, {
+    "id": "3088",
+    "nombre": "San Juan"
+  }, {
+    "id": "3148",
+    "nombre": "Santa Lucia"
+  }, {
+    "id": "3087",
+    "nombre": "Tamberias"
+  }, {
+    "id": "3118",
+    "nombre": "Tamberias"
+  }, {
+    "id": "3107",
+    "nombre": "Tudcum"
+  }, {
+    "id": "3167",
+    "nombre": "Tupeli"
+  }, {
+    "id": "3164",
+    "nombre": "Usno"
+  }, {
+    "id": "3096",
+    "nombre": "Vallecito"
+  }, {
+    "id": "3129",
+    "nombre": "Villa Aberastain"
+  }, {
+    "id": "3079",
+    "nombre": "Villa Ampacama"
+  }, {
+    "id": "3130",
+    "nombre": "Villa Barboza"
+  }, {
+    "id": "3172",
+    "nombre": "Villa Basilio Nievas"
+  }, {
+    "id": "3136",
+    "nombre": "Villa Bolaños"
+  }, {
+    "id": "3169",
+    "nombre": "Villa Borjas"
+  }, {
+    "id": "3132",
+    "nombre": "Villa Centenario"
+  }, {
+    "id": "3142",
+    "nombre": "Villa Dominguito (Est. Puntilla Blanca)"
+  }, {
+    "id": "3143",
+    "nombre": "Villa Don Bosco (Est. Angaco Sud)"
+  }, {
+    "id": "3082",
+    "nombre": "Villa El Salvador"
+  }, {
+    "id": "3141",
+    "nombre": "Villa El Salvador"
+  }, {
+    "id": "3170",
+    "nombre": "Villa El Tango"
+  }, {
+    "id": "3080",
+    "nombre": "Villa General San Martin"
+  }, {
+    "id": "3159",
+    "nombre": "Villa Ibañez"
+  }, {
+    "id": "3097",
+    "nombre": "Villa Independencia"
+  }, {
+    "id": "3135",
+    "nombre": "Villa Krause"
+  }, {
+    "id": "3119",
+    "nombre": "Villa Malvinas Argentinas"
+  }, {
+    "id": "3158",
+    "nombre": "Villa Media Agua"
+  }, {
+    "id": "3120",
+    "nombre": "Villa Mercedes"
+  }, {
+    "id": "3131",
+    "nombre": "Villa Nacusi"
+  }, {
+    "id": "3100",
+    "nombre": "Villa Paula Albarracin"
+  }, {
+    "id": "3085",
+    "nombre": "Villa Pituil"
+  }, {
+    "id": "3165",
+    "nombre": "Villa San Agustin"
+  }, {
+    "id": "3144",
+    "nombre": "Villa San Martin"
+  }, {
+    "id": "3171",
+    "nombre": "Villa Santa Rosa"
+  }, {
+    "id": "3083",
+    "nombre": "Villa Sefair Talacasto"
+  }, {
+    "id": "3173",
+    "nombre": "Villa Tacu"
+  }, {
+    "id": "3124",
+    "nombre": "9 De Julio"
+  }]
+}, {
+  "id": 74,
+  "nombre": "San Luis",
+  "ciudades": [{
+    "id": "3234",
+    "nombre": "Alto Pelado"
+  }, {
+    "id": "3235",
+    "nombre": "Alto Pencoso"
+  }, {
+    "id": "3212",
+    "nombre": "Anchorena"
+  }, {
+    "id": "3213",
+    "nombre": "Arizona"
+  }, {
+    "id": "3214",
+    "nombre": "Bagual"
+  }, {
+    "id": "3236",
+    "nombre": "Balde"
+  }, {
+    "id": "3215",
+    "nombre": "Batavia"
+  }, {
+    "id": "3237",
+    "nombre": "Beazley"
+  }, {
+    "id": "3216",
+    "nombre": "Buena Esperanza"
+  }, {
+    "id": "3174",
+    "nombre": "Candelaria"
+  }, {
+    "id": "3185",
+    "nombre": "Carolina"
+  }, {
+    "id": "3226",
+    "nombre": "Carpinteria"
+  }, {
+    "id": "3238",
+    "nombre": "Cazador"
+  }, {
+    "id": "3244",
+    "nombre": "Cerro Colorado"
+  }, {
+    "id": "3227",
+    "nombre": "Cerro De Oro"
+  }, {
+    "id": "3239",
+    "nombre": "Chosmes"
+  }, {
+    "id": "3194",
+    "nombre": "Concaran"
+  }, {
+    "id": "3195",
+    "nombre": "Cortaderas"
+  }, {
+    "id": "3245",
+    "nombre": "Cruz De Piedra"
+  }, {
+    "id": "3240",
+    "nombre": "Desaguadero"
+  }, {
+    "id": "3246",
+    "nombre": "El Chorrillo"
+  }, {
+    "id": "3186",
+    "nombre": "El Trapiche"
+  }, {
+    "id": "3241",
+    "nombre": "El Volcan"
+  }, {
+    "id": "3217",
+    "nombre": "Fortin El Patria"
+  }, {
+    "id": "3218",
+    "nombre": "Fortuna"
+  }, {
+    "id": "3187",
+    "nombre": "Fraga"
+  }, {
+    "id": "3242",
+    "nombre": "Jarilla"
+  }, {
+    "id": "3203",
+    "nombre": "Juan Jorba"
+  }, {
+    "id": "3204",
+    "nombre": "Juan Llerena"
+  }, {
+    "id": "3243",
+    "nombre": "Juana Koslay"
+  }, {
+    "id": "3205",
+    "nombre": "Justo Daract"
+  }, {
+    "id": "3188",
+    "nombre": "La Bajada"
+  }, {
+    "id": "3181",
+    "nombre": "La Calera"
+  }, {
+    "id": "3189",
+    "nombre": "La Florida"
+  }, {
+    "id": "3175",
+    "nombre": "La Majada"
+  }, {
+    "id": "3219",
+    "nombre": "La Maroma"
+  }, {
+    "id": "3206",
+    "nombre": "La Punilla"
+  }, {
+    "id": "3249",
+    "nombre": "La Punta"
+  }, {
+    "id": "3190",
+    "nombre": "La Toma"
+  }, {
+    "id": "3256",
+    "nombre": "La Vertiente"
+  }, {
+    "id": "3228",
+    "nombre": "Lafinur"
+  }, {
+    "id": "3257",
+    "nombre": "Las Aguadas"
+  }, {
+    "id": "3247",
+    "nombre": "Las Chacras"
+  }, {
+    "id": "3258",
+    "nombre": "Las Chacras"
+  }, {
+    "id": "3259",
+    "nombre": "Las Lagunas"
+  }, {
+    "id": "3207",
+    "nombre": "Lavaisse"
+  }, {
+    "id": "3176",
+    "nombre": "Leandro N. Alem"
+  }, {
+    "id": "3229",
+    "nombre": "Los Cajones"
+  }, {
+    "id": "3230",
+    "nombre": "Los Molles"
+  }, {
+    "id": "3220",
+    "nombre": "Los Overos"
+  }, {
+    "id": "3177",
+    "nombre": "Lujan"
+  }, {
+    "id": "3221",
+    "nombre": "Martin De Loyola"
+  }, {
+    "id": "3231",
+    "nombre": "Merlo"
+  }, {
+    "id": "3250",
+    "nombre": "Mosmota"
+  }, {
+    "id": "3222",
+    "nombre": "Nahuel Mapa"
+  }, {
+    "id": "3196",
+    "nombre": "Naschel"
+  }, {
+    "id": "3223",
+    "nombre": "Navia"
+  }, {
+    "id": "3182",
+    "nombre": "Nogoli"
+  }, {
+    "id": "3224",
+    "nombre": "Nueva Galia"
+  }, {
+    "id": "3197",
+    "nombre": "Papagayos"
+  }, {
+    "id": "3260",
+    "nombre": "Paso Grande"
+  }, {
+    "id": "3261",
+    "nombre": "Potrerillo"
+  }, {
+    "id": "3251",
+    "nombre": "Potrero De Los Funes"
+  }, {
+    "id": "3178",
+    "nombre": "Quines"
+  }, {
+    "id": "3198",
+    "nombre": "Renca"
+  }, {
+    "id": "3192",
+    "nombre": "Rio Grande"
+  }, {
+    "id": "3179",
+    "nombre": "Rio Juan Gomez"
+  }, {
+    "id": "3191",
+    "nombre": "Riocito"
+  }, {
+    "id": "3193",
+    "nombre": "Saladillo"
+  }, {
+    "id": "3252",
+    "nombre": "Salinas Del Bebedero"
+  }, {
+    "id": "3180",
+    "nombre": "San Francisco Del Monte De Oro"
+  }, {
+    "id": "3253",
+    "nombre": "San Jeronimo"
+  }, {
+    "id": "3208",
+    "nombre": "San Jose Del Morro"
+  }, {
+    "id": "3254",
+    "nombre": "San Luis"
+  }, {
+    "id": "3262",
+    "nombre": "San Martin"
+  }, {
+    "id": "3199",
+    "nombre": "San Pablo"
+  }, {
+    "id": "3248",
+    "nombre": "San Roque"
+  }, {
+    "id": "3232",
+    "nombre": "Santa Rosa Del Conlara"
+  }, {
+    "id": "3233",
+    "nombre": "Talita"
+  }, {
+    "id": "3200",
+    "nombre": "Tilisarao"
+  }, {
+    "id": "3225",
+    "nombre": "Union"
+  }, {
+    "id": "3183",
+    "nombre": "Villa De La Quebrada"
+  }, {
+    "id": "3263",
+    "nombre": "Villa De Praga"
+  }, {
+    "id": "3201",
+    "nombre": "Villa Del Carmen"
+  }, {
+    "id": "3184",
+    "nombre": "Villa General Roca"
+  }, {
+    "id": "3202",
+    "nombre": "Villa Larca"
+  }, {
+    "id": "3209",
+    "nombre": "Villa Mercedes"
+  }, {
+    "id": "3210",
+    "nombre": "Villa Reynolds"
+  }, {
+    "id": "3211",
+    "nombre": "Villa Salles"
+  }, {
+    "id": "3255",
+    "nombre": "Zanjitas"
+  }]
+}, {
+  "id": 78,
+  "nombre": "Santa Cruz",
+  "ciudades": [{
+    "id": "3288",
+    "nombre": "Bajo Caracoles"
+  }, {
+    "id": "3266",
+    "nombre": "Caleta Olivia"
+  }, {
+    "id": "3267",
+    "nombre": "Cañadon Seco"
+  }, {
+    "id": "3264",
+    "nombre": "Comandante Luis Piedrabuena"
+  }, {
+    "id": "3282",
+    "nombre": "El Calafate"
+  }, {
+    "id": "3283",
+    "nombre": "El Chalten"
+  }, {
+    "id": "3275",
+    "nombre": "El Turbio (Est. Gobernador Mayer)"
+  }, {
+    "id": "3268",
+    "nombre": "Fitz Roy"
+  }, {
+    "id": "3289",
+    "nombre": "Gobernador Gregores"
+  }, {
+    "id": "3290",
+    "nombre": "Hipolito Yrigoyen"
+  }, {
+    "id": "3269",
+    "nombre": "Jaramillo"
+  }, {
+    "id": "3276",
+    "nombre": "Julia Dufour"
+  }, {
+    "id": "3270",
+    "nombre": "Koluel Kaike"
+  }, {
+    "id": "3271",
+    "nombre": "Las Heras"
+  }, {
+    "id": "3285",
+    "nombre": "Los Antiguos"
+  }, {
+    "id": "3277",
+    "nombre": "Mina 3"
+  }, {
+    "id": "3286",
+    "nombre": "Perito Moreno"
+  }, {
+    "id": "3272",
+    "nombre": "Pico Truncado"
+  }, {
+    "id": "3273",
+    "nombre": "Puerto Deseado"
+  }, {
+    "id": "3287",
+    "nombre": "Puerto San Julian"
+  }, {
+    "id": "3265",
+    "nombre": "Puerto Santa Cruz"
+  }, {
+    "id": "3278",
+    "nombre": "Rio Gallegos"
+  }, {
+    "id": "3279",
+    "nombre": "Rospentek"
+  }, {
+    "id": "3274",
+    "nombre": "Tellier"
+  }, {
+    "id": "3284",
+    "nombre": "Tres Lagos"
+  }, {
+    "id": "3281",
+    "nombre": "Yacimientos Rio Turbio"
+  }, {
+    "id": "3280",
+    "nombre": "28 De Noviembre"
+  }]
+}, {
+  "id": 82,
+  "nombre": "Santa Fe",
+  "ciudades": [{
+    "id": "3383",
+    "nombre": "Aaron Castellanos (Est. Castellanos)"
+  }, {
+    "id": "3516",
+    "nombre": "Acebal"
+  }, {
+    "id": "3548",
+    "nombre": "Aguara Grande"
+  }, {
+    "id": "3517",
+    "nombre": "Albarellos"
+  }, {
+    "id": "3355",
+    "nombre": "Alcorta"
+  }, {
+    "id": "3624",
+    "nombre": "Aldao"
+  }, {
+    "id": "3311",
+    "nombre": "Aldao (Est. Casablanca)"
+  }, {
+    "id": "3576",
+    "nombre": "Alejandra"
+  }, {
+    "id": "3518",
+    "nombre": "Álvarez"
+  }, {
+    "id": "3519",
+    "nombre": "Alvear"
+  }, {
+    "id": "3549",
+    "nombre": "Ambrosetti"
+  }, {
+    "id": "3384",
+    "nombre": "Amenabar"
+  }, {
+    "id": "3454",
+    "nombre": "Angel Gallardo"
+  }, {
+    "id": "3312",
+    "nombre": "Angelica"
+  }, {
+    "id": "3607",
+    "nombre": "Angeloni"
+  }, {
+    "id": "3520",
+    "nombre": "Arbilla"
+  }, {
+    "id": "3297",
+    "nombre": "Arequito"
+  }, {
+    "id": "3521",
+    "nombre": "Arminda"
+  }, {
+    "id": "3291",
+    "nombre": "Armstrong"
+  }, {
+    "id": "3582",
+    "nombre": "Arocena"
+  }, {
+    "id": "3455",
+    "nombre": "Arroyo Aguiar"
+  }, {
+    "id": "3414",
+    "nombre": "Arroyo Ceibal"
+  }, {
+    "id": "3456",
+    "nombre": "Arroyo Leyes"
+  }, {
+    "id": "3522",
+    "nombre": "Arroyo Seco"
+  }, {
+    "id": "3550",
+    "nombre": "Arrufo"
+  }, {
+    "id": "3298",
+    "nombre": "Arteaga"
+  }, {
+    "id": "3313",
+    "nombre": "Ataliva"
+  }, {
+    "id": "3314",
+    "nombre": "Aurelia"
+  }, {
+    "id": "3415",
+    "nombre": "Avellaneda (Est. Ewald)"
+  }, {
+    "id": "3551",
+    "nombre": "Balneario La Verde"
+  }, {
+    "id": "3583",
+    "nombre": "Balneario Monje"
+  }, {
+    "id": "3584",
+    "nombre": "Barrancas"
+  }, {
+    "id": "3356",
+    "nombre": "Barrio Arroyo Del Medio"
+  }, {
+    "id": "3585",
+    "nombre": "Barrio Caima"
+  }, {
+    "id": "3437",
+    "nombre": "Barrio Cicarelli"
+  }, {
+    "id": "3586",
+    "nombre": "Barrio El Pacaa - Barrio Comipini"
+  }, {
+    "id": "3357",
+    "nombre": "Barrio Mitre"
+  }, {
+    "id": "3315",
+    "nombre": "Barrios Acapulco Y Veracruz"
+  }, {
+    "id": "3316",
+    "nombre": "Bauer Y Sigel"
+  }, {
+    "id": "3317",
+    "nombre": "Bella Italia"
+  }, {
+    "id": "3299",
+    "nombre": "Beravebu"
+  }, {
+    "id": "3416",
+    "nombre": "Berna"
+  }, {
+    "id": "3587",
+    "nombre": "Bernardo De Irigoyen (Est. Irigoyen)"
+  }, {
+    "id": "3300",
+    "nombre": "Bigand"
+  }, {
+    "id": "3358",
+    "nombre": "Bombal"
+  }, {
+    "id": "3292",
+    "nombre": "Bouquet"
+  }, {
+    "id": "3438",
+    "nombre": "Bustinza"
+  }, {
+    "id": "3458",
+    "nombre": "Cabal"
+  }, {
+    "id": "3577",
+    "nombre": "Cacique Ariacaiquin"
+  }, {
+    "id": "3385",
+    "nombre": "Cafferata"
+  }, {
+    "id": "3658",
+    "nombre": "Calchaqui"
+  }, {
+    "id": "3459",
+    "nombre": "Campo Andino"
+  }, {
+    "id": "3460",
+    "nombre": "Candioti"
+  }, {
+    "id": "3439",
+    "nombre": "Cañada De Gomez"
+  }, {
+    "id": "3386",
+    "nombre": "Cañada Del Ucle"
+  }, {
+    "id": "3659",
+    "nombre": "Cañada Ombu"
+  }, {
+    "id": "3359",
+    "nombre": "Cañada Rica"
+  }, {
+    "id": "3640",
+    "nombre": "Cañada Rosquin"
+  }, {
+    "id": "3625",
+    "nombre": "Capitan Bermudez"
+  }, {
+    "id": "3552",
+    "nombre": "Capivara"
+  }, {
+    "id": "3626",
+    "nombre": "Carcaraña"
+  }, {
+    "id": "3641",
+    "nombre": "Carlos Pellegrini"
+  }, {
+    "id": "3387",
+    "nombre": "Carmen"
+  }, {
+    "id": "3523",
+    "nombre": "Carmen Del Sauce"
+  }, {
+    "id": "3388",
+    "nombre": "Carreras"
+  }, {
+    "id": "3440",
+    "nombre": "Carrizales (Est. Clarke)"
+  }, {
+    "id": "3588",
+    "nombre": "Casalegno"
+  }, {
+    "id": "3642",
+    "nombre": "Casas"
+  }, {
+    "id": "3301",
+    "nombre": "Casilda"
+  }, {
+    "id": "3643",
+    "nombre": "Castelar"
+  }, {
+    "id": "3318",
+    "nombre": "Castellanos"
+  }, {
+    "id": "3476",
+    "nombre": "Cavour"
+  }, {
+    "id": "3378",
+    "nombre": "Cayasta"
+  }, {
+    "id": "3608",
+    "nombre": "Cayastacito"
+  }, {
+    "id": "3589",
+    "nombre": "Centeno"
+  }, {
+    "id": "3360",
+    "nombre": "Cepeda"
+  }, {
+    "id": "3553",
+    "nombre": "Ceres"
+  }, {
+    "id": "3302",
+    "nombre": "Chabas"
+  }, {
+    "id": "3303",
+    "nombre": "Chañar Ladeado"
+  }, {
+    "id": "3389",
+    "nombre": "Chapuy"
+  }, {
+    "id": "3390",
+    "nombre": "Chovet"
+  }, {
+    "id": "3391",
+    "nombre": "Christophersen"
+  }, {
+    "id": "3441",
+    "nombre": "Classon"
+  }, {
+    "id": "3660",
+    "nombre": "Colmena"
+  }, {
+    "id": "3554",
+    "nombre": "Colonia Ana"
+  }, {
+    "id": "3644",
+    "nombre": "Colonia Belgrano"
+  }, {
+    "id": "3319",
+    "nombre": "Colonia Bicha"
+  }, {
+    "id": "3555",
+    "nombre": "Colonia Bossi"
+  }, {
+    "id": "3320",
+    "nombre": "Colonia Cello"
+  }, {
+    "id": "3609",
+    "nombre": "Colonia Dolores"
+  }, {
+    "id": "3578",
+    "nombre": "Colonia Duran"
+  }, {
+    "id": "3321",
+    "nombre": "Colonia Margarita"
+  }, {
+    "id": "3442",
+    "nombre": "Colonia Medici"
+  }, {
+    "id": "3322",
+    "nombre": "Colonia Raquel"
+  }, {
+    "id": "3556",
+    "nombre": "Colonia Rosa"
+  }, {
+    "id": "3557",
+    "nombre": "Constanza"
+  }, {
+    "id": "3590",
+    "nombre": "Coronda"
+  }, {
+    "id": "3627",
+    "nombre": "Coronel Arnold"
+  }, {
+    "id": "3524",
+    "nombre": "Coronel Bogado"
+  }, {
+    "id": "3323",
+    "nombre": "Coronel Fraga"
+  }, {
+    "id": "3525",
+    "nombre": "Coronel Rodolfo S. Dominguez"
+  }, {
+    "id": "3443",
+    "nombre": "Correa"
+  }, {
+    "id": "3645",
+    "nombre": "Crispi"
+  }, {
+    "id": "3526",
+    "nombre": "Cuatro Esquinas"
+  }, {
+    "id": "3477",
+    "nombre": "Cululu"
+  }, {
+    "id": "3558",
+    "nombre": "Curupayti"
+  }, {
+    "id": "3591",
+    "nombre": "Desvio Arijon"
+  }, {
+    "id": "3592",
+    "nombre": "Diaz"
+  }, {
+    "id": "3392",
+    "nombre": "Diego De Alvear"
+  }, {
+    "id": "3324",
+    "nombre": "Egusquiza"
+  }, {
+    "id": "3417",
+    "nombre": "El Araza"
+  }, {
+    "id": "3527",
+    "nombre": "El Caramelo"
+  }, {
+    "id": "3418",
+    "nombre": "El Rabon"
+  }, {
+    "id": "3646",
+    "nombre": "El Trebol"
+  }, {
+    "id": "3478",
+    "nombre": "Elisa"
+  }, {
+    "id": "3393",
+    "nombre": "Elortondo"
+  }, {
+    "id": "3461",
+    "nombre": "Emilia"
+  }, {
+    "id": "3479",
+    "nombre": "Empalme San Carlos"
+  }, {
+    "id": "3361",
+    "nombre": "Empalme Villa Constitucion"
+  }, {
+    "id": "3325",
+    "nombre": "Esmeralda"
+  }, {
+    "id": "3480",
+    "nombre": "Esperanza"
+  }, {
+    "id": "3326",
+    "nombre": "Estacion Clucellas"
+  }, {
+    "id": "3339",
+    "nombre": "Estacion Presidente Roca"
+  }, {
+    "id": "3327",
+    "nombre": "Estacion Saguier"
+  }, {
+    "id": "3507",
+    "nombre": "Esteban Rams"
+  }, {
+    "id": "3610",
+    "nombre": "Esther"
+  }, {
+    "id": "3328",
+    "nombre": "Eusebia Y Carolina"
+  }, {
+    "id": "3329",
+    "nombre": "Eustolia"
+  }, {
+    "id": "3481",
+    "nombre": "Felicia"
+  }, {
+    "id": "3528",
+    "nombre": "Fighiera"
+  }, {
+    "id": "3362",
+    "nombre": "Firmat"
+  }, {
+    "id": "3394",
+    "nombre": "Firmat"
+  }, {
+    "id": "3419",
+    "nombre": "Florencia"
+  }, {
+    "id": "3661",
+    "nombre": "Fortin Olmos"
+  }, {
+    "id": "3482",
+    "nombre": "Franck"
+  }, {
+    "id": "3628",
+    "nombre": "Fray Luis Beltran"
+  }, {
+    "id": "3330",
+    "nombre": "Frontera"
+  }, {
+    "id": "3629",
+    "nombre": "Fuentes"
+  }, {
+    "id": "3529",
+    "nombre": "Funes"
+  }, {
+    "id": "3593",
+    "nombre": "Gaboto"
+  }, {
+    "id": "3594",
+    "nombre": "Galvez"
+  }, {
+    "id": "3662",
+    "nombre": "Garabato"
+  }, {
+    "id": "3331",
+    "nombre": "Garibaldi"
+  }, {
+    "id": "3508",
+    "nombre": "Gato Colorado"
+  }, {
+    "id": "3363",
+    "nombre": "General Gelly"
+  }, {
+    "id": "3530",
+    "nombre": "General Lagos"
+  }, {
+    "id": "3595",
+    "nombre": "Gessler"
+  }, {
+    "id": "3611",
+    "nombre": "Gobernador Crespo"
+  }, {
+    "id": "3304",
+    "nombre": "GÖDEKEN"
+  }, {
+    "id": "3364",
+    "nombre": "Godoy"
+  }, {
+    "id": "3663",
+    "nombre": "Golondrina"
+  }, {
+    "id": "3531",
+    "nombre": "Granadero Baigorria"
+  }, {
+    "id": "3509",
+    "nombre": "Gregoria Perez De Denis  (Est. El Nochero)"
+  }, {
+    "id": "3483",
+    "nombre": "Grutly"
+  }, {
+    "id": "3420",
+    "nombre": "Guadalupe Norte"
+  }, {
+    "id": "3379",
+    "nombre": "Helvecia"
+  }, {
+    "id": "3559",
+    "nombre": "Hersilia"
+  }, {
+    "id": "3484",
+    "nombre": "Hipatia"
+  }, {
+    "id": "3560",
+    "nombre": "Huanqueros"
+  }, {
+    "id": "3395",
+    "nombre": "Hughes"
+  }, {
+    "id": "3332",
+    "nombre": "Humberto Primo"
+  }, {
+    "id": "3485",
+    "nombre": "Humboldt"
+  }, {
+    "id": "3532",
+    "nombre": "Ibarlucea"
+  }, {
+    "id": "3421",
+    "nombre": "Ingeniero Chanourdie"
+  }, {
+    "id": "3664",
+    "nombre": "Intiyaco"
+  }, {
+    "id": "3596",
+    "nombre": "Irigoyen"
+  }, {
+    "id": "3486",
+    "nombre": "Jacinto L. Arauz"
+  }, {
+    "id": "3333",
+    "nombre": "Josefina"
+  }, {
+    "id": "3365",
+    "nombre": "Juan B. Molina"
+  }, {
+    "id": "3366",
+    "nombre": "Juncal"
+  }, {
+    "id": "3533",
+    "nombre": "Kilometro 101"
+  }, {
+    "id": "3665",
+    "nombre": "Kilometro 115"
+  }, {
+    "id": "3579",
+    "nombre": "La Brava"
+  }, {
+    "id": "3561",
+    "nombre": "La Cabral"
+  }, {
+    "id": "3396",
+    "nombre": "La Chispa"
+  }, {
+    "id": "3612",
+    "nombre": "La Criolla (Est. Cañadita)"
+  }, {
+    "id": "3666",
+    "nombre": "La Gallareta"
+  }, {
+    "id": "3422",
+    "nombre": "La Isleta"
+  }, {
+    "id": "3487",
+    "nombre": "La Pelada"
+  }, {
+    "id": "3613",
+    "nombre": "La Penca Y Caraguata"
+  }, {
+    "id": "3562",
+    "nombre": "La Rubia"
+  }, {
+    "id": "3423",
+    "nombre": "La Sarita"
+  }, {
+    "id": "3367",
+    "nombre": "La Vanguardia"
+  }, {
+    "id": "3397",
+    "nombre": "Labordeboy"
+  }, {
+    "id": "3462",
+    "nombre": "Laguna Paiva"
+  }, {
+    "id": "3647",
+    "nombre": "Landeta"
+  }, {
+    "id": "3424",
+    "nombre": "Lanteri"
+  }, {
+    "id": "3444",
+    "nombre": "Larguia"
+  }, {
+    "id": "3597",
+    "nombre": "Larrechea"
+  }, {
+    "id": "3563",
+    "nombre": "Las Avispas"
+  }, {
+    "id": "3648",
+    "nombre": "Las Bandurrias"
+  }, {
+    "id": "3425",
+    "nombre": "Las Garzas"
+  }, {
+    "id": "3564",
+    "nombre": "Las Palmeras"
+  }, {
+    "id": "3293",
+    "nombre": "Las Parejas"
+  }, {
+    "id": "3649",
+    "nombre": "Las Petacas"
+  }, {
+    "id": "3294",
+    "nombre": "Las Rosas"
+  }, {
+    "id": "3426",
+    "nombre": "Las Toscas"
+  }, {
+    "id": "3488",
+    "nombre": "Las Tunas"
+  }, {
+    "id": "3398",
+    "nombre": "Lazzarino"
+  }, {
+    "id": "3334",
+    "nombre": "Lehmann"
+  }, {
+    "id": "3463",
+    "nombre": "Llambi Campbell"
+  }, {
+    "id": "3510",
+    "nombre": "Logroño"
+  }, {
+    "id": "3598",
+    "nombre": "Loma Alta"
+  }, {
+    "id": "3599",
+    "nombre": "Lopez (Est. San Martin De Tours)"
+  }, {
+    "id": "3667",
+    "nombre": "Los Amores"
+  }, {
+    "id": "3650",
+    "nombre": "Los Cardos"
+  }, {
+    "id": "3427",
+    "nombre": "Los Laureles"
+  }, {
+    "id": "3305",
+    "nombre": "Los Molinos"
+  }, {
+    "id": "3534",
+    "nombre": "Los Muchachos - La Alborada"
+  }, {
+    "id": "3306",
+    "nombre": "Los Nogales"
+  }, {
+    "id": "3307",
+    "nombre": "Los Quirquinchos"
+  }, {
+    "id": "3380",
+    "nombre": "Los Zapallos"
+  }, {
+    "id": "3445",
+    "nombre": "Lucio V. Lopez"
+  }, {
+    "id": "3630",
+    "nombre": "Luis Palacios (Est. La Salada)"
+  }, {
+    "id": "3600",
+    "nombre": "Maciel"
+  }, {
+    "id": "3399",
+    "nombre": "Maggiolo"
+  }, {
+    "id": "3428",
+    "nombre": "Malabrigo"
+  }, {
+    "id": "3614",
+    "nombre": "Marcelino Escalada"
+  }, {
+    "id": "3668",
+    "nombre": "Margarita"
+  }, {
+    "id": "3335",
+    "nombre": "Maria Juana"
+  }, {
+    "id": "3489",
+    "nombre": "Maria Luisa"
+  }, {
+    "id": "3651",
+    "nombre": "Maria Susana"
+  }, {
+    "id": "3400",
+    "nombre": "Maria Teresa"
+  }, {
+    "id": "3490",
+    "nombre": "Matilde"
+  }, {
+    "id": "3368",
+    "nombre": "Maximo Paz (Est. Paz)"
+  }, {
+    "id": "3401",
+    "nombre": "Melincue  (Est. San Urbano)"
+  }, {
+    "id": "3402",
+    "nombre": "Miguel Torres"
+  }, {
+    "id": "3565",
+    "nombre": "Moises Ville"
+  }, {
+    "id": "3566",
+    "nombre": "Monigotes"
+  }, {
+    "id": "3601",
+    "nombre": "Monje"
+  }, {
+    "id": "3535",
+    "nombre": "Monte Flores"
+  }, {
+    "id": "3464",
+    "nombre": "Monte Vera"
+  }, {
+    "id": "3511",
+    "nombre": "Montefiore"
+  }, {
+    "id": "3295",
+    "nombre": "Montes De Oca"
+  }, {
+    "id": "3403",
+    "nombre": "Murphy"
+  }, {
+    "id": "3615",
+    "nombre": "Nare"
+  }, {
+    "id": "3465",
+    "nombre": "Nelson"
+  }, {
+    "id": "3336",
+    "nombre": "Nueva Lehmann"
+  }, {
+    "id": "3491",
+    "nombre": "Nuevo Torino"
+  }, {
+    "id": "3567",
+    "nombre": "ñANDUCITA"
+  }, {
+    "id": "3446",
+    "nombre": "Oliveros"
+  }, {
+    "id": "3568",
+    "nombre": "Palacios"
+  }, {
+    "id": "3466",
+    "nombre": "Paraje Chaco Chico"
+  }, {
+    "id": "3467",
+    "nombre": "Paraje La Costa"
+  }, {
+    "id": "3429",
+    "nombre": "Paraje San Manuel"
+  }, {
+    "id": "3669",
+    "nombre": "Paraje 29"
+  }, {
+    "id": "3369",
+    "nombre": "Pavon"
+  }, {
+    "id": "3370",
+    "nombre": "Pavon Arriba"
+  }, {
+    "id": "3616",
+    "nombre": "Pedro Gomez Cello"
+  }, {
+    "id": "3536",
+    "nombre": "Perez"
+  }, {
+    "id": "3371",
+    "nombre": "Peyrano"
+  }, {
+    "id": "3652",
+    "nombre": "Piamonte"
+  }, {
+    "id": "3492",
+    "nombre": "Pilar"
+  }, {
+    "id": "3537",
+    "nombre": "Piñero (Est. Erasto)"
+  }, {
+    "id": "3337",
+    "nombre": "Plaza Clucellas"
+  }, {
+    "id": "3493",
+    "nombre": "Plaza Matilde"
+  }, {
+    "id": "3338",
+    "nombre": "Plaza Saguier"
+  }, {
+    "id": "3512",
+    "nombre": "Pozo Borrado"
+  }, {
+    "id": "3670",
+    "nombre": "Pozo De Los Indios"
+  }, {
+    "id": "3340",
+    "nombre": "Presidente Roca"
+  }, {
+    "id": "3494",
+    "nombre": "Progreso"
+  }, {
+    "id": "3495",
+    "nombre": "Providencia"
+  }, {
+    "id": "3447",
+    "nombre": "Pueblo Andino"
+  }, {
+    "id": "3538",
+    "nombre": "Pueblo Esther"
+  }, {
+    "id": "3341",
+    "nombre": "Pueblo Marini"
+  }, {
+    "id": "3539",
+    "nombre": "Pueblo Muñoz (Est. Bernard)"
+  }, {
+    "id": "3671",
+    "nombre": "Pueblo Santa Lucia"
+  }, {
+    "id": "3540",
+    "nombre": "Pueblo Uranga"
+  }, {
+    "id": "3602",
+    "nombre": "Puerto Aragon"
+  }, {
+    "id": "3541",
+    "nombre": "Puerto Arroyo Seco"
+  }, {
+    "id": "3631",
+    "nombre": "Puerto General San Martin"
+  }, {
+    "id": "3430",
+    "nombre": "Puerto Reconquista"
+  }, {
+    "id": "3632",
+    "nombre": "Pujato"
+  }, {
+    "id": "3342",
+    "nombre": "Rafaela"
+  }, {
+    "id": "3617",
+    "nombre": "Ramayon"
+  }, {
+    "id": "3343",
+    "nombre": "Ramona"
+  }, {
+    "id": "3431",
+    "nombre": "Reconquista"
+  }, {
+    "id": "3468",
+    "nombre": "Recreo"
+  }, {
+    "id": "3633",
+    "nombre": "Ricardone"
+  }, {
+    "id": "3457",
+    "nombre": "Rincon Norte"
+  }, {
+    "id": "3469",
+    "nombre": "Rincon Potrero"
+  }, {
+    "id": "3634",
+    "nombre": "Roldan"
+  }, {
+    "id": "3580",
+    "nombre": "Romang"
+  }, {
+    "id": "3542",
+    "nombre": "Rosario"
+  }, {
+    "id": "3372",
+    "nombre": "Rueda"
+  }, {
+    "id": "3404",
+    "nombre": "Rufino"
+  }, {
+    "id": "3496",
+    "nombre": "Sa Pereyra"
+  }, {
+    "id": "3381",
+    "nombre": "Saladero Mariano Cabal"
+  }, {
+    "id": "3448",
+    "nombre": "Salto Grande"
+  }, {
+    "id": "3497",
+    "nombre": "San Agustin"
+  }, {
+    "id": "3344",
+    "nombre": "San Antonio"
+  }, {
+    "id": "3432",
+    "nombre": "San Antonio De Obligado"
+  }, {
+    "id": "3618",
+    "nombre": "San Bernardo"
+  }, {
+    "id": "3498",
+    "nombre": "San Carlos Centro"
+  }, {
+    "id": "3499",
+    "nombre": "San Carlos Norte"
+  }, {
+    "id": "3500",
+    "nombre": "San Carlos Sud"
+  }, {
+    "id": "3569",
+    "nombre": "San Cristobal"
+  }, {
+    "id": "3405",
+    "nombre": "San Eduardo"
+  }, {
+    "id": "3603",
+    "nombre": "San Eugenio"
+  }, {
+    "id": "3604",
+    "nombre": "San Fabian"
+  }, {
+    "id": "3406",
+    "nombre": "San Francisco De Santa Fe"
+  }, {
+    "id": "3605",
+    "nombre": "San Genaro"
+  }, {
+    "id": "3606",
+    "nombre": "San Genaro Norte"
+  }, {
+    "id": "3407",
+    "nombre": "San Gregorio"
+  }, {
+    "id": "3570",
+    "nombre": "San Guillermo"
+  }, {
+    "id": "3581",
+    "nombre": "San Javier"
+  }, {
+    "id": "3501",
+    "nombre": "San Jeronimo Del Sauce"
+  }, {
+    "id": "3502",
+    "nombre": "San Jeronimo Norte"
+  }, {
+    "id": "3635",
+    "nombre": "San Jeronimo Sud"
+  }, {
+    "id": "3653",
+    "nombre": "San Jorge"
+  }, {
+    "id": "3308",
+    "nombre": "San Jose De La Esquina"
+  }, {
+    "id": "3470",
+    "nombre": "San Jose Del Rincon"
+  }, {
+    "id": "3619",
+    "nombre": "San Justo"
+  }, {
+    "id": "3636",
+    "nombre": "San Lorenzo"
+  }, {
+    "id": "3503",
+    "nombre": "San Mariano"
+  }, {
+    "id": "3654",
+    "nombre": "San Martin De Las Escobas"
+  }, {
+    "id": "3620",
+    "nombre": "San Martin Norte"
+  }, {
+    "id": "3345",
+    "nombre": "San Vicente"
+  }, {
+    "id": "3408",
+    "nombre": "Sancti Spiritu"
+  }, {
+    "id": "3309",
+    "nombre": "Sanford"
+  }, {
+    "id": "3504",
+    "nombre": "Santa Clara De Buena Vista"
+  }, {
+    "id": "3346",
+    "nombre": "Santa Clara De Saguier"
+  }, {
+    "id": "3471",
+    "nombre": "Santa Fe"
+  }, {
+    "id": "3409",
+    "nombre": "Santa Isabel"
+  }, {
+    "id": "3513",
+    "nombre": "Santa Margarita"
+  }, {
+    "id": "3382",
+    "nombre": "Santa Rosa De Calchines"
+  }, {
+    "id": "3373",
+    "nombre": "Santa Teresa"
+  }, {
+    "id": "3505",
+    "nombre": "Santo Domingo"
+  }, {
+    "id": "3472",
+    "nombre": "Santo Tome"
+  }, {
+    "id": "3571",
+    "nombre": "Santurce"
+  }, {
+    "id": "3374",
+    "nombre": "Sargento Cabral"
+  }, {
+    "id": "3506",
+    "nombre": "Sarmiento"
+  }, {
+    "id": "3655",
+    "nombre": "Sastre"
+  }, {
+    "id": "3473",
+    "nombre": "Sauce Viejo"
+  }, {
+    "id": "3449",
+    "nombre": "Serodino"
+  }, {
+    "id": "3621",
+    "nombre": "Silva (Est. Abipones)"
+  }, {
+    "id": "3543",
+    "nombre": "Soldini"
+  }, {
+    "id": "3572",
+    "nombre": "Soledad"
+  }, {
+    "id": "3375",
+    "nombre": "Stephenson"
+  }, {
+    "id": "3573",
+    "nombre": "Suardi"
+  }, {
+    "id": "3347",
+    "nombre": "Sunchales"
+  }, {
+    "id": "3348",
+    "nombre": "Susana"
+  }, {
+    "id": "3433",
+    "nombre": "Tacuarendi (Emb. Kilometro 421)"
+  }, {
+    "id": "3349",
+    "nombre": "Tacural"
+  }, {
+    "id": "3672",
+    "nombre": "Tartagal (Est. El Tajamar)"
+  }, {
+    "id": "3410",
+    "nombre": "Teodelina"
+  }, {
+    "id": "3376",
+    "nombre": "Theobald"
+  }, {
+    "id": "3637",
+    "nombre": "Timbues"
+  }, {
+    "id": "3673",
+    "nombre": "Toba"
+  }, {
+    "id": "3296",
+    "nombre": "Tortugas"
+  }, {
+    "id": "3514",
+    "nombre": "Tostado"
+  }, {
+    "id": "3450",
+    "nombre": "Totoras"
+  }, {
+    "id": "3656",
+    "nombre": "Traill"
+  }, {
+    "id": "3411",
+    "nombre": "Venado Tuerto"
+  }, {
+    "id": "3674",
+    "nombre": "Vera (Est. Gobernador Vera)"
+  }, {
+    "id": "3622",
+    "nombre": "Vera Y Pintado (Est. Guaranies)"
+  }, {
+    "id": "3623",
+    "nombre": "Videla"
+  }, {
+    "id": "3350",
+    "nombre": "Vila"
+  }, {
+    "id": "3474",
+    "nombre": "Villa Adelina"
+  }, {
+    "id": "3544",
+    "nombre": "Villa Amelia"
+  }, {
+    "id": "3434",
+    "nombre": "Villa Ana"
+  }, {
+    "id": "3412",
+    "nombre": "Villa Cañas"
+  }, {
+    "id": "3377",
+    "nombre": "Villa Constitucion"
+  }, {
+    "id": "3545",
+    "nombre": "Villa Del Plata"
+  }, {
+    "id": "3451",
+    "nombre": "Villa Eloisa"
+  }, {
+    "id": "3638",
+    "nombre": "Villa Elvira"
+  }, {
+    "id": "3546",
+    "nombre": "Villa Gobernador Galvez"
+  }, {
+    "id": "3435",
+    "nombre": "Villa Guillermina"
+  }, {
+    "id": "3351",
+    "nombre": "Villa Josefina"
+  }, {
+    "id": "3452",
+    "nombre": "Villa La Rivera (Comuna Oliveros)"
+  }, {
+    "id": "3453",
+    "nombre": "Villa La Rivera (Comuna Pueblo Andino)"
+  }, {
+    "id": "3475",
+    "nombre": "Villa Laura (Est. Constituyentes)"
+  }, {
+    "id": "3515",
+    "nombre": "Villa Minetti"
+  }, {
+    "id": "3639",
+    "nombre": "Villa Mugueta"
+  }, {
+    "id": "3436",
+    "nombre": "Villa Ocampo"
+  }, {
+    "id": "3352",
+    "nombre": "Villa San Jose"
+  }, {
+    "id": "3574",
+    "nombre": "Villa Saralegui"
+  }, {
+    "id": "3575",
+    "nombre": "Villa Trinidad"
+  }, {
+    "id": "3310",
+    "nombre": "Villada"
+  }, {
+    "id": "3353",
+    "nombre": "Virginia"
+  }, {
+    "id": "3413",
+    "nombre": "Wheelwright"
+  }, {
+    "id": "3657",
+    "nombre": "Wildermuth (Est. Granadero B. Bustos)"
+  }, {
+    "id": "3547",
+    "nombre": "Zavalla"
+  }, {
+    "id": "3354",
+    "nombre": "Zenon Pereyra"
+  }]
+}, {
+  "id": 86,
+  "nombre": "Santiago Del Estero",
+  "ciudades": [{
+    "id": "3693",
+    "nombre": "Abra Grande"
+  }, {
+    "id": "3777",
+    "nombre": "Aerolito"
+  }, {
+    "id": "3778",
+    "nombre": "Alhuampa"
+  }, {
+    "id": "3734",
+    "nombre": "Ancajan"
+  }, {
+    "id": "3694",
+    "nombre": "Antaje"
+  }, {
+    "id": "3753",
+    "nombre": "Añatuya"
+  }, {
+    "id": "3695",
+    "nombre": "Ardiles"
+  }, {
+    "id": "3675",
+    "nombre": "Argentina"
+  }, {
+    "id": "3835",
+    "nombre": "Árraga"
+  }, {
+    "id": "3754",
+    "nombre": "Averias"
+  }, {
+    "id": "3708",
+    "nombre": "Bandera"
+  }, {
+    "id": "3743",
+    "nombre": "Bandera Bajada"
+  }, {
+    "id": "3822",
+    "nombre": "Beltran"
+  }, {
+    "id": "3830",
+    "nombre": "Brea Pozo"
+  }, {
+    "id": "3679",
+    "nombre": "Campo Gallo"
+  }, {
+    "id": "3696",
+    "nombre": "Cañada Escobar"
+  }, {
+    "id": "3676",
+    "nombre": "Casares"
+  }, {
+    "id": "3744",
+    "nombre": "Caspi Corral"
+  }, {
+    "id": "3802",
+    "nombre": "Chañar Pozo De Abajo"
+  }, {
+    "id": "3803",
+    "nombre": "Chauchillas"
+  }, {
+    "id": "3697",
+    "nombre": "Chaupi Pozo"
+  }, {
+    "id": "3827",
+    "nombre": "Chilca Juliana"
+  }, {
+    "id": "3735",
+    "nombre": "Choya"
+  }, {
+    "id": "3698",
+    "nombre": "Clodomira"
+  }, {
+    "id": "3819",
+    "nombre": "Colonia Alpina"
+  }, {
+    "id": "3687",
+    "nombre": "Colonia Dora"
+  }, {
+    "id": "3823",
+    "nombre": "Colonia El Simbolar"
+  }, {
+    "id": "3745",
+    "nombre": "Colonia San Juan"
+  }, {
+    "id": "3804",
+    "nombre": "Colonia Tinco"
+  }, {
+    "id": "3680",
+    "nombre": "Coronel Manuel L. Rico"
+  }, {
+    "id": "3709",
+    "nombre": "Cuatro Bocas"
+  }, {
+    "id": "3681",
+    "nombre": "Donadeu"
+  }, {
+    "id": "3761",
+    "nombre": "El Bobadal"
+  }, {
+    "id": "3725",
+    "nombre": "El Cabure"
+  }, {
+    "id": "3805",
+    "nombre": "El Charco"
+  }, {
+    "id": "3762",
+    "nombre": "El Charco"
+  }, {
+    "id": "3769",
+    "nombre": "El Colorado"
+  }, {
+    "id": "3746",
+    "nombre": "El Crucero"
+  }, {
+    "id": "3770",
+    "nombre": "El Cuadrado"
+  }, {
+    "id": "3712",
+    "nombre": "El Dean"
+  }, {
+    "id": "3713",
+    "nombre": "El Mojon"
+  }, {
+    "id": "3793",
+    "nombre": "El Mojon"
+  }, {
+    "id": "3763",
+    "nombre": "El Rincon"
+  }, {
+    "id": "3714",
+    "nombre": "El Zanjon"
+  }, {
+    "id": "3790",
+    "nombre": "El 49"
+  }, {
+    "id": "3684",
+    "nombre": "Estacion Atamisqui"
+  }, {
+    "id": "3736",
+    "nombre": "Estacion La Punta"
+  }, {
+    "id": "3831",
+    "nombre": "Estacion Robles"
+  }, {
+    "id": "3832",
+    "nombre": "Estacion Taboada"
+  }, {
+    "id": "3755",
+    "nombre": "Estacion Tacañitas"
+  }, {
+    "id": "3824",
+    "nombre": "Fernandez"
+  }, {
+    "id": "3710",
+    "nombre": "Fortin Inca"
+  }, {
+    "id": "3737",
+    "nombre": "Frias"
+  }, {
+    "id": "3834",
+    "nombre": "Garza"
+  }, {
+    "id": "3764",
+    "nombre": "Gramilla"
+  }, {
+    "id": "3806",
+    "nombre": "Gramilla"
+  }, {
+    "id": "3711",
+    "nombre": "Guardia Escolta"
+  }, {
+    "id": "3779",
+    "nombre": "Hasse"
+  }, {
+    "id": "3780",
+    "nombre": "Hernan Mejia Miraval"
+  }, {
+    "id": "3688",
+    "nombre": "Herrera"
+  }, {
+    "id": "3699",
+    "nombre": "Huyamampa"
+  }, {
+    "id": "3689",
+    "nombre": "Icaño"
+  }, {
+    "id": "3825",
+    "nombre": "Ingeniero Forres (Est. Chaguar Punco)"
+  }, {
+    "id": "3765",
+    "nombre": "Isca Yacu"
+  }, {
+    "id": "3766",
+    "nombre": "Isca Yacu Semaul"
+  }, {
+    "id": "3747",
+    "nombre": "Kilometro 30"
+  }, {
+    "id": "3700",
+    "nombre": "La Aurora"
+  }, {
+    "id": "3701",
+    "nombre": "La Banda"
+  }, {
+    "id": "3748",
+    "nombre": "La Cañada"
+  }, {
+    "id": "3702",
+    "nombre": "La Darsena"
+  }, {
+    "id": "3726",
+    "nombre": "La Firmeza"
+  }, {
+    "id": "3749",
+    "nombre": "La Invernada"
+  }, {
+    "id": "3756",
+    "nombre": "La Nena"
+  }, {
+    "id": "3807",
+    "nombre": "La Nueva Donosa"
+  }, {
+    "id": "3738",
+    "nombre": "Laprida"
+  }, {
+    "id": "3794",
+    "nombre": "Las Delicias"
+  }, {
+    "id": "3739",
+    "nombre": "Las Palmitas"
+  }, {
+    "id": "3781",
+    "nombre": "Las Tinajas"
+  }, {
+    "id": "3759",
+    "nombre": "Lavalle"
+  }, {
+    "id": "3782",
+    "nombre": "Libertad"
+  }, {
+    "id": "3783",
+    "nombre": "Lilo Viejo"
+  }, {
+    "id": "3715",
+    "nombre": "Los Cardozos"
+  }, {
+    "id": "3757",
+    "nombre": "Los Juries"
+  }, {
+    "id": "3808",
+    "nombre": "Los Miranda"
+  }, {
+    "id": "3809",
+    "nombre": "Los Nuñez"
+  }, {
+    "id": "3727",
+    "nombre": "Los Pirpintos"
+  }, {
+    "id": "3703",
+    "nombre": "Los Quiroga"
+  }, {
+    "id": "3704",
+    "nombre": "Los Soria"
+  }, {
+    "id": "3828",
+    "nombre": "Los Telares"
+  }, {
+    "id": "3728",
+    "nombre": "Los Tigres"
+  }, {
+    "id": "3690",
+    "nombre": "Lugones"
+  }, {
+    "id": "3716",
+    "nombre": "Maco"
+  }, {
+    "id": "3677",
+    "nombre": "Malbran"
+  }, {
+    "id": "3810",
+    "nombre": "Mansupa"
+  }, {
+    "id": "3717",
+    "nombre": "Maquito"
+  }, {
+    "id": "3771",
+    "nombre": "Matara"
+  }, {
+    "id": "3685",
+    "nombre": "Medellin"
+  }, {
+    "id": "3750",
+    "nombre": "Minerva"
+  }, {
+    "id": "3729",
+    "nombre": "Monte Quemado"
+  }, {
+    "id": "3718",
+    "nombre": "Morales"
+  }, {
+    "id": "3730",
+    "nombre": "Nueva Esperanza"
+  }, {
+    "id": "3795",
+    "nombre": "Nueva Esperanza"
+  }, {
+    "id": "3836",
+    "nombre": "Nueva Francia"
+  }, {
+    "id": "3820",
+    "nombre": "Palo Negro"
+  }, {
+    "id": "3731",
+    "nombre": "Pampa De Los Guanacos"
+  }, {
+    "id": "3784",
+    "nombre": "Patay"
+  }, {
+    "id": "3796",
+    "nombre": "Pozo Betbeder"
+  }, {
+    "id": "3767",
+    "nombre": "Pozo Hondo"
+  }, {
+    "id": "3811",
+    "nombre": "Pozuelos"
+  }, {
+    "id": "3785",
+    "nombre": "Pueblo Pablo Torelo (Est. Otumpa)"
+  }, {
+    "id": "3719",
+    "nombre": "Puesto De San Antonio"
+  }, {
+    "id": "3786",
+    "nombre": "Quimili"
+  }, {
+    "id": "3799",
+    "nombre": "Ramirez De Velazco"
+  }, {
+    "id": "3797",
+    "nombre": "Rapelli"
+  }, {
+    "id": "3691",
+    "nombre": "Real Sayana"
+  }, {
+    "id": "3812",
+    "nombre": "Rodeo De Valdez"
+  }, {
+    "id": "3787",
+    "nombre": "Roversi"
+  }, {
+    "id": "3682",
+    "nombre": "Sachayoj"
+  }, {
+    "id": "3732",
+    "nombre": "San Jose Del Boqueron"
+  }, {
+    "id": "3740",
+    "nombre": "San Pedro"
+  }, {
+    "id": "3768",
+    "nombre": "San Pedro"
+  }, {
+    "id": "3720",
+    "nombre": "San Pedro"
+  }, {
+    "id": "3760",
+    "nombre": "San Pedro"
+  }, {
+    "id": "3721",
+    "nombre": "Santa Maria"
+  }, {
+    "id": "3722",
+    "nombre": "Santiago Del Estero"
+  }, {
+    "id": "3798",
+    "nombre": "Santo Domingo"
+  }, {
+    "id": "3683",
+    "nombre": "Santos Lugares"
+  }, {
+    "id": "3813",
+    "nombre": "Sauzal"
+  }, {
+    "id": "3821",
+    "nombre": "Selva"
+  }, {
+    "id": "3837",
+    "nombre": "Simbol"
+  }, {
+    "id": "3705",
+    "nombre": "Simbolar"
+  }, {
+    "id": "3791",
+    "nombre": "Sol De Julio"
+  }, {
+    "id": "3838",
+    "nombre": "Sumamao"
+  }, {
+    "id": "3800",
+    "nombre": "Sumampa"
+  }, {
+    "id": "3801",
+    "nombre": "Sumampa Viejo"
+  }, {
+    "id": "3772",
+    "nombre": "Suncho Corral"
+  }, {
+    "id": "3741",
+    "nombre": "Tapso"
+  }, {
+    "id": "3814",
+    "nombre": "Termas De Rio Hondo"
+  }, {
+    "id": "3788",
+    "nombre": "Tintina"
+  }, {
+    "id": "3758",
+    "nombre": "Tomas Young"
+  }, {
+    "id": "3706",
+    "nombre": "Tramo 16"
+  }, {
+    "id": "3707",
+    "nombre": "Tramo 20"
+  }, {
+    "id": "3733",
+    "nombre": "Urutau"
+  }, {
+    "id": "3751",
+    "nombre": "Vaca Huañuna"
+  }, {
+    "id": "3773",
+    "nombre": "Vilelas"
+  }, {
+    "id": "3686",
+    "nombre": "Villa Atamisqui"
+  }, {
+    "id": "3752",
+    "nombre": "Villa Figueroa"
+  }, {
+    "id": "3678",
+    "nombre": "Villa General Mitre (Est. Pinto)"
+  }, {
+    "id": "3815",
+    "nombre": "Villa Gimenez"
+  }, {
+    "id": "3742",
+    "nombre": "Villa La Punta"
+  }, {
+    "id": "3692",
+    "nombre": "Villa Mailin"
+  }, {
+    "id": "3833",
+    "nombre": "Villa Nueva"
+  }, {
+    "id": "3792",
+    "nombre": "Villa Ojo De Agua"
+  }, {
+    "id": "3816",
+    "nombre": "Villa Rio Hondo"
+  }, {
+    "id": "3829",
+    "nombre": "Villa Salavina"
+  }, {
+    "id": "3775",
+    "nombre": "Villa San Martin (Est. Loreto)"
+  }, {
+    "id": "3839",
+    "nombre": "Villa Silipica"
+  }, {
+    "id": "3817",
+    "nombre": "Villa Turistica Del Embalse"
+  }, {
+    "id": "3776",
+    "nombre": "Villa Union"
+  }, {
+    "id": "3826",
+    "nombre": "Vilmer"
+  }, {
+    "id": "3818",
+    "nombre": "Vinara"
+  }, {
+    "id": "3723",
+    "nombre": "Vuelta De La Barranca"
+  }, {
+    "id": "3789",
+    "nombre": "Weisburd"
+  }, {
+    "id": "3724",
+    "nombre": "Yanda"
+  }, {
+    "id": "3774",
+    "nombre": "Yuchan"
+  }]
+}, {
+  "id": 94,
+  "nombre": "Tierra Del Fuego",
+  "ciudades": [{
+    "id": "3958",
+    "nombre": "Laguna Escondida"
+  }, {
+    "id": "3960",
+    "nombre": "Puerto Argentino"
+  }, {
+    "id": "3956",
+    "nombre": "Rio Grande"
+  }, {
+    "id": "3957",
+    "nombre": "Tolhuin"
+  }, {
+    "id": "3959",
+    "nombre": "Ushuaia"
+  }]
+}, {
+  "id": 90,
+  "nombre": "Tucuman",
+  "ciudades": [{
+    "id": "3909",
+    "nombre": "Acheral"
+  }, {
+    "id": "3919",
+    "nombre": "Aguilares"
+  }, {
+    "id": "3851",
+    "nombre": "Alderetes"
+  }, {
+    "id": "3874",
+    "nombre": "Alpachiri"
+  }, {
+    "id": "3875",
+    "nombre": "Alto Verde"
+  }, {
+    "id": "3932",
+    "nombre": "Amaicha Del Valle"
+  }, {
+    "id": "3876",
+    "nombre": "Arcadia"
+  }, {
+    "id": "3926",
+    "nombre": "Atahona"
+  }, {
+    "id": "3854",
+    "nombre": "Banda Del Rio Sali"
+  }, {
+    "id": "3856",
+    "nombre": "Barrio Aeropuerto"
+  }, {
+    "id": "3904",
+    "nombre": "Barrio Araujo"
+  }, {
+    "id": "3882",
+    "nombre": "Barrio Casa Rosada"
+  }, {
+    "id": "3936",
+    "nombre": "Barrio El Cruce"
+  }, {
+    "id": "3937",
+    "nombre": "Barrio Lomas De Tafi"
+  }, {
+    "id": "3938",
+    "nombre": "Barrio Mutual San Martin"
+  }, {
+    "id": "3939",
+    "nombre": "Barrio Parada 14"
+  }, {
+    "id": "3903",
+    "nombre": "Barrio San Felipe"
+  }, {
+    "id": "3840",
+    "nombre": "Barrio San Jorge"
+  }, {
+    "id": "3952",
+    "nombre": "Barrio San Jose Iii"
+  }, {
+    "id": "3877",
+    "nombre": "Barrio San Roque"
+  }, {
+    "id": "3940",
+    "nombre": "Barrio U.T.A. Ii"
+  }, {
+    "id": "3894",
+    "nombre": "Bella Vista"
+  }, {
+    "id": "3883",
+    "nombre": "Campo De Herrera"
+  }, {
+    "id": "3910",
+    "nombre": "Capitan Caceres"
+  }, {
+    "id": "3949",
+    "nombre": "Choromoro"
+  }, {
+    "id": "3933",
+    "nombre": "Colalao Del Valle"
+  }, {
+    "id": "3857",
+    "nombre": "Colombres"
+  }, {
+    "id": "3858",
+    "nombre": "Colonia Mayo - Barrio La Milagrosa"
+  }, {
+    "id": "3878",
+    "nombre": "Concepcion"
+  }, {
+    "id": "3859",
+    "nombre": "Delfin Gallo"
+  }, {
+    "id": "3941",
+    "nombre": "Diagonal Norte"
+  }, {
+    "id": "3863",
+    "nombre": "El Bracho"
+  }, {
+    "id": "3945",
+    "nombre": "El Cadillal"
+  }, {
+    "id": "3841",
+    "nombre": "El Chañar"
+  }, {
+    "id": "3852",
+    "nombre": "El Corte"
+  }, {
+    "id": "3905",
+    "nombre": "El Manantial"
+  }, {
+    "id": "3934",
+    "nombre": "El Mollar"
+  }, {
+    "id": "3842",
+    "nombre": "El Naranjo"
+  }, {
+    "id": "3860",
+    "nombre": "El Paraiso"
+  }, {
+    "id": "3895",
+    "nombre": "Estacion Araoz"
+  }, {
+    "id": "3861",
+    "nombre": "Ex Ingenio Esperanza"
+  }, {
+    "id": "3868",
+    "nombre": "Ex Ingenio Los Ralos"
+  }, {
+    "id": "3862",
+    "nombre": "Ex Ingenio Lujan"
+  }, {
+    "id": "3884",
+    "nombre": "Ex Ingenio Nueva Baviera"
+  }, {
+    "id": "3954",
+    "nombre": "Ex Ingenio San Jose"
+  }, {
+    "id": "3885",
+    "nombre": "Famailla"
+  }, {
+    "id": "3843",
+    "nombre": "Garmendia"
+  }, {
+    "id": "3887",
+    "nombre": "Graneros"
+  }, {
+    "id": "3879",
+    "nombre": "Iltico"
+  }, {
+    "id": "3886",
+    "nombre": "Ingenio Fronterita"
+  }, {
+    "id": "3864",
+    "nombre": "Ingenio La Florida"
+  }, {
+    "id": "3906",
+    "nombre": "Ingenio San Pablo"
+  }, {
+    "id": "3920",
+    "nombre": "Ingenio Santa Barbara"
+  }, {
+    "id": "3890",
+    "nombre": "Juan Bautista Alberdi"
+  }, {
+    "id": "3892",
+    "nombre": "La Cocha"
+  }, {
+    "id": "3865",
+    "nombre": "La Florida"
+  }, {
+    "id": "3844",
+    "nombre": "La Ramada"
+  }, {
+    "id": "3907",
+    "nombre": "La Reduccion"
+  }, {
+    "id": "3880",
+    "nombre": "La Trinidad"
+  }, {
+    "id": "3888",
+    "nombre": "Lamadrid"
+  }, {
+    "id": "3866",
+    "nombre": "Las Cejas"
+  }, {
+    "id": "3855",
+    "nombre": "Lastenia"
+  }, {
+    "id": "3853",
+    "nombre": "Los Gutierrez"
+  }, {
+    "id": "3943",
+    "nombre": "Los Pocitos"
+  }, {
+    "id": "3896",
+    "nombre": "Los Puestos"
+  }, {
+    "id": "3867",
+    "nombre": "Los Ralos"
+  }, {
+    "id": "3921",
+    "nombre": "Los Sarmientos"
+  }, {
+    "id": "3908",
+    "nombre": "Lules"
+  }, {
+    "id": "3942",
+    "nombre": "Luz Y Fuerza"
+  }, {
+    "id": "3845",
+    "nombre": "Macomitas"
+  }, {
+    "id": "3897",
+    "nombre": "Manuel Garcia Fernandez"
+  }, {
+    "id": "3881",
+    "nombre": "Medina"
+  }, {
+    "id": "3927",
+    "nombre": "Monteagudo"
+  }, {
+    "id": "3911",
+    "nombre": "Monteros"
+  }, {
+    "id": "3928",
+    "nombre": "Nueva Trinidad"
+  }, {
+    "id": "3871",
+    "nombre": "Pacara"
+  }, {
+    "id": "3898",
+    "nombre": "Pala Pala"
+  }, {
+    "id": "3846",
+    "nombre": "Piedrabuena"
+  }, {
+    "id": "3912",
+    "nombre": "Pueblo Independencia"
+  }, {
+    "id": "3872",
+    "nombre": "Ranchillos"
+  }, {
+    "id": "3922",
+    "nombre": "Rio Chico"
+  }, {
+    "id": "3899",
+    "nombre": "Rio Colorado"
+  }, {
+    "id": "3913",
+    "nombre": "Rio Seco"
+  }, {
+    "id": "3873",
+    "nombre": "San Andres"
+  }, {
+    "id": "3893",
+    "nombre": "San Jose De La Cocha"
+  }, {
+    "id": "3925",
+    "nombre": "San Miguel De Tucuman (Est. Tucuman)"
+  }, {
+    "id": "3950",
+    "nombre": "San Pedro De Colalao"
+  }, {
+    "id": "3923",
+    "nombre": "Santa Ana"
+  }, {
+    "id": "3929",
+    "nombre": "Santa Cruz"
+  }, {
+    "id": "3914",
+    "nombre": "Santa Lucia"
+  }, {
+    "id": "3900",
+    "nombre": "Santa Rosa De Leales"
+  }, {
+    "id": "3915",
+    "nombre": "Sargento Moya"
+  }, {
+    "id": "3930",
+    "nombre": "Simoca"
+  }, {
+    "id": "3916",
+    "nombre": "Soldado Maldonado"
+  }, {
+    "id": "3889",
+    "nombre": "Taco Ralo"
+  }, {
+    "id": "3935",
+    "nombre": "Tafi Del Valle"
+  }, {
+    "id": "3946",
+    "nombre": "Tafi Viejo"
+  }, {
+    "id": "3917",
+    "nombre": "Teniente Berdina"
+  }, {
+    "id": "3850",
+    "nombre": "Villa  Padre Monti"
+  }, {
+    "id": "3891",
+    "nombre": "Villa Belgrano"
+  }, {
+    "id": "3848",
+    "nombre": "Villa Benjamin Araoz"
+  }, {
+    "id": "3849",
+    "nombre": "Villa Burruyacu"
+  }, {
+    "id": "3953",
+    "nombre": "Villa Carmela"
+  }, {
+    "id": "3931",
+    "nombre": "Villa Chicligasta"
+  }, {
+    "id": "3924",
+    "nombre": "Villa Clodomiro Hileret"
+  }, {
+    "id": "3951",
+    "nombre": "Villa De Trancas"
+  }, {
+    "id": "3901",
+    "nombre": "Villa Fiad - Ingenio Leales"
+  }, {
+    "id": "3947",
+    "nombre": "Villa Las Flores"
+  }, {
+    "id": "3902",
+    "nombre": "Villa Leales"
+  }, {
+    "id": "3948",
+    "nombre": "Villa Mariano Moreno - El Colmenar"
+  }, {
+    "id": "3944",
+    "nombre": "Villa Nueva Italia"
+  }, {
+    "id": "3918",
+    "nombre": "Villa Quinteros"
+  }, {
+    "id": "3869",
+    "nombre": "Villa Recaste"
+  }, {
+    "id": "3870",
+    "nombre": "Villa Tercera"
+  }, {
+    "id": "3955",
+    "nombre": "Yerba Buena - Marcos Paz"
+  }, {
+    "id": "3847",
+    "nombre": "7 De Abril"
+  }]
+}]);
+
+/***/ }),
+
+/***/ "./resources/js/utils/provincias.js":
+/*!******************************************!*\
+  !*** ./resources/js/utils/provincias.js ***!
+  \******************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ({
+  provincias: [{
+    nombre_completo: "Provincia de Misiones",
+    nombre: "Misiones",
+    id: 54
+  }, {
+    nombre_completo: "Provincia de San Luis",
+    nombre: "San Luis",
+    id: 74
+  }, {
+    nombre_completo: "Provincia de San Juan",
+    nombre: "San Juan",
+    id: 70
+  }, {
+    nombre_completo: "Provincia de Entre Ríos",
+    nombre: "Entre Ríos",
+    id: 30
+  }, {
+    nombre_completo: "Provincia de Santa Cruz",
+    nombre: "Santa Cruz",
+    id: 78
+  }, {
+    nombre_completo: "Provincia de Río Negro",
+    nombre: "Río Negro",
+    id: 62
+  }, {
+    nombre_completo: "Provincia del Chubut",
+    nombre: "Chubut",
+    id: 26
+  }, {
+    nombre_completo: "Provincia de Córdoba",
+    nombre: "Córdoba",
+    id: 14
+  }, {
+    nombre_completo: "Provincia de Mendoza",
+    nombre: "Mendoza",
+    id: 50
+  }, {
+    nombre_completo: "Provincia de La Rioja",
+    nombre: "La Rioja",
+    id: 46
+  }, {
+    nombre_completo: "Provincia de Catamarca",
+    nombre: "Catamarca",
+    id: 10
+  }, {
+    nombre_completo: "Provincia de La Pampa",
+    nombre: "La Pampa",
+    id: 42
+  }, {
+    nombre_completo: "Provincia de Santiago del Estero",
+    nombre: "Santiago del Estero",
+    id: 86
+  }, {
+    nombre_completo: "Provincia de Corrientes",
+    nombre: "Corrientes",
+    id: 18
+  }, {
+    nombre_completo: "Provincia de Santa Fe",
+    nombre: "Santa Fe",
+    id: 82
+  }, {
+    nombre_completo: "Provincia de Tucumán",
+    nombre: "Tucumán",
+    id: 90
+  }, {
+    nombre_completo: "Provincia del Neuquén",
+    nombre: "Neuquén",
+    id: 58
+  }, {
+    nombre_completo: "Provincia de Salta",
+    nombre: "Salta",
+    id: 66
+  }, {
+    nombre_completo: "Provincia del Chaco",
+    nombre: "Chaco",
+    id: 22
+  }, {
+    nombre_completo: "Provincia de Formosa",
+    nombre: "Formosa",
+    id: 34
+  }, {
+    nombre_completo: "Provincia de Jujuy",
+    nombre: "Jujuy",
+    id: 38
+  }, {
+    nombre_completo: "Ciudad Autónoma de Buenos Aires",
+    nombre: "Ciudad Autónoma de Buenos Aires",
+    id: 2
+  }, {
+    nombre_completo: "Provincia de Buenos Aires",
+    nombre: "Buenos Aires",
+    id: 6
+  }, {
+    nombre_completo: "Provincia de Tierra del Fuego, Antártida e Islas del Atlántico Sur",
+    nombre: "Tierra del Fuego, Antártida e Islas del Atlántico Sur",
+    id: 94
+  }]
+});
 
 /***/ }),
 
@@ -71095,6 +86518,213 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Roles_vue_vue_type_template_id_86c789c8___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Roles_vue_vue_type_template_id_86c789c8___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/views/sucursales/Create.vue":
+/*!**************************************************!*\
+  !*** ./resources/js/views/sucursales/Create.vue ***!
+  \**************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Create_vue_vue_type_template_id_04dd34a4___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Create.vue?vue&type=template&id=04dd34a4& */ "./resources/js/views/sucursales/Create.vue?vue&type=template&id=04dd34a4&");
+/* harmony import */ var _Create_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Create.vue?vue&type=script&lang=js& */ "./resources/js/views/sucursales/Create.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _Create_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Create_vue_vue_type_template_id_04dd34a4___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _Create_vue_vue_type_template_id_04dd34a4___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/views/sucursales/Create.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/views/sucursales/Create.vue?vue&type=script&lang=js&":
+/*!***************************************************************************!*\
+  !*** ./resources/js/views/sucursales/Create.vue?vue&type=script&lang=js& ***!
+  \***************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Create_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./Create.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/sucursales/Create.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Create_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/views/sucursales/Create.vue?vue&type=template&id=04dd34a4&":
+/*!*********************************************************************************!*\
+  !*** ./resources/js/views/sucursales/Create.vue?vue&type=template&id=04dd34a4& ***!
+  \*********************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Create_vue_vue_type_template_id_04dd34a4___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./Create.vue?vue&type=template&id=04dd34a4& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/sucursales/Create.vue?vue&type=template&id=04dd34a4&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Create_vue_vue_type_template_id_04dd34a4___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Create_vue_vue_type_template_id_04dd34a4___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/views/sucursales/Show.vue":
+/*!************************************************!*\
+  !*** ./resources/js/views/sucursales/Show.vue ***!
+  \************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Show_vue_vue_type_template_id_fe5814a2___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Show.vue?vue&type=template&id=fe5814a2& */ "./resources/js/views/sucursales/Show.vue?vue&type=template&id=fe5814a2&");
+/* harmony import */ var _Show_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Show.vue?vue&type=script&lang=js& */ "./resources/js/views/sucursales/Show.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _Show_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Show_vue_vue_type_template_id_fe5814a2___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _Show_vue_vue_type_template_id_fe5814a2___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/views/sucursales/Show.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/views/sucursales/Show.vue?vue&type=script&lang=js&":
+/*!*************************************************************************!*\
+  !*** ./resources/js/views/sucursales/Show.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Show_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./Show.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/sucursales/Show.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Show_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/views/sucursales/Show.vue?vue&type=template&id=fe5814a2&":
+/*!*******************************************************************************!*\
+  !*** ./resources/js/views/sucursales/Show.vue?vue&type=template&id=fe5814a2& ***!
+  \*******************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Show_vue_vue_type_template_id_fe5814a2___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./Show.vue?vue&type=template&id=fe5814a2& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/sucursales/Show.vue?vue&type=template&id=fe5814a2&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Show_vue_vue_type_template_id_fe5814a2___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Show_vue_vue_type_template_id_fe5814a2___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/views/sucursales/Sucursales.vue":
+/*!******************************************************!*\
+  !*** ./resources/js/views/sucursales/Sucursales.vue ***!
+  \******************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Sucursales_vue_vue_type_template_id_c93b0c40___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Sucursales.vue?vue&type=template&id=c93b0c40& */ "./resources/js/views/sucursales/Sucursales.vue?vue&type=template&id=c93b0c40&");
+/* harmony import */ var _Sucursales_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Sucursales.vue?vue&type=script&lang=js& */ "./resources/js/views/sucursales/Sucursales.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _Sucursales_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Sucursales_vue_vue_type_template_id_c93b0c40___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _Sucursales_vue_vue_type_template_id_c93b0c40___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/views/sucursales/Sucursales.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/views/sucursales/Sucursales.vue?vue&type=script&lang=js&":
+/*!*******************************************************************************!*\
+  !*** ./resources/js/views/sucursales/Sucursales.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Sucursales_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./Sucursales.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/sucursales/Sucursales.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Sucursales_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/views/sucursales/Sucursales.vue?vue&type=template&id=c93b0c40&":
+/*!*************************************************************************************!*\
+  !*** ./resources/js/views/sucursales/Sucursales.vue?vue&type=template&id=c93b0c40& ***!
+  \*************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Sucursales_vue_vue_type_template_id_c93b0c40___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./Sucursales.vue?vue&type=template&id=c93b0c40& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/sucursales/Sucursales.vue?vue&type=template&id=c93b0c40&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Sucursales_vue_vue_type_template_id_c93b0c40___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Sucursales_vue_vue_type_template_id_c93b0c40___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

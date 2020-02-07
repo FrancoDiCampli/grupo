@@ -11,7 +11,7 @@ class Negocio extends Model
 
     protected $guarded = [];
 
-    public function getRazonsocialAttribute($value)
+    public function getNombreAttribute($value)
     {
         return ucwords($value);
     }

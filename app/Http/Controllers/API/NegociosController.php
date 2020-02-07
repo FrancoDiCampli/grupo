@@ -17,7 +17,7 @@ class NegociosController extends Controller
 
     public function index(Request $request)
     {
-        $negocios = Negocio::orderBy('razonsocial', 'asc');
+        $negocios = Negocio::orderBy('nombre', 'asc');
 
         return [
             'negocios' => $negocios->take($request->get('limit', null))->get(),
@@ -28,11 +28,8 @@ class NegociosController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'razonsocial' => 'required|unique:negocios|min:1|max:190',
-            'cuit' => 'required|unique:negocios|min:11|max:11',
+            'nombre' => 'required|unique:negocios|min:1|max:190',
             'direccion' => 'required|min:1|max:190',
-            'telefono' => 'required|min:6|max:13',
-            'email' => 'required|email',
             'codigopostal' => 'required|min:4|max:4',
             'localidad' => 'required|min:1|max:190',
             'provincia' => 'required|min:1|max:190',
@@ -41,25 +38,12 @@ class NegociosController extends Controller
 
         $negocio = Negocio::create($data);
 
-        if ($request['contactos']) {
-            foreach ($request['contactos'] as $tel) {
-                Contacto::create([
-                    'nombre' => $tel['nombre'],
-                    'numero' => $tel['numero'],
-                    'email' => $tel['email'],
-                    'cargo' => $tel['cargo'],
-                    'referencia' => 'NE' . $negocio->id,
-                ]);
-            }
-        }
-
         return $negocio;
     }
 
     public function show($id)
     {
         $negocio = Negocio::find($id);
-        $contactos = $this->contactos($negocio);
         $inventarios = $negocio->inventarios;
         $negocio->inventarios->each->proveedor;
         $negocio->inventarios->each->articulo;
@@ -75,7 +59,6 @@ class NegociosController extends Controller
 
         return [
             'negocio' => $negocio,
-            'contactos' => $contactos,
             'usuarios' => $usuarios,
             'clientes' => $clientes->flatten(),
             'inventarios' => $inventarios,
@@ -88,11 +71,8 @@ class NegociosController extends Controller
         $negocio = Negocio::findOrFail($id);
 
         $data = $request->validate([
-            'razonsocial' => 'required|min:1|max:190|unique:negocios,razonsocial,' . $negocio->id,
-            'cuit' => 'required|min:11|max:11|unique:negocios,cuit,' . $negocio->id,
+            'nombre' => 'required|min:1|max:190|unique:negocios,nombre,' . $negocio->id,
             'direccion' => 'required|min:1|max:190',
-            'telefono' => 'required|min:6|max:13',
-            'email' => 'required|email',
             'codigopostal' => 'required|min:4|max:4',
             'localidad' => 'required|min:1|max:190',
             'provincia' => 'required|min:1|max:190',
@@ -101,31 +81,7 @@ class NegociosController extends Controller
 
         $negocio->update($data);
 
-        $nuevosContactos = $request['contactos'];
-        $contactosEliminados = [];
-        if ($request['eliminados']) {
-            $contactosEliminados = $request['eliminados'];
-        }
-
-        // Agregar nuevos
-        foreach ($nuevosContactos as $tel) {
-            if (!array_key_exists('id', $tel)) {
-                Contacto::create([
-                    'nombre' => $tel['nombre'],
-                    'numero' => $tel['numero'],
-                    'email' => $tel['email'],
-                    'cargo' => $tel['cargo'],
-                    'referencia' => 'NE' . $negocio->id,
-                ]);
-            }
-        }
-
-        // Eliminar
-        if (count($contactosEliminados) > 0) {
-            foreach ($contactosEliminados as $tel) {
-                Contacto::destroy($tel['id']);
-            }
-        }
+        return response()->json('Negocio actualizado', 200);
     }
 
     public function destroy($id)
@@ -134,12 +90,6 @@ class NegociosController extends Controller
         $negocio->delete();
 
         return ['message' => 'eliminado'];
-    }
-
-    public function contactos($negocio)
-    {
-        $referencia = 'NE' . $negocio->id;
-        return Contacto::where('referencia', $referencia)->get();
     }
 
     public function restaurar($id)

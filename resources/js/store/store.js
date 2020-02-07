@@ -3,6 +3,7 @@ import Vuex from "vuex";
 
 // Modules
 import auth from "./modules/auth";
+import sucursales from "./modules/sucursales";
 import users from "./modules/users";
 import roles from "./modules/roles";
 
@@ -55,6 +56,7 @@ export default new Vuex.Store({
 
     modules: {
         auth: auth,
+        sucursales: sucursales,
         users: users,
         roles: roles
     },

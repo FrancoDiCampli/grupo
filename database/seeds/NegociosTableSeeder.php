@@ -13,11 +13,8 @@ class NegociosTableSeeder extends Seeder
     public function run()
     {
         Negocio::create([
-            'razonsocial' => 'CASA CENTRAL',
-            'cuit' => 00000000000,
+            'nombre' => 'CASA CENTRAL',
             'direccion' => 'N/D',
-            'telefono' => 'N/D',
-            'email' => 'N/D',
             'codigopostal' => 0000,
             'localidad' => 'N/D',
             'provincia' => 'N/D',

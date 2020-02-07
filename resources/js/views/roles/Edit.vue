@@ -18,7 +18,7 @@
                         <v-row justify="center">
                             <v-col cols="12" sm="10">
                                 <v-form ref="CreateRol" @submit.prevent="saveRol()">
-                                    <RolesForm mode="create" ref="RolesForm"></RolesForm>
+                                    <RolesForm ref="RolesForm"></RolesForm>
                                     <v-row justify="center">
                                         <v-btn
                                             tile

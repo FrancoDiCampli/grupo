@@ -78,11 +78,11 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss">
 body::-webkit-scrollbar {
     width: 6px;
 }
 body::-webkit-scrollbar-thumb {
-    background-color: #41b883;
+    background-color: #44c2f7;
 }
 </style>

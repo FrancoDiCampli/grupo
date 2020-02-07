@@ -15,11 +15,8 @@ class CreateNegociosTable extends Migration
     {
         Schema::create('negocios', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('razonsocial');
-            $table->bigInteger('cuit');
+            $table->string('nombre');
             $table->string('direccion');
-            $table->string('telefono');
-            $table->string('email');
             $table->integer('codigopostal');
             $table->string('localidad');
             $table->string('provincia');

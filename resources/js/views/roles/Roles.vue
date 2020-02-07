@@ -1,21 +1,27 @@
 <template>
     <div>
-        <v-btn color="secondary" dark fab fixed right bottom large to="roles/create">
+        <v-btn color="secondary" dark fab fixed right bottom large to="roles/nuevo">
             <v-icon>fas fa-plus</v-icon>
         </v-btn>
-        <RolesIndex>
-            <br />
-            <v-row justify="center" v-if="$store.state.roles.roles">
-                <v-btn
-                    :disabled="limit >= $store.state.roles.roles.total"
-                    :loading="$store.state.inProcess"
-                    @click="loadMore()"
-                    color="primary"
-                    outlined
-                    tile
-                >Cargar Más</v-btn>
+        <v-container>
+            <v-row justify="center">
+                <v-col cols="12" md="10" lg="8">
+                    <RolesIndex>
+                        <br />
+                        <v-row justify="center" v-if="$store.state.roles.roles">
+                            <v-btn
+                                :disabled="limit >= $store.state.roles.roles.total"
+                                :loading="$store.state.inProcess"
+                                @click="loadMore()"
+                                color="primary"
+                                outlined
+                                tile
+                            >Cargar Más</v-btn>
+                        </v-row>
+                    </RolesIndex>
+                </v-col>
             </v-row>
-        </RolesIndex>
+        </v-container>
     </div>
 </template>
 

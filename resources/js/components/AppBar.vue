@@ -50,7 +50,7 @@
             ></v-app-bar-nav-icon>
 
             <!-- Titulo de la aplicacion -->
-            <v-toolbar-title style="cursor: pointer;">Grupo APC</v-toolbar-title>
+            <v-toolbar-title>Grupo APC</v-toolbar-title>
             <v-spacer></v-spacer>
 
             <!-- BARRA DE BUSQUEDA DE GERMAN -->
@@ -221,13 +221,6 @@ export default {
                 divider: true
             },
             {
-                name: "Negocios",
-                icon: "fas fa-building",
-                url: "/negocios",
-                roles: ["superAdmin", "administrador"],
-                divider: true
-            },
-            {
                 name: "Reportes",
                 icon: "fas fa-clipboard",
                 url: "/reportes",
@@ -240,6 +233,13 @@ export default {
                 url: "/movimientos",
                 roles: ["superAdmin", "administrador"],
                 divider: true
+            },
+            {
+                name: "Sucrusales",
+                icon: "fas fa-building",
+                url: "/sucursales",
+                roles: ["superAdmin", "administrador"],
+                divider: false
             },
             {
                 name: "Usuarios",

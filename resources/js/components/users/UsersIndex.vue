@@ -3,6 +3,8 @@
         <v-row justify="center">
             <v-col cols="12" sm="10" lg="8">
                 <v-card outlined shaped :loading="$store.state.inProcess">
+                    <v-card-title>Usuarios</v-card-title>
+                    <v-divider></v-divider>
                     <v-card-text v-if="$store.state.users.users" class="px-0">
                         <v-data-table
                             hide-default-footer

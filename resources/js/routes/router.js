@@ -4,6 +4,11 @@ import Home from "../views/Home.vue";
 import Welcome from "../views/Welcome.vue";
 import NotFound from "../views/NotFound.vue";
 
+// Sucursales
+import Sucursales from "../views/sucursales/Sucursales";
+import SucursalesCreate from "../views/sucursales/Create";
+import SucursalesShow from "../views/sucursales/Show";
+
 // Roles
 import Roles from "../views/roles/Roles";
 import RolesCreate from "../views/roles/Create";
@@ -41,6 +46,24 @@ export default new Router({
             }
         },
 
+        // Sucursales
+        {
+            path: "/sucursales",
+            name: "sucursales",
+            component: Sucursales
+        },
+        {
+            path: "/sucursales/nueva",
+            name: "sucursales_create",
+            component: SucursalesCreate
+        },
+        {
+            path: "/sucursales/show/:id",
+            name: "sucursales_show",
+            component: SucursalesShow,
+            props: true
+        },
+
         // Roles
         {
             path: "/roles",
@@ -48,12 +71,12 @@ export default new Router({
             component: Roles
         },
         {
-            path: "/roles/create",
+            path: "/roles/nuevo",
             name: "roles_create",
             component: RolesCreate
         },
         {
-            path: "/roles/edit",
+            path: "/roles/editar",
             name: "roles_edit",
             component: RolesEdit
         },
@@ -65,7 +88,7 @@ export default new Router({
             component: Users
         },
         {
-            path: "/users/create",
+            path: "/users/nuevo",
             name: "users_create",
             component: UsersCreate
         }
