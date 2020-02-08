@@ -72,7 +72,7 @@ Route::middleware('auth:airlock')->group(function () {
     Route::post('/formaPago', 'API\CuentacorrientesController@formaPago');
     Route::post('facturar', [VentasController::class, 'facturar']);
     Route::apiResource('facturas', API\FacturasController::class, ['only' => ['index', 'store', 'show']]);
-    Route::post('/buscando', [BuscadorController::class, 'buscando']);
+    Route::post('/buscando', 'API\BuscadorController@buscando');
     // ______________________________________________________________
 
     /*Negocios*/

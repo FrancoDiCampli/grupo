@@ -27,7 +27,7 @@ class BuscadorController extends Controller
                     'clientes' => Cliente::orWhere('razonsocial', 'LIKE', "$buscar%")->orWhere('documentounico', 'LIKE', "$buscar%")->get(),
                     'proveedores' => Supplier::orWhere('razonsocial', 'LIKE', "$buscar%")->orWhere('cuit', 'LIKE', "$buscar%")->get(),
                     'articulos' => Articulo::orWhere('articulo', 'LIKE', "$buscar%")->orWhere('codarticulo', "$buscar%")->get(),
-                    'negocios' => Negocio::orWhere('razonsocial', 'LIKE', "$buscar%")->orWhere('cuit', 'LIKE', "$buscar%")->get(),
+                    'negocios' => Negocio::orWhere('nombre', 'LIKE', "$buscar%")->get(),
                     'usuarios' => User::orWhere('name', 'LIKE', "$buscar%")->orWhere('email', "$buscar%")->get()
                 ];
                 break;
@@ -43,7 +43,7 @@ class BuscadorController extends Controller
                     'clientes' => $clientes,
                     'proveedores' => Supplier::orWhere('razonsocial', 'LIKE', "$buscar%")->orWhere('cuit', 'LIKE', "$buscar%")->get(),
                     'articulos' => Articulo::orWhere('articulo', 'LIKE', "$buscar%")->orWhere('codarticulo', "$buscar%")->get(),
-                    'negocios' => Negocio::orWhere('razonsocial', 'LIKE', "$buscar%")->orWhere('cuit', 'LIKE', "$buscar%")->get(),
+                    'negocios' => Negocio::orWhere('nombre', 'LIKE', "$buscar%")->get(),
                     'usuarios' => User::orWhere('name', 'LIKE', "$buscar%")->orWhere('email', "$buscar%")->get()
                 ];
                 break;

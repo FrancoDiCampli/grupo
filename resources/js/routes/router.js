@@ -10,6 +10,11 @@ import Ventas from "../views/ventas/Ventas";
 import VentasCreate from "../views/ventas/Create";
 import VentasShow from "../views/ventas/Show";
 
+// Presupuestos
+import Presupuestos from "../views/presupuestos/presupuestos";
+import PresupuestosCreate from "../views/presupuestos/Create";
+import PresupuestosShow from "../views/presupuestos/Show";
+
 // Clientes
 import Clientes from "../views/clientes/Clientes";
 import ClientesCreate from "../views/clientes/Create";
@@ -89,6 +94,24 @@ export default new Router({
             path: "/ventas/show/:id",
             name: "ventas_show",
             component: VentasShow
+        },
+
+        // Presupuestos
+        {
+            path: "/presupuestos",
+            name: "presupuestos",
+            component: Presupuestos,
+        },
+        {
+            path: "/presupuestos/nuevo",
+            name: "presupuestos_nuevo",
+            component: PresupuestosCreate,
+        },
+        {
+            path: "/presupuestos/show/:id",
+            name: "presupuestos_show",
+            component: PresupuestosShow,
+            props: true
         },
 
         // Clientes

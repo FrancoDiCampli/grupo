@@ -25,7 +25,7 @@
 
             <v-card-text>
                 <v-row justify="center">
-                    <v-col cols="12" sm="10">
+                    <v-col cols="11">
                         <!-- INDICADOR DE CARGA -->
                         <div v-show="inProcess">
                             <v-row
