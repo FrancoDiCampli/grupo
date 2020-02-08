@@ -5,6 +5,11 @@ import Welcome from "../views/Welcome";
 import NotFound from "../views/NotFound";
 import AccessDenied from "../views/AccessDenied";
 
+// Ventas
+import Ventas from "../views/ventas/Ventas";
+import VentasCreate from "../views/ventas/Create";
+import VentasShow from "../views/ventas/Show";
+
 // Articulos
 import Articulos from "../views/articulos/Articulos";
 import ArticulosCreate from "../views/articulos/Create";
@@ -60,6 +65,23 @@ export default new Router({
                 permission: "authenticated",
                 redirect: "home"
             }
+        },
+
+        // Ventas
+        {
+            path: "/ventas",
+            name: "ventas",
+            component: Ventas
+        },
+        {
+            path: "/ventas/nueva",
+            name: "ventas_nueva",
+            component: VentasCreate
+        },
+        {
+            path: "/ventas/show/:id",
+            name: "ventas_show",
+            component: VentasShow
         },
 
         // Articulos

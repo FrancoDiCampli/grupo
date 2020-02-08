@@ -12,6 +12,7 @@
         "afipsdk/afip.php": "^0.6.1",
         "barryvdh/laravel-dompdf": "^0.8.5",
         "fideloper/proxy": "^4.0",
+        "guzzlehttp/guzzle": "^6.5",
         "intervention/image": "^2.5",
         "laravel/airlock": "^0.2.0",
         "laravel/framework": "^6.2",

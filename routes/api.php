@@ -84,4 +84,7 @@ Route::middleware('auth:airlock')->group(function () {
 
     /*Users*/
     Route::apiResource('users', 'API\UsersController', ['except' => ['create', 'edit', 'show']]);
+
+    /*Configuraciones*/
+    Route::get('/config', 'API\PreferencesController@getConfig');
 });
