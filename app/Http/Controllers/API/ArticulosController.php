@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreArticulo;
 use App\Http\Requests\UpdateArticulo;
+use App\Negocio;
 use Intervention\Image\Facades\Image;
 use App\Notifications\ArticuloNotification;
 
@@ -86,7 +87,6 @@ class ArticulosController extends Controller
     public function store(StoreArticulo $request)
     {
         $stockInicial = $request['stockInicial'];
-        $negocio_id = $request['negocio_id'];
         // FOTO
         $name = 'noimage.png';
         if ($request->get('foto')) {
@@ -122,6 +122,12 @@ class ArticulosController extends Controller
                 'categoria' => $data['categoria']
             ]);
             $categoria_id = $nuevaCategoria->id;
+        }
+
+        $negocio = Negocio::where('nombre', $data['negocio'])->get();
+        $negocio_id = null;
+        if (count($negocio) > 0) {
+            $negocio_id = $negocio[0]->id;
         }
 
         $data = $request->validated();

@@ -5,6 +5,11 @@ import Welcome from "../views/Welcome";
 import NotFound from "../views/NotFound";
 import AccessDenied from "../views/AccessDenied";
 
+// Articulos
+import Articulos from "../views/articulos/Articulos";
+import ArticulosCreate from "../views/articulos/Create";
+import ArticulosShow from "../views/articulos/Show";
+
 // Sucursales
 import Sucursales from "../views/sucursales/Sucursales";
 import SucursalesCreate from "../views/sucursales/Create";
@@ -50,6 +55,24 @@ export default new Router({
                 permission: "authenticated",
                 redirect: "home"
             }
+        },
+
+        // Articulos
+        {
+            path: "/articulos",
+            name: "articulos",
+            component: Articulos
+        },
+        {
+            path: "/articulos/nuevo",
+            name: "articulos_nuevo",
+            component: ArticulosCreate
+        },
+        {
+            path: "/articulos/show/:id",
+            name: "articulos_show",
+            component: ArticulosShow,
+            props: true
         },
 
         // Sucursales

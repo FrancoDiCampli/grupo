@@ -237,14 +237,11 @@ export default {
             });
         },
 
-        editSucursal() {
-            this.$store
-                .dispatch("sucursales/edit", {
-                    data: this.$store.state.sucursales.sucursal.negocio
-                })
-                .then(() => {
-                    this.mode = "edit";
-                });
+        editSucursal: async function() {
+            await this.$store.dispatch("sucursales/edit", {
+                data: this.$store.state.sucursales.sucursal.negocio
+            });
+            this.mode = "show";
         },
 
         updateSucursal: async function() {

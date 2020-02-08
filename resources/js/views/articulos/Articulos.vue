@@ -11,33 +11,30 @@
                     bottom
                     large
                     v-on="on"
-                    to="/sucursales/nueva"
+                    to="/articulos/nuevo"
                 >
                     <v-icon>fas fa-plus</v-icon>
                 </v-btn>
             </template>
-            <span>Nueva sucursal</span>
+            <span>Crear articulo</span>
         </v-tooltip>
 
         <v-container>
             <v-row justify="center">
                 <v-col cols="12" md="10" lg="8">
-                    <SucursalesIndex>
+                    <ArticulosIndex :limit="limit">
                         <br />
-                        <v-row justify="center" v-if="$store.state.sucursales.sucursales">
+                        <v-row justify="center" v-if="$store.state.articulos.articulos">
                             <v-btn
-                                :disabled="
-                                    limit >=
-                                        $store.state.sucursales.sucursales.total
-                                "
+                                :disabled="limit >= $store.state.articulos.articulos.total"
                                 :loading="$store.state.inProcess"
                                 @click="loadMore()"
-                                color="secondary"
+                                color="primary"
                                 outlined
                                 tile
                             >Cargar Más</v-btn>
                         </v-row>
-                    </SucursalesIndex>
+                    </ArticulosIndex>
                 </v-col>
             </v-row>
         </v-container>
@@ -45,31 +42,31 @@
 </template>
 
 <script>
-import SucursalesIndex from "../../components/sucursales/SucursalesIndex";
+import ArticulosIndex from "../../components/articulos/ArticulosIndex";
 
 export default {
     data: () => ({
-        limit: 10
+        limit: 12
     }),
 
     components: {
-        SucursalesIndex
+        ArticulosIndex
     },
 
     mounted() {
-        this.getSucursales();
+        this.getArticulos();
     },
 
     methods: {
-        getSucursales() {
-            this.$store.dispatch("sucursales/index", {
+        getArticulos() {
+            this.$store.dispatch("articulos/index", {
                 limit: this.limit
             });
         },
 
         loadMore() {
             this.limit += this.limit;
-            this.getNegocios();
+            this.getArticulos();
         }
     }
 };
