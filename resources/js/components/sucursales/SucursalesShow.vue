@@ -18,7 +18,10 @@
                                         ref="sucursalesEditForm"
                                         @submit.prevent="updateSucursal()"
                                     >
-                                        <SucursalesForm mode="edit" ref="SucursalesForm"></SucursalesForm>
+                                        <SucursalesForm
+                                            mode="edit"
+                                            ref="SucursalesForm"
+                                        ></SucursalesForm>
                                         <v-row justify="center">
                                             <v-btn
                                                 tile
@@ -30,7 +33,8 @@
                                                 :disabled="
                                                     $store.state.inProcess
                                                 "
-                                            >Cancelar</v-btn>
+                                                >Cancelar</v-btn
+                                            >
                                             <v-btn
                                                 tile
                                                 type="submit"
@@ -42,7 +46,8 @@
                                                 :loading="
                                                     $store.state.inProcess
                                                 "
-                                            >Editar</v-btn>
+                                                >Editar</v-btn
+                                            >
                                         </v-row>
                                         <br />
                                     </v-form>
@@ -65,15 +70,21 @@
                                             color="secondary"
                                             v-on="on"
                                         >
-                                            <v-icon size="medium">fas fa-ellipsis-v</v-icon>
+                                            <v-icon size="medium"
+                                                >fas fa-ellipsis-v</v-icon
+                                            >
                                         </v-btn>
                                     </template>
                                     <v-list>
                                         <v-list-item @click="editSucursal()">
-                                            <v-list-item-title>Editar</v-list-item-title>
+                                            <v-list-item-title
+                                                >Editar</v-list-item-title
+                                            >
                                         </v-list-item>
                                         <v-list-item @click="mode = 'delete'">
-                                            <v-list-item-title>Eliminar</v-list-item-title>
+                                            <v-list-item-title
+                                                >Eliminar</v-list-item-title
+                                            >
                                         </v-list-item>
                                     </v-list>
                                 </v-menu>
@@ -85,8 +96,8 @@
                                         style="font-size: 60px;"
                                     >
                                         {{
-                                        $store.state.sucursales.sucursal
-                                        .negocio.nombre[0]
+                                            $store.state.sucursales.sucursal
+                                                .negocio.nombre[0]
                                         }}
                                     </span>
                                 </v-avatar>
@@ -94,24 +105,24 @@
                                 <v-col cols="12">
                                     <h1 class="text-center secondary--text">
                                         {{
-                                        $store.state.sucursales.sucursal
-                                        .negocio.nombre
+                                            $store.state.sucursales.sucursal
+                                                .negocio.nombre
                                         }}
                                     </h1>
                                     <h3 class="text-center secondary--text">
                                         {{
-                                        $store.state.sucursales.sucursal
-                                        .negocio.direccion
+                                            $store.state.sucursales.sucursal
+                                                .negocio.direccion
                                         }}
                                         -
                                         {{
-                                        $store.state.sucursales.sucursal
-                                        .negocio.localidad
+                                            $store.state.sucursales.sucursal
+                                                .negocio.localidad
                                         }}
                                         -
                                         {{
-                                        $store.state.sucursales.sucursal
-                                        .negocio.provincia
+                                            $store.state.sucursales.sucursal
+                                                .negocio.provincia
                                         }}
                                     </h3>
                                 </v-col>
@@ -128,7 +139,9 @@
                                     >
                                         <v-tab>Datos</v-tab>
                                         <v-tab>Ventas</v-tab>
-                                        <v-tab-item style="background: white !important;">
+                                        <v-tab-item
+                                            style="background: white !important;"
+                                        >
                                             <div
                                                 v-if="
                                                     $store.state.sucursales
@@ -138,7 +151,9 @@
                                                 <SucursalesShowData></SucursalesShowData>
                                             </div>
                                         </v-tab-item>
-                                        <v-tab-item style="background: white !important;">
+                                        <v-tab-item
+                                            style="background: white !important;"
+                                        >
                                             <SucursalesShowVentas></SucursalesShowVentas>
                                         </v-tab-item>
                                     </v-tabs>
@@ -148,14 +163,18 @@
                         </div>
                         <div v-else-if="mode == 'delete'">
                             <div class="sucursal-delete">
-                                <h2 class="text-center white--text">¿Estas Seguro?</h2>
+                                <h2 class="text-center white--text">
+                                    ¿Estas Seguro?
+                                </h2>
                                 <br />
                                 <v-divider dark></v-divider>
                                 <br />
-                                <p
-                                    class="text-center white--text"
-                                >¿Realmente deseas eliminar este Negocio?</p>
-                                <p class="text-center white--text">Este Cambio es Irreversible</p>
+                                <p class="text-center white--text">
+                                    ¿Realmente deseas eliminar este Negocio?
+                                </p>
+                                <p class="text-center white--text">
+                                    Este Cambio es Irreversible
+                                </p>
                                 <br />
                                 <v-row justify="center">
                                     <v-btn
@@ -164,7 +183,8 @@
                                         tile
                                         class="mx-2 red--text elevation-0"
                                         color="white"
-                                    >Cancelar</v-btn>
+                                        >Cancelar</v-btn
+                                    >
                                     <v-btn
                                         tile
                                         @click="deleteSucursal()"
@@ -173,7 +193,8 @@
                                         outlined
                                         color="white"
                                         class="mx-2"
-                                    >Eliminar</v-btn>
+                                        >Eliminar</v-btn
+                                    >
                                 </v-row>
                                 <br />
                             </div>

@@ -24,15 +24,22 @@
                 <v-col cols="12" md="10" lg="8">
                     <ArticulosIndex :limit="limit">
                         <br />
-                        <v-row justify="center" v-if="$store.state.articulos.articulos">
+                        <v-row
+                            justify="center"
+                            v-if="$store.state.articulos.articulos"
+                        >
                             <v-btn
-                                :disabled="limit >= $store.state.articulos.articulos.total"
+                                :disabled="
+                                    limit >=
+                                        $store.state.articulos.articulos.total
+                                "
                                 :loading="$store.state.inProcess"
                                 @click="loadMore()"
                                 color="primary"
                                 outlined
                                 tile
-                            >Cargar Más</v-btn>
+                                >Cargar Más</v-btn
+                            >
                         </v-row>
                     </ArticulosIndex>
                 </v-col>

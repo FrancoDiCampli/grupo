@@ -12,8 +12,14 @@
                         <v-card-title>Editar Articulo</v-card-title>
                         <v-divider></v-divider>
                         <v-card-text>
-                            <v-form ref="articulosEditForm" @submit.prevent="updateArticulo()">
-                                <ArticulosForm mode="edit" ref="articulosForm"></ArticulosForm>
+                            <v-form
+                                ref="articulosEditForm"
+                                @submit.prevent="updateArticulo()"
+                            >
+                                <ArticulosForm
+                                    mode="edit"
+                                    ref="articulosForm"
+                                ></ArticulosForm>
                                 <v-row justify="center">
                                     <v-btn
                                         tile
@@ -22,7 +28,8 @@
                                         outlined
                                         color="secondary"
                                         class="mx-2"
-                                    >Cancelar</v-btn>
+                                        >Cancelar</v-btn
+                                    >
                                     <v-btn
                                         tile
                                         class="mx-2 elevation-0"
@@ -30,7 +37,8 @@
                                         :disabled="$store.state.inProcess"
                                         type="submit"
                                         color="secondary"
-                                    >Editar</v-btn>
+                                        >Editar</v-btn
+                                    >
                                 </v-row>
                                 <br />
                             </v-form>
@@ -40,7 +48,12 @@
                         <div>
                             <br />
                             <div
-                                v-if="$store.state.auth.user.rol == 'superAdmin' || $store.state.auth.user.rol == 'administrador'"
+                                v-if="
+                                    $store.state.auth.user.rol ==
+                                        'superAdmin' ||
+                                        $store.state.auth.user.rol ==
+                                            'administrador'
+                                "
                             >
                                 <v-menu>
                                     <template v-slot:activator="{ on }">
@@ -53,15 +66,21 @@
                                             color="secondary"
                                             v-on="on"
                                         >
-                                            <v-icon size="medium">fas fa-ellipsis-v</v-icon>
+                                            <v-icon size="medium"
+                                                >fas fa-ellipsis-v</v-icon
+                                            >
                                         </v-btn>
                                     </template>
                                     <v-list>
                                         <v-list-item @click="editArticulo()">
-                                            <v-list-item-title>Editar</v-list-item-title>
+                                            <v-list-item-title
+                                                >Editar</v-list-item-title
+                                            >
                                         </v-list-item>
                                         <v-list-item @click="mode = 'delete'">
-                                            <v-list-item-title>Eliminar</v-list-item-title>
+                                            <v-list-item-title
+                                                >Eliminar</v-list-item-title
+                                            >
                                         </v-list-item>
                                     </v-list>
                                 </v-menu>
@@ -69,19 +88,30 @@
                             <v-col cols="12">
                                 <v-layout justify-center>
                                     <v-avatar size="200">
-                                        <img :src="$store.state.articulos.articulo.articulo.foto" />
+                                        <img
+                                            :src="
+                                                $store.state.articulos.articulo
+                                                    .articulo.foto
+                                            "
+                                        />
                                     </v-avatar>
                                 </v-layout>
                             </v-col>
 
                             <v-col cols="12">
                                 <br />
-                                <h1
-                                    class="text-center secondary--text"
-                                >{{ $store.state.articulos.articulo.articulo.articulo }}</h1>
-                                <h3
-                                    class="text-center secondary--text"
-                                >{{ $store.state.articulos.articulo.articulo.descripcion }}</h3>
+                                <h1 class="text-center secondary--text">
+                                    {{
+                                        $store.state.articulos.articulo.articulo
+                                            .articulo
+                                    }}
+                                </h1>
+                                <h3 class="text-center secondary--text">
+                                    {{
+                                        $store.state.articulos.articulo.articulo
+                                            .descripcion
+                                    }}
+                                </h3>
                             </v-col>
                         </div>
                         <br />
@@ -95,12 +125,21 @@
                                     >
                                         <v-tab>Datos</v-tab>
                                         <v-tab>Inventarios</v-tab>
-                                        <v-tab-item style="background: white !important;">
-                                            <div v-if="$store.state.articulos.articulo">
+                                        <v-tab-item
+                                            style="background: white !important;"
+                                        >
+                                            <div
+                                                v-if="
+                                                    $store.state.articulos
+                                                        .articulo
+                                                "
+                                            >
                                                 <ArticulosShowData></ArticulosShowData>
                                             </div>
                                         </v-tab-item>
-                                        <v-tab-item style="background: white !important;">
+                                        <v-tab-item
+                                            style="background: white !important;"
+                                        >
                                             <ArticulosShowInventarios></ArticulosShowInventarios>
                                         </v-tab-item>
                                     </v-tabs>
@@ -110,14 +149,18 @@
                         </div>
                         <div v-else-if="mode == 'delete'">
                             <div class="articulos-delete">
-                                <h2 class="text-center white--text">¿Estas Seguro?</h2>
+                                <h2 class="text-center white--text">
+                                    ¿Estas Seguro?
+                                </h2>
                                 <br />
                                 <v-divider dark></v-divider>
                                 <br />
-                                <p
-                                    class="text-center white--text"
-                                >¿Realmente deseas eliminar este Producto?</p>
-                                <p class="text-center white--text">Este Cambio es Irreversible</p>
+                                <p class="text-center white--text">
+                                    ¿Realmente deseas eliminar este Producto?
+                                </p>
+                                <p class="text-center white--text">
+                                    Este Cambio es Irreversible
+                                </p>
                                 <br />
                                 <v-row justify="center">
                                     <v-btn
@@ -126,7 +169,8 @@
                                         :disabled="$store.state.inProcess"
                                         class="mx-2 red--text elevation-0"
                                         color="white"
-                                    >Cancelar</v-btn>
+                                        >Cancelar</v-btn
+                                    >
                                     <v-btn
                                         tile
                                         @click="deleteArticulo()"
@@ -135,7 +179,8 @@
                                         :disabled="$store.state.inProcess"
                                         color="white"
                                         class="mx-2"
-                                    >Eliminar</v-btn>
+                                        >Eliminar</v-btn
+                                    >
                                 </v-row>
                                 <br />
                             </div>

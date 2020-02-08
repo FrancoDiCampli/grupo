@@ -11,12 +11,12 @@
                     :items-per-page="limit"
                     :mobile-breakpoint="0"
                 >
-                    <template v-slot:item="{item}">
+                    <template v-slot:item="{ item }">
                         <tr>
-                            <td>{{item.nombre}}</td>
-                            <td>{{item.direccion}}</td>
-                            <td class="hidden-xs-only">{{item.localidad}}</td>
-                            <td class="hidden-xs-only">{{item.provincia}}</td>
+                            <td>{{ item.nombre }}</td>
+                            <td>{{ item.direccion }}</td>
+                            <td class="hidden-xs-only">{{ item.localidad }}</td>
+                            <td class="hidden-xs-only">{{ item.provincia }}</td>
                             <td>
                                 <v-btn
                                     color="secondary"
@@ -24,7 +24,9 @@
                                     icon
                                     :to="`/sucursales/show/${item.id}`"
                                 >
-                                    <v-icon size="medium">fas fa-ellipsis-v</v-icon>
+                                    <v-icon size="medium"
+                                        >fas fa-ellipsis-v</v-icon
+                                    >
                                 </v-btn>
                             </td>
                         </tr>
@@ -52,5 +54,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

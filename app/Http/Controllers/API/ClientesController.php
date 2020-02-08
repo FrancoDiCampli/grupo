@@ -68,15 +68,6 @@ class ClientesController extends Controller
     public function store(StoreCliente $request)
     {
         $name = 'noimage.png';
-        if ($request->get('foto')) {
-            $carpeta = public_path() . '/img/clientes/';
-            if (!file_exists($carpeta)) {
-                mkdir($carpeta, 0777, true);
-            }
-            $image = $request->get('foto');
-            $name = time() . $image;
-            Image::make($request->get('foto'))->save(public_path('img/clientes/') . $name);
-        }
         $foto = '/img/clientes/' . $name;
 
         $atributos = $request->validated();
@@ -109,6 +100,8 @@ class ClientesController extends Controller
             ]);
 
             // $user->notify(new Verificar($user));
+        } else {
+            return response()->json('Las contraseñas no coinciden', 422);
         }
 
         return ['message' => 'guardado'];
@@ -214,23 +207,8 @@ class ClientesController extends Controller
     public function update(UpdateCliente $request, $id)
     {
         $cliente = Cliente::find($id);
+        $foto = $cliente->foto;
 
-        if ($request->get('foto') != $cliente->foto) {
-            $carpeta = '/img/clientes/';
-            if (!file_exists($carpeta)) {
-                mkdir($carpeta, 0777, true);
-            }
-            $eliminar = $cliente->foto;
-            if (file_exists($eliminar)) {
-                @unlink($eliminar);
-            }
-            $image = $request->get('foto');
-            $name = time() . '.' . explode('/', explode(':', substr($image, 0, strpos($image, ';')))[1])[1];
-            Image::make($request->get('foto'))->save(public_path('img/clientes/') . $name);
-            $foto = 'img/clientes/' . $name;
-        } else {
-            $foto = $cliente->foto;
-        }
 
         $atributos = $request->validated();
 

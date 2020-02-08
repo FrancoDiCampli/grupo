@@ -74,6 +74,22 @@ const actions = {
         });
     },
 
+    pay({ dispatch }, params) {
+        return new Promise((resolve, reject) => {
+            axios
+                .get("/api/pagarcuentas", { params: params })
+                .then(response => {
+                    resolve(response.data);
+                })
+                .catch(error => {
+                    dispatch("errorHandle", error.response, {
+                        root: true
+                    });
+                    reject(error.response.data);
+                });
+        });
+    },
+
     save({ state, commit, dispatch }) {
         return new Promise((resolve, reject) => {
             axios

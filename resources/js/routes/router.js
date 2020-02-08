@@ -10,6 +10,13 @@ import Ventas from "../views/ventas/Ventas";
 import VentasCreate from "../views/ventas/Create";
 import VentasShow from "../views/ventas/Show";
 
+// Clientes
+import Clientes from "../views/clientes/Clientes";
+import ClientesCreate from "../views/clientes/Create";
+import ClientesShow from "../views/clientes/Show";
+import MiCuenta from "../views/clientes/MiCuenta";
+import ShowRecibos from "../views/clientes/ShowRecibos";
+
 // Articulos
 import Articulos from "../views/articulos/Articulos";
 import ArticulosCreate from "../views/articulos/Create";
@@ -82,6 +89,35 @@ export default new Router({
             path: "/ventas/show/:id",
             name: "ventas_show",
             component: VentasShow
+        },
+
+        // Clientes
+        {
+            path: "/clientes",
+            name: "clientes",
+            component: Clientes
+        },
+        {
+            path: "/clientes/nuevo",
+            name: "clientes_nuevo",
+            component: ClientesCreate
+        },
+        {
+            path: "/clientes/show/:id",
+            name: "clientes_show",
+            component: ClientesShow,
+            props: true
+        },
+        {
+            path: "/clientes/micuenta",
+            name: "mi_cuenta",
+            component: MiCuenta
+        },
+        {
+            path: "/clientes/showRecibos/:id",
+            name: "clientes_showRecibos",
+            component: ShowRecibos,
+            props: true
         },
 
         // Articulos

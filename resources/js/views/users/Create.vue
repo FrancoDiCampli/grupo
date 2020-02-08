@@ -2,7 +2,17 @@
     <div>
         <v-tooltip left>
             <template v-slot:activator="{ on }">
-                <v-btn color="secondary" dark fab fixed right bottom large v-on="on" to="/users">
+                <v-btn
+                    color="secondary"
+                    dark
+                    fab
+                    fixed
+                    right
+                    bottom
+                    large
+                    v-on="on"
+                    to="/users"
+                >
                     <v-icon>fas fa-chevron-left</v-icon>
                 </v-btn>
             </template>
@@ -17,7 +27,10 @@
                     <v-card-text>
                         <v-row justify="center">
                             <v-col cols="12" sm="10">
-                                <v-form ref="CreateUsers" @submit.prevent="saveUser()">
+                                <v-form
+                                    ref="CreateUsers"
+                                    @submit.prevent="saveUser()"
+                                >
                                     <UsersForm mode="create"></UsersForm>
                                     <v-row justify="center">
                                         <v-btn
@@ -27,7 +40,8 @@
                                             :disabled="$store.state.inProcess"
                                             :loading="$store.state.inProcess"
                                             color="secondary"
-                                        >Guardar</v-btn>
+                                            >Guardar</v-btn
+                                        >
                                     </v-row>
                                     <br />
                                 </v-form>
@@ -50,6 +64,10 @@ export default {
 
     components: {
         UsersForm
+    },
+
+    mounted() {
+        this.$refs.CreateUsers.reset();
     },
 
     methods: {
@@ -80,5 +98,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

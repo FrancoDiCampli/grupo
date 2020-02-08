@@ -27,8 +27,14 @@
                     <v-card-text>
                         <v-row justify="center">
                             <v-col cols="12" sm="10">
-                                <v-form ref="CreateArticulos" @submit.prevent="saveArticulo()">
-                                    <ArticulosForm mode="create" ref="ArticuloForm"></ArticulosForm>
+                                <v-form
+                                    ref="CreateArticulos"
+                                    @submit.prevent="saveArticulo()"
+                                >
+                                    <ArticulosForm
+                                        mode="create"
+                                        ref="ArticuloForm"
+                                    ></ArticulosForm>
                                     <v-row justify="center">
                                         <v-btn
                                             type="submit"
@@ -37,7 +43,8 @@
                                             color="secondary"
                                             :disabled="$store.state.inProcess"
                                             :loading="$store.state.inProcess"
-                                        >Guardar</v-btn>
+                                            >Guardar</v-btn
+                                        >
                                     </v-row>
                                     <br />
                                 </v-form>
@@ -62,6 +69,10 @@ export default {
         ArticulosForm
     },
 
+    mounted() {
+        this.$refs.CreateArticulos.reset();
+    },
+
     methods: {
         saveArticulo: async function() {
             if (this.$refs.CreateArticulos.validate()) {
@@ -74,5 +85,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>
