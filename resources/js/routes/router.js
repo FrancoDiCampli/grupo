@@ -55,6 +55,10 @@ import Users from "../views/users/Users";
 import UsersCreate from "../views/users/Create";
 import UsersEdit from "../views/users/Edit";
 
+// Reportes
+import Cartera from "../views/reportes/Cartera";
+import Reportes from "../views/reportes/Reportes";
+
 Vue.use(Router);
 
 export default new Router({
@@ -101,7 +105,8 @@ export default new Router({
         {
             path: "/ventas/show/:id",
             name: "ventas_show",
-            component: VentasShow
+            component: VentasShow,
+            props: true
         },
 
         // Presupuestos
@@ -262,6 +267,18 @@ export default new Router({
             path: "/users/editar",
             name: "users_edit",
             component: UsersEdit
+        },
+
+        // Reportes
+        {
+            path: "/cartera",
+            name: "cartera",
+            component: Cartera
+        },
+        {
+            path: "/reportes",
+            name: "reportes",
+            component: Reportes
         }
     ]
 });

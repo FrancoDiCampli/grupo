@@ -85,6 +85,7 @@ class VentasController extends Controller
 
     public function store(Request $request)
     {
+
         // return $request;
         $atributos = $request;
         $cliente = Cliente::find($atributos['cliente_id']);

@@ -16,6 +16,14 @@ class DolarController extends Controller
 
     public function consultar()
     {
+
+        return [
+            'valor' => 62,
+            'fecha' => now()->format('d-m-Y')
+        ];
+
+        // REVISAR CORS ON LARAVEL AIRLOCK
+
         $jsonString = file_get_contents(base_path('dolar.json'));
         $dolarTable = json_decode($jsonString, true);
 

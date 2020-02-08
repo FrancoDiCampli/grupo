@@ -24,7 +24,7 @@ const mutations = {
 
 const actions = {
     index({ commit, dispatch }, params) {
-        return new Promise(resolve => {
+        return new Promise((resolve, reject) => {
             axios
                 .get("/api/ventas", { params: params })
                 .then(response => {
@@ -41,7 +41,7 @@ const actions = {
     },
 
     show({ commit, dispatch }, params) {
-        return new Promise(resolve => {
+        return new Promise((resolve, reject) => {
             axios
                 .get("/api/ventas/" + params.id)
                 .then(response => {
@@ -58,11 +58,12 @@ const actions = {
     },
 
     save({ state, commit, dispatch }) {
-        return new Promise(resolve => {
+        return new Promise((resolve, reject) => {
             axios
                 .post("/api/ventas", state.form)
                 .then(response => {
-                    commit("resetForm");
+                    console.log(response.data);
+                    // commit("resetForm");
                     resolve(response.data);
                 })
                 .catch(error => {
@@ -79,7 +80,7 @@ const actions = {
     },
 
     update({ state, commit, dispatch }, params) {
-        return new Promise(resolve => {
+        return new Promise((resolve, reject) => {
             axios
                 .put("/api/ventas/" + params.id, state.form)
                 .then(response => {
@@ -96,7 +97,7 @@ const actions = {
     },
 
     destroy({ dispatch }, params) {
-        return new Promise(resolve => {
+        return new Promise((resolve, reject) => {
             axios
                 .delete("/api/ventas/" + params.id)
                 .then(response => {

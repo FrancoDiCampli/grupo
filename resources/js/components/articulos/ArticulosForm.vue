@@ -18,20 +18,40 @@
                                 :loading-size="25"
                                 :prevent-white-space="true"
                                 :zoom-speed="10"
-                                :initial-image="$store.state.articulos.articulo ? $store.state.articulos.articulo.articulo.foto : ''"
+                                :initial-image="
+                                    $store.state.articulos.articulo
+                                        ? $store.state.articulos.articulo
+                                              .articulo.foto
+                                        : ''
+                                "
                             ></croppa>
                         </v-row>
                     </v-col>
 
                     <v-col cols="12">
                         <v-row justify="center">
-                            <v-btn text icon color="secondary" @click="foto.zoomIn()">
+                            <v-btn
+                                text
+                                icon
+                                color="secondary"
+                                @click="foto.zoomIn()"
+                            >
                                 <v-icon>fas fa-search-plus</v-icon>
                             </v-btn>
-                            <v-btn text icon color="secondary" @click="foto.zoomOut()">
+                            <v-btn
+                                text
+                                icon
+                                color="secondary"
+                                @click="foto.zoomOut()"
+                            >
                                 <v-icon>fas fa-search-minus</v-icon>
                             </v-btn>
-                            <v-btn text icon color="secondary" @click="foto.rotate()">
+                            <v-btn
+                                text
+                                icon
+                                color="secondary"
+                                @click="foto.rotate()"
+                            >
                                 <v-icon>fas fa-redo-alt</v-icon>
                             </v-btn>
                             <div v-if="foto != null">
@@ -72,7 +92,7 @@
                     <v-col cols="12" class="py-0">
                         <v-textarea
                             v-model="$store.state.articulos.form.descripcion"
-                            :rules="[rules.required,rules.max]"
+                            :rules="[rules.required, rules.max]"
                             label="Descripción"
                             outlined
                             rows="6"
@@ -149,8 +169,9 @@
                             <v-list-item-content>
                                 <v-list-item-title>
                                     No hay resultados que coincidan con "
-                                    <strong>{{ searchCategoria }}</strong>". Presione
-                                    <kbd>enter</kbd> enter para crear uno nuevo
+                                    <strong>{{ searchCategoria }}</strong
+                                    >". Presione <kbd>enter</kbd> enter para
+                                    crear uno nuevo
                                 </v-list-item-title>
                             </v-list-item-content>
                         </v-list-item>
@@ -173,8 +194,9 @@
                             <v-list-item-content>
                                 <v-list-item-title>
                                     No hay resultados que coincidan con "
-                                    <strong>{{ searchCategoria }}</strong>". Presione
-                                    <kbd>enter</kbd> enter para crear uno nuevo
+                                    <strong>{{ searchCategoria }}</strong
+                                    >". Presione <kbd>enter</kbd> enter para
+                                    crear uno nuevo
                                 </v-list-item-title>
                             </v-list-item-content>
                         </v-list-item>
@@ -182,10 +204,20 @@
                 </v-combobox>
             </v-col>
             <v-col cols="12" sm="6" class="py-0">
-                <v-text-field label="Medida" value="Litros" outlined disabled></v-text-field>
+                <v-text-field
+                    label="Medida"
+                    v-model="medida"
+                    outlined
+                    disabled
+                ></v-text-field>
             </v-col>
             <v-col cols="12" sm="6" class="py-0">
-                <v-text-field label="Codigo" v-model="codigo" outlined disabled></v-text-field>
+                <v-text-field
+                    label="Codigo"
+                    v-model="codigo"
+                    outlined
+                    disabled
+                ></v-text-field>
             </v-col>
         </v-row>
     </div>
@@ -199,6 +231,7 @@ export default {
 
     data() {
         return {
+            medida: "Litros",
             searchCategoria: null,
             searchMarca: null,
             categorias: [],

@@ -158,6 +158,7 @@
                                             :disabled="disabled.cliente"
                                             label="Comprobante Adherido Nº"
                                             outlined
+                                            type="number"
                                         ></v-text-field>
                                     </v-col>
                                     <!-- ARTICULOS -->
@@ -568,7 +569,7 @@
                                         type="submit"
                                         tile
                                         color="secondary"
-                                        class="mx-2"
+                                        class="mx-2 elevation-0"
                                         >Guardar</v-btn
                                     >
                                 </v-row>
@@ -798,11 +799,10 @@ export default {
     methods: {
         // GENERAL
         consultarDivisa() {
-            return new Promise((resolv, reject) => {
+            return new Promise((resolve, reject) => {
                 axios
                     .get("/api/consultar")
                     .then(response => {
-                        console.log(resposne);
                         this.cotizacion = response.data.valor;
                         this.fechaCotizacion = response.data.fecha;
                         resolve(response.data);
