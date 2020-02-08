@@ -20,7 +20,13 @@ class ArticulosController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth:airlock');
+
+        $this->middleware('scope:articulos-index')->only('index');
+        $this->middleware('scope:articulos-show')->only('show');
+        $this->middleware('scope:articulos-store')->only('store');
+        $this->middleware('scope:articulos-update')->only('update');
+        $this->middleware('scope:articulos-destroy')->only('destroy');
     }
 
     public function index(Request $request)

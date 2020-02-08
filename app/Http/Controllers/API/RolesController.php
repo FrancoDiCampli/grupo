@@ -10,6 +10,17 @@ use App\Http\Controllers\Controller;
 
 class RolesController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth:airlock');
+
+        $this->middleware('scope:roles-index')->only('index');
+        $this->middleware('scope:roles-store')->only('store');
+        $this->middleware('scope:roles-update')->only('update');
+        $this->middleware('scope:roles-destroy')->only('destroy');
+    }
+
     public function index(Request $request)
     {
         $user = User::find(auth()->user()->id);

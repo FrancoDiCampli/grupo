@@ -20,7 +20,12 @@ class VentasController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth:airlock');
+
+        $this->middleware('scope:ventas-index')->only('index');
+        $this->middleware('scope:ventas-show')->only('show');
+        $this->middleware('scope:ventas-store')->only('store');
+        $this->middleware('scope:ventas-destroy')->only('destroy');
     }
 
     public function index(Request $request)

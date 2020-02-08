@@ -13,7 +13,10 @@ class InventariosController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth:airlock');
+
+        $this->middleware('scope:inventarios-index')->only('index');
+        $this->middleware('scope:inventarios-store')->only('store');
     }
 
     public function index(Request $request)

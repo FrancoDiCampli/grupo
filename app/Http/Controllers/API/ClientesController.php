@@ -21,7 +21,14 @@ class ClientesController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth:airlock');
+
+        $this->middleware('scope:clientes-index')->only('index');
+        $this->middleware('scope:clientes-show')->only('show');
+        $this->middleware('scope:clientes-store')->only('store');
+        $this->middleware('scope:clientes-update')->only('update');
+        $this->middleware('scope:clientes-destroy')->only('destroy');
+        $this->middleware('scope:clientes-miCuenta')->only('miCuenta');
     }
 
     public function index(Request $request)
@@ -312,14 +319,14 @@ class ClientesController extends Controller
     }
 
     // BUSCA EN AFIP LOS DATOS CORRESPONDIENTES DE UNA CUIT
-    public function buscarAfip($num)
-    {
-        $num = $num * 1;
-        $cuituser = Preference::all()->first()->cuit;
-        $afip = new Afip(array('CUIT' => $cuituser, 'production' => true));
-        $contribuyente = $afip->RegisterScopeThirteen->GetTaxpayerDetails($num);
-        return json_encode($contribuyente);
-    }
+    // public function buscarAfip($num)
+    // {
+    //     $num = $num * 1;
+    //     $cuituser = Preference::all()->first()->cuit;
+    //     $afip = new Afip(array('CUIT' => $cuituser, 'production' => true));
+    //     $contribuyente = $afip->RegisterScopeThirteen->GetTaxpayerDetails($num);
+    //     return json_encode($contribuyente);
+    // }
 
     public function miCuenta()
     {

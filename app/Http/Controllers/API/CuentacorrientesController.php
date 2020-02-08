@@ -19,7 +19,8 @@ class CuentacorrientesController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth:airlock');
+        $this->middleware('scope:cuentascorrientes-pagar')->only('pagar');
     }
 
     // PAGOS PARCIALES O TOTALES 

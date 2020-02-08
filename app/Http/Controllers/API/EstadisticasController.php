@@ -18,7 +18,7 @@ class EstadisticasController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth:airlock');
     }
 
     public function cartera()

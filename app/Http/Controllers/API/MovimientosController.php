@@ -13,7 +13,9 @@ class MovimientosController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth:airlock');
+
+        $this->middleware('scope:movimientos-index')->only('index');
     }
 
     public function index(Request $request)

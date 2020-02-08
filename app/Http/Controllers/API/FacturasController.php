@@ -14,7 +14,11 @@ class FacturasController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth:airlock');
+
+        $this->middleware('scope:facturas-index')->only('index');
+        $this->middleware('scope:facturas-show')->only('show');
+        $this->middleware('scope:facturas-store')->only('store');
     }
 
     public function index(Request $request)
