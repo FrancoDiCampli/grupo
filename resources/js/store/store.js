@@ -1,5 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
+import router from "../routes/router";
 
 // Modules
 import auth from "./modules/auth";
@@ -43,6 +44,8 @@ export default new Vuex.Store({
         errorHandle({ commit, dispatch }, errors) {
             if (errors.status == 401) {
                 dispatch("auth/deleteAuthData", {}, { root: true });
+            } else if (errors.status == 403) {
+                router.push("/accessd_denied");
             } else {
                 let error = {
                     data: errors.data,

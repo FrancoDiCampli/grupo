@@ -13,6 +13,11 @@ class NegociosController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+        $this->middleware('scope:negocios-index')->only('index');
+        $this->middleware('scope:negocios-show')->only('show');
+        $this->middleware('scope:negocios-store')->only('store');
+        $this->middleware('scope:negocios-update')->only('update');
+        $this->middleware('scope:negocios-destroy')->only('destroy');
     }
 
     public function index(Request $request)

@@ -11,7 +11,7 @@
             <v-col cols="12">
                 <h1
                     class="display-2 font-weight-light secondary--text text-center"
-                >404 | No Encontrado</h1>
+                >403 | Acceso Denegado</h1>
             </v-col>
         </v-row>
     </div>

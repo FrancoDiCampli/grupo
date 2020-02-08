@@ -28,7 +28,6 @@ const actions = {
             axios
                 .get("/api/negocios", { params: params })
                 .then(response => {
-                    console.log(response.data);
                     commit("fillSucursales", response.data);
                     resolve(response.data);
                 })
@@ -75,7 +74,7 @@ const actions = {
         });
     },
 
-    edit: function({ state, commit }, params) {
+    edit: function({ commit }, params) {
         commit("fillForm", params.data);
     },
 

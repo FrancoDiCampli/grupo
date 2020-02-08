@@ -25,6 +25,13 @@ class PermissionServiceProvider extends ServiceProvider
     public function boot()
     {
         Permission::permissionCan([
+            // Negocios
+            'negocios-index' => 'Listar sucursales',
+            'negocios-show' => 'Ver sucursales',
+            'negocios-store' => 'Guardar sucursales',
+            'negocios-update' => 'Editar sucursales',
+            'negocios-destroy' => 'Eliminar sucursales',
+
             // Usuario
             'users-index' => 'Listar usuarios',
             'users-store' => 'Guardar usuarios',

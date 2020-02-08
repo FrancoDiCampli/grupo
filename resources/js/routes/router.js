@@ -1,8 +1,9 @@
 import Vue from "vue";
 import Router from "vue-router";
-import Home from "../views/Home.vue";
-import Welcome from "../views/Welcome.vue";
-import NotFound from "../views/NotFound.vue";
+import Home from "../views/Home";
+import Welcome from "../views/Welcome";
+import NotFound from "../views/NotFound";
+import AccessDenied from "../views/AccessDenied";
 
 // Sucursales
 import Sucursales from "../views/sucursales/Sucursales";
@@ -27,6 +28,10 @@ export default new Router({
         {
             path: "*",
             component: NotFound
+        },
+        {
+            path: "/accessd_denied",
+            component: AccessDenied
         },
         {
             path: "/",

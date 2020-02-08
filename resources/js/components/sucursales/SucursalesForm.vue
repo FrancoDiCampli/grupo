@@ -152,8 +152,6 @@ export default {
                     ciudad.nombre == this.$store.state.sucursales.form.localidad
             );
             this.$store.state.sucursales.form.localidad = ciudad;
-
-            this.contactos = this.$store.state.sucursales.form.contactos;
         }
     },
 

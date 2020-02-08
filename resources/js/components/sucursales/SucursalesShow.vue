@@ -27,15 +27,21 @@
                                                 outlined
                                                 color="secondary"
                                                 class="mx-2"
-                                                :disabled="$store.state.inProcess"
+                                                :disabled="
+                                                    $store.state.inProcess
+                                                "
                                             >Cancelar</v-btn>
                                             <v-btn
                                                 tile
                                                 type="submit"
                                                 color="secondary"
                                                 class="mx-2 elevation-0"
-                                                :disabled="$store.state.inProcess"
-                                                :loading="$store.state.inProcess"
+                                                :disabled="
+                                                    $store.state.inProcess
+                                                "
+                                                :loading="
+                                                    $store.state.inProcess
+                                                "
                                             >Editar</v-btn>
                                         </v-row>
                                         <br />
@@ -77,16 +83,37 @@
                                     <span
                                         class="white--text text-uppercase"
                                         style="font-size: 60px;"
-                                    >{{ $store.state.sucursales.sucursal.negocio.nombre[0] }}</span>
+                                    >
+                                        {{
+                                        $store.state.sucursales.sucursal
+                                        .negocio.nombre[0]
+                                        }}
+                                    </span>
                                 </v-avatar>
                                 <br />
                                 <v-col cols="12">
-                                    <h1
-                                        class="text-center secondary--text"
-                                    >{{ $store.state.sucursales.sucursal.negocio.nombre }}</h1>
-                                    <h3
-                                        class="text-center secondary--text"
-                                    >{{ $store.state.sucursales.sucursal.negocio.direccion }} - {{ $store.state.sucursales.sucursal.negocio.localidad }} - {{ $store.state.sucursales.sucursal.negocio.provincia }}</h3>
+                                    <h1 class="text-center secondary--text">
+                                        {{
+                                        $store.state.sucursales.sucursal
+                                        .negocio.nombre
+                                        }}
+                                    </h1>
+                                    <h3 class="text-center secondary--text">
+                                        {{
+                                        $store.state.sucursales.sucursal
+                                        .negocio.direccion
+                                        }}
+                                        -
+                                        {{
+                                        $store.state.sucursales.sucursal
+                                        .negocio.localidad
+                                        }}
+                                        -
+                                        {{
+                                        $store.state.sucursales.sucursal
+                                        .negocio.provincia
+                                        }}
+                                    </h3>
                                 </v-col>
                             </v-row>
                         </div>
@@ -102,7 +129,12 @@
                                         <v-tab>Datos</v-tab>
                                         <v-tab>Ventas</v-tab>
                                         <v-tab-item style="background: white !important;">
-                                            <div v-if="$store.state.sucursales.sucursal">
+                                            <div
+                                                v-if="
+                                                    $store.state.sucursales
+                                                        .sucursal
+                                                "
+                                            >
                                                 <SucursalesShowData></SucursalesShowData>
                                             </div>
                                         </v-tab-item>
@@ -171,6 +203,27 @@ export default {
         SucursalesForm,
         SucursalesShowData,
         SucursalesShowVentas
+    },
+
+    watch: {
+        mode() {
+            if (this.mode == "show") {
+                let provinciaState = this.$store.state.sucursales.sucursal
+                    .negocio.provincia;
+                let localidadState = this.$store.state.sucursales.sucursal
+                    .negocio.localidad;
+
+                if (typeof provinciaState == "object") {
+                    this.$store.state.sucursales.sucursal.negocio.provincia =
+                        provinciaState.nombre;
+                }
+
+                if (typeof localidadState == "object") {
+                    this.$store.state.sucursales.sucursal.negocio.localidad =
+                        localidadState.nombre;
+                }
+            }
+        }
     },
 
     mounted() {
