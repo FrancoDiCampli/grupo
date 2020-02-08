@@ -37,6 +37,9 @@ import Compras from "../views/compras/Compras";
 import ComprasCreate from "../views/compras/Create";
 import ComprasShow from "../views/compras/Show";
 
+// Movimientos
+import Movimientos from "../views/movimientos/Movimientos";
+
 // Sucursales
 import Sucursales from "../views/sucursales/Sucursales";
 import SucursalesCreate from "../views/sucursales/Create";
@@ -200,6 +203,13 @@ export default new Router({
             name: "compras_show",
             component: ComprasShow,
             props: true
+        },
+
+        // Movimientos
+        {
+            path: "/movimientos",
+            name: "movimientos",
+            component: Movimientos
         },
 
         // Sucursales

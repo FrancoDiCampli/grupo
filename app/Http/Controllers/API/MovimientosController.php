@@ -97,6 +97,6 @@ class MovimientosController extends Controller
             $arregloCuentas->push($coleccion);
         }
 
-        return ['articulos' => $arreglo, 'cuentas' => $arregloCuentas];
+        return ['articulos' => $arreglo->take($request->get('limit', null)), 'cuentas' => $arregloCuentas->take($request->get('limit', null))];
     }
 }
