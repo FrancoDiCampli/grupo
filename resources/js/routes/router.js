@@ -32,6 +32,11 @@ import Proveedores from "../views/proveedores/Proveedores";
 import ProveedoresCreate from "../views/proveedores/Create";
 import ProveedoresShow from "../views/proveedores/Show";
 
+// Compras
+import Compras from "../views/compras/Compras";
+import ComprasCreate from "../views/compras/Create";
+import ComprasShow from "../views/compras/Show";
+
 // Sucursales
 import Sucursales from "../views/sucursales/Sucursales";
 import SucursalesCreate from "../views/sucursales/Create";
@@ -100,12 +105,12 @@ export default new Router({
         {
             path: "/presupuestos",
             name: "presupuestos",
-            component: Presupuestos,
+            component: Presupuestos
         },
         {
             path: "/presupuestos/nuevo",
             name: "presupuestos_nuevo",
-            component: PresupuestosCreate,
+            component: PresupuestosCreate
         },
         {
             path: "/presupuestos/show/:id",
@@ -176,6 +181,24 @@ export default new Router({
             path: "/proveedores/show/:id",
             name: "proveedores_show",
             component: ProveedoresShow,
+            props: true
+        },
+
+        // Compras
+        {
+            path: "/compras",
+            name: "compras",
+            component: Compras
+        },
+        {
+            path: "/compras/nueva",
+            name: "compras_nueva",
+            component: ComprasCreate
+        },
+        {
+            path: "/compras/show/:id",
+            name: "compras_show",
+            component: ComprasShow,
             props: true
         },
 

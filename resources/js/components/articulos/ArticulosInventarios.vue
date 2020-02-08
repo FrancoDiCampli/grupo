@@ -1,6 +1,10 @@
 <template>
     <div>
-        <div v-if="$store.state.articulos.articulo.articulo.inventarios.length > 0">
+        <div
+            v-if="
+                $store.state.articulos.articulo.articulo.inventarios.length > 0
+            "
+        >
             <v-data-table
                 hide-default-footer
                 :headers="headers"
@@ -39,5 +43,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

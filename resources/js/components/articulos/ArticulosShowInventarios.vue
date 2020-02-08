@@ -2,7 +2,10 @@
     <div>
         <v-row justify="space-around" class="px-5">
             <v-col cols="10">
-                <h2>Stock: {{ $store.state.articulos.articulo.stock }} | Stock en litros: {{ stockLitros }}</h2>
+                <h2>
+                    Stock: {{ $store.state.articulos.articulo.stock }} | Stock
+                    en litros: {{ stockLitros }}
+                </h2>
             </v-col>
             <v-spacer></v-spacer>
             <v-col cols="2">
@@ -11,14 +14,23 @@
                         <template v-slot:activator="{ on }">
                             <v-btn
                                 v-on="on"
-                                v-show="$store.state.auth.user.rol == 'superAdmin' || $store.state.auth.user.rol == 'administrador'"
+                                v-show="
+                                    $store.state.auth.user.rol ==
+                                        'superAdmin' ||
+                                        $store.state.auth.user.rol ==
+                                            'administrador'
+                                "
                                 text
                                 icon
                                 color="secondary"
-                                @click="formPanel = !formPanel;"
+                                @click="formPanel = !formPanel"
                             >
-                                <v-icon v-if="formPanel" size="medium">fas fa-times</v-icon>
-                                <v-icon v-else size="medium">fas fa-plus</v-icon>
+                                <v-icon v-if="formPanel" size="medium"
+                                    >fas fa-times</v-icon
+                                >
+                                <v-icon v-else size="medium"
+                                    >fas fa-plus</v-icon
+                                >
                             </v-btn>
                         </template>
                         <span v-if="formPanel">Cerrar</span>
@@ -31,11 +43,16 @@
         <v-expand-transition>
             <v-card class="elevation-0" v-if="formPanel">
                 <v-card-text>
-                    <v-form ref="inventariosForm" @submit.prevent="preventSave()">
+                    <v-form
+                        ref="inventariosForm"
+                        @submit.prevent="preventSave()"
+                    >
                         <v-row justify="space-around">
                             <v-col cols="12" sm="6" class="py-0">
                                 <v-select
-                                    v-model="$store.state.inventarios.form.movimiento"
+                                    v-model="
+                                        $store.state.inventarios.form.movimiento
+                                    "
                                     @change="movimientoOnChange()"
                                     :disabled="disabled.movimiento"
                                     :items="movimientos"
@@ -64,8 +81,13 @@
                             </v-col>
                             <v-col cols="12" sm="6" class="py-0">
                                 <v-text-field
-                                    v-model="$store.state.inventarios.form.cantidad"
-                                    :rules="[rules.required, rules.cantidadMaxima]"
+                                    v-model="
+                                        $store.state.inventarios.form.cantidad
+                                    "
+                                    :rules="[
+                                        rules.required,
+                                        rules.cantidadMaxima
+                                    ]"
                                     label="Cantidad"
                                     type="number"
                                     outlined
@@ -83,7 +105,9 @@
                             </v-col>
                             <v-col cols="12" sm="6" class="py-0">
                                 <v-select
-                                    v-model="$store.state.inventarios.form.negocio_id"
+                                    v-model="
+                                        $store.state.inventarios.form.negocio_id
+                                    "
                                     :rules="[rules.required]"
                                     :items="sucursales"
                                     item-text="nombre"
@@ -107,7 +131,11 @@
                                     class="search-supplier-table mb-5"
                                     v-if="searchSupplierTable"
                                 >
-                                    <v-row justify="center" v-if="inProcess" class="py-5">
+                                    <v-row
+                                        justify="center"
+                                        v-if="inProcess"
+                                        class="py-5"
+                                    >
                                         <v-progress-circular
                                             :size="70"
                                             :width="7"
@@ -115,49 +143,77 @@
                                             indeterminate
                                         ></v-progress-circular>
                                     </v-row>
-                                    <div v-else-if="searchSupplier != null && searchSupplier != ''">
-                                        <v-simple-table v-if="suppliers.length > 0">
+                                    <div
+                                        v-else-if="
+                                            searchSupplier != null &&
+                                                searchSupplier != ''
+                                        "
+                                    >
+                                        <v-simple-table
+                                            v-if="suppliers.length > 0"
+                                        >
                                             <thead>
                                                 <tr>
-                                                    <th class="text-xs-left">Apellido Nombre</th>
-                                                    <th class="text-xs-left">Cuit</th>
+                                                    <th class="text-xs-left">
+                                                        Apellido Nombre
+                                                    </th>
+                                                    <th class="text-xs-left">
+                                                        Cuit
+                                                    </th>
                                                     <th
                                                         class="txt-xs-left hidden-sm-and-down"
-                                                    >Dirección</th>
+                                                    >
+                                                        Dirección
+                                                    </th>
                                                     <th
                                                         class="text-xs-left hidden-sm-and-down"
-                                                    >Telefono</th>
+                                                    >
+                                                        Telefono
+                                                    </th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <tr
-                                                    v-for="(supplier, index) in suppliers"
+                                                    v-for="(supplier,
+                                                    index) in suppliers"
                                                     :key="index"
                                                     class="search-supplier-select"
-                                                    @click="selectSupplier(supplier)"
+                                                    @click="
+                                                        selectSupplier(supplier)
+                                                    "
                                                 >
-                                                    <td>{{ supplier.razonsocial }}</td>
+                                                    <td>
+                                                        {{
+                                                            supplier.razonsocial
+                                                        }}
+                                                    </td>
                                                     <td>{{ supplier.cuit }}</td>
                                                     <td
                                                         class="hidden-sm-and-down"
-                                                    >{{ supplier.direccion }}</td>
+                                                    >
+                                                        {{ supplier.direccion }}
+                                                    </td>
                                                     <td
                                                         class="hidden-sm-and-down"
-                                                    >{{ supplier.telefono }}</td>
+                                                    >
+                                                        {{ supplier.telefono }}
+                                                    </td>
                                                 </tr>
                                             </tbody>
                                         </v-simple-table>
                                         <div v-else class="py-5">
-                                            <h3
-                                                class="text-center"
-                                            >Ningun dato coincide con lel creterio de busqueda</h3>
+                                            <h3 class="text-center">
+                                                Ningun dato coincide con lel
+                                                creterio de busqueda
+                                            </h3>
                                             <v-row justify="center">
                                                 <v-btn
                                                     v-model="proveedor"
                                                     color="secondary"
                                                     tile
                                                     @click="proveedor = true"
-                                                >Añadir Proveedor</v-btn>
+                                                    >Añadir Proveedor</v-btn
+                                                >
                                             </v-row>
                                         </div>
                                     </div>
@@ -165,7 +221,10 @@
                             </v-col>
                             <v-col cols="12" class="py-0">
                                 <v-textarea
-                                    v-model="$store.state.inventarios.form.observaciones"
+                                    v-model="
+                                        $store.state.inventarios.form
+                                            .observaciones
+                                    "
                                     placeholder="Observaciones"
                                     row-height="3"
                                     outlined
@@ -174,7 +233,13 @@
                             </v-col>
                         </v-row>
                         <v-row justify="center">
-                            <v-btn type="submit" color="secondary" tile class="elevation-0">Guardar</v-btn>
+                            <v-btn
+                                type="submit"
+                                color="secondary"
+                                tile
+                                class="elevation-0"
+                                >Guardar</v-btn
+                            >
                         </v-row>
                     </v-form>
                 </v-card-text>
@@ -198,7 +263,8 @@
                             tile
                             color="secondary"
                             class="mx-2"
-                        >Cancelar</v-btn>
+                            >Cancelar</v-btn
+                        >
                         <v-btn
                             :loading="$store.state.inProcess"
                             :disabled="$store.state.inProcess"
@@ -206,7 +272,8 @@
                             tile
                             class="mx-2 elevation-0"
                             color="secondary"
-                        >Aceptar</v-btn>
+                            >Aceptar</v-btn
+                        >
                     </v-row>
                 </v-card-text>
             </v-card>
@@ -217,7 +284,10 @@
                 <v-card-title>Nuevo Proveedor</v-card-title>
                 <v-divider></v-divider>
                 <v-card-text>
-                    <v-form ref="proveedoresForm" @submit.prevent="saveProveedores">
+                    <v-form
+                        ref="proveedoresForm"
+                        @submit.prevent="saveProveedores"
+                    >
                         <NuevoProveedor mode="create"></NuevoProveedor>
                         <v-row justify="end">
                             <v-btn
@@ -228,7 +298,8 @@
                                 tile
                                 color="secondary"
                                 class="mx-2"
-                            >Cancelar</v-btn>
+                                >Cancelar</v-btn
+                            >
                             <v-btn
                                 type="submit"
                                 tile
@@ -236,7 +307,8 @@
                                 :loading="$store.state.inProcess"
                                 :disabled="$store.state.inProcess"
                                 color="secondary"
-                            >Guardar</v-btn>
+                                >Guardar</v-btn
+                            >
                         </v-row>
                     </v-form>
                 </v-card-text>
