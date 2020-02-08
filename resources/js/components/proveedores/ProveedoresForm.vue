@@ -20,8 +20,16 @@
                     outlined
                 ></v-text-field>
             </v-col>
-
-            <v-col cols="12" sm="4" class="py-0">
+            <v-col cols="12" sm="6" class="py-0">
+                <v-text-field
+                    v-model="$store.state.proveedores.form.direccion"
+                    :rules="[rules.required, rules.max]"
+                    label="Dirección"
+                    required
+                    outlined
+                ></v-text-field>
+            </v-col>
+            <v-col cols="12" sm="6" class="py-0">
                 <v-text-field
                     v-model="$store.state.proveedores.form.telefono"
                     :rules="[rules.required, rules.minTelefono, rules.maxTelefono]"
@@ -30,7 +38,7 @@
                     outlined
                 ></v-text-field>
             </v-col>
-            <v-col cols="12" sm="4" class="py-0">
+            <v-col cols="12" sm="12" class="py-0">
                 <v-text-field
                     v-model="$store.state.proveedores.form.email"
                     :rules="[rules.required]"
@@ -38,15 +46,6 @@
                     required
                     outlined
                     type="email"
-                ></v-text-field>
-            </v-col>
-            <v-col cols="12" sm="4" class="py-0">
-                <v-text-field
-                    v-model="$store.state.proveedores.form.direccion"
-                    :rules="[rules.required, rules.max]"
-                    label="Dirección"
-                    required
-                    outlined
                 ></v-text-field>
             </v-col>
             <v-col cols="12" class="mb-8 py-0">
@@ -78,13 +77,8 @@
                     <v-card-text>
                         <v-dialog v-model="contactDialog" width="500">
                             <v-card>
-                                <v-card-title class="secondary white--text py-2 px-4" primary-title>
-                                    Agregar contacto
-                                    <v-spacer></v-spacer>
-                                    <v-btn icon dark @click="contactDialog = false;">
-                                        <v-icon size="medium">fas fa-times</v-icon>
-                                    </v-btn>
-                                </v-card-title>
+                                <v-card-title primary-title>Agregar contacto</v-card-title>
+                                <v-divider></v-divider>
                                 <v-card-text>
                                     <v-form ref="contactForm" @submit.prevent="addContact()">
                                         <br />
@@ -128,7 +122,19 @@
                                             </v-col>
                                         </v-row>
                                         <v-row justify="center">
-                                            <v-btn type="submit" tile color="secondary">Guardar</v-btn>
+                                            <v-btn
+                                                @click="contactDialog = false"
+                                                tile
+                                                outlined
+                                                class="mx-2"
+                                                color="secondary"
+                                            >Cancelar</v-btn>
+                                            <v-btn
+                                                type="submit"
+                                                tile
+                                                class="mx-2 elevation-0"
+                                                color="secondary"
+                                            >Guardar</v-btn>
                                         </v-row>
                                     </v-form>
                                 </v-card-text>
@@ -156,22 +162,21 @@
                 </v-card>
             </v-col>
             <v-col cols="12" sm="4" class="py-0">
-                <v-overflow-btn
+                <v-combobox
                     v-model="$store.state.proveedores.form.provincia"
                     :items="provincias"
                     :rules="[rules.required]"
                     item-text="nombre"
                     item-value="id"
                     label="Provincia"
-                    class="myCombobox"
                     required
                     editable
                     outlined
                     return-object
-                ></v-overflow-btn>
+                ></v-combobox>
             </v-col>
             <v-col cols="12" sm="4" class="py-0">
-                <v-overflow-btn
+                <v-combobox
                     v-model="$store.state.proveedores.form.localidad"
                     :items="localidades"
                     :rules="[rules.required]"
@@ -179,12 +184,11 @@
                     item-text="nombre"
                     item-value="id"
                     label="Localidad"
-                    class="myCombobox"
                     required
                     editable
                     outlined
                     return-object
-                ></v-overflow-btn>
+                ></v-combobox>
             </v-col>
             <v-col cols="12" sm="4" class="py-0">
                 <v-text-field

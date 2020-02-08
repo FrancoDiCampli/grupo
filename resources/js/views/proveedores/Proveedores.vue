@@ -22,7 +22,18 @@
         <v-container>
             <v-row justify="center">
                 <v-col cols="12" md="10" lg="8">
-                    <ProveedoresIndex></ProveedoresIndex>
+                    <ProveedoresIndex :limit="limit">
+                        <br />
+                        <v-row justify="center" v-if="$store.state.proveedores.proveedores">
+                            <v-btn
+                                :disabled="limit >= $store.state.proveedores.proveedores.total"
+                                @click="loadMore()"
+                                color="secondary"
+                                outlined
+                                tile
+                            >Cargar Más</v-btn>
+                        </v-row>
+                    </ProveedoresIndex>
                 </v-col>
             </v-row>
         </v-container>
@@ -33,8 +44,29 @@
 import ProveedoresIndex from "../../components/proveedores/ProveedoresIndex";
 
 export default {
+    data: () => ({
+        limit: 10
+    }),
+
     components: {
         ProveedoresIndex
+    },
+
+    mounted() {
+        this.getProveedores();
+    },
+
+    methods: {
+        getProveedores() {
+            this.$store.dispatch("proveedores/index", {
+                limit: this.limit
+            });
+        },
+
+        loadMore() {
+            this.limit += this.limit;
+            this.getProveedores();
+        }
     }
 };
 </script>

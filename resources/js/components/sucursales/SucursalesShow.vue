@@ -246,8 +246,8 @@ export default {
 
         updateSucursal: async function() {
             if (this.$refs.sucursalesEditForm.validate()) {
-                this.$refs.SucursalesForm.getProvincia();
-                this.$refs.SucursalesForm.getLocalidad();
+                await this.$refs.SucursalesForm.getProvincia();
+                await this.$refs.SucursalesForm.getLocalidad();
                 let id = this.$store.state.sucursales.form.id;
                 await this.$store.dispatch("sucursales/update", {
                     id: id

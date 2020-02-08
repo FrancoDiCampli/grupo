@@ -18,15 +18,10 @@
             </template>
             <span>Volver</span>
         </v-tooltip>
-        <div v-if="inProcess">
-            <v-row justify="center" style="margin-top: 200px;">
-                <v-progress-circular :size="70" :width="7" color="primary" indeterminate></v-progress-circular>
-            </v-row>
-        </div>
 
-        <v-row justify="center" v-else>
+        <v-row justify="center">
             <v-col cols="12" md="10" lg="8">
-                <v-card shaped>
+                <v-card shaped outlined>
                     <v-card-title>Nuevo Proveedor</v-card-title>
                     <v-divider></v-divider>
                     <v-card-text>
@@ -35,7 +30,14 @@
                                 <v-form ref="CreateProveedores" @submit.prevent="saveProveedores()">
                                     <ProveedoresForm mode="create" ref="ProveedoresForm"></ProveedoresForm>
                                     <v-row justify="center">
-                                        <v-btn type="submit" tile color="secondary">Guardar</v-btn>
+                                        <v-btn
+                                            type="submit"
+                                            tile
+                                            class="elevation-0"
+                                            color="secondary"
+                                            :disabled="$store.state.inProcess"
+                                            :loading="$store.state.inProcess"
+                                        >Guardar</v-btn>
                                     </v-row>
                                     <br />
                                 </v-form>
@@ -65,26 +67,12 @@ export default {
     },
 
     methods: {
-        saveProveedores: function() {
+        saveProveedores: async function() {
             if (this.$refs.CreateProveedores.validate()) {
-                this.inProcess = true;
-                this.$refs.ProveedoresForm.getProvincia();
-                this.$refs.ProveedoresForm.getLocalidad();
-                this.$store
-                    .dispatch("proveedores/save")
-                    .then(() => {
-                        this.$store
-                            .dispatch("proveedores/index")
-                            .then(() => {
-                                this.$router.push("/proveedores");
-                            })
-                            .catch(() => {
-                                this.inProcess = false;
-                            });
-                    })
-                    .catch(() => {
-                        this.inProcess = false;
-                    });
+                await this.$refs.ProveedoresForm.getProvincia();
+                await this.$refs.ProveedoresForm.getLocalidad();
+                await this.$store.dispatch("proveedores/save");
+                this.$router.push("/proveedores");
             }
         }
     }

@@ -10,6 +10,11 @@ import Articulos from "../views/articulos/Articulos";
 import ArticulosCreate from "../views/articulos/Create";
 import ArticulosShow from "../views/articulos/Show";
 
+// Proveedores
+import Proveedores from "../views/proveedores/Proveedores";
+import ProveedoresCreate from "../views/proveedores/Create";
+import ProveedoresShow from "../views/proveedores/Show";
+
 // Sucursales
 import Sucursales from "../views/sucursales/Sucursales";
 import SucursalesCreate from "../views/sucursales/Create";
@@ -72,6 +77,24 @@ export default new Router({
             path: "/articulos/show/:id",
             name: "articulos_show",
             component: ArticulosShow,
+            props: true
+        },
+
+        // Proveedores
+        {
+            path: "/proveedores",
+            name: "proveedores",
+            component: Proveedores
+        },
+        {
+            path: "/proveedores/nuevo",
+            name: "proveedores_nuevo",
+            component: ProveedoresCreate
+        },
+        {
+            path: "/proveedores/show/:id",
+            name: "proveedores_show",
+            component: ProveedoresShow,
             props: true
         },
 
