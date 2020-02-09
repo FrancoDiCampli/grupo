@@ -8,6 +8,7 @@ use App\Recibo;
 use App\Cliente;
 use App\Negocio;
 use App\Contacto;
+use App\Distributor;
 use Carbon\Carbon;
 use App\Preference;
 use Illuminate\Http\Request;
@@ -21,27 +22,23 @@ class ClientesController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:airlock');
+        // $this->middleware('auth:airlock');
 
-        $this->middleware('scope:clientes-index')->only('index');
-        $this->middleware('scope:clientes-show')->only('show');
-        $this->middleware('scope:clientes-store')->only('store');
-        $this->middleware('scope:clientes-update')->only('update');
-        $this->middleware('scope:clientes-destroy')->only('destroy');
-        $this->middleware('scope:clientes-miCuenta')->only('miCuenta');
+        // $this->middleware('scope:clientes-index')->only('index');
+        // $this->middleware('scope:clientes-show')->only('show');
+        // $this->middleware('scope:clientes-store')->only('store');
+        // $this->middleware('scope:clientes-update')->only('update');
+        // $this->middleware('scope:clientes-destroy')->only('destroy');
+        // $this->middleware('scope:clientes-miCuenta')->only('miCuenta');
     }
 
     public function index(Request $request)
     {
         if (auth()->user()->role_id == 1 || auth()->user()->role_id == 2) {
-            if ($request->negocio_id) {
-                $sucursal = Negocio::find($request->negocio_id);
-                $usuarios = $sucursal->usuarios;
-                $clientes = collect();
-                foreach ($usuarios as $user) {
-                    $clientes->push(Cliente::where('user_id', $user->id)->get());
-                }
-                $clientes = $clientes->flatten();
+            if ($request->distributor_id) {
+                $distributor = Distributor::find($request->distributor_id);
+                $usuario = $distributor->user;
+                $clientes = $usuario->clientes;
             } else {
                 $clientes = Cliente::orderBy('razonsocial', 'asc')
                     ->get();

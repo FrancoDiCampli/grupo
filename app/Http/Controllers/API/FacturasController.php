@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Venta;
 use App\Cliente;
+use App\Distributor;
 use App\Factura;
 use App\Negocio;
 use Carbon\Carbon;
@@ -14,24 +15,20 @@ class FacturasController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:airlock');
+        // $this->middleware('auth:airlock');
 
-        $this->middleware('scope:facturas-index')->only('index');
-        $this->middleware('scope:facturas-show')->only('show');
-        $this->middleware('scope:facturas-store')->only('store');
+        // $this->middleware('scope:facturas-index')->only('index');
+        // $this->middleware('scope:facturas-show')->only('show');
+        // $this->middleware('scope:facturas-store')->only('store');
     }
 
     public function index(Request $request)
     {
         if (auth()->user()->role_id == 1 || auth()->user()->role_id == 2) {
-            if ($request->negocio_id) {
-                $negocio = Negocio::find($request->negocio_id);
-                $usuarios = $negocio->usuarios;
-                $facs = collect();
-                foreach ($usuarios as $user) {
-                    $facs->push($user->facturas);
-                }
-                $facs = $facs->flatten();
+            if ($request->distributor_id) {
+                $distributor = Distributor::find($request->distributor_id);
+                $usuario = $distributor->user;
+                $facs = $usuario->facturas;
             } else {
                 $facs = Factura::orderBy('id', 'DESC')
                     ->get();

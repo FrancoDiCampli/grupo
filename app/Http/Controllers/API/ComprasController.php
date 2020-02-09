@@ -16,11 +16,11 @@ class ComprasController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:airlock');
+        // $this->middleware('auth:airlock');
 
-        $this->middleware('scope:compras-index')->only('index');
-        $this->middleware('scope:compras-show')->only('show');
-        $this->middleware('scope:compras-store')->only('store');
+        // $this->middleware('scope:compras-index')->only('index');
+        // $this->middleware('scope:compras-show')->only('show');
+        // $this->middleware('scope:compras-store')->only('store');
     }
 
     public function index(Request $request)
@@ -134,7 +134,7 @@ class ComprasController extends Controller
                 $att['supplier_id'] = $remito->supplier_id;
                 $att['cantidad'] = $detail['cantidad'];
                 $att['cantidadlitros'] = $detail['cantidad'] * $detail['totalLitros'];
-                $att['negocio_id'] = $detail['negocio_id'];
+                $att['distributor_id'] = $detail['distributor_id'];
                 $att['lote'] = $detail['lote'];
                 $arti = Inventario::create($att);
                 $data['inventario_id'] = $arti->id;

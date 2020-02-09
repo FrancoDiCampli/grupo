@@ -20,6 +20,7 @@ class CreateMovimientosTable extends Migration
             $table->integer('cantidadlitros');
             $table->string('fecha');
             $table->unsignedBigInteger('inventario_id');
+            $table->bigInteger('distributor_id')->nullable();
             $table->bigInteger('numcomprobante')->nullable();
             $table->unsignedBigInteger('user_id');
             $table->text('observaciones')->nullable();

@@ -29,7 +29,7 @@ class UpdateInventario extends FormRequest
             'lote' => 'min:1',
             'articulo_id' => 'required',
             'supplier_id' => 'nullable',
-            'negocio_id' => 'required'
+            'distributor_id' => 'nullable'
         ];
     }
 }

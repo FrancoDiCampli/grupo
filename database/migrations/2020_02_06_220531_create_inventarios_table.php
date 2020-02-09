@@ -19,7 +19,7 @@ class CreateInventariosTable extends Migration
             $table->integer('cantidadlitros');
             $table->integer('lote')->nullable();
             $table->bigInteger('articulo_id');
-            $table->bigInteger('negocio_id');
+            $table->bigInteger('distributor_id')->nullable();
             $table->unsignedBigInteger('supplier_id')->nullable();
             $table->timestamps();
 

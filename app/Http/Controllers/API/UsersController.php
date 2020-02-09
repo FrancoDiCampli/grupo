@@ -13,12 +13,12 @@ class UsersController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:airlock');
+        // $this->middleware('auth:airlock');
 
-        $this->middleware('scope:users-index')->only('index');
-        $this->middleware('scope:users-store')->only('store');
-        $this->middleware('scope:users-update')->only('update');
-        $this->middleware('scope:users-destroy')->only('destroy');
+        // $this->middleware('scope:users-index')->only('index');
+        // $this->middleware('scope:users-store')->only('store');
+        // $this->middleware('scope:users-update')->only('update');
+        // $this->middleware('scope:users-destroy')->only('destroy');
     }
 
     public function user()
@@ -55,9 +55,9 @@ class UsersController extends Controller
                 } else {
                     $aux = null;
                 }
-                $negocio = $usuario->negocio;
+                $distributor = $usuario->distributor;
                 $usuario = collect($usuario);
-                $usuario->put('negocio', $negocio);
+                $usuario->put('distributor', $distributor);
                 $usuario->put('rol', $aux);
                 $data->push($usuario);
             }
@@ -70,9 +70,9 @@ class UsersController extends Controller
                 } else {
                     $aux = null;
                 }
-                $negocio = $usuario->negocio;
+                $distributor = $usuario->distributor;
                 $usuario = collect($usuario);
-                $usuario->put('negocio', $negocio);
+                $usuario->put('distributor', $distributor);
                 $usuario->put('rol', $aux);
                 $data->push($usuario);
             }
@@ -92,7 +92,7 @@ class UsersController extends Controller
                 'email' => 'required|string|email|max:255|unique:users',
                 'password' => 'required|string|min:6',
                 'role_id' => 'nullable',
-                'negocio_id' => 'required'
+                // 'distributor_id' => 'required'
             ]);
             $attributes['password'] = bcrypt($attributes['password']);
             $attributes['role_id'] = $request->get('role_id', 3);
