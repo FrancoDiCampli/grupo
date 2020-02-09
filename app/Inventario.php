@@ -33,6 +33,11 @@ class Inventario extends Model
         return $this->belongsTo('App\Negocio');
     }
 
+    public function distributor()
+    {
+        return $this->belongsTo('App\Distributor');
+    }
+
     public function scopeBuscar($query, $request)
     {
         $lote = $request->get('lote');

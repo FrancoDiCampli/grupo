@@ -5,12 +5,12 @@ namespace App\Http\Controllers\API;
 use App\User;
 use App\Venta;
 use App\Cliente;
-use App\Negocio;
 use App\Articulo;
 use Carbon\Carbon;
 use App\Inventario;
 use App\Movimiento;
 use App\Cuentacorriente;
+use App\Distributor;
 use App\Movimientocuenta;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -20,25 +20,21 @@ class VentasController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:airlock');
+        // $this->middleware('auth:airlock');
 
-        $this->middleware('scope:ventas-index')->only('index');
-        $this->middleware('scope:ventas-show')->only('show');
-        $this->middleware('scope:ventas-store')->only('store');
-        $this->middleware('scope:ventas-destroy')->only('destroy');
+        // $this->middleware('scope:ventas-index')->only('index');
+        // $this->middleware('scope:ventas-show')->only('show');
+        // $this->middleware('scope:ventas-store')->only('store');
+        // $this->middleware('scope:ventas-destroy')->only('destroy');
     }
 
     public function index(Request $request)
     {
         if (auth()->user()->role_id == 1 || auth()->user()->role_id == 2) {
-            if ($request->negocio_id) {
-                $negocio = Negocio::find($request->negocio_id);
-                $usuarios = $negocio->usuarios;
-                $vens = collect();
-                foreach ($usuarios as $user) {
-                    $vens->push($user->ventas);
-                }
-                $vens = $vens->flatten();
+            if ($request->distributor_id) {
+                $distributor = Distributor::find($request->distributor_id);
+                $usuario = $distributor->user;
+                $vens = $usuario->ventas;
             } else {
                 $vens = Venta::orderBy('id', 'DESC')
                     ->get();
@@ -180,15 +176,23 @@ class VentasController extends Controller
         }
         $aux = collect($det);
         $usuario = User::findOrFail(auth()->user()->id);
-        $negocio = $usuario->negocio;
+        $distributor = $usuario->distributor;
         // DESCUENTA LOS INVENTARIOS
         for ($i = 0; $i < count($aux); $i++) {
             $cond = true;
             $res = $aux[$i]['cantidad'];
             while ($cond) {
-                $article = Inventario::where('cantidad', '>', 0)
-                    ->where('articulo_id', $aux[$i]['articulo_id'])
-                    ->where('negocio_id', $negocio->id)->get();
+
+                if (auth()->user()->role_id == 1 || auth()->user()->role_id == 2) {
+                    $article = Inventario::where('cantidad', '>', 0)
+                        ->where('articulo_id', $aux[$i]['articulo_id'])
+                        ->where('distributor_id', null)->get();
+                } else {
+                    $article = Inventario::where('cantidad', '>', 0)
+                        ->where('articulo_id', $aux[$i]['articulo_id'])
+                        ->where('distributor_id', $distributor->id)->get();
+                }
+
                 if ($article[0]->cantidad < $res) {
                     $res = $aux[$i]['cantidad'] - $article[0]->cantidad;
                     Movimiento::create([

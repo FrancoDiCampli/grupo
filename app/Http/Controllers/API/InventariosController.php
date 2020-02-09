@@ -13,10 +13,10 @@ class InventariosController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:airlock');
+        // $this->middleware('auth:airlock');
 
-        $this->middleware('scope:inventarios-index')->only('index');
-        $this->middleware('scope:inventarios-store')->only('store');
+        // $this->middleware('scope:inventarios-index')->only('index');
+        // $this->middleware('scope:inventarios-store')->only('store');
     }
 
     public function index(Request $request)
@@ -25,15 +25,15 @@ class InventariosController extends Controller
         $inventarios = collect();
         foreach ($inventories as $inventory) {
             if (auth()->user()->role_id == 1 || auth()->user()->role_id == 2) {
-                $negocio = $inventory->negocio;
+                $distributor = $inventory->distributor;
                 $inv = collect($inventory);
-                $inv->put('negocio', $negocio);
+                $inv->put('distributor', $distributor);
                 $inv->put('proveedor', $inventory->proveedor);
                 $inventarios->push($inv);
-            } elseif ($inventory->negocio_id == auth()->user()->negocio_id) {
-                $negocio = $inventory->negocio;
+            } elseif ($inventory->distributor_id == auth()->user()->distributor_id) {
+                $distributor = $inventory->distributor;
                 $inv = collect($inventory);
-                $inv->put('negocio', $negocio);
+                $inv->put('distributor', $distributor);
                 $inv->put('proveedor', $inventory->proveedor);
                 $inventarios->push($inv);
             }
@@ -47,7 +47,7 @@ class InventariosController extends Controller
         $data = $request->validated();
         $mov = new Movimiento;
         $actualizar = Inventario::where('lote', $data['lote'])->where('articulo_id', $data['articulo_id'])->get()->first();
-        $articulo = Articulo::find($data['articulo_id']);
+        // $articulo = Articulo::find($data['articulo_id']);
 
         if ($actualizar) {
             if ($request['movimiento'] == 'INCREMENTO') {
@@ -58,6 +58,11 @@ class InventariosController extends Controller
                 $actualizar->cantidad =  $data['cantidad'];
                 $actualizar->cantidadlitros =  $data['cantidadlitros'];
                 $mov->tipo = 'MODIFICACION';
+            } else if ($request['movimiento'] == 'MOVIMIENTO MERCADERIA') {
+                $actualizar->cantidad = $actualizar->cantidad - $data['cantidad'];
+                $actualizar->cantidadlitros = $actualizar->cantidadlitros - $data['cantidadlitros'];
+                $inventario = Inventario::create($data);
+                $mov->tipo = $request['movimiento'];
             } else {
                 $actualizar->cantidad = $actualizar->cantidad - $data['cantidad'];
                 $actualizar->cantidadlitros = $actualizar->cantidadlitros - $data['cantidadlitros'];

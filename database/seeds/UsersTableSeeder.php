@@ -17,7 +17,6 @@ class UsersTableSeeder extends Seeder
             'email' => 'controller.programacion@gmail.com',
             'password' => bcrypt('c0ntr0ll3r'),
             'role_id' => 1,
-            'negocio_id' => 1,
             'email_verified_at' => now()
         ]);
     }
