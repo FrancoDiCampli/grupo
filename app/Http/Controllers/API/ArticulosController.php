@@ -42,8 +42,8 @@ class ArticulosController extends Controller
                 $inventarios = $art->inventarios;
             } else {
                 foreach ($art->inventarios as $inv) {
+                    $inventarios->push($inv);
                     if ($inv->negocio_id == auth()->user()->negocio_id) {
-                        $inventarios->push($inv);
                     }
                 }
             }

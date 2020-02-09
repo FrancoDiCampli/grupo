@@ -30,28 +30,13 @@
 
                     <v-col cols="12">
                         <v-row justify="center">
-                            <v-btn
-                                text
-                                icon
-                                color="secondary"
-                                @click="foto.zoomIn()"
-                            >
+                            <v-btn text icon color="secondary" @click="foto.zoomIn()">
                                 <v-icon>fas fa-search-plus</v-icon>
                             </v-btn>
-                            <v-btn
-                                text
-                                icon
-                                color="secondary"
-                                @click="foto.zoomOut()"
-                            >
+                            <v-btn text icon color="secondary" @click="foto.zoomOut()">
                                 <v-icon>fas fa-search-minus</v-icon>
                             </v-btn>
-                            <v-btn
-                                text
-                                icon
-                                color="secondary"
-                                @click="foto.rotate()"
-                            >
+                            <v-btn text icon color="secondary" @click="foto.rotate()">
                                 <v-icon>fas fa-redo-alt</v-icon>
                             </v-btn>
                             <div v-if="foto != null">
@@ -103,7 +88,7 @@
         </v-row>
 
         <v-row justify="space-around">
-            <v-col cols="12" sm="4" class="py-0">
+            <v-col cols="12" sm="6" class="py-0">
                 <v-text-field
                     v-model="$store.state.articulos.form.precio"
                     :rules="[rules.required]"
@@ -112,7 +97,7 @@
                     type="number"
                 ></v-text-field>
             </v-col>
-            <v-col cols="12" sm="4" class="py-0">
+            <v-col cols="12" sm="6" class="py-0">
                 <v-select
                     v-model="$store.state.articulos.form.litros"
                     :items="presentaciones"
@@ -123,7 +108,7 @@
                     outlined
                 ></v-select>
             </v-col>
-            <v-col cols="12" sm="4" class="py-0">
+            <v-col cols="12" sm="6" class="py-0">
                 <v-text-field
                     v-model="$store.state.articulos.form.stockminimo"
                     :rules="[rules.required]"
@@ -141,18 +126,6 @@
                     type="number"
                 ></v-text-field>
             </v-col>
-            <v-col cols="12" sm="6" class="py-0" v-if="mode == 'create'">
-                <v-select
-                    v-model="$store.state.articulos.form.negocio"
-                    :disabled="!$store.state.articulos.form.stockInicial"
-                    :items="sucursales"
-                    item-text="nombre"
-                    item-value="nombre"
-                    label="Sucursal"
-                    outlined
-                ></v-select>
-            </v-col>
-
             <v-col cols="12" sm="6" class="py-0">
                 <v-combobox
                     v-model="$store.state.articulos.form.categoria"
@@ -169,8 +142,8 @@
                             <v-list-item-content>
                                 <v-list-item-title>
                                     No hay resultados que coincidan con "
-                                    <strong>{{ searchCategoria }}</strong
-                                    >". Presione <kbd>enter</kbd> enter para
+                                    <strong>{{ searchCategoria }}</strong>". Presione
+                                    <kbd>enter</kbd> enter para
                                     crear uno nuevo
                                 </v-list-item-title>
                             </v-list-item-content>
@@ -194,8 +167,8 @@
                             <v-list-item-content>
                                 <v-list-item-title>
                                     No hay resultados que coincidan con "
-                                    <strong>{{ searchCategoria }}</strong
-                                    >". Presione <kbd>enter</kbd> enter para
+                                    <strong>{{ searchCategoria }}</strong>". Presione
+                                    <kbd>enter</kbd> enter para
                                     crear uno nuevo
                                 </v-list-item-title>
                             </v-list-item-content>
@@ -204,20 +177,10 @@
                 </v-combobox>
             </v-col>
             <v-col cols="12" sm="6" class="py-0">
-                <v-text-field
-                    label="Medida"
-                    v-model="medida"
-                    outlined
-                    disabled
-                ></v-text-field>
+                <v-text-field label="Medida" v-model="medida" outlined disabled></v-text-field>
             </v-col>
             <v-col cols="12" sm="6" class="py-0">
-                <v-text-field
-                    label="Codigo"
-                    v-model="codigo"
-                    outlined
-                    disabled
-                ></v-text-field>
+                <v-text-field label="Codigo" v-model="codigo" outlined disabled></v-text-field>
             </v-col>
         </v-row>
     </div>
@@ -225,10 +188,6 @@
 
 <script>
 export default {
-    name: "ProductosForm",
-
-    props: ["mode"],
-
     data() {
         return {
             medida: "Litros",
@@ -236,7 +195,6 @@ export default {
             searchMarca: null,
             categorias: [],
             marcas: [],
-            sucursales: [],
             presentaciones: [
                 { name: "1 Litro", value: 1 },
                 { name: "5 Litros", value: 5 },
@@ -257,6 +215,8 @@ export default {
             }
         };
     },
+
+    props: ["mode"],
 
     computed: {
         codigo: {
@@ -306,7 +266,6 @@ export default {
             this.getLastId();
             this.getCategorias();
             this.getMarcas();
-            this.getSucursales();
         }
     },
 
@@ -340,14 +299,6 @@ export default {
                 this.marcas = response.marcas;
                 this.$store.state.articulos.form.marca =
                     response.marcas[0].marca;
-            });
-        },
-
-        getSucursales() {
-            this.$store.dispatch("sucursales/index").then(response => {
-                this.sucursales = response.negocios;
-                this.$store.state.articulos.form.negocio =
-                    response.negocios[0].nombre;
             });
         },
 
