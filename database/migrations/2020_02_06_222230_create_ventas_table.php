@@ -32,12 +32,12 @@ class CreateVentasTable extends Migration
             $table->decimal('cotizacion', 12, 2)->nullable();
             $table->string('fechaCotizacion')->nullable();
             $table->bigInteger('numfactura')->nullable();
-            $table->unsignedBigInteger('cliente_id');
+            $table->bigInteger('cliente_id');
             $table->bigInteger('user_id');
             $table->timestamps();
             $table->softDeletes();
 
-            $table->foreign('cliente_id')->references('id')->on('clientes');
+            // $table->foreign('cliente_id')->references('id')->on('clientes');
         });
     }
 

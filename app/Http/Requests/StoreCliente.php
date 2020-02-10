@@ -34,7 +34,8 @@ class StoreCliente extends FormRequest
             'provincia' => 'required|min:1|max:190',
             'condicioniva' => 'required|min:1|max:190',
             'observaciones' => 'nullable',
-            'foto' => 'nullable'
+            'foto' => 'nullable',
+            'activo' => 'required'
         ];
     }
 }

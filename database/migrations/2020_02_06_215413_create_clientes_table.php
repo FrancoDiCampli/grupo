@@ -27,6 +27,7 @@ class CreateClientesTable extends Migration
             $table->string('foto')->nullable();
             $table->bigInteger('user_id');
             $table->text('observaciones')->nullable();
+            $table->boolean('activo');
             $table->timestamps();
             $table->softDeletes();
         });

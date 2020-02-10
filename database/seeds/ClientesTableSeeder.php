@@ -23,7 +23,8 @@ class ClientesTableSeeder extends Seeder
             'provincia' => 'N/D',
             'condicioniva' => 'CONSUMIDOR FINAL',
             'observaciones' => 'N/D',
-            'user_id' => 1
+            'user_id' => 1,
+            'activo' => true
         ]);
     }
 }

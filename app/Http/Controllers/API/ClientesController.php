@@ -32,10 +32,12 @@ class ClientesController extends Controller
         if (auth()->user()->role_id <> 3) {
             $clientes = Cliente::orderBy('razonsocial', 'asc')
                 ->where('documentounico', '<>', 0)
+                ->where('activo', true)
                 ->buscar($request);
         } else {
             $clientes = Cliente::orderBy('razonsocial', 'asc')
                 ->where('documentounico', '<>', 0)
+                ->where('activo', true)
                 ->where('user_id', auth()->user()->id)
                 ->buscar($request);
         }
@@ -247,6 +249,7 @@ class ClientesController extends Controller
     public function destroy($id)
     {
         $cliente = Cliente::findOrFail($id);
+
         $facturas = $cliente->facturas;
 
         if (count($facturas) > 0) {
@@ -276,8 +279,8 @@ class ClientesController extends Controller
         }
 
         if ($cond) {
-            $cliente->user->delete();
-            $cliente->delete();
+            $cliente->activo = false;
+            $cliente->save();
             return ['message' => 'eliminado'];
         } else {
             return ['message' => 'El cliente posee cuentas activas'];
