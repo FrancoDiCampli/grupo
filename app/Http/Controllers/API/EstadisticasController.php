@@ -128,8 +128,6 @@ class EstadisticasController extends Controller
         $clients = collect();
         $ventasCondiciones = [];
         $condiciones = collect(['CONTADO', 'CUENTA CORRIENTE']);
-        $ventasDistribuidores = [];
-        $distributors = collect();
 
         // Buscar las facturas entre las fechas
         $facturas = Venta::whereDate('fecha', '>=', $desde->format('Ymd'))->whereDate('fecha', '<=', $hasta->format('Ymd'))->orderBy('fecha', 'ASC')->take($request->get('limit', null))->get();
@@ -139,7 +137,6 @@ class EstadisticasController extends Controller
             $sellers->push($seller);
             $client = Cliente::find($factura->cliente_id);
             $clients->push($client);
-            $distributors->push($seller->distributor);
         }
 
         $facturas2 = Venta::whereDate('fecha', '>=', $desde->format('Ymd'))->whereDate('fecha', '<=', $hasta->format('Ymd'))->orderBy('fecha', 'ASC')->get();
@@ -261,40 +258,6 @@ class EstadisticasController extends Controller
         $ventasCondiciones->put('rows', $rowsCondiciones);
         // Fin Condiciones
 
-        // distribuidores
-        $auxDistributors = $distributors->unique();
-        $distribuidores = [];
-
-        foreach ($auxDistributors as $aux) {
-            if ($aux) {
-                $usuario = $aux->user;
-                $facturs = Venta::where('user_id', $usuario->id)
-                    ->whereDate('fecha', '>=', $desde->format('Ymd'))
-                    ->whereDate('fecha', '<=', $hasta->format('Ymd'))
-                    ->orderBy('fecha', 'ASC')->get();
-                array_push($distribuidores, $aux);
-                array_push($ventasDistribuidores, $facturs);
-            }
-        }
-        $columnsDistribuidores = ['distribuidores', 'totalVendido'];
-        $rowsDistribuidores = collect();
-        $total = 0;
-        for ($i = 0; $i < count($ventasDistribuidores); $i++) {
-            $otro = $ventasDistribuidores[$i];
-            foreach ($otro as $a) {
-                $total += $a->total;
-            }
-            $rowsDistribuidores->push([
-                'sucursal' => $distribuidores[$i]->razonsocial,
-                'totalVendido' =>  $total
-            ]);
-            $total = 0;
-        };
-        $ventasDistribuidores = collect();
-        $ventasDistribuidores->put('columns', $columnsDistribuidores);
-        $ventasDistribuidores->put('rows', $rowsDistribuidores);
-        // Fin distribuidores
-
         $ventas = [
             'fechas' => ['desde' => $desde->format('Y-m-d'), 'hasta' => $hasta->format('Y-m-d')],
             'ventasFecha' => $facturas,
@@ -305,9 +268,7 @@ class EstadisticasController extends Controller
             'clientes' => $clientes,
             'ventasClientes' => $ventasClientes,
             'condiciones' => $condiciones,
-            'ventasCondiciones' => $ventasCondiciones,
-            'distribuidores' => $distribuidores,
-            'ventasDistribuidores' => $ventasDistribuidores
+            'ventasCondiciones' => $ventasCondiciones
         ];
 
         return ['ventas' => $ventas];

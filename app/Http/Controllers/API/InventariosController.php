@@ -51,12 +51,15 @@ class InventariosController extends Controller
         if ($actualizar) {
             if ($request['movimiento'] == 'INCREMENTO') {
                 $actualizar->cantidad = $actualizar->cantidad + $data['cantidad'];
+                $actualizar->cantidadlitros = $actualizar->cantidadlitros + $data['cantidadlitros'];
                 $mov->tipo = 'INCREMENTO';
             } else if ($request['movimiento'] == 'MODIFICACION') {
                 $actualizar->cantidad =  $data['cantidad'];
+                $actualizar->cantidadlitros =  $data['cantidadlitros'];
                 $mov->tipo = 'MODIFICACION';
             } else {
                 $actualizar->cantidad = $actualizar->cantidad - $data['cantidad'];
+                $actualizar->cantidadlitros = $actualizar->cantidadlitros - $data['cantidadlitros'];
                 $mov->tipo = $request['movimiento'];
             }
             $actualizar->save();
@@ -69,6 +72,7 @@ class InventariosController extends Controller
 
         $mov->observaciones = $request->get('observaciones');
         $mov->cantidad = $data['cantidad'];
+        $mov->cantidadlitros = $data['cantidadlitros'];
         $mov->fecha = now();
         $mov->user_id = auth()->user()->id;
         $mov->save();
