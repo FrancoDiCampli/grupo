@@ -820,6 +820,8 @@ export default {
                 this.disabled.movimientos = true;
             }
 
+            this.disabled.lote = true;
+
             this.articuloSelected = {
                 cantidad: 1,
                 totalLitros: articulo.litros,

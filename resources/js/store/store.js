@@ -19,6 +19,7 @@ import roles from "./modules/roles";
 import sucursales from "./modules/sucursales";
 import users from "./modules/users";
 import ventas from "./modules/ventas";
+import PDF from "./modules/PDF";
 
 // Plugins
 import { processHandle } from "./plugins/processHandle";
@@ -85,7 +86,8 @@ export default new Vuex.Store({
         roles: roles,
         sucursales: sucursales,
         users: users,
-        ventas: ventas
+        ventas: ventas,
+        PDF: PDF
     },
 
     plugins: [processHandle]
