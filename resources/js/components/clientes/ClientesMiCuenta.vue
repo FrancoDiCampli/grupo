@@ -1,30 +1,46 @@
 <template>
     <div>
         <v-row justify="center">
-            <div v-if="inProcess">
-                <v-row justify="center" style="margin-top: 200px;">
-                    <v-progress-circular :size="70" :width="7" color="primary" indeterminate></v-progress-circular>
-                </v-row>
-            </div>
-            <v-col cols="12" v-else>
-                <v-card v-if="$store.state.clientes.cliente" shaped>
+            <v-col cols="12">
+                <v-card
+                    v-if="$store.state.clientes.cliente"
+                    shaped
+                    outlined
+                    :loading="$store.state.inProcess"
+                >
                     <div>
                         <br />
                         <v-row justify="center">
                             <v-avatar size="160" color="secondary">
-                                <span
-                                    class="white--text text-uppercase"
-                                    style="font-size: 60px;"
-                                >{{ $store.state.clientes.cliente.cliente.razonsocial[0] }}</span>
+                                <span class="white--text text-uppercase" style="font-size: 60px;">
+                                    {{
+                                    $store.state.clientes.cliente
+                                    .cliente.razonsocial[0]
+                                    }}
+                                </span>
                             </v-avatar>
                             <br />
                             <v-col cols="12">
-                                <h1
-                                    class="text-center secondary--text"
-                                >{{ $store.state.clientes.cliente.cliente.razonsocial }}</h1>
-                                <h3
-                                    class="text-center secondary--text"
-                                >{{ $store.state.clientes.cliente.cliente.documentounico }}</h3>
+                                <h1 class="text-center secondary--text">
+                                    {{
+                                    $store.state.clientes.cliente
+                                    .cliente.razonsocial
+                                    }}
+                                </h1>
+                                <h3 class="text-center secondary--text">
+                                    {{
+                                    $store.state.clientes.cliente
+                                    .cliente.documentounico
+                                    }}
+                                </h3>
+                            </v-col>
+                            <v-col cols="10" sm="8">
+                                <v-row justify="space-between">
+                                    <h3 class="secondary--text">U$D Saldo: {{ saldo }}</h3>
+                                    <h3
+                                        class="secondary--text"
+                                    >U$D Haber: {{ $store.state.clientes.cliente.haber }}</h3>
+                                </v-row>
                             </v-col>
                         </v-row>
                     </div>
@@ -37,11 +53,8 @@
                                     slider-color="secondary"
                                     active-class="secondary--text"
                                 >
-                                    <v-tab>Compras</v-tab>
-                                    <v-tab>
-                                        <span class="hidden-sm-and-up">Cuenta</span>
-                                        <span class="hidden-xs-only">Resumen Corriente</span>
-                                    </v-tab>
+                                    <v-tab>Mis compras</v-tab>
+                                    <v-tab>Mi Cuenta</v-tab>
                                     <v-tab-item style="background: white !important;">
                                         <ClientesShowVentas></ClientesShowVentas>
                                     </v-tab-item>
@@ -75,6 +88,27 @@ export default {
         ClientesForm,
         ClientesShowVentas,
         ClientesShowCuentas
+    },
+
+    computed: {
+        saldo() {
+            let total = null;
+
+            if (this.$store.state.clientes.cliente) {
+                if (this.$store.state.clientes.cliente.cuentas.length > 0) {
+                    total = 0;
+                    let cuentas = this.$store.state.clientes.cliente.cuentas;
+
+                    for (let i = 0; i < cuentas.length; i++) {
+                        total = total + Number(cuentas[i].saldo);
+                    }
+
+                    return total;
+                }
+            }
+
+            return total;
+        }
     },
 
     mounted() {

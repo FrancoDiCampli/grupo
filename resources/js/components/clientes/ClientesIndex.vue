@@ -15,9 +15,7 @@
                         <tr>
                             <td>{{ item.documentounico }}</td>
                             <td>{{ item.razonsocial }}</td>
-                            <td class="hidden-xs-only">
-                                {{ item.condicioniva }}
-                            </td>
+                            <td class="hidden-xs-only">{{ item.condicioniva }}</td>
                             <td v-if="item.id != 1">
                                 <v-btn
                                     color="secondary"
@@ -25,15 +23,13 @@
                                     icon
                                     :to="`/clientes/show/${item.id}`"
                                 >
-                                    <v-icon size="medium"
-                                        >fas fa-ellipsis-v</v-icon
-                                    >
+                                    <v-icon size="medium">fas fa-ellipsis-v</v-icon>
                                 </v-btn>
                             </td>
                         </tr>
                     </template>
                 </v-data-table>
-                <slot name="loadMore"></slot>
+                <slot></slot>
             </v-card-text>
         </v-card>
     </div>

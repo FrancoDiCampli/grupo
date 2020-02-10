@@ -5,6 +5,7 @@
                 <v-card
                     v-if="$store.state.proveedores.proveedor"
                     shaped
+                    outlined
                     :loading="$store.state.inProcess"
                 >
                     <div v-if="mode == 'edit'">
@@ -173,6 +174,27 @@ export default {
         ProveedoresForm,
         ProveedoresShowData,
         ProveedoresShowCompras
+    },
+
+    watch: {
+        mode() {
+            if (this.mode == "show") {
+                let provinciaState = this.$store.state.proveedores.proveedor
+                    .proveedor.provincia;
+                let localidadState = this.$store.state.proveedores.proveedor
+                    .proveedor.localidad;
+
+                if (typeof provinciaState == "object") {
+                    this.$store.state.proveedores.proveedor.proveedor.provincia =
+                        provinciaState.nombre;
+                }
+
+                if (typeof localidadState == "object") {
+                    this.$store.state.proveedores.proveedor.proveedor.localidad =
+                        localidadState.nombre;
+                }
+            }
+        }
     },
 
     mounted() {

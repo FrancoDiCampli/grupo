@@ -9,6 +9,7 @@
             stateless
             app
             hide-overlay
+            v-if="$store.state.auth.user.rol != 'cliente'"
         >
             <v-list-item class="drawer-action primary" dark>
                 <v-list-item-icon @click="mini = !mini" class="drawer-action-icon hidden-xs-only">

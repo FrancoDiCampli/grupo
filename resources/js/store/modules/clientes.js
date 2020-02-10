@@ -77,8 +77,9 @@ const actions = {
     pay({ dispatch }, params) {
         return new Promise((resolve, reject) => {
             axios
-                .get("/api/pagarcuentas", { params: params })
+                .post("/api/pagarcuentas", { params: params })
                 .then(response => {
+                    console.log(response);
                     resolve(response.data);
                 })
                 .catch(error => {

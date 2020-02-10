@@ -30,7 +30,11 @@
                                         ></v-checkbox>
                                     </td>
                                     <td class="hidden-xs-only">{{ item.numventa }}</td>
-                                    <td>{{ item.cliente.razonsocial }}</td>
+                                    <td>
+                                        <!-- REVISAR -->
+                                        <div v-if="item.cliente">{{ item.cliente.razonsocial }}</div>
+                                        <div v-else>EL CLIENTE HA SIDO ELIMINADO</div>
+                                    </td>
                                     <td>{{ item.total }}</td>
                                     <td class="hidden-sm-and-down">{{ item.fecha }}</td>
                                     <td class="hidden-sm-and-down">{{ item.condicionventa }}</td>

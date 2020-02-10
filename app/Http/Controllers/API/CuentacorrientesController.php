@@ -31,10 +31,10 @@ class CuentacorrientesController extends Controller
         $total = 0;
 
         foreach ($request as $res) {
-            $cuenta = Cuentacorriente::findOrFail($res['cuenta_id']);
+            $cuenta = Cuentacorriente::findOrFail($res[0]['cuenta_id']);
             $cliente = $cuenta->factura->cliente;
-            if ($res['pagos'] != null) {
-                foreach ($res['pagos'] as $pay) {
+            if ($res[0]['pagos'] != null) {
+                foreach ($res[0]['pagos'] as $pay) {
                     // PAGO PARCIAL
                     if ($pay['dolares'] < $cuenta->saldo) {
                         $cuenta->saldo = $cuenta->saldo - $pay['dolares'];

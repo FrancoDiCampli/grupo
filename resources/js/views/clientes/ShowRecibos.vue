@@ -1,6 +1,6 @@
 <template>
     <div>
-        <v-tooltip left>
+        <v-tooltip left v-if="$store.state.auth.user.rol != 'cliente'">
             <template v-slot:activator="{ on }">
                 <v-btn
                     color="secondary"

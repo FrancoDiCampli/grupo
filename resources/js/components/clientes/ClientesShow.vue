@@ -18,10 +18,7 @@
                                         ref="clientesEditForm"
                                         @submit.prevent="updateCliente()"
                                     >
-                                        <ClientesForm
-                                            mode="edit"
-                                            ref="clientesForm"
-                                        ></ClientesForm>
+                                        <ClientesForm mode="edit" ref="clientesForm"></ClientesForm>
                                         <v-row justify="center">
                                             <v-btn
                                                 tile
@@ -32,8 +29,7 @@
                                                 outlined
                                                 color="secondary"
                                                 class="mx-2"
-                                                >Cancelar</v-btn
-                                            >
+                                            >Cancelar</v-btn>
                                             <v-btn
                                                 tile
                                                 :loading="
@@ -45,8 +41,7 @@
                                                 type="submit"
                                                 color="secondary"
                                                 class="mx-2 elevation-0"
-                                                >Editar</v-btn
-                                            >
+                                            >Editar</v-btn>
                                         </v-row>
                                         <br />
                                     </v-form>
@@ -76,21 +71,15 @@
                                             color="secondary"
                                             v-on="on"
                                         >
-                                            <v-icon size="medium"
-                                                >fas fa-ellipsis-v</v-icon
-                                            >
+                                            <v-icon size="medium">fas fa-ellipsis-v</v-icon>
                                         </v-btn>
                                     </template>
                                     <v-list>
                                         <v-list-item @click="editCliente()">
-                                            <v-list-item-title
-                                                >Editar</v-list-item-title
-                                            >
+                                            <v-list-item-title>Editar</v-list-item-title>
                                         </v-list-item>
                                         <v-list-item @click="mode = 'delete'">
-                                            <v-list-item-title
-                                                >Eliminar</v-list-item-title
-                                            >
+                                            <v-list-item-title>Eliminar</v-list-item-title>
                                         </v-list-item>
                                     </v-list>
                                 </v-menu>
@@ -100,26 +89,35 @@
                                     <span
                                         class="white--text text-uppercase"
                                         style="font-size: 60px;"
-                                        >{{
-                                            $store.state.clientes.cliente
-                                                .cliente.razonsocial[0]
-                                        }}</span
                                     >
+                                        {{
+                                        $store.state.clientes.cliente
+                                        .cliente.razonsocial[0]
+                                        }}
+                                    </span>
                                 </v-avatar>
                                 <br />
                                 <v-col cols="12">
                                     <h1 class="text-center secondary--text">
                                         {{
-                                            $store.state.clientes.cliente
-                                                .cliente.razonsocial
+                                        $store.state.clientes.cliente
+                                        .cliente.razonsocial
                                         }}
                                     </h1>
                                     <h3 class="text-center secondary--text">
                                         {{
-                                            $store.state.clientes.cliente
-                                                .cliente.documentounico
+                                        $store.state.clientes.cliente
+                                        .cliente.documentounico
                                         }}
                                     </h3>
+                                </v-col>
+                                <v-col cols="10" sm="8">
+                                    <v-row justify="space-between">
+                                        <h3 class="secondary--text">U$D Saldo: {{ saldo }}</h3>
+                                        <h3
+                                            class="secondary--text"
+                                        >U$D Haber: {{ $store.state.clientes.cliente.haber }}</h3>
+                                    </v-row>
                                 </v-col>
                             </v-row>
                         </div>
@@ -135,16 +133,10 @@
                                         <v-tab>Datos</v-tab>
                                         <v-tab>Ventas</v-tab>
                                         <v-tab>
-                                            <span class="hidden-sm-and-up"
-                                                >Cuenta</span
-                                            >
-                                            <span class="hidden-xs-only"
-                                                >Resumen Corriente</span
-                                            >
+                                            <span class="hidden-sm-and-up">Cuenta</span>
+                                            <span class="hidden-xs-only">Resumen Corriente</span>
                                         </v-tab>
-                                        <v-tab-item
-                                            style="background: white !important;"
-                                        >
+                                        <v-tab-item style="background: white !important;">
                                             <div
                                                 v-if="
                                                     $store.state.clientes
@@ -154,14 +146,10 @@
                                                 <ClientesShowData></ClientesShowData>
                                             </div>
                                         </v-tab-item>
-                                        <v-tab-item
-                                            style="background: white !important;"
-                                        >
+                                        <v-tab-item style="background: white !important;">
                                             <ClientesShowVentas></ClientesShowVentas>
                                         </v-tab-item>
-                                        <v-tab-item
-                                            style="background: white !important;"
-                                        >
+                                        <v-tab-item style="background: white !important;">
                                             <ClientesShowCuentas></ClientesShowCuentas>
                                         </v-tab-item>
                                     </v-tabs>
@@ -171,18 +159,14 @@
                         </div>
                         <div v-else-if="mode == 'delete'">
                             <div class="clientes-delete">
-                                <h2 class="text-center white--text">
-                                    ¿Estas Seguro?
-                                </h2>
+                                <h2 class="text-center white--text">¿Estas Seguro?</h2>
                                 <br />
                                 <v-divider dark></v-divider>
                                 <br />
-                                <p class="text-center white--text">
-                                    ¿Realmente deseas eliminar este Cliente?
-                                </p>
-                                <p class="text-center white--text">
-                                    Este Cambio es Irreversible
-                                </p>
+                                <p
+                                    class="text-center white--text"
+                                >¿Realmente deseas eliminar este Cliente?</p>
+                                <p class="text-center white--text">Este Cambio es Irreversible</p>
                                 <br />
                                 <v-row justify="center">
                                     <v-btn
@@ -191,8 +175,7 @@
                                         :disabled="$store.state.inProcess"
                                         class="mx-2 red--text elevation-0"
                                         color="white"
-                                        >Cancelar</v-btn
-                                    >
+                                    >Cancelar</v-btn>
                                     <v-btn
                                         tile
                                         :loading="$store.state.inProcess"
@@ -201,8 +184,7 @@
                                         outlined
                                         color="white "
                                         class="mx-2"
-                                        >Eliminar</v-btn
-                                    >
+                                    >Eliminar</v-btn>
                                 </v-row>
                                 <br />
                             </div>
@@ -237,21 +219,42 @@ export default {
     watch: {
         mode() {
             if (this.mode == "show") {
-                let provinciaState = this.$store.state.sucursales.sucursal
-                    .negocio.provincia;
-                let localidadState = this.$store.state.sucursales.sucursal
-                    .negocio.localidad;
+                let provinciaState = this.$store.state.clientes.cliente.cliente
+                    .provincia;
+                let localidadState = this.$store.state.clientes.cliente.cliente
+                    .localidad;
 
                 if (typeof provinciaState == "object") {
-                    this.$store.state.sucursales.sucursal.negocio.provincia =
+                    this.$store.state.clientes.cliente.cliente.provincia =
                         provinciaState.nombre;
                 }
 
                 if (typeof localidadState == "object") {
-                    this.$store.state.sucursales.sucursal.negocio.localidad =
+                    this.$store.state.clientes.cliente.cliente.localidad =
                         localidadState.nombre;
                 }
             }
+        }
+    },
+
+    computed: {
+        saldo() {
+            let total = null;
+
+            if (this.$store.state.clientes.cliente) {
+                if (this.$store.state.clientes.cliente.cuentas.length > 0) {
+                    total = 0;
+                    let cuentas = this.$store.state.clientes.cliente.cuentas;
+
+                    for (let i = 0; i < cuentas.length; i++) {
+                        total = total + Number(cuentas[i].saldo);
+                    }
+
+                    return total;
+                }
+            }
+
+            return total;
         }
     },
 

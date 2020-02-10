@@ -22,53 +22,21 @@
         <v-container>
             <v-row justify="center">
                 <v-col cols="12" md="10" lg="8">
-                    <v-row>
-                        <v-btn
-                            color="primary"
-                            class="filter-btn-clientes"
-                            icon
-                            @click="filterMenu = !filterMenu"
-                        >
-                            <v-icon size="medium">fas fa-filter</v-icon>
-                        </v-btn>
-                    </v-row>
-                    <v-expand-transition>
-                        <div class="filters" v-if="filterMenu">
-                            <v-row>
-                                <v-col cols="12" sm="6">
-                                    <v-select
-                                        v-model="sucursalID"
-                                        :items="sucursales"
-                                        item-text="nombre"
-                                        item-value="id"
-                                        label="Sucursal"
-                                        outlined
-                                    ></v-select>
-                                </v-col>
-                            </v-row>
-                        </div>
-                    </v-expand-transition>
                     <ClientesIndex :limit="limit">
-                        <template slot="loadMore">
-                            <br />
-                            <v-row
-                                justify="center"
-                                v-if="$store.state.clientes.clientes"
-                            >
-                                <v-btn
-                                    :loading="$store.state.inProcess"
-                                    :disabled="
+                        <br />
+                        <v-row justify="center" v-if="$store.state.clientes.clientes">
+                            <v-btn
+                                :loading="$store.state.inProcess"
+                                :disabled="
                                         limit >=
                                             $store.state.clientes.clientes.total
                                     "
-                                    @click="loadMore()"
-                                    color="secondary"
-                                    outlined
-                                    tile
-                                    >Cargar Más</v-btn
-                                >
-                            </v-row>
-                        </template>
+                                @click="loadMore()"
+                                color="secondary"
+                                outlined
+                                tile
+                            >Cargar Más</v-btn>
+                        </v-row>
                     </ClientesIndex>
                 </v-col>
             </v-row>
@@ -81,10 +49,7 @@ import ClientesIndex from "../../components/clientes/ClientesIndex";
 
 export default {
     data: () => ({
-        limit: 10,
-        sucursales: [],
-        sucursalID: null,
-        filterMenu: false
+        limit: 10
     }),
 
     components: {
@@ -99,25 +64,13 @@ export default {
 
     mounted() {
         this.getClientes();
-        this.getSucursales();
     },
 
     methods: {
         getClientes: async function() {
             await this.$store.dispatch("clientes/index", {
-                limit: this.limit,
-                negocio_id: this.sucursalID
+                limit: this.limit
             });
-        },
-
-        getSucursales: async function() {
-            await this.$store.dispatch("sucursales/index");
-            this.$store.state.sucursales.sucursales.negocios.forEach(
-                element => {
-                    this.sucursales.push(element);
-                }
-            );
-            this.sucursales.push({ id: null, nombre: "TODAS LAS SUCURSALES" });
         },
 
         loadMore: async function() {
