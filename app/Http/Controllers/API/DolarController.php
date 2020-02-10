@@ -16,11 +16,33 @@ class DolarController extends Controller
 
     public function consultar()
     {
+        $client = new Client;
+        $start = Carbon::now()->subMonth()->format('Y-m-d');
 
-        return [
-            'valor' => 62,
-            'fecha' => now()->format('d-m-Y')
+        $newURL = 'https://apis.datos.gob.ar/series/api/series/?ids=168.1_T_CAMBIOR_D_0_0_26&limit=5000&start_date=' . $start . '&format=json';
+
+        $response = $client->get($newURL, [
+            'headers' => [
+                // 'Authorization' => 'Bearer ' . $token,
+                'Accept' => 'application/json',
+            ],
+        ]);
+
+        $dolar = collect(json_decode((string) $response->getBody(), true));
+
+        $dolar = collect($dolar['data']);
+
+        $ultima = $dolar->last();
+
+        return $nuevo = [
+            'fecha' => $ultima['0'],
+            'valor' => $ultima['1'],
         ];
+
+        // return [
+        //     'valor' => 62,
+        //     'fecha' => now()->format('d-m-Y')
+        // ];
 
         // REVISAR CORS ON LARAVEL AIRLOCK
 
