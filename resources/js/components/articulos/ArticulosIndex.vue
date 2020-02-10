@@ -50,7 +50,7 @@
                 <div v-if="$store.state.inProcess">
                     <v-row justify="center">
                         <v-col cols="10" sm="6" md="4" v-for="i in 3" :key="i">
-                            <CardLoader></CardLoader>
+                            <EskeletonLoader typeString="card, list-item-two-line"></EskeletonLoader>
                         </v-col>
                     </v-row>
                 </div>
@@ -139,7 +139,7 @@
 </template>
 
 <script>
-import CardLoader from "../loaders/CardLoader";
+import EskeletonLoader from "../loaders/EskeletonLoader";
 
 export default {
     data: () => ({
@@ -155,7 +155,7 @@ export default {
     props: ["limit"],
 
     components: {
-        CardLoader
+        EskeletonLoader
     }
 };
 </script>

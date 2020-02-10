@@ -72,7 +72,7 @@
                                 </v-menu>
                             </div>
                             <v-col cols="12">
-                                <v-layout justify-center>
+                                <v-row justify="center">
                                     <v-avatar size="200">
                                         <img
                                             :src="
@@ -81,7 +81,7 @@
                                             "
                                         />
                                     </v-avatar>
-                                </v-layout>
+                                </v-row>
                             </v-col>
 
                             <v-col cols="12">
@@ -98,10 +98,14 @@
                                     .descripcion
                                     }}
                                 </h3>
+                            </v-col>
+                            <v-divider></v-divider>
+                            <v-col cols="12">
                                 <h2
                                     class="text-center secondary--text"
                                 >Stock: {{ $store.state.articulos.articulo.stock }} unidades. {{ stockLitros }} litros</h2>
                             </v-col>
+                            <v-divider></v-divider>
                         </div>
                         <br />
                         <div v-if="mode == 'show'">

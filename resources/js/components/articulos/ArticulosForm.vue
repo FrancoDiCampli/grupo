@@ -45,6 +45,7 @@
                                     text
                                     icon
                                     color="secondary"
+                                    ref="removePhoto"
                                     @click="foto.remove()"
                                 >
                                     <v-icon>fas fa-times</v-icon>
