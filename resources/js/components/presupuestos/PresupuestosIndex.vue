@@ -3,10 +3,7 @@
         <v-card shaped outlined :loading="$store.state.inProcess">
             <v-card-title>Presupuestos</v-card-title>
             <v-divider></v-divider>
-            <v-card-text
-                v-if="$store.state.presupuestos.presupuestos"
-                class="px-2"
-            >
+            <v-card-text v-if="$store.state.presupuestos.presupuestos" class="px-0">
                 <v-data-table
                     :headers="headers"
                     :items="$store.state.presupuestos.presupuestos.presupuestos"
@@ -23,15 +20,8 @@
                             <td>
                                 <v-menu offset-y>
                                     <template v-slot:activator="{ on }">
-                                        <v-btn
-                                            color="secondary"
-                                            text
-                                            icon
-                                            v-on="on"
-                                        >
-                                            <v-icon size="medium"
-                                                >fas fa-ellipsis-v</v-icon
-                                            >
+                                        <v-btn color="secondary" text icon v-on="on">
+                                            <v-icon size="medium">fas fa-ellipsis-v</v-icon>
                                         </v-btn>
                                     </template>
                                     <v-list>
@@ -40,14 +30,10 @@
                                                 `/presupuestos/show/${item.id}`
                                             "
                                         >
-                                            <v-list-item-title
-                                                >Detalles</v-list-item-title
-                                            >
+                                            <v-list-item-title>Detalles</v-list-item-title>
                                         </v-list-item>
                                         <v-list-item @click="print(item.id)">
-                                            <v-list-item-title
-                                                >Imprimir</v-list-item-title
-                                            >
+                                            <v-list-item-title>Imprimir</v-list-item-title>
                                         </v-list-item>
                                     </v-list>
                                 </v-menu>
@@ -55,7 +41,7 @@
                         </tr>
                     </template>
                 </v-data-table>
-                <slot name="loadMore"></slot>
+                <slot></slot>
             </v-card-text>
         </v-card>
     </div>
@@ -77,20 +63,7 @@ export default {
 
     methods: {
         print(id) {
-            axios({
-                url: "/api/presupuestosPDF/" + id,
-                method: "GET",
-                responseType: "blob"
-            }).then(response => {
-                const url = window.URL.createObjectURL(
-                    new Blob([response.data])
-                );
-                const link = document.createElement("a");
-                link.href = url;
-                link.setAttribute("download", "presupuesto" + id + ".pdf");
-                document.body.appendChild(link);
-                link.click();
-            });
+            this.$store.dispatch("PDF/printPresupuesto", { id: id });
         }
     }
 };

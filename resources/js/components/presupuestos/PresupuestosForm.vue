@@ -4,9 +4,7 @@
             <!-- HEADER -->
             <v-card-title class="py-0 px-2">
                 <v-row class="pa-0 ma-0">
-                    <v-col cols="6" align-self="center"
-                        >Nuevo Presupuesto</v-col
-                    >
+                    <v-col cols="6" align-self="center">Nuevo Presupuesto</v-col>
                     <v-col cols="6">
                         <v-list-item two-line class="text-right">
                             <v-list-item-content>
@@ -45,10 +43,7 @@
                             </v-row>
                         </div>
                         <div v-show="!inProcess">
-                            <v-form
-                                ref="CreatePresupuesto"
-                                @submit.prevent="savePresupuesto()"
-                            >
+                            <v-form ref="CreatePresupuesto" @submit.prevent="savePresupuesto()">
                                 <v-row justify="space-around">
                                     <!-- CLIENTE -->
                                     <v-col cols="12" sm="7" class="py-0">
@@ -85,21 +80,11 @@
                                                         searchCliente != ''
                                                 "
                                             >
-                                                <v-simple-table
-                                                    v-if="clientes.length > 0"
-                                                >
+                                                <v-simple-table v-if="clientes.length > 0">
                                                     <thead>
                                                         <tr>
-                                                            <th
-                                                                class="text-xs-left"
-                                                            >
-                                                                Apellido Nombre
-                                                            </th>
-                                                            <th
-                                                                class="text-xs-left"
-                                                            >
-                                                                Documento
-                                                            </th>
+                                                            <th class="text-xs-left">Apellido Nombre</th>
+                                                            <th class="text-xs-left">Documento</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -116,12 +101,12 @@
                                                         >
                                                             <td>
                                                                 {{
-                                                                    cliente.razonsocial
+                                                                cliente.razonsocial
                                                                 }}
                                                             </td>
                                                             <td>
                                                                 {{
-                                                                    cliente.documentounico
+                                                                cliente.documentounico
                                                                 }}
                                                             </td>
                                                         </tr>
@@ -184,24 +169,22 @@
                                                                 .vencimiento
                                                         )
                                                     "
-                                                    >Aceptar</v-btn
-                                                >
+                                                >Aceptar</v-btn>
                                             </v-date-picker>
                                         </v-dialog>
                                     </v-col>
                                     <!-- ARTICULOS -->
-                                    <v-col
-                                        cols="12"
-                                        class="py-0 articulos-panel"
-                                    >
-                                        <v-expansion-panels
-                                            v-model="articulosPanel"
-                                        >
+                                    <v-col cols="12" class="py-0 articulos-panel">
+                                        <v-expansion-panels v-model="articulosPanel">
                                             <v-expansion-panel>
                                                 <v-expansion-panel-header
                                                     expand-icon="fas fa-caret-down"
-                                                    >Articulos</v-expansion-panel-header
                                                 >
+                                                    <div
+                                                        v-if="articuloSelected.articulo"
+                                                    >{{articuloSelected.articulo}}</div>
+                                                    <div v-else>Articulos</div>
+                                                </v-expansion-panel-header>
                                                 <v-expansion-panel-content>
                                                     <v-simple-table
                                                         v-if="
@@ -210,26 +193,10 @@
                                                     >
                                                         <thead>
                                                             <tr>
-                                                                <th
-                                                                    class="text-xs-left"
-                                                                >
-                                                                    Codigo
-                                                                </th>
-                                                                <th
-                                                                    class="text-xs-left"
-                                                                >
-                                                                    Articulo
-                                                                </th>
-                                                                <th
-                                                                    class="text-xs-left"
-                                                                >
-                                                                    Precio
-                                                                </th>
-                                                                <th
-                                                                    class="text-xs-left"
-                                                                >
-                                                                    Stock
-                                                                </th>
+                                                                <th class="text-xs-left">Codigo</th>
+                                                                <th class="text-xs-left">Articulo</th>
+                                                                <th class="text-xs-left">Precio</th>
+                                                                <th class="text-xs-left">Stock</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
@@ -251,22 +218,22 @@
                                                             >
                                                                 <td>
                                                                     {{
-                                                                        articulo.codarticulo
+                                                                    articulo.codarticulo
                                                                     }}
                                                                 </td>
                                                                 <td>
                                                                     {{
-                                                                        articulo.articulo
+                                                                    articulo.articulo
                                                                     }}
                                                                 </td>
                                                                 <td>
                                                                     {{
-                                                                        articulo.precio
+                                                                    articulo.precio
                                                                     }}
                                                                 </td>
                                                                 <td>
                                                                     {{
-                                                                        articulo.stock
+                                                                    articulo.stock
                                                                     }}
                                                                 </td>
                                                             </tr>
@@ -282,126 +249,100 @@
                                             </v-expansion-panel>
                                         </v-expansion-panels>
                                     </v-col>
-                                    <v-form
-                                        ref="detailForm"
-                                        @submit.prevent="addDetail"
-                                        v-if="!disabled.detalles"
-                                    >
-                                        <v-row justify="center" class="px-3">
-                                            <!-- DETALLES -->
-                                            <v-col
-                                                cols="12"
-                                                sm="4"
-                                                class="py-0"
-                                            >
-                                                <v-text-field
-                                                    v-model="
+                                    <v-expand-transition>
+                                        <v-form
+                                            ref="detailForm"
+                                            @submit.prevent="addDetail"
+                                            v-if="!disabled.detalles"
+                                        >
+                                            <v-row justify="center" class="px-3">
+                                                <!-- DETALLES -->
+                                                <v-col cols="12" sm="4" class="py-0">
+                                                    <v-text-field
+                                                        v-model="
                                                         articuloSelected.precio
                                                     "
-                                                    :rules="[rules.required]"
-                                                    label="Precio"
-                                                    required
-                                                    outlined
-                                                    type="number"
-                                                ></v-text-field>
-                                            </v-col>
-                                            <v-col
-                                                cols="12"
-                                                sm="4"
-                                                class="py-0"
-                                            >
-                                                <v-text-field
-                                                    v-model="
+                                                        :rules="[rules.required]"
+                                                        label="Precio"
+                                                        required
+                                                        outlined
+                                                        type="number"
+                                                    ></v-text-field>
+                                                </v-col>
+                                                <v-col cols="12" sm="4" class="py-0">
+                                                    <v-text-field
+                                                        v-model="
                                                         articuloSelected.cantidad
                                                     "
-                                                    :rules="[rules.required]"
-                                                    label="Unidades"
-                                                    required
+                                                        :rules="[rules.required]"
+                                                        label="Unidades"
+                                                        required
+                                                        outlined
+                                                        type="number"
+                                                    ></v-text-field>
+                                                </v-col>
+                                                <v-col cols="12" sm="4" class="py-0">
+                                                    <v-text-field
+                                                        v-model="cantidadLitros"
+                                                        :rules="[rules.required]"
+                                                        label="Cantidad en litros"
+                                                        required
+                                                        outlined
+                                                        disabled
+                                                        type="number"
+                                                    ></v-text-field>
+                                                </v-col>
+                                                <!-- COTIZACION -->
+                                                <v-col cols="12" sm="6" class="py-0">
+                                                    <v-text-field
+                                                        v-model="dolares"
+                                                        :rules="[rules.required]"
+                                                        label="Subtotal"
+                                                        outlined
+                                                        disabled
+                                                        type="number"
+                                                    ></v-text-field>
+                                                </v-col>
+                                                <v-col cols="12" sm="6" class="py-0">
+                                                    <v-text-field
+                                                        v-model="pesos"
+                                                        :rules="[rules.required]"
+                                                        label="Subtotal en Pesos"
+                                                        outlined
+                                                        disabled
+                                                        type="number"
+                                                    ></v-text-field>
+                                                </v-col>
+                                                <v-col cols="12" sm="6" class="py-0">
+                                                    <v-text-field
+                                                        v-model="cotizacion"
+                                                        :rules="[rules.required]"
+                                                        label="Cotizacion"
+                                                        outlined
+                                                        type="number"
+                                                    ></v-text-field>
+                                                </v-col>
+                                                <v-col cols="12" sm="6" class="py-0">
+                                                    <v-text-field
+                                                        v-model="fechaCotizacion"
+                                                        :rules="[rules.required]"
+                                                        label="Fecha de la cotización"
+                                                        outlined
+                                                        disabled
+                                                    ></v-text-field>
+                                                </v-col>
+                                            </v-row>
+                                            <v-row justify="center" class="mb-5">
+                                                <v-btn
+                                                    type="submit"
                                                     outlined
-                                                    type="number"
-                                                ></v-text-field>
-                                            </v-col>
-                                            <v-col
-                                                cols="12"
-                                                sm="4"
-                                                class="py-0"
-                                            >
-                                                <v-text-field
-                                                    v-model="cantidadLitros"
-                                                    :rules="[rules.required]"
-                                                    label="Cantidad en litros"
-                                                    required
-                                                    outlined
-                                                    disabled
-                                                    type="number"
-                                                ></v-text-field>
-                                            </v-col>
-                                            <!-- COTIZACION -->
-                                            <v-col
-                                                cols="12"
-                                                sm="6"
-                                                class="py-0"
-                                            >
-                                                <v-text-field
-                                                    v-model="dolares"
-                                                    :rules="[rules.required]"
-                                                    label="Subtotal"
-                                                    outlined
-                                                    disabled
-                                                    type="number"
-                                                ></v-text-field>
-                                            </v-col>
-                                            <v-col
-                                                cols="12"
-                                                sm="6"
-                                                class="py-0"
-                                            >
-                                                <v-text-field
-                                                    v-model="pesos"
-                                                    :rules="[rules.required]"
-                                                    label="Subtotal en Pesos"
-                                                    outlined
-                                                    disabled
-                                                    type="number"
-                                                ></v-text-field>
-                                            </v-col>
-                                            <v-col
-                                                cols="12"
-                                                sm="6"
-                                                class="py-0"
-                                            >
-                                                <v-text-field
-                                                    v-model="cotizacion"
-                                                    :rules="[rules.required]"
-                                                    label="Cotizacion"
-                                                    outlined
-                                                    type="number"
-                                                ></v-text-field>
-                                            </v-col>
-                                            <v-col
-                                                cols="12"
-                                                sm="6"
-                                                class="py-0"
-                                            >
-                                                <v-text-field
-                                                    v-model="fechaCotizacion"
-                                                    :rules="[rules.required]"
-                                                    label="Fecha de la cotización"
-                                                    outlined
-                                                    disabled
-                                                ></v-text-field>
-                                            </v-col>
-                                        </v-row>
-                                        <v-row justify="center" class="mb-5">
-                                            <v-btn
-                                                type="submit"
-                                                outlined
-                                                tile
-                                                color="secondary"
-                                                >Añadir detalle</v-btn
-                                            >
-                                        </v-row>
-                                    </v-form>
+                                                    tile
+                                                    color="secondary"
+                                                >Añadir detalle</v-btn>
+                                            </v-row>
+                                        </v-form>
+                                    </v-expand-transition>
+
                                     <!-- TABLA DETALLES -->
                                     <v-col cols="12" class="py-0 mb-5">
                                         <v-card outlined>
@@ -409,27 +350,13 @@
                                                 <template v-slot:default>
                                                     <thead>
                                                         <tr>
-                                                            <th
-                                                                class="text-left"
-                                                            >
-                                                                Articulo
-                                                            </th>
+                                                            <th class="text-left">Articulo</th>
                                                             <th
                                                                 class="text-left hidden-sm-and-down"
-                                                            >
-                                                                Precio
-                                                            </th>
-                                                            <th
-                                                                class="text-left"
-                                                            >
-                                                                Unidades
-                                                            </th>
+                                                            >Precio</th>
+                                                            <th class="text-left">Unidades</th>
 
-                                                            <th
-                                                                class="text-left"
-                                                            >
-                                                                Subtotal
-                                                            </th>
+                                                            <th class="text-left">Subtotal</th>
                                                             <th
                                                                 class="text-left hidden-sm-and-down"
                                                             >
@@ -447,31 +374,27 @@
                                                         >
                                                             <td>
                                                                 {{
-                                                                    detalle.articulo
+                                                                detalle.articulo
                                                                 }}
                                                             </td>
-                                                            <td
-                                                                class="hidden-sm-and-down"
-                                                            >
+                                                            <td class="hidden-sm-and-down">
                                                                 {{
-                                                                    detalle.precio
-                                                                }}
-                                                            </td>
-                                                            <td>
-                                                                {{
-                                                                    detalle.cantidad
+                                                                detalle.precio
                                                                 }}
                                                             </td>
                                                             <td>
                                                                 {{
-                                                                    detalle.subtotalDolares
+                                                                detalle.cantidad
                                                                 }}
                                                             </td>
-                                                            <td
-                                                                class="hidden-sm-and-down"
-                                                            >
+                                                            <td>
                                                                 {{
-                                                                    detalle.subtotalPesos
+                                                                detalle.subtotalDolares
+                                                                }}
+                                                            </td>
+                                                            <td class="hidden-sm-and-down">
+                                                                {{
+                                                                detalle.subtotalPesos
                                                                 }}
                                                             </td>
                                                             <td>
@@ -484,11 +407,10 @@
                                                                         )
                                                                     "
                                                                 >
-                                                                    <v-icon
-                                                                        size="medium"
-                                                                        >fas
-                                                                        fa-times</v-icon
-                                                                    >
+                                                                    <v-icon size="medium">
+                                                                        fas
+                                                                        fa-times
+                                                                    </v-icon>
                                                                 </v-btn>
                                                             </td>
                                                         </tr>
@@ -562,18 +484,39 @@
                                         color="secondary"
                                         class="mx-2 elevation-0"
                                         @click="resetForm()"
-                                        >Cancelar</v-btn
-                                    >
+                                    >Cancelar</v-btn>
                                     <v-btn
                                         type="submit"
                                         tile
                                         color="secondary"
                                         class="mx-2 elevation-0"
-                                        >Guardar</v-btn
-                                    >
+                                    >Guardar</v-btn>
                                 </v-row>
                                 <br />
                             </v-form>
+
+                            <v-dialog v-model="detallesDialog" width="500" persistent>
+                                <v-card>
+                                    <v-card-title primary-title>¡Ha ocurrido un error!</v-card-title>
+                                    <v-divider></v-divider>
+                                    <v-card-text>
+                                        <br />Debe ingresar al menos un detalle.
+                                    </v-card-text>
+                                    <v-divider></v-divider>
+                                    <v-card-text>
+                                        <br />
+                                        <v-row justify="end">
+                                            <v-btn
+                                                tile
+                                                @click="detallesDialog = false"
+                                                :disabled="$store.state.inProcess"
+                                                color="error"
+                                                class="mx-2 elevation-0"
+                                            >Cerrar</v-btn>
+                                        </v-row>
+                                    </v-card-text>
+                                </v-card>
+                            </v-dialog>
                         </div>
                     </v-col>
                 </v-row>
@@ -615,7 +558,9 @@ export default {
         // DETALLES
         detalles: [],
         // SUBTOTAL
-        subtotal: null
+        subtotal: null,
+        // MODALS
+        detallesDialog: false
     }),
 
     computed: {
@@ -889,33 +834,33 @@ export default {
         },
 
         savePresupuesto: async function() {
-            if (
-                this.$refs.CreatePresupuesto.validate() &&
-                this.detalles.length > 0
-            ) {
-                this.inProcess = true;
+            if (this.$refs.CreatePresupuesto.validate()) {
+                if (this.detalles.length <= 0) {
+                    this.detallesDialog = true;
+                } else {
+                    this.inProcess = true;
 
-                this.$store.state.presupuestos.form.subtotal = this.subtotal;
-                this.$store.state.presupuestos.form.total = this.total;
-                this.$store.state.presupuestos.form.totalPesos = this.totalPesos;
-                this.$store.state.presupuestos.form.detalles = this.detalles;
-                this.$store.state.presupuestos.form.cotizacion = this.cotizacion;
-                this.$store.state.presupuestos.form.fechaCotizacion = this.fechaCotizacion;
-                this.$store.state.presupuestos.form.numpresupuesto = this.NumComprobante;
-                let response = await this.$store.dispatch("presupuestos/save");
-                console.log(response);
-
-                this.resetForm();
-                await this.getPoint();
-                this.inProcess = false;
-                this.$router.push("/presupuestos");
+                    this.$store.state.presupuestos.form.subtotal = this.subtotal;
+                    this.$store.state.presupuestos.form.total = this.total;
+                    this.$store.state.presupuestos.form.totalPesos = this.totalPesos;
+                    this.$store.state.presupuestos.form.detalles = this.detalles;
+                    this.$store.state.presupuestos.form.cotizacion = this.cotizacion;
+                    this.$store.state.presupuestos.form.fechaCotizacion = this.fechaCotizacion;
+                    this.$store.state.presupuestos.form.numpresupuesto = this.NumComprobante;
+                    let response = await this.$store.dispatch(
+                        "presupuestos/save"
+                    );
+                    this.resetForm();
+                    await this.getPoint();
+                    this.inProcess = false;
+                    this.$router.push("/presupuestos");
+                }
             }
         },
 
         resetForm: async function() {
             await this.$refs.CreatePresupuesto.reset();
             this.clientes = [];
-            this.articulos = [];
             this.detalles = [];
         }
     }

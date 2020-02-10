@@ -3,7 +3,7 @@
         <v-card shaped outlined :loading="$store.state.inProcess">
             <v-card-title>Proveedores</v-card-title>
             <v-divider></v-divider>
-            <v-card-text v-if="$store.state.proveedores.proveedores">
+            <v-card-text v-if="$store.state.proveedores.proveedores" class="px-0">
                 <v-data-table
                     :headers="headers"
                     :items="$store.state.proveedores.proveedores.proveedores"

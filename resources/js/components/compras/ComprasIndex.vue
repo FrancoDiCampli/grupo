@@ -8,7 +8,7 @@
         >
             <v-card-title>Compras</v-card-title>
             <v-divider></v-divider>
-            <v-card-text>
+            <v-card-text class="px-0">
                 <v-data-table
                     :headers="headers"
                     :items="$store.state.compras.compras.remitos"
