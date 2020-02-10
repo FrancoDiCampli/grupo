@@ -7,7 +7,6 @@ use App\User;
 use App\Recibo;
 use App\Cliente;
 use App\Contacto;
-use App\Distributor;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreCliente;

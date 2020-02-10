@@ -116,7 +116,7 @@ class ComprasController extends Controller
                 'inventario_id' => '',
                 'tipo' => $detail['movimiento'],
                 'cantidad' => $detail['cantidad'],
-                'cantidadlitros' => $detail['cantidad'] * $detail['totalLitros'],
+                'cantidadlitros' => $detail['cantidad'] * $detail['litros'],
                 // 'observaciones' => $detail['observaciones'],
                 'fecha' => now(),
                 'numcomprobante' => $remito->id,
@@ -126,14 +126,14 @@ class ComprasController extends Controller
             // CREA INVENTARIOS SI NO EXISTEN
             if ($article != null) {
                 $article->cantidad = $article->cantidad + $detail['cantidad'];
-                $article->cantidadlitros = $article->cantidadlitros + $detail['totalLitros'];
+                $article->cantidadlitros = $article->cantidadlitros + $detail['litros'];
                 $article->save();
                 $data['inventario_id'] = $article->id;
             } else {
                 $att['articulo_id'] = $detail['articulo_id'];
                 $att['supplier_id'] = $remito->supplier_id;
                 $att['cantidad'] = $detail['cantidad'];
-                $att['cantidadlitros'] = $detail['cantidad'] * $detail['totalLitros'];
+                $att['cantidadlitros'] = $detail['cantidad'] * $detail['litros'];
                 $att['lote'] = $detail['lote'];
                 $arti = Inventario::create($att);
                 $data['inventario_id'] = $arti->id;

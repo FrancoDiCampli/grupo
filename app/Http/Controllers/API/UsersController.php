@@ -55,9 +55,7 @@ class UsersController extends Controller
                 } else {
                     $aux = null;
                 }
-                $distributor = $usuario->distributor;
                 $usuario = collect($usuario);
-                $usuario->put('distributor', $distributor);
                 $usuario->put('rol', $aux);
                 $data->push($usuario);
             }
@@ -70,9 +68,7 @@ class UsersController extends Controller
                 } else {
                     $aux = null;
                 }
-                $distributor = $usuario->distributor;
                 $usuario = collect($usuario);
-                $usuario->put('distributor', $distributor);
                 $usuario->put('rol', $aux);
                 $data->push($usuario);
             }
@@ -92,7 +88,6 @@ class UsersController extends Controller
                 'email' => 'required|string|email|max:255|unique:users',
                 'password' => 'required|string|min:6',
                 'role_id' => 'nullable',
-                // 'distributor_id' => 'required'
             ]);
             $attributes['password'] = bcrypt($attributes['password']);
             $attributes['role_id'] = $request->get('role_id', 3);

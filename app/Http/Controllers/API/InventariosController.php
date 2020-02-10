@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Articulo;
+use App\Supplier;
 use App\Inventario;
 use App\Movimiento;
 use Illuminate\Http\Request;
@@ -24,19 +25,10 @@ class InventariosController extends Controller
         $inventories = Inventario::buscar($request)->get();
         $inventarios = collect();
         foreach ($inventories as $inventory) {
-            if (auth()->user()->role_id == 1 || auth()->user()->role_id == 2) {
-                $negocio = $inventory->negocio;
-                $inv = collect($inventory);
-                $inv->put('negocio', $negocio);
-                $inv->put('proveedor', $inventory->proveedor);
-                $inventarios->push($inv);
-            } elseif ($inventory->negocio_id == auth()->user()->negocio_id) {
-                $negocio = $inventory->negocio;
-                $inv = collect($inventory);
-                $inv->put('negocio', $negocio);
-                $inv->put('proveedor', $inventory->proveedor);
-                $inventarios->push($inv);
-            }
+            $proveedor = Supplier::find($inventory->supplier_id);
+            $inventory = collect($inventory);
+            $inventory->put('supplier', $proveedor);
+            $inventarios->push($inventory);
         }
         return $inventarios->take(1);
     }
