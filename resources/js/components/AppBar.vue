@@ -12,11 +12,20 @@
             v-if="$store.state.auth.user.rol != 'cliente'"
         >
             <v-list-item class="drawer-action primary" dark>
-                <v-list-item-icon @click="mini = !mini" class="drawer-action-icon hidden-xs-only">
+                <v-list-item-icon
+                    @click="mini = !mini"
+                    class="drawer-action-icon hidden-xs-only"
+                >
                     <v-icon v-if="mini">fas fa-bars</v-icon>
-                    <v-icon v-else style="margin-left: 6px;">fas fa-times</v-icon>
+                    <v-icon v-else style="margin-left: 6px;"
+                        >fas fa-times</v-icon
+                    >
                 </v-list-item-icon>
-                <v-list-item-icon class="hidden-sm-and-up" style="margin-left: 6px;">
+                <v-list-item-icon
+                    class="hidden-sm-and-up"
+                    style="margin-left: 6px;"
+                    @click="drawer = false"
+                >
                     <v-icon>fas fa-times</v-icon>
                 </v-list-item-icon>
             </v-list-item>
@@ -42,9 +51,7 @@
                         </v-list-item-icon>
                         <v-list-item-content>
                             <v-list-item-title>
-                                {{
-                                route.name
-                                }}
+                                {{ route.name }}
                             </v-list-item-title>
                         </v-list-item-content>
                     </v-list-item>
@@ -63,114 +70,17 @@
             ></v-app-bar-nav-icon>
 
             <!-- Titulo de la aplicacion -->
-            <v-toolbar-title>Grupo APC</v-toolbar-title>
+            <v-toolbar-title class="hidden-xs-only">Grupo APC</v-toolbar-title>
             <v-spacer></v-spacer>
-
-            <!-- BARRA DE BUSQUEDA DE MAXI -->
-            <v-col cols="10" sm="8" lg="6" class="py-0">
-                <v-text-field
-                    v-model="searchItems"
-                    @keyup="searchItemsAfter()"
-                    class="search-items-input"
-                    placeholder="Buscar"
-                    outlined
-                ></v-text-field>
-            </v-col>
-            <!-- <v-row v-if="$store.state.auth.user.rol.role != 'cliente'">
-                <v-combobox
-                    label="Buscar"
-                    @keyup="search()"
-                    v-model="buscar"
-                    persistent-hint
-                    :hide-no-data="noMostrar"
-                >
-                    <template v-slot:no-data>
-                        <div v-if="clientes.length > 0">
-                            <v-subheader>CLIENTES</v-subheader>
-                            <v-list-item
-                                v-for="(cliente, i) in clientes"
-                                :key="i"
-                            >
-                                <v-list-item-content>
-                                    <v-list-item
-                                        @click="
-                                            searchNavigate(
-                                                '/clientes/show/' + cliente.id
-                                            )
-                                        "
-                                        >{{ cliente.razonsocial }}</v-list-item
-                                    >
-                                </v-list-item-content>
-                            </v-list-item>
-                            <v-divider></v-divider>
-                        </div>
-                        <div v-if="articulos.length > 0">
-                            <v-subheader>ARTICULOS</v-subheader>
-                            <v-list-item
-                                v-for="(article, i) in articulos"
-                                :key="i"
-                            >
-                                <v-list-item-content>
-                                    <v-list-item
-                                        @click="
-                                            searchNavigate(
-                                                '/articulos/show/' + article.id
-                                            )
-                                        "
-                                        >{{ article.articulo }}</v-list-item
-                                    >
-                                </v-list-item-content>
-                            </v-list-item>
-                            <v-divider></v-divider>
-                        </div>
-                        <div v-if="negocios.length > 0">
-                            <v-subheader>NEGOCIOS</v-subheader>
-                            <v-list-item
-                                v-for="(negocio, i) in negocios"
-                                :key="i"
-                            >
-                                <v-list-item-content>
-                                    <v-list-item
-                                        @click="
-                                            searchNavigate(
-                                                '/negocios/show/' + negocio.id
-                                            )
-                                        "
-                                        >{{ negocio.razonsocial }}</v-list-item
-                                    >
-                                </v-list-item-content>
-                            </v-list-item>
-                        </div>
-                        <div v-if="proveedores.length > 0">
-                            <v-subheader>PROVEEDORES</v-subheader>
-                            <v-list-item
-                                v-for="(proveedor, i) in proveedores"
-                                :key="i"
-                            >
-                                <v-list-item-content>
-                                    <v-list-item
-                                        @click="
-                                            searchNavigate(
-                                                '/proveedores/show/' +
-                                                    proveedor.id
-                                            )
-                                        "
-                                        >{{
-                                            proveedor.razonsocial
-                                        }}</v-list-item
-                                    >
-                                </v-list-item-content>
-                            </v-list-item>
-                        </div>
-                    </template>
-                </v-combobox>
-            </v-row>-->
-            <v-spacer></v-spacer>
-
+            <slot name="searchBar"></slot>
             <!-- Menu del usuario -->
             <v-menu offset-y v-if="$store.state.auth.user.user != null">
                 <template v-slot:activator="{ on }">
-                    <v-avatar color="secondary" style="cursor: pointer;" v-on="on">
+                    <v-avatar
+                        color="secondary"
+                        style="cursor: pointer;"
+                        v-on="on"
+                    >
                         <img
                             v-if="$store.state.auth.user.user.foto != null"
                             :src="$store.state.auth.user.user.foto"
@@ -180,21 +90,28 @@
                         <span
                             v-else-if="$store.state.auth.user.user.name"
                             class="text-uppercase"
-                        >{{ $store.state.auth.user.user.name[0] }}</span>
+                            >{{ $store.state.auth.user.user.name[0] }}</span
+                        >
                     </v-avatar>
                 </template>
                 <v-list>
                     <v-list-item @click="sidenav = true">
                         <v-list-item-title>Perfil</v-list-item-title>
                     </v-list-item>
-                    <slot></slot>
+                    <slot name="userActions"></slot>
                 </v-list>
             </v-menu>
         </v-app-bar>
 
         <!-- Sidenav de usuario -->
         <v-slide-x-reverse-transition>
-            <v-col cols="12" sm="5" lg="4" v-show="sidenav" class="sidenav pa-0">
+            <v-col
+                cols="12"
+                sm="5"
+                lg="4"
+                v-show="sidenav"
+                class="sidenav pa-0"
+            >
                 <v-card tile class="sidenav-overflow">
                     <v-toolbar color="secondary" dark flat>
                         <v-toolbar-title>Perfil</v-toolbar-title>
@@ -203,29 +120,12 @@
                             <v-icon>fas fa-arrow-right</v-icon>
                         </v-btn>
                     </v-toolbar>
-                    <Account v-if="$store.state.auth.user.user != null"></Account>
+                    <Account
+                        v-if="$store.state.auth.user.user != null"
+                    ></Account>
                 </v-card>
             </v-col>
         </v-slide-x-reverse-transition>
-
-        <!-- <v-card outlined class="search-items-table" v-if="searchItemsList">
-            <v-row justify="center" v-if="searchInProcess" class="py-5">
-                <v-progress-circular
-                    :size="70"
-                    :width="7"
-                    color="primary"
-                    indeterminate
-                ></v-progress-circular>
-            </v-row>
-            <div v-else-if="searchItems != null && searchItems != ''">
-                <div v-if="true"></div>
-                <div v-else class="py-5">
-                    <h3 class="text-center">
-                        Ningun dato coincide con lel criterio de busqueda
-                    </h3>
-                </div>
-            </div>
-        </v-card>-->
     </div>
 </template>
 
@@ -234,9 +134,6 @@ import Account from "./auth/Account";
 
 export default {
     data: () => ({
-        searchItems: null,
-        searchInProcess: false,
-        searchItemsList: false,
         clientes: [],
         proveedores: [],
         articulos: [],
@@ -312,13 +209,6 @@ export default {
                 divider: true
             },
             {
-                name: "Sucrusales",
-                icon: "fas fa-building",
-                url: "/sucursales",
-                roles: ["superAdmin", "administrador"],
-                divider: false
-            },
-            {
                 name: "Usuarios",
                 icon: "fas fa-users",
                 url: "/users",
@@ -367,44 +257,6 @@ export default {
                 this.mini = true;
                 this.permanet = true;
                 this.temporary = false;
-            }
-        },
-
-        searchItemsAfter() {
-            this.searchInProcess = true;
-            this.searchItemsList = true;
-            if (this.searchItems != null && this.searchItems != "") {
-                if (this.timer) {
-                    clearTimeout(this.timer);
-                    this.timer = null;
-                }
-                this.timer = setTimeout(() => {
-                    this.findItems();
-                }, 1000);
-            }
-        },
-
-        findItems: async function() {
-            if (this.buscar != "" && this.buscar != null) {
-                axios
-                    .post("api/buscando", { buscar: this.buscar })
-                    .then(response => {
-                        this.clientes = response.data.clientes;
-                        this.proveedores = response.data.proveedores;
-                        this.articulos = response.data.articulos;
-                        this.negocios = response.data.negocios;
-                        this.noMostrar = false;
-                        console.log(response);
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
-            } else {
-                this.clientes = [];
-                this.negocios = [];
-                this.articulos = [];
-                this.proveedores = [];
-                this.noMostrar = true;
             }
         },
 
@@ -465,23 +317,5 @@ export default {
 
 .drawer-routes {
     margin-top: -8px;
-}
-
-.search-items-input {
-    .v-input__control {
-        height: 32px !important;
-        fieldset {
-            height: 40px !important;
-        }
-
-        .v-text-field__slot {
-            height: 32px !important;
-        }
-    }
-}
-
-.search-items-table {
-    border: 2px solid red;
-    position: absolute;
 }
 </style>

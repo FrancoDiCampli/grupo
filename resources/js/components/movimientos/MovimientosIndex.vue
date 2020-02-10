@@ -44,19 +44,17 @@
                                             right
                                             small
                                         >
-                                            <template v-slot:opposite>
-                                                {{ move.fecha }}
-                                            </template>
+                                            <template v-slot:opposite>{{
+                                                move.fecha
+                                            }}</template>
                                             <div>
-                                                <h2>
-                                                    {{ move.tipo }}
-                                                </h2>
+                                                <h2>{{ move.tipo }}</h2>
                                                 <v-divider></v-divider>
                                                 <br />
                                                 <div class="move-info">
                                                     <p>
-                                                        <b>Articulo: </b
-                                                        >{{
+                                                        <b>Articulo:</b>
+                                                        {{
                                                             move.inventario
                                                                 .inventario
                                                                 .articulo
@@ -64,35 +62,28 @@
                                                         }}
                                                     </p>
                                                     <p>
-                                                        <b>Cantidad: </b
-                                                        >{{ move.cantidad }}
+                                                        <b>Cantidad:</b>
+                                                        {{ move.cantidad }}
                                                     </p>
                                                     <p>
-                                                        <b>Litros: </b
-                                                        >{{
+                                                        <b>Litros:</b>
+                                                        {{
                                                             move.inventario
                                                                 .cantidadlitros
                                                         }}
                                                     </p>
                                                     <p>
-                                                        <b>Lote: </b
-                                                        >{{
+                                                        <b>Lote:</b>
+                                                        {{
                                                             move.inventario
                                                                 .inventario.lote
                                                         }}
                                                     </p>
                                                     <p>
-                                                        <b>Usuario: </b
-                                                        >{{
+                                                        <b>Usuario:</b>
+                                                        {{
                                                             move.inventario.user
                                                                 .name
-                                                        }}
-                                                    </p>
-                                                    <p v-if="move.user.negocio">
-                                                        <b>Sucursal: </b
-                                                        >{{
-                                                            move.user.negocio
-                                                                .nombre
                                                         }}
                                                     </p>
                                                 </div>
@@ -114,7 +105,7 @@
                                 :loading="$store.state.inProcess"
                             >
                                 <v-card-title
-                                    >Movimientos de articulos</v-card-title
+                                    >Movimientos de cuentas</v-card-title
                                 >
                                 <v-divider></v-divider>
                                 <v-card-text
@@ -130,35 +121,33 @@
                                             right
                                             small
                                         >
-                                            <template v-slot:opposite>
-                                                {{ move.fecha }}
-                                            </template>
+                                            <template v-slot:opposite>{{
+                                                move.fecha
+                                            }}</template>
                                             <div>
-                                                <h2>
-                                                    {{ move.tipo }}
-                                                </h2>
+                                                <h2>{{ move.tipo }}</h2>
                                                 <v-divider></v-divider>
                                                 <br />
                                                 <div class="move-info">
                                                     <p>
-                                                        <b>Importe: </b
-                                                        >{{ move.importe }}
+                                                        <b>Importe:</b>
+                                                        {{ move.importe }}
                                                     </p>
                                                     <p>
-                                                        <b>Cliente: </b
-                                                        >{{
+                                                        <b>Cliente:</b>
+                                                        {{
                                                             move.cuenta.ctacte
                                                                 .factura.cliente
                                                                 .razonsocial
                                                         }}
                                                     </p>
                                                     <p>
-                                                        <b>Usuario: </b
-                                                        >{{ move.user.name }}
+                                                        <b>Usuario:</b>
+                                                        {{ move.user.name }}
                                                     </p>
                                                     <p v-if="move.user.negocio">
-                                                        <b>Sucursal: </b
-                                                        >{{
+                                                        <b>Sucursal:</b>
+                                                        {{
                                                             move.user.negocio
                                                                 .nombre
                                                         }}
