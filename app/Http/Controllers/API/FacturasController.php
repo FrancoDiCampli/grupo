@@ -4,9 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Venta;
 use App\Cliente;
-use App\Distributor;
 use App\Factura;
-use App\Negocio;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -25,14 +23,8 @@ class FacturasController extends Controller
     public function index(Request $request)
     {
         if (auth()->user()->role_id == 1 || auth()->user()->role_id == 2) {
-            if ($request->distributor_id) {
-                $distributor = Distributor::find($request->distributor_id);
-                $usuario = $distributor->user;
-                $facs = $usuario->facturas;
-            } else {
-                $facs = Factura::orderBy('id', 'DESC')
-                    ->get();
-            }
+            $facs = Factura::orderBy('id', 'DESC')
+                ->get();
         } else {
             $facs = Factura::orderBy('id', 'DESC')
                 ->where('user_id', auth()->user()->id)

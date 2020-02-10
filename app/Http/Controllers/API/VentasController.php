@@ -10,7 +10,6 @@ use Carbon\Carbon;
 use App\Inventario;
 use App\Movimiento;
 use App\Cuentacorriente;
-use App\Distributor;
 use App\Movimientocuenta;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
