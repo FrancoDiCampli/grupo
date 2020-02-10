@@ -6,7 +6,7 @@
         <h1 class="text-center secondary--text">Bienvenido</h1>
         <br />
         <div v-if="$store.state.auth.user">
-            <v-row justify="center" v-if="$store.state.auth.user.rol.role == 'cliente'">
+            <v-row justify="center" v-if="$store.state.auth.user.rol == 'cliente'">
                 <v-btn
                     tile
                     color="secondary"

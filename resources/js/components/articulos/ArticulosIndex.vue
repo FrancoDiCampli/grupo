@@ -55,7 +55,10 @@
                     </v-row>
                 </div>
                 <div v-else-if="$store.state.articulos.articulos">
-                    <v-row justify="center" v-if="$store.state.articulos.articulos.length > 0">
+                    <v-row
+                        justify="center"
+                        v-if="$store.state.articulos.articulos.articulos.length > 0"
+                    >
                         <v-col
                             cols="10"
                             sm="6"

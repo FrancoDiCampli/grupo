@@ -88,7 +88,7 @@
         </v-row>
 
         <v-row justify="space-around">
-            <v-col cols="12" sm="6" class="py-0">
+            <v-col cols="12" :sm="mode == 'create' ?  '6' : '4'" class="py-0">
                 <v-text-field
                     v-model="$store.state.articulos.form.precio"
                     :rules="[rules.required]"
@@ -97,7 +97,7 @@
                     type="number"
                 ></v-text-field>
             </v-col>
-            <v-col cols="12" sm="6" class="py-0">
+            <v-col cols="12" :sm="mode == 'create' ?  '6' : '4'" class="py-0">
                 <v-select
                     v-model="$store.state.articulos.form.litros"
                     :items="presentaciones"
@@ -108,7 +108,7 @@
                     outlined
                 ></v-select>
             </v-col>
-            <v-col cols="12" sm="6" class="py-0">
+            <v-col cols="12" :sm="mode == 'create' ?  '6' : '4'" class="py-0">
                 <v-text-field
                     v-model="$store.state.articulos.form.stockminimo"
                     :rules="[rules.required]"
@@ -177,7 +177,7 @@
                 </v-combobox>
             </v-col>
             <v-col cols="12" sm="6" class="py-0">
-                <v-text-field label="Medida" v-model="medida" outlined disabled></v-text-field>
+                <v-text-field label="Medida" placeholder="Litros" disabled outlined></v-text-field>
             </v-col>
             <v-col cols="12" sm="6" class="py-0">
                 <v-text-field label="Codigo" v-model="codigo" outlined disabled></v-text-field>
@@ -190,7 +190,6 @@
 export default {
     data() {
         return {
-            medida: "Litros",
             searchCategoria: null,
             searchMarca: null,
             categorias: [],

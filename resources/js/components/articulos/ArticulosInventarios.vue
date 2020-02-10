@@ -16,7 +16,6 @@
                         <td>{{ item.item.cantidadlitros }}</td>
                         <td>{{ item.item.lote }}</td>
                         <td>{{ item.item.proveedor.razonsocial }}</td>
-                        <td>{{ item.item.negocio.razonsocial }}</td>
                     </tr>
                 </template>
             </v-data-table>

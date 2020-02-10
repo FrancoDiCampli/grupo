@@ -125,11 +125,11 @@ class ArticulosController extends Controller
             $categoria_id = $nuevaCategoria->id;
         }
 
-        $distributor = Distributor::where('nombre', $data['distributor'])->get();
-        $distributor_id = null;
-        if (count($distributor) > 0) {
-            $distributor_id = $distributor[0]->id;
-        }
+        // $distributor = Distributor::where('nombre', $data['distributor'])->get();
+        // $distributor_id = null;
+        // if (count($distributor) > 0) {
+        //     $distributor_id = $distributor[0]->id;
+        // }
 
         $data = $request->validated();
         $data['marca_id'] = $marca_id;
@@ -138,14 +138,13 @@ class ArticulosController extends Controller
 
         $articulo = Articulo::create($data);
 
-        if ($stockInicial || $distributor_id) {
+        if ($stockInicial) {
             $inventario = Inventario::create([
                 'cantidad' => $stockInicial,
                 'cantidadlitros' => $stockInicial * $articulo->litros,
                 'lote' => 1,
                 'articulo_id' => $articulo->id,
                 'supplier_id' => 1,
-                'distributor_id' => $distributor_id
             ]);
             Movimiento::create([
                 'tipo' => 'ALTA',
@@ -246,15 +245,11 @@ class ArticulosController extends Controller
         $inventarios = collect();
         foreach ($aux as $inventario) {
             if (auth()->user()->role_id == 1 || auth()->user()->role_id == 2) {
-                $distributor = $inventario->distributor;
                 $inv = collect($inventario);
-                $inv->put('distributor', $distributor);
                 $inv->put('proveedor', $inventario->proveedor);
                 $inventarios->push($inv);
             } elseif ($inventario->distributor_id == auth()->user()->distributor_id) {
-                $distributor = $inventario->distributor;
                 $inv = collect($inventario);
-                $inv->put('distributor', $distributor);
                 $inv->put('proveedor', $inventario->proveedor);
                 $inventarios->push($inv);
             }
