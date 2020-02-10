@@ -43,13 +43,6 @@ class PresupuestosController extends Controller
             }
         }
 
-        if ($request->fec) {
-            $fec = $request->fec;
-            $pres = Presupuesto::whereDate('created_at', $fec)->orderBy('id', 'DESC')->buscar($request)->get();
-        } else {
-            $pres = Presupuesto::orderBy('id', 'DESC')->buscar($request)->get();
-        }
-
         $presupuestos = collect();
 
         foreach ($pres as $pre) {

@@ -72,14 +72,14 @@ class VentasController extends Controller
 
         if ($facturas->count() <= $request->get('limit')) {
             return [
-                'facturas' => $facturas,
+                'ventas' => $facturas,
                 'ultima' => $facturas->first(),
                 'total' => $facturas->count(),
                 'eliminadas' => $eliminadas
             ];
         } else {
             return [
-                'facturas' => $facturas->take($request->get('limit', null)),
+                'ventas' => $facturas->take($request->get('limit', null)),
                 'ultima' => $facturas->first(),
                 'total' => $facturas->count(),
                 'eliminadas' => $eliminadas
