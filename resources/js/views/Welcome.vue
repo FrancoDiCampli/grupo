@@ -26,7 +26,12 @@
                         </v-col>
                     </v-row>
                 </v-col>
-                <v-col cols="12" sm="4" class="cliente-btn">
+                <v-col
+                    cols="12"
+                    sm="4"
+                    class="cliente-btn"
+                    @click="exitTo('https://play.google.com/store/apps/details?id=com.grupoapc.app&hl=es')"
+                >
                     <v-row justify="center">
                         <v-col cols="12">
                             <v-row justify="center">
@@ -40,7 +45,12 @@
                         </v-col>
                     </v-row>
                 </v-col>
-                <v-col cols="12" sm="4" class="cliente-btn">
+                <v-col
+                    cols="12"
+                    sm="4"
+                    class="cliente-btn"
+                    @click="exitTo('http://grupoapc.com.ar/')"
+                >
                     <v-row justify="center">
                         <v-col cols="12">
                             <v-row justify="center">
@@ -67,7 +77,13 @@
 </template>
 
 <script>
-export default {};
+export default {
+    methods: {
+        exitTo(route) {
+            window.open(route);
+        }
+    }
+};
 </script>
 
 <style lang="scss" scoped>

@@ -6,10 +6,15 @@
                     <v-list-item-title>Cerrar sesión</v-list-item-title>
                 </v-list-item>
             </template>
-            <template slot="searchBar">
-                <v-btn icon class="mr-3" @click="searchDialog = true"
-                    ><v-icon>fas fa-search</v-icon></v-btn
+            <template slot="searchBar" v-if="$store.state.auth.user">
+                <v-btn
+                    icon
+                    class="mr-3"
+                    @click="searchDialog = true"
+                    v-if="$store.state.auth.user.rol != 'cliente'"
                 >
+                    <v-icon>fas fa-search</v-icon>
+                </v-btn>
             </template>
         </AppBar>
         <v-content>
@@ -27,12 +32,10 @@
                         outlined
                     ></v-text-field>
                     <v-card outlined :loading="searchInProcess">
-                        <v-card-text>
+                        <v-card-text v-if="$store.state.auth.user">
                             <div v-if="haveItems">
                                 <v-list>
-                                    <v-subheader v-if="items.clientes.length"
-                                        >Clientes</v-subheader
-                                    >
+                                    <v-subheader v-if="items.clientes">Clientes</v-subheader>
                                     <v-list-item
                                         v-for="(cliente,
                                         index) in items.clientes"
@@ -44,14 +47,10 @@
                                         "
                                     >
                                         <v-list-item-content>
-                                            <v-list-item-title
-                                                v-text="cliente.razonsocial"
-                                            ></v-list-item-title>
+                                            <v-list-item-title v-text="cliente.razonsocial"></v-list-item-title>
                                         </v-list-item-content>
                                     </v-list-item>
-                                    <v-subheader v-if="items.proveedores.length"
-                                        >Proveedores</v-subheader
-                                    >
+                                    <v-subheader v-if="items.proveedores">Proveedores</v-subheader>
                                     <v-list-item
                                         v-for="(prov,
                                         index) in items.proveedores"
@@ -63,14 +62,10 @@
                                         "
                                     >
                                         <v-list-item-content>
-                                            <v-list-item-title
-                                                v-text="prov.razonsocial"
-                                            ></v-list-item-title>
+                                            <v-list-item-title v-text="prov.razonsocial"></v-list-item-title>
                                         </v-list-item-content>
                                     </v-list-item>
-                                    <v-subheader v-if="items.articulos.length"
-                                        >Articulos</v-subheader
-                                    >
+                                    <v-subheader v-if="items.articulos">Articulos</v-subheader>
                                     <v-list-item
                                         v-for="(articulo,
                                         index) in items.articulos"
@@ -82,9 +77,7 @@
                                         "
                                     >
                                         <v-list-item-content>
-                                            <v-list-item-title
-                                                v-text="articulo.articulo"
-                                            ></v-list-item-title>
+                                            <v-list-item-title v-text="articulo.articulo"></v-list-item-title>
                                         </v-list-item-content>
                                     </v-list-item>
                                 </v-list>
@@ -150,19 +143,34 @@ export default {
         },
 
         haveItems() {
-            if (this.items) {
+            if (this.$store.state.auth.user) {
                 if (
-                    this.items.clientes.length > 0 ||
-                    this.items.proveedores.length > 0 ||
-                    this.items.articulos.length > 0 ||
-                    this.items.usuarios.length > 0
+                    this.$store.state.auth.user.rol == "administrador" ||
+                    this.$store.state.auth.user.rol == "superAdmin"
                 ) {
-                    return true;
+                    if (this.items) {
+                        if (
+                            this.items.clientes.length > 0 ||
+                            this.items.proveedores.length > 0 ||
+                            this.items.articulos.length > 0 ||
+                            this.items.usuarios.length > 0
+                        ) {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    }
+                } else if (this.$store.state.auth.user.rol == "vendedor") {
+                    if (this.items) {
+                        if (this.items.clientes.length > 0) {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    }
                 } else {
                     return false;
                 }
-            } else {
-                return false;
             }
         }
     },

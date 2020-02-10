@@ -13,12 +13,12 @@ class UsersController extends Controller
 {
     public function __construct()
     {
-        // $this->middleware('auth:airlock');
+        $this->middleware('auth:airlock');
 
-        // $this->middleware('scope:users-index')->only('index');
-        // $this->middleware('scope:users-store')->only('store');
-        // $this->middleware('scope:users-update')->only('update');
-        // $this->middleware('scope:users-destroy')->only('destroy');
+        $this->middleware('scope:users-index')->only('index');
+        $this->middleware('scope:users-store')->only('store');
+        $this->middleware('scope:users-update')->only('update');
+        $this->middleware('scope:users-destroy')->only('destroy');
     }
 
     public function user()

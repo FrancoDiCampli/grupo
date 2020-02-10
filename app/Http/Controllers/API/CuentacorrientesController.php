@@ -19,8 +19,8 @@ class CuentacorrientesController extends Controller
 {
     public function __construct()
     {
-        // $this->middleware('auth:airlock');
-        // $this->middleware('scope:cuentascorrientes-pagar')->only('pagar');
+        $this->middleware('auth:airlock');
+        $this->middleware('scope:cuentascorrientes-index')->only('pagar');
     }
 
     // PAGOS PARCIALES O TOTALES 
@@ -30,11 +30,12 @@ class CuentacorrientesController extends Controller
         $aux = array();
         $total = 0;
 
-        foreach ($request as $res) {
-            $cuenta = Cuentacorriente::findOrFail($res[0]['cuenta_id']);
+
+        foreach ($request['pagos'] as $res) {
+            $cuenta = Cuentacorriente::findOrFail($res['cuenta_id']);
             $cliente = $cuenta->factura->cliente;
-            if ($res[0]['pagos'] != null) {
-                foreach ($res[0]['pagos'] as $pay) {
+            if ($res['pagos'] != null) {
+                foreach ($res['pagos'] as $pay) {
                     // PAGO PARCIAL
                     if ($pay['dolares'] < $cuenta->saldo) {
                         $cuenta->saldo = $cuenta->saldo - $pay['dolares'];
@@ -53,7 +54,7 @@ class CuentacorrientesController extends Controller
                             'importe' => $pay['dolares'],
                             'fecha' => now()->format('Ymd'),
                             'numpago' => $numpago,
-                            'referencia' => $this->formaPago($pay, $cliente, $diferencia = null)
+                            'referencia' => $this->formaPago($pay, $cliente, $diferencia = null) // ACA ESTA EL PROBLEMA
                         ]);
 
                         array_push($aux, $nuevoPago->id);
@@ -86,7 +87,7 @@ class CuentacorrientesController extends Controller
                             'importe' => $pay['dolares'],
                             'fecha' => now()->format('Ymd'),
                             'numpago' => $numpago,
-                            'referencia' => $this->formaPago($pay, $cliente, $diferencia = null)
+                            'referencia' => $this->formaPago($pay, $cliente, $diferencia = null) // ACA ESTA EL PROBLEMA
                         ]);
                         array_push($aux, $nuevoPago->id);
                         $movimiento = Movimientocuenta::create([
@@ -118,7 +119,7 @@ class CuentacorrientesController extends Controller
                             'importe' => $pay['dolares'],
                             'fecha' => now()->format('Ymd'),
                             'numpago' => $numpago,
-                            'referencia' => $this->formaPago($pay, $cliente, $diferencia)
+                            'referencia' => $this->formaPago($pay, $cliente, $diferencia) // ACA ESTA EL PROBLEMA
                         ]);
 
                         array_push($aux, $nuevoPago->id);
@@ -151,7 +152,6 @@ class CuentacorrientesController extends Controller
     public function formaPago($pay, $cliente, $diferencia)
     {
         $esta = $pay['tipo'];
-
         switch ($esta) {
             case 'Efectivo':
                 $efectivo = Efectivo::create([

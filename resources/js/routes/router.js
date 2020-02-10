@@ -261,18 +261,18 @@ export default new Router({
             path: "/users/editar",
             name: "users_edit",
             component: UsersEdit
-        },
+        }
 
         // Reportes
-        {
-            path: "/cartera",
-            name: "cartera",
-            component: Cartera
-        },
-        {
-            path: "/reportes",
-            name: "reportes",
-            component: Reportes
-        }
+        // {
+        //     path: "/cartera",
+        //     name: "cartera",
+        //     component: Cartera
+        // },
+        // {
+        //     path: "/reportes",
+        //     name: "reportes",
+        //     component: Reportes
+        // }
     ]
 });

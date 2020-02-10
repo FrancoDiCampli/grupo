@@ -16,11 +16,11 @@ class ComprasController extends Controller
 {
     public function __construct()
     {
-        // $this->middleware('auth:airlock');
+        $this->middleware('auth:airlock');
 
-        // $this->middleware('scope:compras-index')->only('index');
-        // $this->middleware('scope:compras-show')->only('show');
-        // $this->middleware('scope:compras-store')->only('store');
+        $this->middleware('scope:compras-index')->only('index');
+        $this->middleware('scope:compras-show')->only('show');
+        $this->middleware('scope:compras-store')->only('store');
     }
 
     public function index(Request $request)

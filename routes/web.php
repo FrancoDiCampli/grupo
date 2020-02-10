@@ -9,7 +9,7 @@ use App\Http\Controllers\API\MovimientosController;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('welcome');
 
 // Vue Capture
 Route::get('/{vue_capture?}', function () {

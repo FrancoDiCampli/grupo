@@ -49,16 +49,6 @@
                     outlined
                 ></v-select>
             </v-col>
-            <v-col cols="12" class="py-0 px-5" v-if="$store.state.sucursales.sucursales">
-                <v-select
-                    v-model="$store.state.users.form.negocio_id"
-                    :items="$store.state.sucursales.sucursales.negocios"
-                    item-text="nombre"
-                    item-value="id"
-                    label="Sucursal"
-                    outlined
-                ></v-select>
-            </v-col>
         </v-row>
     </div>
 </template>
@@ -102,7 +92,6 @@ export default {
 
     mounted() {
         this.$store.dispatch("roles/index");
-        this.$store.dispatch("sucursales/index");
     }
 };
 </script>

@@ -18,12 +18,12 @@ class EstadisticasController extends Controller
 {
     public function __construct()
     {
-        // $this->middleware('auth:airlock');
+        $this->middleware('auth:airlock');
     }
 
     public function cartera()
     {
-        $cheques = Cheque::whereDate('fechacobro', '>=', now())->get();
+        $cheques = Cheque::all();
         $calendar = array();
         $table = array();
         $today = now();
@@ -51,7 +51,8 @@ class EstadisticasController extends Controller
                 $calendar,
                 [
                     'name' => 'Cheque Nº.: ' . $cheque->numero,
-                    'start' => $cheque->fechacobro,
+                    'start' => $cheque->fecharecibido,
+                    'end' => $cheque->fechacobro,
                     'color' => $color,
                     'title' => $cheque->estado
                 ]
