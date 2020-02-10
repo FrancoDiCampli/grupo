@@ -3,8 +3,6 @@
 namespace App\Http\Controllers\API;
 
 use App\Cliente;
-use App\Distributor;
-use App\Negocio;
 use Carbon\Carbon;
 use App\Presupuesto;
 use Illuminate\Http\Request;
@@ -25,19 +23,31 @@ class PresupuestosController extends Controller
 
     public function index(Request $request)
     {
-        if (auth()->user()->role_id == 1 || auth()->user()->role_id == 2) {
-            if ($request->distributor_id) {
-                $distributor = Distributor::find($request->distributor_id);
-                $usuario = $distributor->user;
-                $pres = $usuario->presupuestos;
+        if (auth()->user()->role_id <> 3) {
+            if ($request->fec) {
+                $fec = $request->fec;
+                $pres = Presupuesto::whereDate('created_at', $fec)->orderBy('id', 'DESC')->buscar($request)->get();
             } else {
-                $pres = Presupuesto::orderBy('id', 'DESC')
-                    ->get();
+                $pres = Presupuesto::orderBy('id', 'DESC')->buscar($request)->get();
             }
         } else {
-            $pres = Presupuesto::orderBy('id', 'DESC')
-                ->where('user_id', auth()->user()->id)
-                ->get();
+            if ($request->fec) {
+                $fec = $request->fec;
+                $pres = Presupuesto::whereDate('created_at', $fec)
+                    ->where('user_id', auth()->user()->id)
+                    ->orderBy('id', 'DESC')->buscar($request)->get();
+            } else {
+                $pres = Presupuesto::orderBy('id', 'DESC')
+                    ->where('user_id', auth()->user()->id)
+                    ->buscar($request)->get();
+            }
+        }
+
+        if ($request->fec) {
+            $fec = $request->fec;
+            $pres = Presupuesto::whereDate('created_at', $fec)->orderBy('id', 'DESC')->buscar($request)->get();
+        } else {
+            $pres = Presupuesto::orderBy('id', 'DESC')->buscar($request)->get();
         }
 
         $presupuestos = collect();

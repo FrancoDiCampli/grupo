@@ -6,17 +6,13 @@ use Afip;
 use App\User;
 use App\Recibo;
 use App\Cliente;
-use App\Negocio;
 use App\Contacto;
 use App\Distributor;
 use Carbon\Carbon;
-use App\Preference;
 use Illuminate\Http\Request;
-use App\Notifications\Verificar;
 use App\Http\Requests\StoreCliente;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UpdateCliente;
-use Intervention\Image\Facades\Image;
 
 class ClientesController extends Controller
 {
@@ -34,29 +30,25 @@ class ClientesController extends Controller
 
     public function index(Request $request)
     {
-        if (auth()->user()->role_id == 1 || auth()->user()->role_id == 2) {
-            if ($request->distributor_id) {
-                $distributor = Distributor::find($request->distributor_id);
-                $usuario = $distributor->user;
-                $clientes = $usuario->clientes;
-            } else {
-                $clientes = Cliente::orderBy('razonsocial', 'asc')
-                    ->get();
-            }
+        if (auth()->user()->role_id <> 3) {
+            $clientes = Cliente::orderBy('razonsocial', 'asc')
+                ->where('documentounico', '<>', 0)
+                ->buscar($request);
         } else {
             $clientes = Cliente::orderBy('razonsocial', 'asc')
+                ->where('documentounico', '<>', 0)
                 ->where('user_id', auth()->user()->id)
-                ->get();
+                ->buscar($request);
         }
 
         if ($clientes->count() <= $request->get('limit')) {
             return [
-                'clientes' => $clientes,
+                'clientes' => $clientes->get(),
                 'total' => $clientes->count()
             ];
         } else {
             return [
-                'clientes' => $clientes->take($request->get('limit', null)),
+                'clientes' => $clientes->take($request->get('limit', null))->get(),
                 'total' => $clientes->count()
             ];
         }

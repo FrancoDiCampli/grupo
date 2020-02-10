@@ -6,7 +6,6 @@ use App\User;
 use App\Marca;
 use App\Articulo;
 use App\Categoria;
-use App\Distributor;
 use Carbon\Carbon;
 use App\Inventario;
 use App\Movimiento;
@@ -14,7 +13,6 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreArticulo;
 use App\Http\Requests\UpdateArticulo;
-use App\Negocio;
 use Intervention\Image\Facades\Image;
 use App\Notifications\ArticuloNotification;
 
@@ -35,22 +33,10 @@ class ArticulosController extends Controller
     {
         $articles = Articulo::orderBy('id', 'desc')->buscar($request)->get();
         $articulos = collect();
-        $inventarios = collect();
 
         foreach ($articles as $art) {
-
-            if (auth()->user()->role_id == 1) {
-                $inventarios = $art->inventarios;
-            } else {
-                foreach ($art->inventarios as $inv) {
-                    if ($inv->distributor_id == auth()->user()->distributor_id) {
-                        $inventarios->push($inv);
-                    }
-                }
-            }
-
-            $stock = $inventarios->sum('cantidad');
-
+            $stock = $art->inventarios->sum('cantidad');
+            $inventarios = $art->inventarios;
             $art = collect($art);
             $art->put('stock', $stock);
             if (count($inventarios) == 0) {
@@ -66,7 +52,6 @@ class ArticulosController extends Controller
                     }
                 }
             }
-            $art['inventarios'] = $inventarios;
             $articulos->push($art);
         }
 
@@ -125,12 +110,6 @@ class ArticulosController extends Controller
             $categoria_id = $nuevaCategoria->id;
         }
 
-        // $distributor = Distributor::where('nombre', $data['distributor'])->get();
-        // $distributor_id = null;
-        // if (count($distributor) > 0) {
-        //     $distributor_id = $distributor[0]->id;
-        // }
-
         $data = $request->validated();
         $data['marca_id'] = $marca_id;
         $data['categoria_id'] = $categoria_id;
@@ -144,7 +123,7 @@ class ArticulosController extends Controller
                 'cantidadlitros' => $stockInicial * $articulo->litros,
                 'lote' => 1,
                 'articulo_id' => $articulo->id,
-                'supplier_id' => 1,
+                'supplier_id' => 1
             ]);
             Movimiento::create([
                 'tipo' => 'ALTA',
@@ -240,21 +219,13 @@ class ArticulosController extends Controller
         $articulo = Articulo::find($id);
         $marca = $articulo->marca->marca;
         $categoria = $articulo->categoria->categoria;
-        $aux = $articulo->inventarios;
+        $stock = $articulo->inventarios->sum('cantidad');
+        $inventarios = $articulo->inventarios;
         $lotes = $this->lotes($id);
-        $inventarios = collect();
-        foreach ($aux as $inventario) {
-            if (auth()->user()->role_id == 1 || auth()->user()->role_id == 2) {
-                $inv = collect($inventario);
-                $inv->put('proveedor', $inventario->proveedor);
-                $inventarios->push($inv);
-            } elseif ($inventario->distributor_id == auth()->user()->distributor_id) {
-                $inv = collect($inventario);
-                $inv->put('proveedor', $inventario->proveedor);
-                $inventarios->push($inv);
-            }
+        foreach ($inventarios as $inventario) {
+            $inv = collect($inventario);
+            $inv->put('proveedor', $inventario->proveedor);
         }
-        $stock = $inventarios->sum('cantidad');
         return ['articulo' => $articulo, 'stock' => $stock, 'inventarios' => $inventarios, 'lotes' => $lotes, 'marca' => $marca, 'categoria' => $categoria];
     }
 
