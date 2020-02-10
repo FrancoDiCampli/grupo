@@ -44,11 +44,6 @@ import ComprasShow from "../views/compras/Show";
 // Movimientos
 import Movimientos from "../views/movimientos/Movimientos";
 
-// Sucursales
-import Sucursales from "../views/sucursales/Sucursales";
-import SucursalesCreate from "../views/sucursales/Create";
-import SucursalesShow from "../views/sucursales/Show";
-
 // Roles
 import Roles from "../views/roles/Roles";
 import RolesCreate from "../views/roles/Create";
@@ -232,24 +227,6 @@ export default new Router({
             path: "/movimientos",
             name: "movimientos",
             component: Movimientos
-        },
-
-        // Sucursales
-        {
-            path: "/sucursales",
-            name: "sucursales",
-            component: Sucursales
-        },
-        {
-            path: "/sucursales/nueva",
-            name: "sucursales_create",
-            component: SucursalesCreate
-        },
-        {
-            path: "/sucursales/show/:id",
-            name: "sucursales_show",
-            component: SucursalesShow,
-            props: true
         },
 
         // Roles

@@ -55,13 +55,13 @@
                     </v-row>
                 </v-col>
             </v-row>
-        </div>
-        <div v-else>
-            <v-row justify="center">
-                <img src="img/logo.png" width="400" height="400" />
-            </v-row>
-            <h1 class="text-center secondary--text">Bienvenido</h1>
-            <br />
+            <div v-else>
+                <v-row justify="center">
+                    <img src="img/logo.png" width="400" height="400" />
+                </v-row>
+                <h1 class="text-center secondary--text">Bienvenido</h1>
+                <br />
+            </div>
         </div>
     </div>
 </template>
