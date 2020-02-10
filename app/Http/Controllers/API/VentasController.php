@@ -73,14 +73,14 @@ class VentasController extends Controller
 
         if ($facturas->count() <= $request->get('limit')) {
             return [
-                'facturas' => $facturas,
+                'ventas' => $facturas,
                 'ultima' => $facturas->first(),
                 'total' => $facturas->count(),
                 'eliminadas' => $eliminadas
             ];
         } else {
             return [
-                'facturas' => $facturas->take($request->get('limit', null)),
+                'ventas' => $facturas->take($request->get('limit', null)),
                 'ultima' => $facturas->first(),
                 'total' => $facturas->count(),
                 'eliminadas' => $eliminadas
@@ -239,10 +239,10 @@ class VentasController extends Controller
     public function facturar(Request $request)
     {
         $factura = collect();
-        if (array_key_exists('cliente', $request->id)) {
-            $cliente = Cliente::findOrFail($request->id['cliente']);
-            $factura->put('cliente', $cliente);
-        }
+        // if (array_key_exists('cliente', $request->id)) {
+        //     $cliente = Cliente::findOrFail($request->id['cliente']);
+        //     $factura->put('cliente', $cliente);
+        // }
         $ids = $request->id['seleccionadas'];
 
         $details = collect();

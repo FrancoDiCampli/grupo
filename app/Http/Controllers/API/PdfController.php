@@ -34,24 +34,6 @@ class PdfController extends Controller
         return $pdf->download();
     }
 
-    public function facturasPDF($id)
-    {
-        $jsonString = file_get_contents(base_path('config.json'));
-        $configuracion = json_decode($jsonString, true);
-        $factura = Factura::find($id);
-        $fecha = new Carbon($factura->fecha);
-        $factura->fecha = $fecha->format('d-m-Y');
-        $cliente = Cliente::find($factura->cliente_id);
-        $detalles = collect();
-        foreach ($factura->ventas as $venta) {
-            foreach ($venta->articulos as $det) {
-                $detalles->push($det['pivot']);
-            }
-        }
-        $pdf = app('dompdf.wrapper')->loadView('remitosPDF', compact('configuracion', 'factura', 'detalles', 'cliente'))->setPaper('A4');
-        return $pdf->download();
-    }
-
     public function presupuestosPDF($id)
     {
         $jsonString = file_get_contents(base_path('config.json'));

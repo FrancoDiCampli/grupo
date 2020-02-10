@@ -62,8 +62,7 @@ const actions = {
             axios
                 .post("/api/ventas", state.form)
                 .then(response => {
-                    console.log(response.data);
-                    // commit("resetForm");
+                    commit("resetForm");
                     resolve(response.data);
                 })
                 .catch(error => {

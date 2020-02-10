@@ -1,24 +1,10 @@
 <template>
     <div>
         <v-tabs right hide-slider background-color="transparent">
-            <v-btn
-                color="primary"
-                class="filter-btn"
-                icon
-                @click="filterMenu = !filterMenu"
-            >
-                <v-icon size="medium">fas fa-filter</v-icon>
-            </v-btn>
             <v-spacer></v-spacer>
             <v-tab>Ventas</v-tab>
             <v-tab>Facturas</v-tab>
             <v-tab-item>
-                <v-expand-transition>
-                    <div class="filters" v-if="filterMenu">
-                        <slot name="filter"></slot>
-                    </div>
-                </v-expand-transition>
-
                 <v-card shaped outlined :loading="$store.state.inProcess">
                     <v-card-title>Ventas</v-card-title>
                     <v-divider></v-divider>
@@ -43,30 +29,19 @@
                                             "
                                         ></v-checkbox>
                                     </td>
-                                    <td class="hidden-xs-only">
-                                        {{ item.numventa }}
-                                    </td>
+                                    <td class="hidden-xs-only">{{ item.numventa }}</td>
                                     <td>{{ item.cliente.razonsocial }}</td>
                                     <td>{{ item.total }}</td>
-                                    <td class="hidden-sm-and-down">
-                                        {{ item.fecha }}
-                                    </td>
-                                    <td class="hidden-sm-and-down">
-                                        {{ item.condicionventa }}
-                                    </td>
+                                    <td class="hidden-sm-and-down">{{ item.fecha }}</td>
+                                    <td class="hidden-sm-and-down">{{ item.condicionventa }}</td>
                                     <td>
                                         <v-menu offset-y>
                                             <template v-slot:activator="{ on }">
-                                                <v-btn
-                                                    color="secondary"
-                                                    text
-                                                    icon
-                                                    v-on="on"
-                                                >
-                                                    <v-icon size="medium"
-                                                        >fas
-                                                        fa-ellipsis-v</v-icon
-                                                    >
+                                                <v-btn color="secondary" text icon v-on="on">
+                                                    <v-icon size="medium">
+                                                        fas
+                                                        fa-ellipsis-v
+                                                    </v-icon>
                                                 </v-btn>
                                             </template>
                                             <v-list>
@@ -75,16 +50,10 @@
                                                         `/ventas/show/${item.id}`
                                                     "
                                                 >
-                                                    <v-list-item-title
-                                                        >Detalles</v-list-item-title
-                                                    >
+                                                    <v-list-item-title>Detalles</v-list-item-title>
                                                 </v-list-item>
-                                                <v-list-item
-                                                    @click="print(item.id)"
-                                                >
-                                                    <v-list-item-title
-                                                        >Imprimir</v-list-item-title
-                                                    >
+                                                <v-list-item @click="print(item.id)">
+                                                    <v-list-item-title>Imprimir</v-list-item-title>
                                                 </v-list-item>
                                             </v-list>
                                         </v-menu>
@@ -92,25 +61,32 @@
                                 </tr>
                             </template>
                         </v-data-table>
-                        <slot name="loadMore"></slot>
+                        <br />
+                        <v-row justify="center">
+                            <v-btn
+                                :loading="$store.state.inProcess"
+                                :disabled="selected.length <= 0"
+                                @click="facturar()"
+                                color="secondary"
+                                class="mr-3"
+                                outlined
+                                tile
+                            >Facturar</v-btn>
+                            <slot></slot>
+                        </v-row>
                     </v-card-text>
                 </v-card>
             </v-tab-item>
             <v-tab-item>
-                <v-expand-transition>
-                    <div class="filters" v-if="filterMenu">
-                        <slot name="filter"></slot>
-                    </div>
-                </v-expand-transition>
                 <v-card shaped outlined :loading="$store.state.inProcess">
                     <v-card-title>Facturas</v-card-title>
                     <v-divider></v-divider>
-                    <v-card-text
-                        v-if="$store.state.facturas.facturas"
-                        class="px-0"
-                    >
+                    <v-card-text v-if="$store.state.facturas.facturas" class="px-0">
                         <FacturasIndex :limit="limit"></FacturasIndex>
-                        <slot name="loadMore"></slot>
+                        <br />
+                        <v-row justify="center" v-if="$store.state.ventas.ventas">
+                            <slot></slot>
+                        </v-row>
                     </v-card-text>
                 </v-card>
             </v-tab-item>
@@ -123,7 +99,6 @@ import FacturasIndex from "../facturas/FacturasIndex";
 
 export default {
     data: () => ({
-        filterMenu: false,
         headers: [
             { text: "", sortable: false },
             { text: "Número", sortable: false, class: "hidden-xs-only" },
@@ -145,45 +120,22 @@ export default {
     methods: {
         facturar: async function() {
             if (this.selected.length > 0) {
-                await localStorage.setItem(
-                    "facturas",
-                    JSON.stringify({
-                        seleccionadas: this.selected
+                this.$store
+                    .dispatch("facturas/facturar", {
+                        selected: this.selected
                     })
-                );
-                this.$router.push("/facturas/create");
-            } else {
-                this.alert = true;
+                    .then(() => {
+                        this.$router.push("/facturas/create");
+                    });
             }
         },
 
         print(id) {
-            axios({
-                url: "/api/ventasPDF/" + id,
-                method: "GET",
-                responseType: "blob"
-            }).then(response => {
-                const url = window.URL.createObjectURL(
-                    new Blob([response.data])
-                );
-                const link = document.createElement("a");
-                link.href = url;
-                link.setAttribute("download", "factura" + id + ".pdf");
-                document.body.appendChild(link);
-                link.click();
-            });
+            this.$store.dispatch("PDF/printVenta", { id: id });
         }
     }
 };
 </script>
 
 <style lang="scss">
-.filter-btn {
-    margin-top: 4px;
-    margin-left: 12px;
-}
-
-.filters {
-    height: auto;
-}
 </style>

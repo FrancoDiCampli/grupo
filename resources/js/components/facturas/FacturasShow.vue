@@ -6,9 +6,7 @@
                     <v-card-text class="pa-0 black--text">
                         <v-row>
                             <v-col cols="12">
-                                <h2
-                                    class="text-center mb-3"
-                                >{{ $store.state.facturas.factura.factura.tipocomprobante }}</h2>
+                                <h2 class="text-center mb-3">FACTURA</h2>
                                 <v-divider></v-divider>
                             </v-col>
                             <v-col cols="12" sm="6" class="header-left">
@@ -29,7 +27,7 @@
                                 </p>
                             </v-col>
                             <v-col cols="12" sm="6" class="header-right">
-                                <h2 class="text-center">REMITO</h2>
+                                <h2 class="text-center">FACTURA</h2>
                                 <p>
                                     <b>Punto de Venta:</b>
                                     0000{{ $store.state.facturas.factura.configuracion.puntoventa }}
@@ -51,6 +49,10 @@
                                 <p>
                                     <b>Inicio de Actividades:</b>
                                     {{ $store.state.facturas.factura.configuracion.inicioactividades }}
+                                </p>
+                                <p>
+                                    <b>Comprobante Adherido:</b>
+                                    {{ $store.state.facturas.factura.factura.comprobanteadherido }}
                                 </p>
                             </v-col>
                             <v-col cols="12" class="pre-body">

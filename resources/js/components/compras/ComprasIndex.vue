@@ -1,6 +1,11 @@
 <template>
     <div>
-        <v-card v-if="$store.state.compras.compras" shaped outlined>
+        <v-card
+            v-if="$store.state.compras.compras"
+            shaped
+            outlined
+            :loading="$store.state.inProcess"
+        >
             <v-card-title>Compras</v-card-title>
             <v-divider></v-divider>
             <v-card-text>

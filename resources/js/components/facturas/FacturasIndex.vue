@@ -24,9 +24,6 @@
                                 <v-list-item :to="`/facturas/show/${item.id}`">
                                     <v-list-item-title>Detalles</v-list-item-title>
                                 </v-list-item>
-                                <v-list-item @click="print(item.id)">
-                                    <v-list-item-title>Imprimir</v-list-item-title>
-                                </v-list-item>
                             </v-list>
                         </v-menu>
                     </td>
@@ -48,26 +45,7 @@ export default {
         ]
     }),
 
-    props: ["limit"],
-
-    methods: {
-        print(id) {
-            axios({
-                url: "/api/facturasPDF/" + id,
-                method: "GET",
-                responseType: "blob"
-            }).then(response => {
-                const url = window.URL.createObjectURL(
-                    new Blob([response.data])
-                );
-                const link = document.createElement("a");
-                link.href = url;
-                link.setAttribute("download", "factura" + id + ".pdf");
-                document.body.appendChild(link);
-                link.click();
-            });
-        }
-    }
+    props: ["limit"]
 };
 </script>
 

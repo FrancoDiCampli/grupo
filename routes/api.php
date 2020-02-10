@@ -71,8 +71,8 @@ Route::group(['middleware' => 'cors'], function () {
 
 // REVISAR
 Route::post('/formaPago', 'API\CuentacorrientesController@formaPago');
-Route::post('facturar', [VentasController::class, 'facturar']);
-Route::apiResource('facturas', API\FacturasController::class, ['only' => ['index', 'store', 'show']]);
+Route::post('facturar', 'API\VentasController@facturar');
+Route::apiResource('facturas', 'API\FacturasController', ['only' => ['index', 'store', 'show']]);
 Route::post('/buscando', 'API\BuscadorController@buscando');
 // ______________________________________________________________
 

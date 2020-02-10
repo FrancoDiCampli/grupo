@@ -1,6 +1,6 @@
 <template>
     <div>
-        <v-card shaped>
+        <v-card shaped outlined>
             <!-- HEADER -->
             <v-card-title class="py-0 px-2">
                 <v-row class="pa-0 ma-0">
@@ -230,14 +230,14 @@
                                         outlined
                                         color="secondary"
                                         class="mx-2"
-                                        @click="resetForm()"
+                                        to="/ventas"
                                     >Cancelar</v-btn>
                                     <v-btn
                                         :disabled="$store.state.facturas.form.cliente_id == null"
                                         type="submit"
                                         tile
                                         color="secondary"
-                                        class="mx-2"
+                                        class="mx-2 elevation-0"
                                     >Guardar</v-btn>
                                 </v-row>
                                 <br />
@@ -331,20 +331,23 @@ export default {
         }
     },
 
+    created() {
+        if (this.$store.state.facturas.form.detalles) {
+            this.detalles = this.$store.state.facturas.form.detalles;
+        } else {
+            this.$router.push("/ventas");
+        }
+    },
+
     mounted: async function() {
         this.inProcess = true;
-
         this.$refs.CreateFactura.reset();
         await this.consultarDivisa();
         await this.getPoint();
-        this.inProcess = false;
+        this.subtotalControl();
         this.$store.state.facturas.form.tipocomprobante = "REMITO X";
         this.$store.state.facturas.form.condicionventa = "CONTADO";
-    },
-
-    created() {
-        let id = localStorage.getItem("facturas");
-        this.facturar(JSON.parse(id));
+        this.inProcess = false;
     },
 
     methods: {
@@ -453,11 +456,11 @@ export default {
                 this.$store.state.facturas.form.fechaCotizacion = this.fechaCotizacion;
                 this.$store.state.facturas.form.numfactura = this.NumComprobante;
 
-                await this.$store.dispatch("facturas/save");
+                await this.$store.dispatch("facturas/save").then(() => {
+                    this.resetForm();
+                    this.$router.push("/ventas");
+                });
 
-                await this.getPoint();
-
-                this.resetForm();
                 this.inProcess = false;
             }
         },
@@ -466,42 +469,6 @@ export default {
             await this.$refs.CreateFactura.reset();
             this.clientes = [];
             this.detalles = [];
-        },
-
-        facturar(id) {
-            axios
-                .post("/api/facturar", { id })
-                .then(response => {
-                    let facturas = response.data;
-                    for (let i = 0; i < facturas.detalles.length; i++) {
-                        let detalle = {
-                            articulo_id: facturas.detalles[i].pivot.articulo_id,
-                            articulo: facturas.detalles[i].pivot.articulo,
-                            cantidad: facturas.detalles[i].pivot.cantidad,
-                            litros:
-                                facturas.detalles[i].pivot.litros *
-                                facturas.detalles[i].pivot.cantidad,
-                            precio: facturas.detalles[i].pivot.preciounitario,
-                            subtotalDolares:
-                                facturas.detalles[i].pivot.subtotal,
-                            subtotalPesos:
-                                facturas.detalles[i].pivot.subtotalPesos
-                        };
-                        if (facturas.cliente) {
-                            this.$store.state.facturas.form.cliente_id =
-                                facturas.cliente.id;
-                            this.$store.state.facturas.form.cliente =
-                                facturas.cliente.razonsocial;
-                        }
-                        this.detalles.push(detalle);
-                        this.$store.state.facturas.form.ventas =
-                            facturas.ventas;
-                        this.subtotalControl();
-                    }
-                })
-                .catch(error => {
-                    console.log(error);
-                });
         }
     }
 };

@@ -10,6 +10,10 @@ import Ventas from "../views/ventas/Ventas";
 import VentasCreate from "../views/ventas/Create";
 import VentasShow from "../views/ventas/Show";
 
+// Facturas
+import FacturasCreate from "../views/facturas/Create";
+import FacturasShow from "../views/facturas/Show";
+
 // Presupuestos
 import Presupuestos from "../views/presupuestos/presupuestos";
 import PresupuestosCreate from "../views/presupuestos/Create";
@@ -106,6 +110,19 @@ export default new Router({
             path: "/ventas/show/:id",
             name: "ventas_show",
             component: VentasShow,
+            props: true
+        },
+
+        // Facturas
+        {
+            path: "/facturas/create",
+            name: "facturasCreate",
+            component: FacturasCreate
+        },
+        {
+            path: "/facturas/show/:id",
+            name: "facturas_show",
+            component: FacturasShow,
             props: true
         },
 
