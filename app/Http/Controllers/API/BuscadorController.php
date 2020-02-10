@@ -4,9 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\User;
 use App\Cliente;
-use App\Negocio;
 use App\Articulo;
-use App\Distributor;
 use App\Supplier;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -28,7 +26,6 @@ class BuscadorController extends Controller
                     'clientes' => Cliente::orWhere('razonsocial', 'LIKE', "$buscar%")->orWhere('documentounico', 'LIKE', "$buscar%")->get(),
                     'proveedores' => Supplier::orWhere('razonsocial', 'LIKE', "$buscar%")->orWhere('cuit', 'LIKE', "$buscar%")->get(),
                     'articulos' => Articulo::orWhere('articulo', 'LIKE', "$buscar%")->orWhere('codarticulo', "$buscar%")->get(),
-                    'distribuidores' => Distributor::orWhere('razonsocial', 'LIKE', "$buscar%")->get(),
                     'usuarios' => User::orWhere('name', 'LIKE', "$buscar%")->orWhere('email', "$buscar%")->get()
                 ];
                 break;
@@ -44,7 +41,6 @@ class BuscadorController extends Controller
                     'clientes' => $clientes,
                     'proveedores' => Supplier::orWhere('razonsocial', 'LIKE', "$buscar%")->orWhere('cuit', 'LIKE', "$buscar%")->get(),
                     'articulos' => Articulo::orWhere('articulo', 'LIKE', "$buscar%")->orWhere('codarticulo', "$buscar%")->get(),
-                    'distribuidores' => Distributor::orWhere('razonsocial', 'LIKE', "$buscar%")->get(),
                     'usuarios' => User::orWhere('name', 'LIKE', "$buscar%")->orWhere('email', "$buscar%")->get()
                 ];
                 break;

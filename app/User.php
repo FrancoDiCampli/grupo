@@ -17,7 +17,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'role_id', 'foto', 'cliente_id', 'distributor_id', 'code'
+        'name', 'email', 'password', 'role_id', 'foto', 'cliente_id', 'code'
     ];
 
     /**
@@ -61,16 +61,6 @@ class User extends Authenticatable
     public function presupuestos()
     {
         return $this->hasMany('App\Presupuesto');
-    }
-
-    public function negocio()
-    {
-        return $this->belongsTo('App\Negocio');
-    }
-
-    public function distributor()
-    {
-        return $this->belongsTo('App\Distributor');
     }
 
     public function clientes()

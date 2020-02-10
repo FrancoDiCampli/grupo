@@ -30,50 +30,59 @@ class VentasController extends Controller
 
     public function index(Request $request)
     {
-        if (auth()->user()->role_id == 1 || auth()->user()->role_id == 2) {
-            if ($request->distributor_id) {
-                $distributor = Distributor::find($request->distributor_id);
-                $usuario = $distributor->user;
-                $vens = $usuario->ventas;
+        if (auth()->user()->role_id <> 3) {
+            if ($request->fec) {
+                $fec = $request->fec;
+                $facs = Venta::whereDate('created_at', $fec)
+                    ->orderBy('id', 'DESC')
+                    ->buscar($request)->get();
             } else {
-                $vens = Venta::orderBy('id', 'DESC')
-                    ->get();
+                $facs = Venta::orderBy('id', 'DESC')
+                    ->buscar($request)->get();
             }
         } else {
-            $vens = Venta::orderBy('id', 'DESC')
-                ->where('user_id', auth()->user()->id)
-                ->get();
+            if ($request->fec) {
+                $fec = $request->fec;
+                $facs = Venta::whereDate('created_at', $fec)
+                    ->orderBy('id', 'DESC')
+                    ->where('user_id', auth()->user()->id)
+                    ->buscar($request)->get();
+            } else {
+                $facs = Venta::orderBy('id', 'DESC')
+                    ->where('user_id', auth()->user()->id)
+                    ->buscar($request)->get();
+            }
         }
 
-        $ventas = collect();
+        $facturas = collect();
 
-        foreach ($vens as $ven) {
-            $fecha = new Carbon($ven->fecha);
-            $ven->fecha = $fecha->format('d-m-Y');
-            $ven->cliente;
-            $ven = collect($ven);
-            $ventas->push($ven);
+        foreach ($facs as $fac) {
+            $fecha = new Carbon($fac->fecha);
+            $fac->fecha = $fecha->format('d-m-Y');
+            $fac->cliente;
+            $fac = collect($fac);
+            $facturas->push($fac);
         }
         $eliminadas = Venta::onlyTrashed()->get();
 
         foreach ($eliminadas as $eliminada) {
-            $dateVen = new Carbon($eliminada->fecha);
-            $eliminada->fecha = $dateVen->format('d-m-Y');
+            $dateFac = new Carbon($eliminada->fecha);
+            $eliminada->fecha = $dateFac->format('d-m-Y');
             $eliminada->cliente;
         }
 
-        if ($ventas->count() <= $request->get('limit')) {
+        if ($facturas->count() <= $request->get('limit')) {
             return [
-                'ventas' => $ventas,
-                'ultima' => $ventas->first(),
-                'total' => $ventas->count(),
+                'facturas' => $facturas,
+                'ultima' => $facturas->first(),
+                'total' => $facturas->count(),
                 'eliminadas' => $eliminadas
             ];
         } else {
             return [
-                'ventas' => $ventas->take($request->get('limit', null)),
-                'ultima' => $ventas->first(),
-                'total' => $ventas->count(),
+                'facturas' => $facturas->take($request->get('limit', null)),
+                'ultima' => $facturas->first(),
+                'total' => $facturas->count(),
                 'eliminadas' => $eliminadas
             ];
         }
@@ -81,7 +90,6 @@ class VentasController extends Controller
 
     public function store(Request $request)
     {
-
         // return $request;
         $atributos = $request;
         $cliente = Cliente::find($atributos['cliente_id']);
@@ -169,30 +177,19 @@ class VentasController extends Controller
             Movimientocuenta::create([
                 'ctacte_id' => $cuenta->id,
                 'tipo' => 'ALTA',
-                'fecha' => now(),
+                'fecha' => $cuenta->alta,
                 'user_id' => auth()->user()->id,
                 'importe' => $cuenta->importe
             ]);
         }
         $aux = collect($det);
-        $usuario = User::findOrFail(auth()->user()->id);
-        $distributor = $usuario->distributor;
         // DESCUENTA LOS INVENTARIOS
         for ($i = 0; $i < count($aux); $i++) {
             $cond = true;
             $res = $aux[$i]['cantidad'];
             while ($cond) {
-
-                if (auth()->user()->role_id == 1 || auth()->user()->role_id == 2) {
-                    $article = Inventario::where('cantidad', '>', 0)
-                        ->where('articulo_id', $aux[$i]['articulo_id'])
-                        ->where('distributor_id', null)->get();
-                } else {
-                    $article = Inventario::where('cantidad', '>', 0)
-                        ->where('articulo_id', $aux[$i]['articulo_id'])
-                        ->where('distributor_id', $distributor->id)->get();
-                }
-
+                $article = Inventario::where('cantidad', '>', 0)
+                    ->where('articulo_id', $aux[$i]['articulo_id'])->get();
                 if ($article[0]->cantidad < $res) {
                     $res = $aux[$i]['cantidad'] - $article[0]->cantidad;
                     Movimiento::create([
@@ -200,7 +197,7 @@ class VentasController extends Controller
                         'tipo' => 'VENTA',
                         'cantidadlitros' => $aux[$i]['cantidad'] * $aux[$i]['cantidadLitros'],
                         'cantidad' => $article[0]->cantidad,
-                        'fecha' => now(),
+                        'fecha' => now()->format('Y-m-d'),
                         'numcomprobante' => $factura->id,
                         'user_id' => auth()->user()->id
                     ]);
@@ -218,7 +215,7 @@ class VentasController extends Controller
                         'tipo' => 'VENTA',
                         'cantidad' => $res,
                         'cantidadlitros' => $aux[$i]['cantidad'] * $aux[$i]['cantidadLitros'],
-                        'fecha' => now(),
+                        'fecha' => now()->format('Y-m-d'),
                         'numcomprobante' => $factura->id,
                         'user_id' => auth()->user()->id
                     ]);
@@ -229,6 +226,7 @@ class VentasController extends Controller
         }
         return $factura->id;
     }
+
     public function update(Request $request, $id)
     {
         $factura = Venta::find($id);
