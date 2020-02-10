@@ -209,8 +209,8 @@
                 <v-card-title>Nuevo Proveedor</v-card-title>
                 <v-divider></v-divider>
                 <v-card-text>
-                    <v-form ref="proveedoresForm" @submit.prevent="saveProveedores">
-                        <ProveedoresForm mode="create"></ProveedoresForm>
+                    <v-form ref="ProveedoresCreate" @submit.prevent="saveProveedores">
+                        <ProveedoresForm mode="create" ref="ProveedoresForm"></ProveedoresForm>
                         <v-row justify="center">
                             <v-btn
                                 @click="cancelProveedores()"
@@ -456,14 +456,18 @@ export default {
         },
 
         cancelProveedores() {
-            this.$refs.proveedoresForm.reset();
+            this.$refs.ProveedoresCreate.reset();
             this.proveedor = false;
         },
 
         saveProveedores: async function() {
-            let proveedor = await this.$store.dispatch("proveedores/save");
-            this.selectSupplier(proveedor);
-            this.cancelProveedores();
+            if (this.$refs.ProveedoresCreate.validate()) {
+                await this.$refs.ProveedoresForm.getProvincia();
+                await this.$refs.ProveedoresForm.getLocalidad();
+                let proveedor = await this.$store.dispatch("proveedores/save");
+                this.selectSupplier(proveedor);
+                this.cancelProveedores();
+            }
         }
     }
 };

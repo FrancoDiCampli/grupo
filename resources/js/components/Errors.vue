@@ -27,20 +27,25 @@
                         </p>
                     </div>
                     <v-row justify="end">
-                        <v-tooltip bottom>
-                            <template v-slot:activator="{ on }">
-                                <v-btn
-                                    text
-                                    class="mr-5 elevation-0"
-                                    color="error"
-                                    v-on="on"
-                                    @click="notificate(error)"
-                                >
-                                    <v-icon size="medium" class="mr-3">fab fa-whatsapp</v-icon>Notificar
-                                </v-btn>
-                            </template>
-                            <span>Notificar al desarrollador</span>
-                        </v-tooltip>
+                        <div v-if="$store.state.auth.user">
+                            <div v-if="$store.state.auth.user.rol == 'Administrador'">
+                                <v-tooltip bottom>
+                                    <template v-slot:activator="{ on }">
+                                        <v-btn
+                                            text
+                                            class="mr-5 elevation-0"
+                                            color="error"
+                                            v-on="on"
+                                            @click="notificate(error)"
+                                        >
+                                            <v-icon size="medium" class="mr-3">fab fa-whatsapp</v-icon>Notificar
+                                        </v-btn>
+                                    </template>
+                                    <span>Notificar al desarrollador</span>
+                                </v-tooltip>
+                            </div>
+                        </div>
+
                         <v-btn
                             tile
                             class="mr-5 elevation-0"
