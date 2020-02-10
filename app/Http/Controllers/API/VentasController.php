@@ -171,13 +171,13 @@ class VentasController extends Controller
                 'venta_id' => $factura->id,
                 'importe' => $factura->total,
                 'saldo' => $factura->total,
-                'alta' => $factura->fecha,
+                'alta' => now(),
                 'estado' => 'ACTIVA'
             ]);
             Movimientocuenta::create([
                 'ctacte_id' => $cuenta->id,
                 'tipo' => 'ALTA',
-                'fecha' => $cuenta->alta,
+                'fecha' => now(),
                 'user_id' => auth()->user()->id,
                 'importe' => $cuenta->importe
             ]);
@@ -197,7 +197,7 @@ class VentasController extends Controller
                         'tipo' => 'VENTA',
                         'cantidadlitros' => $aux[$i]['cantidad'] * $aux[$i]['cantidadLitros'],
                         'cantidad' => $article[0]->cantidad,
-                        'fecha' => now()->format('Y-m-d'),
+                        'fecha' => now(),
                         'numcomprobante' => $factura->id,
                         'user_id' => auth()->user()->id
                     ]);
@@ -215,7 +215,7 @@ class VentasController extends Controller
                         'tipo' => 'VENTA',
                         'cantidad' => $res,
                         'cantidadlitros' => $aux[$i]['cantidad'] * $aux[$i]['cantidadLitros'],
-                        'fecha' => now()->format('Y-m-d'),
+                        'fecha' => now(),
                         'numcomprobante' => $factura->id,
                         'user_id' => auth()->user()->id
                     ]);
@@ -305,7 +305,7 @@ class VentasController extends Controller
                     'tipo' => 'ANULACION',
                     'cantidad' => $a->cantidad,
                     'cantidadlitros' => $a->cantidadlitros,
-                    'fecha' => now()->format('Y-m-d'),
+                    'fecha' => now(),
                     'numcomprobante' => $factura->id,
                     'user_id' => auth()->user()->id
                 ]);

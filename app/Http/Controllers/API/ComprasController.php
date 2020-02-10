@@ -134,7 +134,6 @@ class ComprasController extends Controller
                 $att['supplier_id'] = $remito->supplier_id;
                 $att['cantidad'] = $detail['cantidad'];
                 $att['cantidadlitros'] = $detail['cantidad'] * $detail['totalLitros'];
-                $att['distributor_id'] = $detail['distributor_id'];
                 $att['lote'] = $detail['lote'];
                 $arti = Inventario::create($att);
                 $data['inventario_id'] = $arti->id;
