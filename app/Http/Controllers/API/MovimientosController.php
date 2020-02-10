@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Distributor;
-use App\Negocio;
 use Carbon\Carbon;
 use App\Movimiento;
 use App\Movimientocuenta;
@@ -47,28 +45,9 @@ class MovimientosController extends Controller
         $desde = new Carbon($from);
         $hasta = new Carbon($to);
 
-        if ($request->distributor_id <> 0) {
-            $distributor = Distributor::find($request->distributor_id);
+        $movimientos = Movimiento::whereDate('fecha', '>=', $desde->format('Y-m-d H:i'))->whereDate('fecha', '<=', $hasta->format('Y-m-d H:i'))->orderBy('fecha', 'DESC')->get();
 
-            $auxMovimientos = $distributor->movimientos->where('fecha', '>=', $desde->format('Y-m-d H:i'))->where('fecha', '<=', $hasta->format('Y-m-d H:i'));
-            $auxMovimientos1 = $auxMovimientos->sortByDesc('fecha');
-            $movimientos = $auxMovimientos1->values()->all();
-
-            $movCuentas = collect();
-            foreach ($distributor->clientes as $cliente) {
-                foreach ($cliente->ctacte as $cuenta) {
-                    $movCuentas->push($cuenta->movimientos);
-                }
-            }
-            $auxCuentas = $movCuentas->flatten();
-            $auxCuentas2 = $auxCuentas->where('fecha', '>=', $desde->format('Y-m-d H:i'))->where('fecha', '<=', $hasta->format('Y-m-d H:i'));
-            $auxCuentas3 = $auxCuentas2->sortByDesc('fecha');
-            $movimientosCuentas = $auxCuentas3->values()->all();
-        } else {
-            $movimientos = Movimiento::whereDate('fecha', '>=', $desde->format('Y-m-d H:i'))->whereDate('fecha', '<=', $hasta->format('Y-m-d H:i'))->orderBy('fecha', 'DESC')->get();
-
-            $movimientosCuentas = Movimientocuenta::whereDate('fecha', '>=', $desde->format('Y-m-d H:i'))->whereDate('fecha', '<=', $hasta->format('Y-m-d H:i'))->orderBy('fecha', 'DESC')->get();
-        }
+        $movimientosCuentas = Movimientocuenta::whereDate('fecha', '>=', $desde->format('Y-m-d H:i'))->whereDate('fecha', '<=', $hasta->format('Y-m-d H:i'))->orderBy('fecha', 'DESC')->get();
 
         $arreglo = collect();
         foreach ($movimientos as $move) {
@@ -78,7 +57,6 @@ class MovimientosController extends Controller
             $coleccion->put('tipo', $move->tipo);
             $coleccion->put('cantidad', $move->cantidad);
             $coleccion->put('user', $move->user);
-            $coleccion->put('distributor', $move->user->distributor);
             $coleccion->put('inventario', $move->load('inventario.articulo'));
 
             $arreglo->push($coleccion);
@@ -92,7 +70,6 @@ class MovimientosController extends Controller
             $coleccion->put('tipo', $move->tipo);
             $coleccion->put('importe', $move->importe);
             $coleccion->put('user', $move->user);
-            $coleccion->put('distributor', $move->user->distributor);
             $coleccion->put('cuenta', $move->load('ctacte.factura.cliente'));
 
             $arregloCuentas->push($coleccion);
