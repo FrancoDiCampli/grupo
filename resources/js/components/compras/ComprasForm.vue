@@ -39,10 +39,7 @@
                             </v-row>
                         </div>
                         <div v-show="!inProcess">
-                            <v-form
-                                ref="CreateCompra"
-                                @submit.prevent="saveCompra()"
-                            >
+                            <v-form ref="CreateCompra" @submit.prevent="saveCompra()">
                                 <v-row justify="space-around">
                                     <!-- PROVEEDOR -->
                                     <v-col cols="12" class="py-0">
@@ -86,16 +83,8 @@
                                                 >
                                                     <thead>
                                                         <tr>
-                                                            <th
-                                                                class="text-xs-left"
-                                                            >
-                                                                Apellido Nombre
-                                                            </th>
-                                                            <th
-                                                                class="text-xs-left"
-                                                            >
-                                                                CUIT
-                                                            </th>
+                                                            <th class="text-xs-left">Apellido Nombre</th>
+                                                            <th class="text-xs-left">CUIT</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -112,12 +101,12 @@
                                                         >
                                                             <td>
                                                                 {{
-                                                                    proveedor.razonsocial
+                                                                proveedor.razonsocial
                                                                 }}
                                                             </td>
                                                             <td>
                                                                 {{
-                                                                    proveedor.cuit
+                                                                proveedor.cuit
                                                                 }}
                                                             </td>
                                                         </tr>
@@ -141,6 +130,7 @@
                                             "
                                             :rules="[rules.required]"
                                             label="N° Remito"
+                                            type="number"
                                             required
                                             outlined
                                         ></v-text-field>
@@ -191,24 +181,22 @@
                                                                 .form.fecha
                                                         )
                                                     "
-                                                    >Aceptar</v-btn
-                                                >
+                                                >Aceptar</v-btn>
                                             </v-date-picker>
                                         </v-dialog>
                                     </v-col>
                                     <!-- ARTICULOS -->
-                                    <v-col
-                                        cols="12"
-                                        class="py-0 articulos-panel"
-                                    >
-                                        <v-expansion-panels
-                                            v-model="articulosPanel"
-                                        >
+                                    <v-col cols="12" class="py-0 articulos-panel">
+                                        <v-expansion-panels v-model="articulosPanel">
                                             <v-expansion-panel>
                                                 <v-expansion-panel-header
                                                     expand-icon="fas fa-caret-down"
-                                                    >Articulos</v-expansion-panel-header
                                                 >
+                                                    <div
+                                                        v-if="articuloSelected.articulo"
+                                                    >{{ articuloSelected.articulo }}</div>
+                                                    <div v-else>Articulos</div>
+                                                </v-expansion-panel-header>
                                                 <v-expansion-panel-content>
                                                     <v-simple-table
                                                         v-if="
@@ -217,26 +205,10 @@
                                                     >
                                                         <thead>
                                                             <tr>
-                                                                <th
-                                                                    class="text-xs-left"
-                                                                >
-                                                                    Codigo
-                                                                </th>
-                                                                <th
-                                                                    class="text-xs-left"
-                                                                >
-                                                                    Articulo
-                                                                </th>
-                                                                <th
-                                                                    class="text-xs-left"
-                                                                >
-                                                                    Precio
-                                                                </th>
-                                                                <th
-                                                                    class="text-xs-left"
-                                                                >
-                                                                    Stock
-                                                                </th>
+                                                                <th class="text-xs-left">Codigo</th>
+                                                                <th class="text-xs-left">Articulo</th>
+                                                                <th class="text-xs-left">Precio</th>
+                                                                <th class="text-xs-left">Stock</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
@@ -258,22 +230,22 @@
                                                             >
                                                                 <td>
                                                                     {{
-                                                                        articulo.codarticulo
+                                                                    articulo.codarticulo
                                                                     }}
                                                                 </td>
                                                                 <td>
                                                                     {{
-                                                                        articulo.articulo
+                                                                    articulo.articulo
                                                                     }}
                                                                 </td>
                                                                 <td>
                                                                     {{
-                                                                        articulo.precio
+                                                                    articulo.precio
                                                                     }}
                                                                 </td>
                                                                 <td>
                                                                     {{
-                                                                        articulo.stock
+                                                                    articulo.stock
                                                                     }}
                                                                 </td>
                                                             </tr>
@@ -290,245 +262,170 @@
                                         </v-expansion-panels>
                                     </v-col>
                                     <v-col cols="12" class="py-0">
-                                        <v-form
-                                            ref="detailForm"
-                                            @submit.prevent="addDetail"
-                                            v-if="!disabled.detalles"
-                                        >
-                                            <v-row justify="center">
-                                                <v-col
-                                                    cols="12"
-                                                    sm="6"
-                                                    class="py-0"
-                                                >
-                                                    <v-select
-                                                        v-model="
+                                        <v-expand-transition>
+                                            <v-form
+                                                ref="detailForm"
+                                                @submit.prevent="addDetail"
+                                                v-if="!disabled.detalles"
+                                            >
+                                                <v-row justify="center">
+                                                    <v-col cols="12" sm="6" class="py-0">
+                                                        <v-select
+                                                            v-model="
                                                             articuloSelected.movimiento
                                                         "
-                                                        @change="
+                                                            @change="
                                                             movimientoOnChange()
                                                         "
-                                                        :disabled="
-                                                            disabled.movimiento
+                                                            :disabled="
+                                                            disabled.movimiento 
                                                         "
-                                                        :items="movimientos"
-                                                        :rules="[
+                                                            :items="movimientos"
+                                                            :rules="[
                                                             rules.required
                                                         ]"
-                                                        label="Movimiento"
-                                                        outlined
-                                                    ></v-select>
-                                                </v-col>
-                                                <v-col
-                                                    cols="12"
-                                                    sm="6"
-                                                    class="py-0"
-                                                >
-                                                    <div v-if="disabled.lote">
-                                                        <v-text-field
-                                                            v-model="
+                                                            label="Movimiento"
+                                                            outlined
+                                                        ></v-select>
+                                                    </v-col>
+                                                    <v-col cols="12" sm="6" class="py-0">
+                                                        <div v-if="disabled.lote">
+                                                            <v-text-field
+                                                                v-model="
                                                                 articuloSelected.lote
                                                             "
-                                                            :rules="[
+                                                                :rules="[
                                                                 rules.required
                                                             ]"
-                                                            label="Pedido N°"
+                                                                label="Pedido N°"
+                                                                required
+                                                                outlined
+                                                                disabled
+                                                                type="number"
+                                                            ></v-text-field>
+                                                        </div>
+                                                        <div v-else>
+                                                            <v-select
+                                                                v-model="
+                                                                articuloSelected.lote
+                                                            "
+                                                                :rules="[
+                                                                rules.required
+                                                            ]"
+                                                                :items="lotes"
+                                                                item-text="lote"
+                                                                item-value="lote"
+                                                                label="Pedido N°"
+                                                                outlined
+                                                            ></v-select>
+                                                        </div>
+                                                    </v-col>
+                                                    <v-col cols="12" sm="4" class="py-0">
+                                                        <v-text-field
+                                                            v-model="
+                                                            articuloSelected.cantidad
+                                                        "
+                                                            :rules="[
+                                                            rules.required
+                                                        ]"
+                                                            label="Unidades"
+                                                            required
+                                                            outlined
+                                                            type="number"
+                                                        ></v-text-field>
+                                                    </v-col>
+                                                    <v-col cols="12" sm="4" class="py-0">
+                                                        <v-text-field
+                                                            v-model="
+                                                            articuloSelected.litros
+                                                        "
+                                                            :rules="[
+                                                            rules.required
+                                                        ]"
+                                                            label="Litros"
                                                             required
                                                             outlined
                                                             disabled
                                                             type="number"
                                                         ></v-text-field>
-                                                    </div>
-                                                    <div v-else>
-                                                        <v-select
-                                                            v-model="
-                                                                articuloSelected.lote
-                                                            "
+                                                    </v-col>
+                                                    <v-col cols="12" sm="4" class="py-0">
+                                                        <v-text-field
+                                                            v-model="cantidadLitros"
                                                             :rules="[
-                                                                rules.required
-                                                            ]"
-                                                            :items="lotes"
-                                                            item-text="lote"
-                                                            item-value="lote"
-                                                            label="Pedido N°"
+                                                            rules.required
+                                                        ]"
+                                                            label="Cantidad en litros"
+                                                            required
                                                             outlined
-                                                            @change="
-                                                                selectNegocio()
-                                                            "
-                                                        ></v-select>
-                                                    </div>
-                                                </v-col>
-                                                <v-col
-                                                    cols="12"
-                                                    sm="12"
-                                                    class="py-0"
-                                                >
-                                                    <v-select
-                                                        v-model="
-                                                            $store.state.compras
-                                                                .form.negocio_id
-                                                        "
-                                                        :rules="[
-                                                            rules.required
-                                                        ]"
-                                                        :items="sucursales"
-                                                        item-text="nombre"
-                                                        item-value="id"
-                                                        label="Sucursal"
-                                                        outlined
-                                                    ></v-select>
-                                                </v-col>
-                                                <v-col
-                                                    cols="12"
-                                                    sm="4"
-                                                    class="py-0"
-                                                >
-                                                    <v-text-field
-                                                        v-model="
-                                                            articuloSelected.cantidad
-                                                        "
-                                                        :rules="[
-                                                            rules.required
-                                                        ]"
-                                                        label="Unidades"
-                                                        required
-                                                        outlined
-                                                        type="number"
-                                                    ></v-text-field>
-                                                </v-col>
-                                                <v-col
-                                                    cols="12"
-                                                    sm="4"
-                                                    class="py-0"
-                                                >
-                                                    <v-text-field
-                                                        v-model="
-                                                            articuloSelected.litros
-                                                        "
-                                                        :rules="[
-                                                            rules.required
-                                                        ]"
-                                                        label="Litros"
-                                                        required
-                                                        outlined
-                                                        disabled
-                                                        type="number"
-                                                    ></v-text-field>
-                                                </v-col>
-                                                <v-col
-                                                    cols="12"
-                                                    sm="4"
-                                                    class="py-0"
-                                                >
-                                                    <v-text-field
-                                                        v-model="cantidadLitros"
-                                                        :rules="[
-                                                            rules.required
-                                                        ]"
-                                                        label="Cantidad en litros"
-                                                        required
-                                                        outlined
-                                                        disabled
-                                                        type="number"
-                                                    ></v-text-field>
-                                                </v-col>
-                                                <v-col
-                                                    cols="12"
-                                                    sm="6"
-                                                    class="py-0"
-                                                >
-                                                    <v-text-field
-                                                        v-model="
+                                                            disabled
+                                                            type="number"
+                                                        ></v-text-field>
+                                                    </v-col>
+                                                    <v-col cols="12" sm="6" class="py-0">
+                                                        <v-text-field
+                                                            v-model="
                                                             articuloSelected.precio
                                                         "
-                                                        :rules="[
+                                                            :rules="[
                                                             rules.required
                                                         ]"
-                                                        label="Precio"
-                                                        required
-                                                        outlined
-                                                        type="number"
-                                                    ></v-text-field>
-                                                </v-col>
-                                                <v-col
-                                                    cols="12"
-                                                    sm="6"
-                                                    class="py-0"
-                                                >
-                                                    <v-text-field
-                                                        v-model="
+                                                            label="Precio"
+                                                            required
+                                                            outlined
+                                                            type="number"
+                                                        ></v-text-field>
+                                                    </v-col>
+                                                    <v-col cols="12" sm="6" class="py-0">
+                                                        <v-text-field
+                                                            v-model="
                                                             subtotalDetalle
                                                         "
-                                                        :rules="[
+                                                            :rules="[
                                                             rules.required
                                                         ]"
-                                                        label="Subtotal"
-                                                        required
+                                                            label="Subtotal"
+                                                            required
+                                                            outlined
+                                                            disabled
+                                                            type="number"
+                                                        ></v-text-field>
+                                                    </v-col>
+                                                </v-row>
+                                                <v-row justify="center" class="mb-5">
+                                                    <v-btn
+                                                        type="submit"
                                                         outlined
-                                                        disabled
-                                                        type="number"
-                                                    ></v-text-field>
-                                                </v-col>
-                                            </v-row>
-                                            <v-row
-                                                justify="center"
-                                                class="mb-5"
-                                            >
-                                                <v-btn
-                                                    type="submit"
-                                                    outlined
-                                                    tile
-                                                    color="secondary"
-                                                    >Añadir detalle</v-btn
-                                                >
-                                            </v-row>
-                                        </v-form>
+                                                        tile
+                                                        color="secondary"
+                                                    >Añadir detalle</v-btn>
+                                                </v-row>
+                                            </v-form>
+                                        </v-expand-transition>
                                     </v-col>
                                     <!-- TABLA DETALLES -->
                                     <v-col cols="12" class="py-0 mb-5">
-                                        <v-alert type="error" v-if="errorAlert"
-                                            >Uno o más pedidos de los detalles
+                                        <v-alert type="error" v-if="errorAlert">
+                                            Uno o más pedidos de los detalles
                                             no corresponden al proveedor
                                             seleccionado. Por favor, elimina los
                                             detalles en conflicto o selecciona
-                                            otro proveedor</v-alert
-                                        >
+                                            otro proveedor
+                                        </v-alert>
                                         <v-card outlined>
                                             <v-simple-table>
                                                 <template v-slot:default>
                                                     <thead>
                                                         <tr>
-                                                            <th
-                                                                class="text-left"
-                                                            >
-                                                                Actualizar
-                                                            </th>
-                                                            <th
-                                                                class="text-left"
-                                                            >
-                                                                Articulo
-                                                            </th>
+                                                            <th class="text-left">Actualizar</th>
+                                                            <th class="text-left">Articulo</th>
                                                             <th
                                                                 class="text-left hidden-sm-and-down"
-                                                            >
-                                                                Precio
-                                                            </th>
-                                                            <th
-                                                                class="text-left"
-                                                            >
-                                                                Unidades
-                                                            </th>
+                                                            >Precio</th>
+                                                            <th class="text-left">Unidades</th>
 
-                                                            <th
-                                                                class="text-left"
-                                                            >
-                                                                Subtotal
-                                                            </th>
-                                                            <th
-                                                                class="text-left"
-                                                            >
-                                                                Lote
-                                                            </th>
+                                                            <th class="text-left">Subtotal</th>
+                                                            <th class="text-left">Lote</th>
                                                             <th></th>
                                                         </tr>
                                                     </thead>
@@ -554,36 +451,35 @@
                                                                     <v-icon
                                                                         size="medium"
                                                                         color="red"
-                                                                        >fas
-                                                                        fa-exclamation-triangle</v-icon
                                                                     >
+                                                                        fas
+                                                                        fa-exclamation-triangle
+                                                                    </v-icon>
                                                                 </div>
                                                             </td>
                                                             <td>
                                                                 {{
-                                                                    detalle.articulo
+                                                                detalle.articulo
                                                                 }}
                                                             </td>
-                                                            <td
-                                                                class="hidden-sm-and-down"
-                                                            >
+                                                            <td class="hidden-sm-and-down">
                                                                 {{
-                                                                    detalle.precio
-                                                                }}
-                                                            </td>
-                                                            <td>
-                                                                {{
-                                                                    detalle.cantidad
+                                                                detalle.precio
                                                                 }}
                                                             </td>
                                                             <td>
                                                                 {{
-                                                                    detalle.subtotal
+                                                                detalle.cantidad
                                                                 }}
                                                             </td>
                                                             <td>
                                                                 {{
-                                                                    detalle.lote
+                                                                detalle.subtotal
+                                                                }}
+                                                            </td>
+                                                            <td>
+                                                                {{
+                                                                detalle.lote
                                                                 }}
                                                             </td>
                                                             <td>
@@ -596,11 +492,10 @@
                                                                         )
                                                                     "
                                                                 >
-                                                                    <v-icon
-                                                                        size="medium"
-                                                                        >fas
-                                                                        fa-times</v-icon
-                                                                    >
+                                                                    <v-icon size="medium">
+                                                                        fas
+                                                                        fa-times
+                                                                    </v-icon>
                                                                 </v-btn>
                                                             </td>
                                                         </tr>
@@ -673,16 +568,14 @@
                                             color="secondary"
                                             class="mx-2"
                                             @click="resetForm()"
-                                            >Cancelar</v-btn
-                                        >
+                                        >Cancelar</v-btn>
                                         <v-btn
                                             type="submit"
                                             tile
                                             color="secondary"
                                             class="mx-2 elevation-0"
                                             :disabled="errorAlert"
-                                            >Guardar</v-btn
-                                        >
+                                        >Guardar</v-btn>
                                     </v-row>
                                 </v-row>
                             </v-form>
@@ -723,8 +616,6 @@ export default {
         searchProveedor: null,
         searchProveedorTable: false,
         proveedores: [],
-        // SUCURSALES
-        sucursales: [],
         // ARTICULOS
         articulosPanel: [],
         articulos: [],
@@ -807,7 +698,6 @@ export default {
         this.$refs.CreateCompra.reset();
         await this.getPoint();
         await this.getArticles();
-        await this.getSucursales();
         await this.consultarDivisa();
         this.inProcess = false;
         this.searchProveedor = "GRUPO APC";
@@ -936,7 +826,6 @@ export default {
                 movimiento: "ALTA",
                 lote: proximoLote,
                 supplier_id: this.$store.state.compras.form.supplier_id,
-                negocio_id: 0,
                 articulo_id: articulo.id,
                 codarticulo: articulo.codarticulo,
                 articulo: articulo.articulo,
@@ -952,13 +841,6 @@ export default {
             this.disabled.detalles = false;
         },
 
-        // SUCURSALES
-        getSucursales() {
-            this.$store.dispatch("sucursales/index").then(response => {
-                this.sucursales = response.negocios;
-            });
-        },
-
         // DETALLES
         movimientoOnChange() {
             if (this.articuloSelected.movimiento == "ALTA") {
@@ -966,13 +848,6 @@ export default {
             } else {
                 this.disabled.lote = false;
             }
-        },
-
-        selectNegocio() {
-            let find = this.lotes.find(
-                element => element.lote == this.articuloSelected.lote
-            );
-            this.$store.state.compras.form.negocio_id = find.negocio.id;
         },
 
         addDetail: async function() {
@@ -989,7 +864,6 @@ export default {
         pushDetail() {
             this.articuloSelected.totalLitros = this.cantidadLitros;
             this.articuloSelected.subtotal = this.subtotalDetalle;
-            this.articuloSelected.negocio_id = this.$store.state.compras.form.negocio_id;
 
             let detail = this.articuloSelected;
 

@@ -20,29 +20,16 @@
                             <td>
                                 <v-menu offset-y>
                                     <template v-slot:activator="{ on }">
-                                        <v-btn
-                                            color="secondary"
-                                            text
-                                            icon
-                                            v-on="on"
-                                        >
-                                            <v-icon size="medium"
-                                                >fas fa-ellipsis-v</v-icon
-                                            >
+                                        <v-btn color="secondary" text icon v-on="on">
+                                            <v-icon size="medium">fas fa-ellipsis-v</v-icon>
                                         </v-btn>
                                     </template>
                                     <v-list>
-                                        <v-list-item
-                                            :to="`/compras/show/${item.id}`"
-                                        >
-                                            <v-list-item-title
-                                                >Detalles</v-list-item-title
-                                            >
+                                        <v-list-item :to="`/compras/show/${item.id}`">
+                                            <v-list-item-title>Detalles</v-list-item-title>
                                         </v-list-item>
                                         <v-list-item @click="print(item.id)">
-                                            <v-list-item-title
-                                                >Imprimir</v-list-item-title
-                                            >
+                                            <v-list-item-title>Imprimir</v-list-item-title>
                                         </v-list-item>
                                     </v-list>
                                 </v-menu>

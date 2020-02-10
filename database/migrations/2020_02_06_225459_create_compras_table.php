@@ -16,7 +16,7 @@ class CreateComprasTable extends Migration
         Schema::create('compras', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('ptoventa');
-            $table->integer('numcompra');
+            $table->bigInteger('numcompra');
             $table->string('fecha');
             $table->string('fechaCompra')->nullable();
             $table->decimal('recargo', 12, 2);
