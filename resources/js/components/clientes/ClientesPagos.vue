@@ -470,7 +470,7 @@
 
                             <v-col cols="12" class="py-0">
                                 <v-textarea
-                                    v-model="chequesForm.observaciones"
+                                    v-model="observaciones"
                                     outlined
                                     label="Observaciones"
                                     no-resize
@@ -642,7 +642,7 @@
                             </v-col>
                             <v-col cols="12" class="py-0">
                                 <v-textarea
-                                    v-model="transferenciaForm.observaciones"
+                                    v-model="observaciones"
                                     outlined
                                     label="Observaciones"
                                     no-resize
@@ -806,8 +806,7 @@ export default {
             banco: null,
             cuit: null,
             emisor: null,
-            estado: null,
-            observaciones: null
+            estado: null
         },
         // Estados de los cheques
         estados: ["POR COBRAR", "COBRADO"],
@@ -817,9 +816,9 @@ export default {
             fecha: null,
             banco: null,
             cuit: null,
-            emisor: null,
-            observaciones: null
+            emisor: null
         },
+        observaciones: null,
         // Bancos
         bancos: Bancos.bancos,
         bancosForm: {},
@@ -1037,7 +1036,8 @@ export default {
                         cotizacion: this.cotizacion,
                         fecha_cotizacion: this.fechaCotizacion,
                         pesos: this.pesos,
-                        dolares: this.dolares
+                        dolares: this.dolares,
+                        observaciones: this.observaciones
                     };
 
                     let bank = this.bancosForm.banco.nombre;
@@ -1057,7 +1057,8 @@ export default {
                     cotizacion: this.cotizacion,
                     fecha_cotizacion: this.fechaCotizacion,
                     pesos: this.pesos,
-                    dolares: this.dolares
+                    dolares: this.dolares,
+                    observaciones: this.observaciones
                 };
 
                 let bank = this.bancosForm.banco.nombre;
@@ -1077,7 +1078,8 @@ export default {
                         cotizacion: this.cotizacion,
                         fecha_cotizacion: this.fechaCotizacion,
                         pesos: this.pesos,
-                        dolares: this.dolares
+                        dolares: this.dolares,
+                        observaciones: this.observaciones
                     };
 
                     this.pagos[this.cuentaFocus].pagos.push(pago);
@@ -1087,6 +1089,7 @@ export default {
                     this.dialogs.haber = false;
                 }
             }
+            this.observaciones = null;
             this.adding = false;
             this.setHaber();
         },

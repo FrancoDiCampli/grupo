@@ -17,14 +17,14 @@ class ClientesController extends Controller
 {
     public function __construct()
     {
-        // $this->middleware('auth:airlock');
+        $this->middleware('auth:airlock');
 
-        // $this->middleware('scope:clientes-index')->only('index');
-        // $this->middleware('scope:clientes-show')->only('show');
-        // $this->middleware('scope:clientes-store')->only('store');
-        // $this->middleware('scope:clientes-update')->only('update');
-        // $this->middleware('scope:clientes-destroy')->only('destroy');
-        // $this->middleware('scope:clientes-miCuenta')->only('miCuenta');
+        $this->middleware('scope:clientes-index')->only('index');
+        $this->middleware('scope:clientes-show')->only('show');
+        $this->middleware('scope:clientes-store')->only('store');
+        $this->middleware('scope:clientes-update')->only('update');
+        $this->middleware('scope:clientes-destroy')->only('destroy');
+        $this->middleware('scope:clientes-miCuenta')->only('miCuenta');
     }
 
     public function index(Request $request)

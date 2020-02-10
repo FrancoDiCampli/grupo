@@ -35,8 +35,7 @@ export default {
             { text: "Cantidad", sortable: false },
             { text: "Cantidad en litros", sortable: false },
             { text: "Nota de pedido", sortable: false },
-            { text: "Proveedor", sortable: false },
-            { text: "Negocio", sortable: false }
+            { text: "Proveedor", sortable: false }
         ]
     })
 };

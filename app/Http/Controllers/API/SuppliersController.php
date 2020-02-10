@@ -12,13 +12,13 @@ class SuppliersController extends Controller
 {
     public function __construct()
     {
-        // $this->middleware('auth:airlock');
+        $this->middleware('auth:airlock');
 
-        // $this->middleware('scope:suppliers-index')->only('index');
-        // $this->middleware('scope:suppliers-show')->only('show');
-        // $this->middleware('scope:suppliers-store')->only('store');
-        // $this->middleware('scope:suppliers-update')->only('update');
-        // $this->middleware('scope:suppliers-destroy')->only('destroy');
+        $this->middleware('scope:suppliers-index')->only('index');
+        $this->middleware('scope:suppliers-show')->only('show');
+        $this->middleware('scope:suppliers-store')->only('store');
+        $this->middleware('scope:suppliers-update')->only('update');
+        $this->middleware('scope:suppliers-destroy')->only('destroy');
     }
 
     public function index(Request $request)

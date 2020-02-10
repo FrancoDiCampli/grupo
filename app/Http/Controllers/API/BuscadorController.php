@@ -13,7 +13,7 @@ class BuscadorController extends Controller
 {
     public function __construct()
     {
-        // $this->middleware('auth:airlock');
+        $this->middleware('auth:airlock');
     }
 
     public function buscando(Request $request)

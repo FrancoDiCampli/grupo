@@ -13,12 +13,12 @@ class PresupuestosController extends Controller
 {
     public function __construct()
     {
-        // $this->middleware('auth:airlock');
+        $this->middleware('auth:airlock');
 
-        // $this->middleware('scope:presupuestos-index')->only('index');
-        // $this->middleware('scope:presupuestos-show')->only('show');
-        // $this->middleware('scope:presupuestos-store')->only('store');
-        // $this->middleware('scope:presupuestos-destroy')->only('destroy');
+        $this->middleware('scope:presupuestos-index')->only('index');
+        $this->middleware('scope:presupuestos-show')->only('show');
+        $this->middleware('scope:presupuestos-store')->only('store');
+        $this->middleware('scope:presupuestos-destroy')->only('destroy');
     }
 
     public function index(Request $request)
