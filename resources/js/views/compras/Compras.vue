@@ -1,0 +1,81 @@
+<template>
+    <div>
+        <v-tooltip left>
+            <template v-slot:activator="{ on }">
+                <v-btn
+                    color="secondary"
+                    dark
+                    fab
+                    fixed
+                    right
+                    bottom
+                    large
+                    v-on="on"
+                    to="/compras/nueva"
+                >
+                    <v-icon>fas fa-plus</v-icon>
+                </v-btn>
+            </template>
+            <span>Nueva compra</span>
+        </v-tooltip>
+
+        <v-container>
+            <v-row justify="center">
+                <v-col cols="12" md="10" lg="8">
+                    <ComprasIndex>
+                        <br />
+                        <v-row
+                            justify="center"
+                            v-if="$store.state.compras.compras"
+                        >
+                            <v-btn
+                                :loading="$store.state.inProcess"
+                                :disabled="
+                                    limit >= $store.state.compras.compras.total
+                                "
+                                @click="loadMore()"
+                                color="secondary"
+                                outlined
+                                tile
+                                >Cargar Más</v-btn
+                            >
+                        </v-row>
+                    </ComprasIndex>
+                </v-col>
+            </v-row>
+        </v-container>
+    </div>
+</template>
+
+<script>
+import ComprasIndex from "../../components/compras/ComprasIndex";
+
+export default {
+    data: () => ({
+        limit: 10
+    }),
+
+    components: {
+        ComprasIndex
+    },
+
+    mounted() {
+        this.getCompras();
+    },
+
+    methods: {
+        getCompras: async function() {
+            await this.$store.dispatch("compras/index", {
+                limit: this.limit
+            });
+        },
+
+        loadMore: async function() {
+            this.limit += this.limit;
+            await this.getCompras();
+        }
+    }
+};
+</script>
+
+<style></style>

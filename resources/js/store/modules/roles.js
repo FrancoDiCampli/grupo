@@ -1,0 +1,121 @@
+const state = {
+    roles: null,
+    permissions: null,
+    form: {}
+};
+
+const mutations = {
+    fillRoles(state, roles) {
+        state.roles = roles;
+    },
+
+    fillPermissions(state, permissions) {
+        state.permissions = permissions;
+    },
+
+    fillForm(state, form) {
+        state.form = form;
+    },
+
+    resetForm(state) {
+        state.form = {};
+    }
+};
+
+const actions = {
+    index: function({ commit, dispatch }, params) {
+        return new Promise((resolve, reject) => {
+            axios
+                .get("/api/roles", { params: params })
+                .then(response => {
+                    commit("fillRoles", response.data);
+                    resolve(response.data);
+                })
+                .catch(error => {
+                    dispatch("errorHandle", error.response, {
+                        root: true
+                    });
+                    reject(error.response.data);
+                });
+        });
+    },
+
+    permissions: function({ commit, dispatch }, params) {
+        return new Promise((resolve, reject) => {
+            axios
+                .get("/api/permissions", { params: params })
+                .then(response => {
+                    commit("fillPermissions", response.data);
+                    resolve(response.data);
+                })
+                .catch(error => {
+                    dispatch("errorHandle", error.response, {
+                        root: true
+                    });
+                    reject(error.response.data);
+                });
+        });
+    },
+
+    save: function({ state, commit, dispatch }) {
+        return new Promise((resolve, reject) => {
+            axios
+                .post("/api/roles", state.form)
+                .then(response => {
+                    commit("resetForm");
+                    resolve(response.data);
+                })
+                .catch(error => {
+                    dispatch("errorHandle", error.response, {
+                        root: true
+                    });
+                    reject(error.response.data);
+                });
+        });
+    },
+
+    edit: function({ commit }, params) {
+        commit("fillForm", params.data);
+    },
+
+    update: function({ state, commit, dispatch }, params) {
+        return new Promise((resolve, reject) => {
+            axios
+                .put("/api/roles/" + params.id, state.form)
+                .then(response => {
+                    commit("resetForm");
+
+                    resolve(response.data);
+                })
+                .catch(error => {
+                    dispatch("errorHandle", error.response, {
+                        root: true
+                    });
+                    reject(error.response.data);
+                });
+        });
+    },
+
+    destroy: function({ dispatch }, params) {
+        return new Promise((resolve, reject) => {
+            axios
+                .delete("/api/roles/" + params.id)
+                .then(response => {
+                    resolve(response.data);
+                })
+                .catch(error => {
+                    dispatch("errorHandle", error.response, {
+                        root: true
+                    });
+                    reject(error.response.data);
+                });
+        });
+    }
+};
+
+export default {
+    namespaced: true,
+    state,
+    mutations,
+    actions
+};
