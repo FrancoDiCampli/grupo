@@ -20,6 +20,23 @@
                                 <td>{{ remito.numcompra }}</td>
                                 <td>{{ remito.fecha }}</td>
                                 <td>{{ remito.total }}</td>
+                                <td>
+                                    <v-menu offset-y>
+                                        <template v-slot:activator="{ on }">
+                                            <v-btn color="secondary" text icon v-on="on">
+                                                <v-icon size="medium">fas fa-ellipsis-v</v-icon>
+                                            </v-btn>
+                                        </template>
+                                        <v-list>
+                                            <v-list-item :to="`/compras/show/${remito.id}`">
+                                                <v-list-item-title>Detalles</v-list-item-title>
+                                            </v-list-item>
+                                            <v-list-item @click="print(remito.id)">
+                                                <v-list-item-title>Imprimir</v-list-item-title>
+                                            </v-list-item>
+                                        </v-list>
+                                    </v-menu>
+                                </td>
                             </tr>
                         </tbody>
                     </v-simple-table>
@@ -33,7 +50,13 @@
 </template>
 
 <script>
-export default {};
+export default {
+    methods: {
+        print(id) {
+            this.$store.dispatch("PDF/printCompra", { id: id });
+        }
+    }
+};
 </script>
 
 <style>
