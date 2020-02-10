@@ -2,8 +2,11 @@
     <div>
         <div v-if="$store.state.compras.compra">
             <v-row justify="center">
-                <v-card shaped outlined width="794" height="1123">
+                <v-card shaped outlined width="794" height="1123" :loading="$store.state.inProcess">
                     <v-card-text class="pa-0 black--text">
+                        <div class="print-button" @click="print()">
+                            <v-icon>fas fa-print</v-icon>
+                        </div>
                         <v-row>
                             <v-col cols="12">
                                 <h2 class="text-center mb-3">REMITO COMPRA</h2>
@@ -162,8 +165,12 @@ export default {
             await this.$store.dispatch("compras/show", {
                 id: this.id
             });
-            console.log(this.$store.state.compras.compra);
             this.inProcess = false;
+        },
+
+        print() {
+            let id = this.$store.state.compras.compra.remito.id;
+            this.$store.dispatch("PDF/printCompra", { id: id });
         }
     }
 };
@@ -240,6 +247,23 @@ export default {
     .footer-final {
         text-align: right;
         margin-right: 20px;
+    }
+}
+
+.print-button {
+    width: 0;
+    height: 0;
+    border-right: 30px solid #8dc638;
+    border-top: 30px solid #8dc638;
+    border-left: 30px solid transparent;
+    border-bottom: 30px solid transparent;
+    position: absolute;
+    right: 0;
+    cursor: pointer;
+    .v-icon {
+        margin: -48px 0px 0px 0px;
+        color: white !important;
+        font-size: 20px !important;
     }
 }
 </style>

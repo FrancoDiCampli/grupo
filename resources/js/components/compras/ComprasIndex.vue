@@ -20,29 +20,16 @@
                             <td>
                                 <v-menu offset-y>
                                     <template v-slot:activator="{ on }">
-                                        <v-btn
-                                            color="secondary"
-                                            text
-                                            icon
-                                            v-on="on"
-                                        >
-                                            <v-icon size="medium"
-                                                >fas fa-ellipsis-v</v-icon
-                                            >
+                                        <v-btn color="secondary" text icon v-on="on">
+                                            <v-icon size="medium">fas fa-ellipsis-v</v-icon>
                                         </v-btn>
                                     </template>
                                     <v-list>
-                                        <v-list-item
-                                            :to="`/compras/show/${item.id}`"
-                                        >
-                                            <v-list-item-title
-                                                >Detalles</v-list-item-title
-                                            >
+                                        <v-list-item :to="`/compras/show/${item.id}`">
+                                            <v-list-item-title>Detalles</v-list-item-title>
                                         </v-list-item>
                                         <v-list-item @click="print(item.id)">
-                                            <v-list-item-title
-                                                >Imprimir</v-list-item-title
-                                            >
+                                            <v-list-item-title>Imprimir</v-list-item-title>
                                         </v-list-item>
                                     </v-list>
                                 </v-menu>
@@ -72,20 +59,7 @@ export default {
 
     methods: {
         print(id) {
-            axios({
-                url: "/api/comprasPDF/" + id,
-                method: "GET",
-                responseType: "blob"
-            }).then(response => {
-                const url = window.URL.createObjectURL(
-                    new Blob([response.data])
-                );
-                const link = document.createElement("a");
-                link.href = url;
-                link.setAttribute("download", "compra" + id + ".pdf");
-                document.body.appendChild(link);
-                link.click();
-            });
+            this.$store.dispatch("PDF/printCompra", { id: id });
         }
     }
 };
