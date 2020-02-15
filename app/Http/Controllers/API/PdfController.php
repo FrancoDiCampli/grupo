@@ -28,7 +28,7 @@ class PdfController extends Controller
         $factura = Venta::find($id);
         $fecha = new Carbon($factura->fecha);
         $factura->fecha = $fecha->format('d-m-Y');
-        $cliente = Cliente::find($factura->cliente_id);
+        $cliente = Cliente::withTrashed()->find($factura->cliente_id);
         $detalles = DB::table('articulo_venta')->where('venta_id', $factura->id)->get();
         $pdf = app('dompdf.wrapper')->loadView('remitosPDF', compact('configuracion', 'factura', 'detalles', 'cliente'))->setPaper('A4');
         return $pdf->download();
@@ -43,7 +43,7 @@ class PdfController extends Controller
         $presupuesto->fecha = $fecha->format('d-m-Y');
         $vencimiento = new Carbon($presupuesto->vencimiento);
         $presupuesto->vencimiento = $vencimiento->format('d-m-Y');
-        $cliente = Cliente::find($presupuesto->cliente_id);
+        $cliente = Cliente::withTrashed()->find($presupuesto->cliente_id);
         $detalles = DB::table('articulo_presupuesto')->where('presupuesto_id', $presupuesto->id)->get();
         $pdf = app('dompdf.wrapper')->loadView('presupuestosPDF', compact('configuracion', 'presupuesto', 'detalles', 'cliente'))->setPaper('A4');
         return $pdf->download();
@@ -56,7 +56,7 @@ class PdfController extends Controller
         $remito = Compra::find($id);
         $fecha = new Carbon($remito->fecha);
         $remito->fecha = $fecha->format('d-m-Y');
-        $proveedor = Supplier::find($remito->supplier_id);
+        $proveedor = Supplier::withTrashed()->find($remito->supplier_id);
         $detalles = DB::table('articulo_compra')->where('compra_id', $remito->id)->get();
         $pdf = app('dompdf.wrapper')->loadView('comprasPDF', compact('configuracion', 'remito', 'detalles', 'proveedor'))->setPaper('A4');
         return $pdf->download();

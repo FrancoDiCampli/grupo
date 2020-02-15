@@ -138,13 +138,13 @@ export default {
                 roles: ["superAdmin", "administrador", "vendedor"],
                 divider: false
             },
-            // {
-            //     name: "Cartera",
-            //     icon: "fas fa-wallet",
-            //     url: "/cartera",
-            //     roles: ["superAdmin", "administrador"],
-            //     divider: true
-            // },
+            {
+                name: "Cartera",
+                icon: "fas fa-wallet",
+                url: "/cartera",
+                roles: ["superAdmin", "administrador"],
+                divider: true
+            },
             {
                 name: "Clientes",
                 icon: "fas fa-user-friends",
@@ -174,13 +174,13 @@ export default {
                 roles: ["superAdmin", "administrador"],
                 divider: true
             },
-            // {
-            //     name: "Reportes",
-            //     icon: "fas fa-clipboard",
-            //     url: "/reportes",
-            //     roles: ["superAdmin", "administrador"],
-            //     divider: false
-            // },
+            {
+                name: "Reportes",
+                icon: "fas fa-clipboard",
+                url: "/reportes",
+                roles: ["superAdmin", "administrador"],
+                divider: false
+            },
             {
                 name: "Movimientos",
                 icon: "fas fa-chart-line",

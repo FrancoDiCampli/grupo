@@ -58,7 +58,7 @@ class VentasController extends Controller
         foreach ($facs as $fac) {
             $fecha = new Carbon($fac->fecha);
             $fac->fecha = $fecha->format('d-m-Y');
-            $fac->cliente;
+            $fac->cliente = Cliente::withTrashed()->find($fac->cliente_id);
             $fac = collect($fac);
             $facturas->push($fac);
         }
@@ -67,7 +67,7 @@ class VentasController extends Controller
         foreach ($eliminadas as $eliminada) {
             $dateFac = new Carbon($eliminada->fecha);
             $eliminada->fecha = $dateFac->format('d-m-Y');
-            $eliminada->cliente;
+            $fac->cliente = Cliente::withTrashed()->find($fac->cliente_id);
         }
 
         if ($facturas->count() <= $request->get('limit')) {
@@ -320,7 +320,7 @@ class VentasController extends Controller
         $factura = Venta::find($id);
         $fecha = new Carbon($factura->fecha);
         $factura->fecha = $fecha->format('d-m-Y');
-        $cliente = Cliente::find($factura->cliente_id);
+        $cliente = Cliente::withTrashed()->find($factura->cliente_id);
         $detalles = DB::table('articulo_venta')->where('venta_id', $factura->id)->get();
 
         return [

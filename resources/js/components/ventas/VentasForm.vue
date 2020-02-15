@@ -1,508 +1,520 @@
 <template>
-    <div>
-        <v-card shaped outlined>
-            <!-- HEADER -->
-            <v-card-title class="py-0 px-2">
-                <v-row class="pa-0 ma-0">
-                    <v-col cols="6" align-self="center">Nueva Venta</v-col>
-                    <v-col cols="6">
-                        <v-list-item two-line class="text-right">
-                            <v-list-item-content>
-                                <v-list-item-title>
-                                    <b>Comprobante N°:&nbsp;</b>
-                                    {{ NumComprobante }}
-                                </v-list-item-title>
-                                <v-list-item-subtitle>
-                                    <b>Punto de venta:&nbsp;</b>
-                                    {{ PuntoVenta }}
-                                </v-list-item-subtitle>
-                            </v-list-item-content>
-                        </v-list-item>
-                    </v-col>
-                </v-row>
-            </v-card-title>
-            <v-divider></v-divider>
-
-            <v-card-text>
-                <v-row justify="center">
-                    <v-col cols="11">
-                        <!-- INDICADOR DE CARGA -->
-                        <div v-show="inProcess">
-                            <v-row
-                                justify="center"
-                                align-content="center"
-                                class="ma-0"
-                                style="height: 90vh"
-                            >
-                                <v-progress-circular
-                                    :size="70"
-                                    :width="7"
-                                    color="primary"
-                                    indeterminate
-                                ></v-progress-circular>
-                            </v-row>
-                        </div>
-                        <div v-show="!inProcess">
-                            <v-form ref="CreateVenta" @submit.prevent="saveVenta()">
-                                <v-row justify="space-around">
-                                    <!-- CLIENTE -->
-                                    <v-col cols="12" class="py-0">
-                                        <v-text-field
-                                            v-model="searchCliente"
-                                            :rules="[rules.required]"
-                                            @keyup="searchClienteAfter()"
-                                            :disabled="disabled.cliente"
-                                            class="search-client-input"
-                                            append-icon="fas fa-search"
-                                            label="Cliente"
-                                            outlined
-                                        ></v-text-field>
-                                        <v-card
-                                            outlined
-                                            class="search-client-table mb-5"
-                                            v-if="searchClienteTable"
+    <div v-click-outside="nullFocus">
+        <!-- HEADER -->
+        <div @click="focus = 'header'">
+            <v-card
+                shaped
+                outlined
+                class="ventas-header"
+                :class="focus == 'header' ? 'elevation-3' : ''"
+                :loading="inProcess"
+            >
+                <v-card-title class="py-0 px-2">
+                    <v-row class="pa-0 ma-0">
+                        <v-col cols="auto" align-self="center"
+                            >Nueva Venta</v-col
+                        >
+                        <v-spacer></v-spacer>
+                        <v-col cols="auto">
+                            <v-list-item two-line class="text-right">
+                                <v-list-item-content>
+                                    <v-list-item-title>
+                                        <b v-if="$vuetify.breakpoint.xsOnly"
+                                            >N°:&nbsp;</b
                                         >
-                                            <v-row
-                                                justify="center"
-                                                v-if="searchInProcess"
-                                                class="py-5"
+                                        <b v-else>Comprobante N°:&nbsp;</b>
+                                        {{ NumComprobante }}
+                                    </v-list-item-title>
+                                    <v-list-item-subtitle>
+                                        <b v-if="$vuetify.breakpoint.xsOnly"
+                                            >P:&nbsp;</b
+                                        >
+                                        <b v-else>Punto de venta:&nbsp;</b>
+                                        {{ PuntoVenta }}
+                                    </v-list-item-subtitle>
+                                </v-list-item-content>
+                            </v-list-item>
+                        </v-col>
+                    </v-row>
+                </v-card-title>
+            </v-card>
+        </div>
+
+        <!-- CLIENTE, CONDICION, COMPROBANTE -->
+        <div @click="focus = 'cliente'" class="mt-5">
+            <v-card outlined :class="focus == 'cliente' ? 'elevation-3' : ''">
+                <v-card-text
+                    class="pt-10"
+                    :class="$vuetify.breakpoint.xsOnly ? '' : 'px-8'"
+                >
+                    <v-row justify="space-around">
+                        <!-- CLIENTE -->
+                        <v-col cols="12" class="py-0">
+                            <v-text-field
+                                v-model="searchCliente"
+                                :rules="[rules.required]"
+                                @keyup="searchClienteAfter()"
+                                :disabled="disabled.cliente"
+                                class="search-client-input"
+                                append-icon="fas fa-search"
+                                label="Cliente"
+                                outlined
+                            ></v-text-field>
+                            <v-card
+                                outlined
+                                class="search-client-table mb-5"
+                                v-if="searchClienteTable"
+                            >
+                                <v-row
+                                    justify="center"
+                                    v-if="searchInProcess"
+                                    class="py-5"
+                                >
+                                    <v-progress-circular
+                                        :size="70"
+                                        :width="7"
+                                        color="primary"
+                                        indeterminate
+                                    ></v-progress-circular>
+                                </v-row>
+                                <div
+                                    v-else-if="
+                                        searchCliente != null &&
+                                            searchCliente != ''
+                                    "
+                                >
+                                    <v-simple-table v-if="clientes.length > 0">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-xs-left">
+                                                    Apellido Nombre
+                                                </th>
+                                                <th class="text-xs-left">
+                                                    Documento
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr
+                                                v-for="(cliente,
+                                                index) in clientes"
+                                                :key="index"
+                                                class="search-client-select"
+                                                @click="selectCliente(cliente)"
                                             >
-                                                <v-progress-circular
-                                                    :size="70"
-                                                    :width="7"
-                                                    color="primary"
-                                                    indeterminate
-                                                ></v-progress-circular>
-                                            </v-row>
-                                            <div
-                                                v-else-if="
-                                                    searchCliente != null &&
-                                                        searchCliente != ''
-                                                "
-                                            >
-                                                <v-simple-table v-if="clientes.length > 0">
-                                                    <thead>
-                                                        <tr>
-                                                            <th class="text-xs-left">Apellido Nombre</th>
-                                                            <th class="text-xs-left">Documento</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr
-                                                            v-for="(cliente,
-                                                            index) in clientes"
-                                                            :key="index"
-                                                            class="search-client-select"
-                                                            @click="
-                                                                selectCliente(
-                                                                    cliente
-                                                                )
-                                                            "
-                                                        >
-                                                            <td>
-                                                                {{
-                                                                cliente.razonsocial
-                                                                }}
-                                                            </td>
-                                                            <td>
-                                                                {{
-                                                                cliente.documentounico
-                                                                }}
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </v-simple-table>
-                                                <div v-else class="py-5">
-                                                    <h3 class="text-center">
-                                                        Ningun dato coincide con
-                                                        lel criterio de busqueda
-                                                    </h3>
-                                                </div>
-                                            </div>
-                                        </v-card>
-                                    </v-col>
-                                    <!-- CONDICION VENTA -->
-                                    <v-col cols="12" sm="6" class="py-0">
-                                        <v-select
-                                            v-model="condicion"
-                                            :items="condiciones"
-                                            :rules="[rules.required]"
-                                            label="Condición"
-                                            required
-                                            outlined
-                                        ></v-select>
-                                    </v-col>
-                                    <!-- COMPROBANTE ADHERIDO -->
-                                    <v-col cols="12" sm="6" class="py-0">
-                                        <v-text-field
-                                            v-model="
-                                                $store.state.ventas.form
-                                                    .comprobanteadherido
-                                            "
-                                            :disabled="disabled.cliente"
-                                            label="Comprobante Adherido Nº"
-                                            outlined
-                                            type="number"
-                                        ></v-text-field>
-                                    </v-col>
-                                    <!-- ARTICULOS -->
-                                    <v-col cols="12" class="py-0 articulos-panel">
-                                        <v-expansion-panels v-model="articulosPanel">
-                                            <v-expansion-panel>
-                                                <v-expansion-panel-header
-                                                    expand-icon="fas fa-caret-down"
+                                                <td>
+                                                    {{ cliente.razonsocial }}
+                                                </td>
+                                                <td>
+                                                    {{ cliente.documentounico }}
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </v-simple-table>
+                                    <div v-else class="py-5">
+                                        <h3 class="text-center">
+                                            Ningun dato coincide con lel
+                                            criterio de busqueda
+                                        </h3>
+                                    </div>
+                                </div>
+                            </v-card>
+                        </v-col>
+                        <!-- CONDICION VENTA -->
+                        <v-col cols="12" sm="6" class="py-0">
+                            <v-select
+                                v-model="condicion"
+                                :items="condiciones"
+                                :rules="[rules.required]"
+                                label="Condición"
+                                required
+                                outlined
+                            ></v-select>
+                        </v-col>
+                        <!-- COMPROBANTE ADHERIDO -->
+                        <v-col cols="12" sm="6" class="py-0">
+                            <v-text-field
+                                v-model="
+                                    $store.state.ventas.form.comprobanteadherido
+                                "
+                                :disabled="disabled.cliente"
+                                label="Comprobante Adherido Nº"
+                                outlined
+                                type="number"
+                            ></v-text-field>
+                        </v-col>
+                    </v-row>
+                </v-card-text>
+            </v-card>
+        </div>
+
+        <!-- ARTICULOS, DETALLES -->
+        <div @click="focus = 'articulos'" class="mt-5">
+            <v-card outlined :class="focus == 'articulos' ? 'elevation-3' : ''">
+                <v-card-text
+                    class="pt-10"
+                    :class="$vuetify.breakpoint.xsOnly ? '' : 'px-8'"
+                >
+                    <v-row justify="space-around">
+                        <!-- ARTICULOS -->
+                        <v-col cols="12" class="py-0 articulos-panel">
+                            <v-expansion-panels v-model="articulosPanel">
+                                <v-expansion-panel>
+                                    <v-expansion-panel-header
+                                        expand-icon="fas fa-caret-down"
+                                    >
+                                        <div v-if="articuloSelected.articulo">
+                                            {{ articuloSelected.articulo }}
+                                        </div>
+                                        <div v-else>Articulos</div>
+                                    </v-expansion-panel-header>
+                                    <v-expansion-panel-content>
+                                        <v-simple-table
+                                            v-if="articulos.length > 0"
+                                        >
+                                            <thead>
+                                                <tr>
+                                                    <th class="text-xs-left">
+                                                        Codigo
+                                                    </th>
+                                                    <th class="text-xs-left">
+                                                        Articulo
+                                                    </th>
+                                                    <th class="text-xs-left">
+                                                        Precio
+                                                    </th>
+                                                    <th class="text-xs-left">
+                                                        Stock
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr
+                                                    v-for="(articulo,
+                                                    index) in articulos"
+                                                    :key="index"
+                                                    :class="
+                                                        articulo.stock > 0
+                                                            ? 'search-articulo-select'
+                                                            : ''
+                                                    "
+                                                    @click="
+                                                        selectArticulo(articulo)
+                                                    "
                                                 >
-                                                    <div
-                                                        v-if="articuloSelected.articulo"
-                                                    >{{articuloSelected.articulo}}</div>
-                                                    <div v-else>Articulos</div>
-                                                </v-expansion-panel-header>
-                                                <v-expansion-panel-content>
-                                                    <v-simple-table
-                                                        v-if="
-                                                            articulos.length > 0
+                                                    <td>
+                                                        {{
+                                                            articulo.codarticulo
+                                                        }}
+                                                    </td>
+                                                    <td>
+                                                        {{ articulo.articulo }}
+                                                    </td>
+                                                    <td>
+                                                        {{ articulo.precio }}
+                                                    </td>
+                                                    <td>
+                                                        {{ articulo.stock }}
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </v-simple-table>
+                                        <div v-else class="py-5">
+                                            <h3 class="text-center">
+                                                No existe ningún articulo
+                                                registrado
+                                            </h3>
+                                        </div>
+                                    </v-expansion-panel-content>
+                                </v-expansion-panel>
+                            </v-expansion-panels>
+                        </v-col>
+                        <v-form ref="detailForm">
+                            <v-row justify="center" class="px-3">
+                                <!-- DETALLES -->
+                                <v-col cols="12" sm="4" class="py-0">
+                                    <v-text-field
+                                        v-model="articuloSelected.precio"
+                                        :rules="[rules.required]"
+                                        :disabled="disabled.detalles"
+                                        label="Precio"
+                                        required
+                                        outlined
+                                        type="number"
+                                    ></v-text-field>
+                                </v-col>
+                                <v-col cols="12" sm="4" class="py-0">
+                                    <v-text-field
+                                        v-model="articuloSelected.cantidad"
+                                        :rules="[rules.required]"
+                                        :disabled="disabled.detalles"
+                                        label="Unidades"
+                                        required
+                                        outlined
+                                        type="number"
+                                    ></v-text-field>
+                                </v-col>
+                                <v-col cols="12" sm="4" class="py-0">
+                                    <v-text-field
+                                        v-model="cantidadLitros"
+                                        :rules="[rules.required]"
+                                        label="Cantidad en litros"
+                                        required
+                                        outlined
+                                        disabled
+                                        type="number"
+                                    ></v-text-field>
+                                </v-col>
+                                <!-- COTIZACION -->
+                                <v-col cols="12" sm="6" class="py-0">
+                                    <v-text-field
+                                        v-model="dolares"
+                                        :rules="[rules.required]"
+                                        label="Subtotal"
+                                        outlined
+                                        disabled
+                                        type="number"
+                                    ></v-text-field>
+                                </v-col>
+                                <v-col cols="12" sm="6" class="py-0">
+                                    <v-text-field
+                                        v-model="pesos"
+                                        :rules="[rules.required]"
+                                        label="Subtotal en Pesos"
+                                        outlined
+                                        disabled
+                                        type="number"
+                                    ></v-text-field>
+                                </v-col>
+                            </v-row>
+                        </v-form>
+                        <v-row justify="center" class="px-3">
+                            <v-col cols="12" sm="6" class="py-0">
+                                <v-text-field
+                                    v-model="cotizacion"
+                                    :rules="[rules.required]"
+                                    label="Cotizacion"
+                                    outlined
+                                    type="number"
+                                ></v-text-field>
+                            </v-col>
+                            <v-col cols="12" sm="6" class="py-0">
+                                <v-text-field
+                                    v-model="fechaCotizacion"
+                                    :rules="[rules.required]"
+                                    label="Fecha de la cotización"
+                                    outlined
+                                    disabled
+                                ></v-text-field>
+                            </v-col>
+                            <v-col cols="12">
+                                <v-row justify="center" class="mb-5">
+                                    <v-btn
+                                        @click="addDetail()"
+                                        outlined
+                                        tile
+                                        color="secondary"
+                                        :disabled="disabled.detalles"
+                                        >Añadir detalle</v-btn
+                                    >
+                                </v-row>
+                            </v-col>
+                        </v-row>
+
+                        <!-- TABLA DETALLES -->
+                        <v-col cols="12" class="py-0 mb-5">
+                            <v-card outlined>
+                                <v-simple-table>
+                                    <template v-slot:default>
+                                        <thead>
+                                            <tr>
+                                                <th class="text-left">
+                                                    Articulo
+                                                </th>
+                                                <th
+                                                    class="text-left hidden-sm-and-down"
+                                                >
+                                                    Precio
+                                                </th>
+                                                <th class="text-left">
+                                                    Unidades
+                                                </th>
+
+                                                <th class="text-left">
+                                                    Subtotal
+                                                </th>
+                                                <th
+                                                    class="text-left hidden-sm-and-down"
+                                                >
+                                                    Subtotal en pesos
+                                                </th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr
+                                                v-for="(detalle,
+                                                index) in detalles"
+                                                :key="index"
+                                            >
+                                                <td>
+                                                    {{ detalle.articulo }}
+                                                </td>
+                                                <td class="hidden-sm-and-down">
+                                                    {{ detalle.precio }}
+                                                </td>
+                                                <td>
+                                                    {{ detalle.cantidad }}
+                                                </td>
+                                                <td>
+                                                    {{
+                                                        detalle.subtotalDolares
+                                                    }}
+                                                </td>
+                                                <td class="hidden-sm-and-down">
+                                                    {{ detalle.subtotalPesos }}
+                                                </td>
+                                                <td>
+                                                    <v-btn
+                                                        icon
+                                                        color="secondary"
+                                                        @click="
+                                                            deleteDetail(
+                                                                detalle
+                                                            )
                                                         "
                                                     >
-                                                        <thead>
-                                                            <tr>
-                                                                <th class="text-xs-left">Codigo</th>
-                                                                <th class="text-xs-left">Articulo</th>
-                                                                <th class="text-xs-left">Precio</th>
-                                                                <th class="text-xs-left">Stock</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <tr
-                                                                v-for="(articulo,
-                                                                index) in articulos"
-                                                                :key="index"
-                                                                :class="
-                                                                    articulo.stock >
-                                                                    0
-                                                                        ? 'search-articulo-select'
-                                                                        : ''
-                                                                "
-                                                                @click="
-                                                                    selectArticulo(
-                                                                        articulo
-                                                                    )
-                                                                "
-                                                            >
-                                                                <td>
-                                                                    {{
-                                                                    articulo.codarticulo
-                                                                    }}
-                                                                </td>
-                                                                <td>
-                                                                    {{
-                                                                    articulo.articulo
-                                                                    }}
-                                                                </td>
-                                                                <td>
-                                                                    {{
-                                                                    articulo.precio
-                                                                    }}
-                                                                </td>
-                                                                <td>
-                                                                    {{
-                                                                    articulo.stock
-                                                                    }}
-                                                                </td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </v-simple-table>
-                                                    <div v-else class="py-5">
-                                                        <h3 class="text-center">
-                                                            No existe ningún
-                                                            articulo registrado
-                                                        </h3>
-                                                    </div>
-                                                </v-expansion-panel-content>
-                                            </v-expansion-panel>
-                                        </v-expansion-panels>
-                                    </v-col>
-                                    <v-expand-transition>
-                                        <v-form
-                                            ref="detailForm"
-                                            @submit.prevent="addDetail"
-                                            v-if="!disabled.detalles"
-                                        >
-                                            <v-row justify="center" class="px-3">
-                                                <!-- DETALLES -->
-                                                <v-col cols="12" sm="4" class="py-0">
-                                                    <v-text-field
-                                                        v-model="
-                                                        articuloSelected.precio
-                                                    "
-                                                        :rules="[rules.required]"
-                                                        label="Precio"
-                                                        required
-                                                        outlined
-                                                        type="number"
-                                                    ></v-text-field>
-                                                </v-col>
-                                                <v-col cols="12" sm="4" class="py-0">
-                                                    <v-text-field
-                                                        v-model="
-                                                        articuloSelected.cantidad
-                                                    "
-                                                        :rules="[
-                                                        rules.required,
-                                              
-                                                    ]"
-                                                        label="Unidades"
-                                                        required
-                                                        outlined
-                                                        type="number"
-                                                    ></v-text-field>
-                                                </v-col>
-                                                <v-col cols="12" sm="4" class="py-0">
-                                                    <v-text-field
-                                                        v-model="cantidadLitros"
-                                                        :rules="[rules.required]"
-                                                        label="Cantidad en litros"
-                                                        required
-                                                        outlined
-                                                        disabled
-                                                        type="number"
-                                                    ></v-text-field>
-                                                </v-col>
-                                                <!-- COTIZACION -->
-                                                <v-col cols="12" sm="6" class="py-0">
-                                                    <v-text-field
-                                                        v-model="dolares"
-                                                        :rules="[rules.required]"
-                                                        label="Subtotal"
-                                                        outlined
-                                                        disabled
-                                                        type="number"
-                                                    ></v-text-field>
-                                                </v-col>
-                                                <v-col cols="12" sm="6" class="py-0">
-                                                    <v-text-field
-                                                        v-model="pesos"
-                                                        :rules="[rules.required]"
-                                                        label="Subtotal en Pesos"
-                                                        outlined
-                                                        disabled
-                                                        type="number"
-                                                    ></v-text-field>
-                                                </v-col>
-                                                <v-col cols="12" sm="6" class="py-0">
-                                                    <v-text-field
-                                                        v-model="cotizacion"
-                                                        :rules="[rules.required]"
-                                                        label="Cotizacion"
-                                                        outlined
-                                                        type="number"
-                                                    ></v-text-field>
-                                                </v-col>
-                                                <v-col cols="12" sm="6" class="py-0">
-                                                    <v-text-field
-                                                        v-model="fechaCotizacion"
-                                                        :rules="[rules.required]"
-                                                        label="Fecha de la cotización"
-                                                        outlined
-                                                        disabled
-                                                    ></v-text-field>
-                                                </v-col>
-                                            </v-row>
-                                            <v-row justify="center" class="mb-5">
-                                                <v-btn
-                                                    type="submit"
-                                                    outlined
-                                                    tile
-                                                    color="secondary"
-                                                >Añadir detalle</v-btn>
-                                            </v-row>
-                                        </v-form>
-                                    </v-expand-transition>
-                                    <!-- TABLA DETALLES -->
-                                    <v-col cols="12" class="py-0 mb-5">
-                                        <v-card outlined>
-                                            <v-simple-table>
-                                                <template v-slot:default>
-                                                    <thead>
-                                                        <tr>
-                                                            <th class="text-left">Articulo</th>
-                                                            <th
-                                                                class="text-left hidden-sm-and-down"
-                                                            >Precio</th>
-                                                            <th class="text-left">Unidades</th>
+                                                        <v-icon size="medium">
+                                                            fas fa-times
+                                                        </v-icon>
+                                                    </v-btn>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </template>
+                                </v-simple-table>
+                            </v-card>
+                        </v-col>
+                    </v-row>
+                </v-card-text>
+            </v-card>
+        </div>
 
-                                                            <th class="text-left">Subtotal</th>
-                                                            <th
-                                                                class="text-left hidden-sm-and-down"
-                                                            >
-                                                                Subtotal en
-                                                                pesos
-                                                            </th>
-                                                            <th></th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr
-                                                            v-for="(detalle,
-                                                            index) in detalles"
-                                                            :key="index"
-                                                        >
-                                                            <td>
-                                                                {{
-                                                                detalle.articulo
-                                                                }}
-                                                            </td>
-                                                            <td class="hidden-sm-and-down">
-                                                                {{
-                                                                detalle.precio
-                                                                }}
-                                                            </td>
-                                                            <td>
-                                                                {{
-                                                                detalle.cantidad
-                                                                }}
-                                                            </td>
-                                                            <td>
-                                                                {{
-                                                                detalle.subtotalDolares
-                                                                }}
-                                                            </td>
-                                                            <td class="hidden-sm-and-down">
-                                                                {{
-                                                                detalle.subtotalPesos
-                                                                }}
-                                                            </td>
-                                                            <td>
-                                                                <v-btn
-                                                                    icon
-                                                                    color="secondary"
-                                                                    @click="
-                                                                        deleteDetail(
-                                                                            detalle
-                                                                        )
-                                                                    "
-                                                                >
-                                                                    <v-icon size="medium">
-                                                                        fas
-                                                                        fa-times
-                                                                    </v-icon>
-                                                                </v-btn>
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </template>
-                                            </v-simple-table>
-                                        </v-card>
-                                    </v-col>
-                                    <v-col cols="12" sm="6" class="py-0 px-0">
-                                        <v-col cols="12" class="py-0">
-                                            <v-text-field
-                                                v-model="
-                                                    $store.state.ventas.form
-                                                        .bonificacion
-                                                "
-                                                type="number"
-                                                label="Bonificacion %"
-                                                outlined
-                                            ></v-text-field>
-                                        </v-col>
-                                        <v-col cols="12" class="py-0">
-                                            <v-text-field
-                                                v-model="
-                                                    $store.state.ventas.form
-                                                        .recargo
-                                                "
-                                                type="number"
-                                                label="Recargo %"
-                                                outlined
-                                            ></v-text-field>
-                                        </v-col>
-                                        <v-col cols="12" class="py-0">
-                                            <v-select
-                                                v-model="tipo"
-                                                :items="tipos"
-                                                :rules="[rules.required]"
-                                                label="Tipo de comprobante"
-                                                outlined
-                                            ></v-select>
-                                        </v-col>
-                                    </v-col>
-                                    <v-col cols="12" sm="6" class="py-0 px-0">
-                                        <v-col cols="12" class="py-0">
-                                            <v-text-field
-                                                v-model="subtotal"
-                                                type="number"
-                                                label="Subtotal"
-                                                outlined
-                                                disabled
-                                            ></v-text-field>
-                                        </v-col>
-                                        <v-col cols="12" class="py-0">
-                                            <v-text-field
-                                                v-model="total"
-                                                type="number"
-                                                label="Total"
-                                                outlined
-                                                disabled
-                                            ></v-text-field>
-                                        </v-col>
-                                        <v-col
-                                            cols="12"
-                                            class="py-0"
-                                            v-if="
-                                                $store.state.ventas.form
-                                                    .condicionventa == 'CONTADO'
-                                            "
-                                        >
-                                            <v-text-field
-                                                v-model="totalPesos"
-                                                label="Total en pesos"
-                                                outlined
-                                                disabled
-                                            ></v-text-field>
-                                        </v-col>
-                                    </v-col>
-                                    <v-col cols="12" class="py-0">
-                                        <v-textarea
-                                            v-model="
-                                                $store.state.ventas.form
-                                                    .observaciones
-                                            "
-                                            outlined
-                                            label="Observaciones"
-                                            no-resize
-                                        ></v-textarea>
-                                    </v-col>
-                                </v-row>
-                                <v-row justify="center">
-                                    <v-btn
-                                        tile
-                                        outlined
-                                        color="secondary"
-                                        class="mx-2"
-                                        @click="resetForm()"
-                                    >Cancelar</v-btn>
-                                    <v-btn
-                                        :disabled="
-                                            $store.state.ventas.form
-                                                .cliente_id == null
-                                        "
-                                        type="submit"
-                                        tile
-                                        color="secondary"
-                                        class="mx-2 elevation-0"
-                                    >Guardar</v-btn>
-                                </v-row>
-                                <br />
-                            </v-form>
-                        </div>
-                    </v-col>
-                </v-row>
-            </v-card-text>
-        </v-card>
+        <!-- BONIFICACION, RECARGO, SUBTOTAL, TOTAL -->
+        <div @click="focus = 'total'" class="mt-5">
+            <v-card outlined :class="focus == 'total' ? 'elevation-3' : ''">
+                <v-card-text
+                    class="pt-10"
+                    :class="$vuetify.breakpoint.xsOnly ? '' : 'px-8'"
+                >
+                    <v-row justify="space-around">
+                        <v-col cols="12" sm="6" class="py-0 px-0">
+                            <!-- BONIFICACION -->
+                            <v-col cols="12" class="py-0">
+                                <v-text-field
+                                    v-model="
+                                        $store.state.ventas.form.bonificacion
+                                    "
+                                    type="number"
+                                    label="Bonificacion %"
+                                    outlined
+                                ></v-text-field>
+                            </v-col>
+                            <!-- RECARGO -->
+                            <v-col cols="12" class="py-0">
+                                <v-text-field
+                                    v-model="$store.state.ventas.form.recargo"
+                                    type="number"
+                                    label="Recargo %"
+                                    outlined
+                                ></v-text-field>
+                            </v-col>
+                            <!-- TIPO DE COMPROBANTE -->
+                            <v-col cols="12" class="py-0">
+                                <v-select
+                                    v-model="tipo"
+                                    :items="tipos"
+                                    :rules="[rules.required]"
+                                    label="Tipo de comprobante"
+                                    outlined
+                                ></v-select>
+                            </v-col>
+                        </v-col>
+                        <v-col cols="12" sm="6" class="py-0 px-0">
+                            <!-- SUBTOTAL -->
+                            <v-col cols="12" class="py-0">
+                                <v-text-field
+                                    v-model="subtotal"
+                                    type="number"
+                                    label="Subtotal"
+                                    outlined
+                                    disabled
+                                ></v-text-field>
+                            </v-col>
+                            <!-- TOTAL -->
+                            <v-col cols="12" class="py-0">
+                                <v-text-field
+                                    v-model="total"
+                                    type="number"
+                                    label="Total"
+                                    outlined
+                                    disabled
+                                ></v-text-field>
+                            </v-col>
+                            <!-- TOTAL PESOS -->
+                            <v-col
+                                cols="12"
+                                class="py-0"
+                                v-if="
+                                    $store.state.ventas.form.condicionventa ==
+                                        'CONTADO'
+                                "
+                            >
+                                <v-text-field
+                                    v-model="totalPesos"
+                                    label="Total en pesos"
+                                    outlined
+                                    disabled
+                                ></v-text-field>
+                            </v-col>
+                        </v-col>
+                    </v-row>
+                </v-card-text>
+            </v-card>
+        </div>
+
+        <!-- OBSERVACIONES, SAVE SLOT -->
+        <div @click="focus = 'footer'" class="mt-5">
+            <v-card
+                outlined
+                shaped
+                class="ventas-footer"
+                :class="focus == 'footer' ? 'elevation-3' : ''"
+            >
+                <v-card-text
+                    class="pt-10"
+                    :class="$vuetify.breakpoint.xsOnly ? '' : 'px-8'"
+                >
+                    <v-row justify="center">
+                        <v-col cols="12" class="py-0">
+                            <v-textarea
+                                v-model="$store.state.ventas.form.observaciones"
+                                outlined
+                                label="Observaciones"
+                                no-resize
+                            ></v-textarea>
+                        </v-col>
+                        <slot></slot>
+                    </v-row>
+                </v-card-text>
+            </v-card>
+        </div>
 
         <v-dialog v-model="detallesDialog" width="500" persistent>
             <v-card>
-                <v-card-title primary-title>¡Ha ocurrido un error!</v-card-title>
+                <v-card-title primary-title
+                    >¡Ha ocurrido un error!</v-card-title
+                >
                 <v-divider></v-divider>
                 <v-card-text>
                     <br />Debe ingresar al menos un detalle.
@@ -517,7 +529,8 @@
                             :disabled="$store.state.inProcess"
                             color="error"
                             class="mx-2 elevation-0"
-                        >Cerrar</v-btn>
+                            >Cerrar</v-btn
+                        >
                     </v-row>
                 </v-card-text>
             </v-card>
@@ -525,7 +538,9 @@
 
         <v-dialog v-model="condicionDialog" width="500" persistent>
             <v-card>
-                <v-card-title primary-title>¡Ha ocurrido un error!</v-card-title>
+                <v-card-title primary-title
+                    >¡Ha ocurrido un error!</v-card-title
+                >
                 <v-divider></v-divider>
                 <v-card-text>
                     <br />La condición de venta a un consumidor final debe ser
@@ -541,7 +556,8 @@
                             :disabled="$store.state.inProcess"
                             color="error"
                             class="mx-2 elevation-0"
-                        >Cerrar</v-btn>
+                            >Cerrar</v-btn
+                        >
                     </v-row>
                 </v-card-text>
             </v-card>
@@ -550,15 +566,14 @@
 </template>
 
 <script>
+import ClickOutside from "vue-click-outside";
 var cantidadMaxima = 999999999;
-
-import moment from "moment";
 
 export default {
     data: () => ({
         // GENERAL
-
         inProcess: false,
+        focus: null,
         searchInProcess: false,
         disabled: {
             detalles: true
@@ -659,7 +674,7 @@ export default {
             }
         },
 
-        // Totales
+        // TOTALES
         total: {
             set() {},
             get() {
@@ -703,18 +718,21 @@ export default {
         }
     },
 
-    mounted: async function() {
+    directives: {
+        ClickOutside
+    },
+
+    async mounted() {
         this.inProcess = true;
-        this.$refs.CreateVenta.reset();
+        await this.checkCurrency();
         await this.getPoint();
         await this.getArticles();
-        await this.consultarDivisa();
         this.inProcess = false;
     },
 
     methods: {
         // GENERAL
-        consultarDivisa() {
+        checkCurrency() {
             return new Promise((resolve, reject) => {
                 axios
                     .get("/api/consultar")
@@ -732,20 +750,17 @@ export default {
             });
         },
 
+        nullFocus() {
+            this.focus = null;
+        },
+
         // HEADER
         getPoint: async function() {
             let data;
-            await axios
-                .get("/api/config")
-                .then(response => {
-                    data = response.data;
-                })
-                .catch(error => {
-                    console.log(error);
-                });
-
+            await axios.get("/api/config").then(response => {
+                data = response.data;
+            });
             this.PuntoVenta = data.puntoventa;
-
             let response = await this.$store.dispatch("ventas/index");
             if (response.ultima) {
                 this.NumComprobante = Number(response.ultima.numventa) + 1;
@@ -839,7 +854,8 @@ export default {
                 this.disabled.detalles = true;
                 this.articuloSelected = {};
                 this.searchArticulo = null;
-                this.consultarDivisa();
+                this.$refs.detailForm.reset();
+                // this.checkCurrency();
             }
         },
 
@@ -901,40 +917,32 @@ export default {
             }
         },
 
-        saveVenta: async function() {
-            if (this.$refs.CreateVenta.validate()) {
-                if (this.detalles.length <= 0) {
-                    this.detallesDialog = true;
-                } else if (
-                    this.$store.state.ventas.form.cliente_id == 1 &&
-                    this.condicion == "CUENTA CORRIENTE"
-                ) {
-                    this.condicionDialog = true;
-                } else {
-                    this.inProcess = true;
-                    this.$store.state.ventas.form.condicionventa = this.condicion;
-                    this.$store.state.ventas.form.subtotal = this.subtotal;
-                    this.$store.state.ventas.form.total = this.total;
-                    this.$store.state.ventas.form.totalPesos = this.totalPesos;
-                    this.$store.state.ventas.form.tipoComprobante = this.tipo;
-                    this.$store.state.ventas.form.detalles = this.detalles;
-                    this.$store.state.ventas.form.cotizacion = this.cotizacion;
-                    this.$store.state.ventas.form.fechaCotizacion = this.fechaCotizacion;
-                    this.$store.state.ventas.form.numventa = this.NumComprobante;
-
-                    await this.$store.dispatch("ventas/save");
-
-                    await this.getPoint();
-                    await this.getArticles();
-
-                    this.resetForm();
-                    this.inProcess = false;
-                }
+        // FORM
+        setData: async function() {
+            if (this.detalles.length <= 0) {
+                this.detallesDialog = true;
+                return false;
+            } else if (
+                this.$store.state.ventas.form.cliente_id == 1 &&
+                this.condicion == "CUENTA CORRIENTE"
+            ) {
+                this.condicionDialog = true;
+                return false;
+            } else {
+                this.$store.state.ventas.form.condicionventa = this.condicion;
+                this.$store.state.ventas.form.subtotal = this.subtotal;
+                this.$store.state.ventas.form.total = this.total;
+                this.$store.state.ventas.form.totalPesos = this.totalPesos;
+                this.$store.state.ventas.form.tipoComprobante = this.tipo;
+                this.$store.state.ventas.form.detalles = this.detalles;
+                this.$store.state.ventas.form.cotizacion = this.cotizacion;
+                this.$store.state.ventas.form.fechaCotizacion = this.fechaCotizacion;
+                this.$store.state.ventas.form.numventa = this.NumComprobante;
+                return true;
             }
         },
 
-        resetForm: async function() {
-            await this.$refs.CreateVenta.reset();
+        resetData: async function() {
             this.clientes = [];
             this.detalles = [];
         }
@@ -942,45 +950,12 @@ export default {
 };
 </script>
 
-<style lang="scss">
-.search-client-table {
-    border-top: none !important;
-    border-top-left-radius: 0px !important;
-    border-top-right-radius: 0px !important;
-    margin-top: -30px;
+<style>
+.ventas-header {
+    border-bottom-right-radius: 4px !important;
 }
 
-.search-client-input {
-    .v-input__control {
-        .v-input__slot {
-            border-bottom-left-radius: 0px !important;
-            border-bottom-right-radius: 0px !important;
-        }
-    }
-}
-
-.search-client-select {
-    cursor: pointer;
-}
-
-.articulos-panel {
-    margin-bottom: 32px;
-    .v-expansion-panel-header {
-        padding: 18px 16px 18px 16px;
-        color: #808080;
-    }
-    .v-expansion-panel {
-        border: 1px solid #bdbdbd;
-    }
-    .v-expansion-panel:before {
-        box-shadow: none !important;
-    }
-    .v-expansion-panel-content__wrap {
-        padding: 0px;
-    }
-}
-
-.search-articulo-select {
-    cursor: pointer;
+.ventas-footer {
+    border-top-left-radius: 4px !important;
 }
 </style>
