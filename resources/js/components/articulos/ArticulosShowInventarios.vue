@@ -474,23 +474,4 @@ export default {
 </script>
 
 <style lang="scss">
-.search-supplier-table {
-    border-top: none !important;
-    border-top-left-radius: 0px !important;
-    border-top-right-radius: 0px !important;
-    margin-top: -30px;
-}
-
-.search-supplier-input {
-    .v-input__control {
-        .v-input__slot {
-            border-bottom-left-radius: 0px !important;
-            border-bottom-right-radius: 0px !important;
-        }
-    }
-}
-
-.search-supplier-select {
-    cursor: pointer;
-}
 </style>

@@ -1,0 +1,22 @@
+.croppa-account {
+    .foto-buttons {
+        height: 100px;
+        width: 50px;
+        display: block;
+        position: absolute;
+        right: 25px;
+        top: 200px;
+        z-index: 9;
+    }
+
+    .croppa-container {
+        width: 300px;
+        height: 300px;
+        border-radius: 50%;
+    }
+
+    .croppa-container canvas {
+        margin-top: 0px;
+        border-radius: 50%;
+    }
+}

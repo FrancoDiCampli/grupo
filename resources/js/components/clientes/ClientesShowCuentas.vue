@@ -43,9 +43,4 @@ export default {
 </script>
 
 <style>
-.text-saldo {
-    display: inline;
-    color: black;
-    margin-left: 6px;
-}
 </style>

@@ -1,0 +1,44 @@
+.sidenav {
+    position: fixed;
+    right: 0;
+    width: 100%;
+    z-index: 9;
+    height: 100vh;
+}
+
+.sidenav-overflow {
+    height: 100vh;
+    max-height: 100vh;
+    overflow: auto;
+}
+
+.sidenav-overflow::-webkit-scrollbar {
+    width: 6px;
+}
+
+.sidenav-overflow::-webkit-scrollbar-thumb {
+    background-color: rgba(189, 189, 189, 0.75);
+}
+
+.drawer-action {
+    height: 63.5px;
+}
+
+.drawer-action-icon {
+    cursor: pointer;
+    margin-top: 20px !important;
+}
+
+@media (max-width: 960px) {
+    .drawer-action {
+        height: 55.5px;
+    }
+
+    .drawer-action-icon {
+        margin-top: 16px !important;
+    }
+}
+
+.drawer-routes {
+    margin-top: -8px;
+}

@@ -5,7 +5,7 @@
             <v-card
                 shaped
                 outlined
-                class="presupuestos-header"
+                class="form-header"
                 :class="focus == 'header' ? 'elevation-3' : ''"
                 :loading="inProcess"
             >
@@ -422,7 +422,7 @@
             <v-card
                 outlined
                 shaped
-                class="presupuestos-footer"
+                class="form-footer"
                 :class="focus == 'footer' ? 'elevation-3' : ''"
             >
                 <v-card-text class="pt-10" :class="$vuetify.breakpoint.xsOnly ? '' : 'px-8'">
@@ -783,51 +783,4 @@ export default {
 </script>
 
 <style lang="scss">
-.presupuestos-header {
-    border-bottom-right-radius: 4px !important;
-}
-
-.presupuestos-footer {
-    border-top-left-radius: 4px !important;
-}
-
-.search-client-table {
-    border-top: none !important;
-    border-top-left-radius: 0px !important;
-    border-top-right-radius: 0px !important;
-    margin-top: -30px;
-}
-
-.search-client-input {
-    .v-input__control {
-        .v-input__slot {
-            border-bottom-left-radius: 0px !important;
-            border-bottom-right-radius: 0px !important;
-        }
-    }
-}
-
-.search-client-select {
-    cursor: pointer;
-}
-
-.search-articulo-table {
-    border-top: none !important;
-    border-top-left-radius: 0px !important;
-    border-top-right-radius: 0px !important;
-    margin-top: -30px;
-}
-
-.search-articulo-input {
-    .v-input__control {
-        .v-input__slot {
-            border-bottom-left-radius: 0px !important;
-            border-bottom-right-radius: 0px !important;
-        }
-    }
-}
-
-.search-articulo-select {
-    cursor: pointer;
-}
 </style>

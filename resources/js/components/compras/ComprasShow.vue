@@ -103,7 +103,7 @@
                                     </template>
                                 </v-simple-table>
                             </v-col>
-                            <v-col cols="12" class="venta-footer">
+                            <v-col cols="12" class="comprobantes-footer">
                                 <div v-if="$store.state.compras.compra.remito.observaciones">
                                     <p>
                                         <b>Observaciones:</b>
@@ -177,93 +177,4 @@ export default {
 </script>
 
 <style lang="scss">
-.header-left {
-    p {
-        font-size: 12px;
-        margin-left: 20px;
-        margin-top: -12px;
-        line-height: 16px;
-    }
-    h2 {
-        margin-bottom: 40px;
-    }
-}
-
-.header-right {
-    border-left: 1px solid #e0e0e0;
-    p {
-        font-size: 12px;
-        margin-right: 20px;
-        margin-left: 20px;
-        margin-top: -12px;
-        line-height: 16px;
-    }
-}
-
-@media (min-width: 601px) {
-    .header-right {
-        p {
-            text-align: right;
-        }
-    }
-}
-
-.header-right {
-    h2 {
-        margin-bottom: 20px;
-    }
-}
-
-.pre-body {
-    p {
-        line-height: 8px;
-        margin-left: 20px;
-    }
-}
-
-.detail-table {
-    .v-data-table__wrapper {
-        table,
-        th,
-        td {
-            border: 1px solid #e0e0e0;
-        }
-
-        thead,
-        tbody {
-            th,
-            td {
-                text-align: center;
-            }
-        }
-    }
-}
-
-.venta-footer {
-    position: absolute;
-    bottom: 0;
-    line-height: 8px;
-    margin-left: 20px;
-    .footer-final {
-        text-align: right;
-        margin-right: 20px;
-    }
-}
-
-.print-button {
-    width: 0;
-    height: 0;
-    border-right: 30px solid #8dc638;
-    border-top: 30px solid #8dc638;
-    border-left: 30px solid transparent;
-    border-bottom: 30px solid transparent;
-    position: absolute;
-    right: 0;
-    cursor: pointer;
-    .v-icon {
-        margin: -48px 0px 0px 0px;
-        color: white !important;
-        font-size: 20px !important;
-    }
-}
 </style>

@@ -1,8 +1,10 @@
-// Fonts
-@import url('https://fonts.googleapis.com/css?family=Nunito');
-
-// Variables
-@import 'variables';
-
-// Bootstrap
-@import '~bootstrap/scss/bootstrap';
+@import "./appbar";
+@import "./articulos";
+@import "./auth";
+@import "./clientes";
+@import "./comprobantes";
+@import "./form";
+@import "./inputs";
+@import "./movimientos";
+@import "./serachinputs";
+@import "./show";

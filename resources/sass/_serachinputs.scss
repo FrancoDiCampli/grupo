@@ -1,0 +1,97 @@
+.search-client-table {
+    border-top: none !important;
+    border-top-left-radius: 0px !important;
+    border-top-right-radius: 0px !important;
+    margin-top: -30px;
+}
+.search-client-input {
+    .v-input__control {
+        .v-input__slot {
+            border-bottom-left-radius: 0px !important;
+            border-bottom-right-radius: 0px !important;
+        }
+    }
+}
+.search-client-select {
+    cursor: pointer;
+}
+
+.articulos-panel {
+    margin-bottom: 32px;
+    .v-expansion-panel-header {
+        padding: 18px 16px 18px 16px;
+        color: #808080;
+    }
+    .v-expansion-panel {
+        border: 1px solid #bdbdbd;
+    }
+    .v-expansion-panel:before {
+        box-shadow: none !important;
+    }
+    .v-expansion-panel-content__wrap {
+        padding: 0px;
+    }
+}
+.search-articulo-select {
+    cursor: pointer;
+}
+
+.search-proveedor-table {
+    border-top: none !important;
+    border-top-left-radius: 0px !important;
+    border-top-right-radius: 0px !important;
+    margin-top: -30px;
+}
+
+.search-proveedor-input {
+    .v-input__control {
+        .v-input__slot {
+            border-bottom-left-radius: 0px !important;
+            border-bottom-right-radius: 0px !important;
+        }
+    }
+}
+
+.search-proveedor-select {
+    cursor: pointer;
+}
+
+.search-articulo-table {
+    border-top: none !important;
+    border-top-left-radius: 0px !important;
+    border-top-right-radius: 0px !important;
+    margin-top: -30px;
+}
+
+.search-articulo-input {
+    .v-input__control {
+        .v-input__slot {
+            border-bottom-left-radius: 0px !important;
+            border-bottom-right-radius: 0px !important;
+        }
+    }
+}
+
+.search-articulo-select {
+    cursor: pointer;
+}
+
+.search-supplier-table {
+    border-top: none !important;
+    border-top-left-radius: 0px !important;
+    border-top-right-radius: 0px !important;
+    margin-top: -30px;
+}
+
+.search-supplier-input {
+    .v-input__control {
+        .v-input__slot {
+            border-bottom-left-radius: 0px !important;
+            border-bottom-right-radius: 0px !important;
+        }
+    }
+}
+
+.search-supplier-select {
+    cursor: pointer;
+}

@@ -1128,14 +1128,4 @@ export default {
 </script>
 
 <style>
-.v-data-table__expanded.v-data-table__expanded__content {
-    box-shadow: none !important;
-}
-
-.fabPay {
-    width: 46px;
-    position: absolute;
-    left: calc(100% - 46px);
-    top: -22px;
-}
 </style>

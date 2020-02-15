@@ -137,7 +137,7 @@
                             </template>
                         </div>
                         <div v-else-if="mode == 'delete'">
-                            <div class="articulos-delete">
+                            <div class="show-delete">
                                 <h2 class="text-center white--text">¿Estas Seguro?</h2>
                                 <br />
                                 <v-divider dark></v-divider>
@@ -257,9 +257,4 @@ export default {
 </script>
 
 <style lang="scss">
-.articulos-delete {
-    padding-top: 32px;
-    border-bottom-right-radius: 24px;
-    background-color: #f44336;
-}
 </style>

@@ -416,28 +416,4 @@ export default {
 </script>
 
 <style lang="scss">
-.myCombobox {
-    .v-input__control {
-        .v-input__slot {
-            .v-select__slot {
-                .v-label {
-                    margin-left: 0px;
-                    margin-top: 10px;
-                }
-                input {
-                    margin-top: 10px;
-                }
-                .v-input__append-inner {
-                    margin-top: 8px;
-                    margin-right: -12px;
-                    border: none !important;
-                }
-            }
-        }
-    }
-
-    .v-input__control::before {
-        display: none;
-    }
-}
 </style>
