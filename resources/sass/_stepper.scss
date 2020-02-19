@@ -1,0 +1,13 @@
+.v-stepper {
+    .v-stepper__step--editable {
+        .v-stepper__step__step {
+            .v-icon {
+                font-size: 12px !important;
+            }
+        }
+    }
+
+    .v-stepper__content {
+        border-left: none !important;
+    }
+}
