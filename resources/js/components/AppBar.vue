@@ -64,8 +64,9 @@
 
             <!-- Titulo de la aplicacion -->
             <v-toolbar-title class="hidden-xs-only">Grupo APC</v-toolbar-title>
-            <v-spacer></v-spacer>
+
             <slot name="searchBar"></slot>
+            <v-spacer></v-spacer>
             <!-- Menu del usuario -->
             <v-menu offset-y v-if="$store.state.auth.user.user != null">
                 <template v-slot:activator="{ on }">
