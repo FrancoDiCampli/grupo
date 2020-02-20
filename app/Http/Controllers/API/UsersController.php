@@ -28,16 +28,19 @@ class UsersController extends Controller
         if ($user->role_id) {
             $rol = Role::where('id', $user->role_id)->get()[0];
             $permission = explode(" ", $rol->permission);
+            $usuario = User::find($user->id);
             return [
                 'user' => $user,
                 'rol' => $rol->role,
-                'permissions' => $permission
+                'permissions' => $permission,
+                'notificaciones' => $usuario->notifications()->get()
             ];
         } else {
             return [
                 'user' => $user,
                 'rol' => '',
-                'permissions' => []
+                'permissions' => [],
+                'notificaciones' => []
             ];
         }
     }

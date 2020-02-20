@@ -41,6 +41,11 @@ import Compras from "../views/compras/Compras";
 import ComprasCreate from "../views/compras/Create";
 import ComprasShow from "../views/compras/Show";
 
+// Consignaciones
+import Consignaciones from "../views/consignaciones/Consignaciones";
+import ConsignacionesCreate from "../views/consignaciones/Create";
+import ConsignacionesShow from "../views/consignaciones/Show";
+
 // Movimientos
 import Movimientos from "../views/movimientos/Movimientos";
 
@@ -222,6 +227,24 @@ export default new Router({
             props: true
         },
 
+        // Consignaciones
+        {
+            path: "/consignaciones",
+            name: "consignaciones",
+            component: Consignaciones
+        },
+        {
+            path: "/consignaciones/nueva",
+            name: "consignaciones_nueva",
+            component: ConsignacionesCreate
+        },
+        {
+            path: "/consignaciones/show/:id",
+            name: "consignaciones_show",
+            component: ConsignacionesShow,
+            props: true
+        },
+
         // Movimientos
         {
             path: "/movimientos",
@@ -261,7 +284,7 @@ export default new Router({
             path: "/users/editar",
             name: "users_edit",
             component: UsersEdit
-        }
+        },
 
         // Reportes
         // {
@@ -269,10 +292,10 @@ export default new Router({
         //     name: "cartera",
         //     component: Cartera
         // },
-        // {
-        //     path: "/reportes",
-        //     name: "reportes",
-        //     component: Reportes
-        // }
+        {
+            path: "/reportes",
+            name: "reportes",
+            component: Reportes
+        }
     ]
 });

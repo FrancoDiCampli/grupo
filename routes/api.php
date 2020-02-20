@@ -35,7 +35,7 @@ Route::apiResource('categorias', 'API\CategoriasController', ['only' => ['index'
 Route::apiResource('marcas', 'API\MarcasController', ['only' => ['index']]);
 
 /*Inventarios*/
-Route::apiResource('inventarios', 'API\InventariosController', ['only' => ['index', 'store']]);
+Route::apiResource('inventarios', 'API\InventariosController', ['only' => ['index', 'store', 'update']]);
 
 /*Proveedores*/
 Route::apiResource('suppliers', 'API\SuppliersController',  ['except' => ['create', 'edit']]);
@@ -52,6 +52,7 @@ Route::get('ventasPDF/{id}', 'API\PdfController@ventasPDF');
 Route::get('facturasPDF/{id}', 'API\PdfController@facturasPDF');
 Route::get('comprasPDF/{id}', 'API\PdfController@comprasPDF');
 Route::get('recibosPDF/{id}', 'API\PdfController@recibosPDF');
+Route::get('consignacionesPDF/{id}', 'API\PdfController@consignacionesPDF');
 
 // Reportes
 Route::get('estadisticas/ventas', 'API\EstadisticasController@ventas');
@@ -74,13 +75,7 @@ Route::post('/formaPago', 'API\CuentacorrientesController@formaPago');
 Route::post('facturar', 'API\VentasController@facturar');
 Route::apiResource('facturas', 'API\FacturasController', ['only' => ['index', 'store', 'show']]);
 Route::post('/buscando', 'API\BuscadorController@buscando');
-// ______________________________________________________________
-
-/*Negocios*/
-Route::apiResource('negocios', 'API\NegociosController', ['except' => ['create', 'edit']]);
-
-/*Distribuidores*/
-Route::apiResource('distributors', 'API\DistributorsController', ['except' => ['create', 'edit']]);
+// _____________________________________________________________
 
 /*Roles & Permissions*/
 Route::apiResource('roles', 'API\RolesController', ['except' => ['create', 'edit', 'show']]);
@@ -91,4 +86,9 @@ Route::apiResource('users', 'API\UsersController', ['except' => ['create', 'edit
 
 /*Configuraciones*/
 Route::get('/config', 'API\PreferencesController@getConfig');
+
+Route::post('/nuevo', 'API\InventariosController@nuevo');
+Route::post('/devolucion', 'API\InventariosController@devolucion');
+
+Route::apiResource('consignaciones', 'API\ConsignmentsController', ['only' => ['index', 'store', 'show']]);
 // });

@@ -9,6 +9,7 @@ use App\Movimiento;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreInventario;
+use App\Traits\InventariosAdmin;
 
 class InventariosController extends Controller
 {
@@ -33,42 +34,73 @@ class InventariosController extends Controller
         return $inventarios->take(1);
     }
 
-    // CREA INVENTARIO DE NO EXISTIR, CASO CONTRARIO LO ACTUALIZA
-    public function store(StoreInventario $request)
+    // Consignacion de Inventarios para Distribuidores
+
+    public function nuevo(Request $request)
     {
-        $data = $request->validated();
-        $mov = new Movimiento;
-        $actualizar = Inventario::where('lote', $data['lote'])->where('articulo_id', $data['articulo_id'])->get()->first();
+        // return $request;
+        $inventario = InventariosAdmin::altaInventario($request);
+        InventariosAdmin::movimientoAlta($inventario, $request);
+    }
+
+    public function devolucion(Request $request)
+    {
+        $data = $request->datos;
+        $origen  =  InventariosAdmin::decrementarInventario($data);
+        $data['cantidadlitros'] = $origen->articulo->litros * $data['cantidad'];
+        InventariosAdmin::movimientoBajaDevolucion($data);
+
+        $inventario = $origen->articulo->inventarios->first();
+        $destino = Inventario::findOrFail($inventario['id']);
+
+        $data['inventario_id'] = $destino->id;
+        $data['origen'] = $origen->id;
+
+        InventariosAdmin::incrementarInventario($data);
+        InventariosAdmin::movimientoAltaDevolucion($data);
+    }
+
+    // CREA INVENTARIO DE NO EXISTIR, CASO CONTRARIO LO ACTUALIZA
+    public function store(Request $request)
+    {
+        $data = $request->datos;
+        $actualizar = Inventario::where('dependencia', $data['dependencia'])->where('articulo_id', $data['articulo_id'])->get()->first();
 
         if ($actualizar) {
-            if ($request['movimiento'] == 'INCREMENTO') {
-                $actualizar->cantidad = $actualizar->cantidad + $data['cantidad'];
-                $actualizar->cantidadlitros = $actualizar->cantidadlitros + $data['cantidadlitros'];
-                $mov->tipo = 'INCREMENTO';
-            } else if ($request['movimiento'] == 'MODIFICACION') {
-                $actualizar->cantidad =  $data['cantidad'];
-                $actualizar->cantidadlitros =  $data['cantidadlitros'];
-                $mov->tipo = 'MODIFICACION';
-            } else {
-                $actualizar->cantidad = $actualizar->cantidad - $data['cantidad'];
-                $actualizar->cantidadlitros = $actualizar->cantidadlitros - $data['cantidadlitros'];
-                $mov->tipo = $request['movimiento'];
-            }
-            $actualizar->save();
-            $mov->inventario_id = $actualizar->id;
-        } else {
-            $inventario = Inventario::create($data);
-            $mov->tipo = 'ALTA';
-            $mov->inventario_id = $inventario->id;
-        }
 
-        $mov->observaciones = $request->get('observaciones');
-        $mov->cantidad = $data['cantidad'];
-        $mov->cantidadlitros = $data['cantidadlitros'];
-        $mov->fecha = now();
-        $mov->user_id = auth()->user()->id;
-        $mov->save();
+            InventariosAdmin::actualizarInventario($data, $actualizar);
+            InventariosAdmin::decrementarInventario($data);
+
+            InventariosAdmin::movimientoIncrementoConsignacion($data);
+            InventariosAdmin::movimientoBajaConsignacion($data);
+        } else {
+            $inventario = InventariosAdmin::altaConsignacion($data);
+            InventariosAdmin::movimientoAltaConsignacion($inventario, $data);
+
+            InventariosAdmin::decrementarInventario($data);
+            InventariosAdmin::movimientoBajaConsignacion($data);
+        };
 
         return (['message' => 'guardado']);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $inventario = Inventario::findOrFail($id);
+
+        $inventario->cantidad += $request['cantidad'];
+        $inventario->cantidadlitros += $request['cantidadLitros'];
+        $inventario->save();
+
+        $movInc = Movimiento::create([
+            'tipo' => 'INCREMENTO',
+            'inventario_id' => $inventario->id,
+            'cantidad' => $request['cantidad'],
+            'cantidadlitros' => $request['cantidadLitros'],
+            'fecha' => now(),
+            'user_id' => auth()->user()->id
+        ]);
+
+        return 'actualizado';
     }
 }

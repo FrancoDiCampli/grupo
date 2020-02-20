@@ -174,13 +174,21 @@ export default {
                 roles: ["superAdmin", "administrador"],
                 divider: true
             },
-            // {
-            //     name: "Reportes",
-            //     icon: "fas fa-clipboard",
-            //     url: "/reportes",
-            //     roles: ["superAdmin", "administrador"],
-            //     divider: false
-            // },
+
+            {
+                name: "Consignaciones",
+                icon: "fas fa-exchange-alt",
+                url: "/consignaciones",
+                roles: ["superAdmin", "administrador"],
+                divider: true
+            },
+            {
+                name: "Reportes",
+                icon: "fas fa-clipboard",
+                url: "/reportes",
+                roles: ["superAdmin", "administrador"],
+                divider: false
+            },
             {
                 name: "Movimientos",
                 icon: "fas fa-chart-line",

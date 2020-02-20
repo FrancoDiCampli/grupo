@@ -10,9 +10,16 @@ class Compra extends Model
 {
     protected $guarded = [];
 
+    protected $casts = [
+        'bonificacion' => 'decimal:2',
+        'recargo' => 'decimal:2',
+        'total' => 'decimal:2',
+        'subtotal' => 'decimal:2',
+    ];
+
     public function proveedor()
     {
-        return $this->belongsTo(Supplier::class, 'supplier_id');
+        return $this->belongsTo(Supplier::class, 'supplier_id')->withTrashed();
     }
 
     public function user()
@@ -23,6 +30,6 @@ class Compra extends Model
     public function articulos()
     {
         return $this->belongsToMany('App\Articulo')
-            ->withPivot('codprov', 'codarticulo', 'articulo', 'medida', 'cantidad', 'litros', 'bonificacion', 'alicuota', 'preciounitario', 'subtotal', 'lote')->withTimestamps();
+            ->withPivot('codprov', 'codarticulo', 'articulo', 'medida', 'cantidad', 'litros', 'bonificacion', 'alicuota', 'preciounitario', 'subtotal', 'lote')->withTimestamps()->withTrashed();
     }
 }

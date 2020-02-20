@@ -15,6 +15,7 @@ use App\Http\Requests\StoreArticulo;
 use App\Http\Requests\UpdateArticulo;
 use Intervention\Image\Facades\Image;
 use App\Notifications\ArticuloNotification;
+use App\Traits\ArticulosNotificacionesTrait;
 
 class ArticulosController extends Controller
 {
@@ -33,25 +34,36 @@ class ArticulosController extends Controller
     {
         $articles = Articulo::orderBy('id', 'desc')->buscar($request)->get();
         $articulos = collect();
+        $inventarios = collect();
 
         foreach ($articles as $art) {
-            $stock = $art->inventarios->sum('cantidad');
-            $inventarios = $art->inventarios;
-            $art = collect($art);
-            $art->put('stock', $stock);
-            if (count($inventarios) == 0) {
-                $art->put('vencido', false);
+
+            if (auth()->user()->role_id == 1 || auth()->user()->role_id == 2) {
+
+                if ($art->inventarios->count() > 0) {
+                    $stock = $art->inventarios[0]['cantidad'];
+                    $inventarios = $art->inventarios[0];
+                } else {
+                    $inventarios = [];
+                    $stock = 0;
+                }
+
+                // $inventarios = $art->inventarios;
+                // $stock = $inventarios->sum('cantidad');
+                $art = collect($art);
+                $art->put('stock', $stock);
             } else {
-                foreach ($inventarios as $inventario) {
-                    $hoy = now();
-                    $fechavenc = new Carbon($inventario->vencimiento);
-                    if ($hoy > $fechavenc) {
-                        $art->put('vencido', true);
-                    } else {
-                        $art->put('vencido', false);
+                foreach ($art->inventarios as $inv) {
+                    if ($inv->dependencia == auth()->user()->id) {
+                        $inventarios->push($inv);
+                        $stock = $inv['cantidad'];
+                        $art = collect($art);
+                        $art->put('stock', $stock);
                     }
                 }
             }
+
+            $art['inventarios'] = $inventarios;
             $articulos->push($art);
         }
 
@@ -134,8 +146,7 @@ class ArticulosController extends Controller
                 'user_id' => auth()->user()->id
             ]);
         } else {
-            $user = User::findOrFail(auth()->user()->id);
-            $user->notify(new ArticuloNotification($articulo));
+            ArticulosNotificacionesTrait::crearNotificacion($articulo);
         }
 
         return 'creado';

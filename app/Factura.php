@@ -8,6 +8,15 @@ use Illuminate\Database\Eloquent\Model;
 class Factura extends Model
 {
     protected $guarded = [];
+    protected $casts = [
+        'bonificacion' => 'decimal:2',
+        'recargo' => 'decimal:2',
+        'total' => 'decimal:2',
+        'subtotal' => 'decimal:2',
+        'subtotalPesos' => 'decimal:2',
+        'totalPesos' => 'decimal:2',
+        'cotizacion' => 'decimal:2',
+    ];
 
     public function ventas()
     {
