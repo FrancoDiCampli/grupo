@@ -11,6 +11,10 @@ class Pago extends Model
 {
     protected $guarded = [];
 
+    protected $casts = [
+        'importe' => 'decimal:2',
+    ];
+
     public function ctacte()
     {
         return $this->belongsTo('App\Cuentacorriente', 'ctacte_id');

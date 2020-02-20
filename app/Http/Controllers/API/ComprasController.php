@@ -11,6 +11,7 @@ use App\Movimiento;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Traits\InventariosAdmin;
 
 class ComprasController extends Controller
 {
@@ -27,9 +28,9 @@ class ComprasController extends Controller
     {
         if ($request->fec) {
             $fec = $request->fec;
-            $rems = Compra::whereDate('created_at', $fec)->orderBy('id', 'DESC')->with('proveedor')->get();
+            $rems = Compra::whereDate('created_at', $fec)->orderBy('id', 'DESC')->get();
         } else {
-            $rems = Compra::orderBy('id', 'DESC')->with('proveedor')->get();
+            $rems = Compra::orderBy('id', 'DESC')->get();
         }
 
         $remitos = collect();
@@ -37,6 +38,7 @@ class ComprasController extends Controller
         foreach ($rems as $rem) {
             $fecha = new Carbon($rem->fecha);
             $rem->fecha = $fecha->format('d-m-Y');
+            $rem->proveedor = Supplier::withTrashed()->find($rem->supplier_id);
             $rem = collect($rem);
             $remitos->push($rem);
         }
@@ -110,7 +112,7 @@ class ComprasController extends Controller
         // ACTUALIZA LA CANTIDAD DE LOS INVENTARIOS SI EXISTEN
         foreach ($request->get('detalles') as $detail) {
             $article = Inventario::where('articulo_id', '=', $detail['articulo_id'])
-                ->where('lote', '=', $detail['lote'])->get()->first();
+                ->where('dependencia', null)->get()->first();
 
             $data = [
                 'inventario_id' => '',
@@ -125,8 +127,8 @@ class ComprasController extends Controller
 
             // CREA INVENTARIOS SI NO EXISTEN
             if ($article != null) {
-                $article->cantidad = $article->cantidad + $detail['cantidad'];
-                $article->cantidadlitros = $article->cantidadlitros + $detail['litros'];
+                $article->cantidad += $detail['cantidad'];
+                $article->cantidadlitros += $detail['cantidad'] * $detail['litros'];
                 $article->save();
                 $data['inventario_id'] = $article->id;
             } else {
@@ -153,7 +155,7 @@ class ComprasController extends Controller
         $remito = Compra::find($id);
         $fecha = new Carbon($remito->fecha);
         $remito->fecha = $fecha->format('d-m-Y');
-        $proveedor = Supplier::find($remito->supplier_id);
+        $proveedor = Supplier::withTrashed()->find($remito->supplier_id);
         $detalles = DB::table('articulo_compra')->where('compra_id', $remito->id)->get();
 
         return [

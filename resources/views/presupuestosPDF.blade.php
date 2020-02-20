@@ -294,7 +294,7 @@
             <p><b>Razón Social: </b>{{$cliente->razonsocial}}</p>
             <p><b>Condición Frente al IVA: </b>{{$cliente->condicioniva}}</p>
             <p><b>Domicilio: </b>{{$cliente->direccion}}</p>
-            <p><b>Condición de Venta: </b>{{$presupuesto->condicionventa}}</p>
+            <p><b>Valido Hasta: </b>{{$presupuesto->vencimiento}}</p>
         </div>
         <br>
         <div class="body">

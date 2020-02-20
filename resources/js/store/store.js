@@ -20,6 +20,7 @@ import sucursales from "./modules/sucursales";
 import users from "./modules/users";
 import ventas from "./modules/ventas";
 import PDF from "./modules/PDF";
+import consignaciones from "./modules/consignaciones";
 
 // Plugins
 import { processHandle } from "./plugins/processHandle";
@@ -87,7 +88,8 @@ export default new Vuex.Store({
         sucursales: sucursales,
         users: users,
         ventas: ventas,
-        PDF: PDF
+        PDF: PDF,
+        consignaciones: consignaciones
     },
 
     plugins: [processHandle]

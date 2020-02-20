@@ -36,7 +36,7 @@ class FacturasController extends Controller
         foreach ($facs as $fac) {
             $fecha = new Carbon($fac->fecha);
             $fac->fecha = $fecha->format('d-m-Y');
-            $fac->cliente;
+            $fac->cliente = Cliente::withTrashed()->find($fac->cliente_id);
             $fac = collect($fac);
             $facturas->push($fac);
         }
@@ -104,7 +104,7 @@ class FacturasController extends Controller
         }
         $fecha = new Carbon($factura->fecha);
         $factura->fecha = $fecha->format('d-m-Y');
-        $cliente = Cliente::find($factura->cliente_id);
+        $cliente = Cliente::withTrashed()->find($factura->cliente_id);
 
         return [
             'configuracion' => $configuracion,
