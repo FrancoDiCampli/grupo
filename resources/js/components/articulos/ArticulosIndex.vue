@@ -11,7 +11,10 @@
                 <v-card shaped outlined :loading="$store.state.inProcess">
                     <v-card-title>Articulos</v-card-title>
                     <v-divider></v-divider>
-                    <v-card-text class="px-0" v-if="$store.state.articulos.articulos">
+                    <v-card-text
+                        class="px-0"
+                        v-if="$store.state.articulos.articulos"
+                    >
                         <v-data-table
                             hide-default-footer
                             :headers="headers"
@@ -19,10 +22,16 @@
                             :mobile-breakpoint="0"
                             :items-per-page="limit"
                         >
-                            <v-progress-linear v-slot:progress color="primary" indeterminate></v-progress-linear>
+                            <v-progress-linear
+                                v-slot:progress
+                                color="primary"
+                                indeterminate
+                            ></v-progress-linear>
                             <template v-slot:item="item">
                                 <tr>
-                                    <td class="hidden-sm-and-down">{{ item.item.codarticulo }}</td>
+                                    <td class="hidden-sm-and-down">
+                                        {{ item.item.codarticulo }}
+                                    </td>
                                     <td>{{ item.item.articulo }}</td>
                                     <td>$ {{ item.item.precio }}</td>
                                     <td class="hidden-sm-and-down">
@@ -31,12 +40,19 @@
                                     </td>
                                     <td>
                                         <v-btn
-                                            @click="$router.push('/articulos/show/' + item.item.id);"
+                                            @click="
+                                                $router.push(
+                                                    '/articulos/show/' +
+                                                        item.item.id
+                                                )
+                                            "
                                             text
                                             icon
                                             color="secondary"
                                         >
-                                            <v-icon size="medium">fas fa-ellipsis-v</v-icon>
+                                            <v-icon size="medium"
+                                                >fas fa-ellipsis-v</v-icon
+                                            >
                                         </v-btn>
                                     </td>
                                 </tr>
@@ -50,20 +66,26 @@
                 <div v-if="$store.state.inProcess">
                     <v-row justify="center">
                         <v-col cols="10" sm="6" md="4" v-for="i in 3" :key="i">
-                            <EskeletonLoader typeString="card, list-item-two-line"></EskeletonLoader>
+                            <EskeletonLoader
+                                typeString="card, list-item-two-line"
+                            ></EskeletonLoader>
                         </v-col>
                     </v-row>
                 </div>
                 <div v-else-if="$store.state.articulos.articulos">
                     <v-row
                         justify="center"
-                        v-if="$store.state.articulos.articulos.articulos.length > 0"
+                        v-if="
+                            $store.state.articulos.articulos.articulos.length >
+                                0
+                        "
                     >
                         <v-col
                             cols="10"
                             sm="6"
                             md="4"
-                            v-for="articulo in $store.state.articulos.articulos.articulos"
+                            v-for="articulo in $store.state.articulos.articulos
+                                .articulos"
                             :key="articulo.id"
                         >
                             <v-card max-width="300px" shaped outlined>
@@ -76,39 +98,82 @@
                                     <div class="articulos-img-info">
                                         <div
                                             class="right"
-                                            @click="$router.push('/articulos/show/'+articulo.id+'')"
+                                            @click="
+                                                $router.push(
+                                                    '/articulos/show/' +
+                                                        articulo.id +
+                                                        ''
+                                                )
+                                            "
                                         >
                                             <v-icon>fas fa-ellipsis-v</v-icon>
                                         </div>
                                         <div
-                                            v-if="articulo.stock <= articulo.stockminimo && articulo.stock > 0"
+                                            v-if="
+                                                articulo.stock <=
+                                                    articulo.stockminimo &&
+                                                    articulo.stock > 0
+                                            "
                                         >
                                             <v-tooltip right>
-                                                <template v-slot:activator="{ on }">
-                                                    <div class="left warning-info" v-on="on">
-                                                        <v-icon>fas fa-box-open</v-icon>
+                                                <template
+                                                    v-slot:activator="{ on }"
+                                                >
+                                                    <div
+                                                        class="left warning-info"
+                                                        v-on="on"
+                                                    >
+                                                        <v-icon
+                                                            >fas
+                                                            fa-box-open</v-icon
+                                                        >
                                                     </div>
                                                 </template>
                                                 <span>Necesita Reposición</span>
                                             </v-tooltip>
                                         </div>
                                         <div
-                                            v-else-if="articulo.stock == 0 || articulo.inventarios.length <= 0"
+                                            v-else-if="
+                                                articulo.stock == 0 ||
+                                                    articulo.inventarios
+                                                        .length <= 0
+                                            "
                                         >
                                             <v-tooltip right>
-                                                <template v-slot:activator="{ on }">
-                                                    <div class="left error-info" v-on="on">
-                                                        <v-icon>fas fa-exclamation-circle</v-icon>
+                                                <template
+                                                    v-slot:activator="{ on }"
+                                                >
+                                                    <div
+                                                        class="left error-info"
+                                                        v-on="on"
+                                                    >
+                                                        <v-icon
+                                                            >fas
+                                                            fa-exclamation-circle</v-icon
+                                                        >
                                                     </div>
                                                 </template>
                                                 <span>Sin Stock</span>
                                             </v-tooltip>
                                         </div>
-                                        <div v-else-if="articulo.stock > articulo.stockminimo">
+                                        <div
+                                            v-else-if="
+                                                articulo.stock >
+                                                    articulo.stockminimo
+                                            "
+                                        >
                                             <v-tooltip right>
-                                                <template v-slot:activator="{ on }">
-                                                    <div class="left success-info" v-on="on">
-                                                        <v-icon>fas fa-check</v-icon>
+                                                <template
+                                                    v-slot:activator="{ on }"
+                                                >
+                                                    <div
+                                                        class="left success-info"
+                                                        v-on="on"
+                                                    >
+                                                        <v-icon
+                                                            >fas
+                                                            fa-check</v-icon
+                                                        >
                                                     </div>
                                                 </template>
                                                 <span>Stock Suficiente</span>
@@ -118,10 +183,12 @@
                                 </v-img>
 
                                 <v-card-text>
-                                    <h3 class="headline">{{ articulo.articulo }}</h3>
+                                    <h3 class="headline">
+                                        {{ articulo.articulo }}
+                                    </h3>
                                     <div>
                                         <p>{{ articulo.litros }} Litros</p>
-                                        <p>Stock: {{articulo.stock}}</p>
+                                        <p>Stock: {{ articulo.stock }}</p>
                                         <p>$ {{ articulo.precio }}</p>
                                     </div>
                                 </v-card-text>
@@ -160,5 +227,4 @@ export default {
 };
 </script>
 
-<style lang="scss">
-</style>
+<style lang="scss"></style>

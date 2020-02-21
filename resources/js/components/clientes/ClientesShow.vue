@@ -18,7 +18,10 @@
                                         ref="clientesEditForm"
                                         @submit.prevent="updateCliente()"
                                     >
-                                        <ClientesForm mode="edit" ref="clientesForm"></ClientesForm>
+                                        <ClientesForm
+                                            mode="edit"
+                                            ref="clientesForm"
+                                        ></ClientesForm>
                                         <v-row justify="center">
                                             <v-btn
                                                 tile
@@ -29,7 +32,8 @@
                                                 outlined
                                                 color="secondary"
                                                 class="mx-2"
-                                            >Cancelar</v-btn>
+                                                >Cancelar</v-btn
+                                            >
                                             <v-btn
                                                 tile
                                                 :loading="
@@ -41,7 +45,8 @@
                                                 type="submit"
                                                 color="secondary"
                                                 class="mx-2 elevation-0"
-                                            >Editar</v-btn>
+                                                >Editar</v-btn
+                                            >
                                         </v-row>
                                         <br />
                                     </v-form>
@@ -71,15 +76,21 @@
                                             color="secondary"
                                             v-on="on"
                                         >
-                                            <v-icon size="medium">fas fa-ellipsis-v</v-icon>
+                                            <v-icon size="medium"
+                                                >fas fa-ellipsis-v</v-icon
+                                            >
                                         </v-btn>
                                     </template>
                                     <v-list>
                                         <v-list-item @click="editCliente()">
-                                            <v-list-item-title>Editar</v-list-item-title>
+                                            <v-list-item-title
+                                                >Editar</v-list-item-title
+                                            >
                                         </v-list-item>
                                         <v-list-item @click="mode = 'delete'">
-                                            <v-list-item-title>Eliminar</v-list-item-title>
+                                            <v-list-item-title
+                                                >Eliminar</v-list-item-title
+                                            >
                                         </v-list-item>
                                     </v-list>
                                 </v-menu>
@@ -91,8 +102,8 @@
                                         style="font-size: 60px;"
                                     >
                                         {{
-                                        $store.state.clientes.cliente
-                                        .cliente.razonsocial[0]
+                                            $store.state.clientes.cliente
+                                                .cliente.razonsocial[0]
                                         }}
                                     </span>
                                 </v-avatar>
@@ -100,23 +111,29 @@
                                 <v-col cols="12">
                                     <h1 class="text-center secondary--text">
                                         {{
-                                        $store.state.clientes.cliente
-                                        .cliente.razonsocial
+                                            $store.state.clientes.cliente
+                                                .cliente.razonsocial
                                         }}
                                     </h1>
                                     <h3 class="text-center secondary--text">
                                         {{
-                                        $store.state.clientes.cliente
-                                        .cliente.documentounico
+                                            $store.state.clientes.cliente
+                                                .cliente.documentounico
                                         }}
                                     </h3>
                                 </v-col>
                                 <v-col cols="10" sm="8">
                                     <v-row justify="space-between">
-                                        <h3 class="secondary--text">U$D Saldo: {{ saldo }}</h3>
-                                        <h3
-                                            class="secondary--text"
-                                        >U$D Haber: {{ $store.state.clientes.cliente.haber }}</h3>
+                                        <h3 class="secondary--text">
+                                            U$D Saldo: {{ saldo }}
+                                        </h3>
+                                        <h3 class="secondary--text">
+                                            U$D Haber:
+                                            {{
+                                                $store.state.clientes.cliente
+                                                    .haber
+                                            }}
+                                        </h3>
                                     </v-row>
                                 </v-col>
                             </v-row>
@@ -133,10 +150,16 @@
                                         <v-tab>Datos</v-tab>
                                         <v-tab>Ventas</v-tab>
                                         <v-tab>
-                                            <span class="hidden-sm-and-up">Cuenta</span>
-                                            <span class="hidden-xs-only">Resumen Corriente</span>
+                                            <span class="hidden-sm-and-up"
+                                                >Cuenta</span
+                                            >
+                                            <span class="hidden-xs-only"
+                                                >Resumen Corriente</span
+                                            >
                                         </v-tab>
-                                        <v-tab-item style="background: white !important;">
+                                        <v-tab-item
+                                            style="background: white !important;"
+                                        >
                                             <div
                                                 v-if="
                                                     $store.state.clientes
@@ -146,10 +169,14 @@
                                                 <ClientesShowData></ClientesShowData>
                                             </div>
                                         </v-tab-item>
-                                        <v-tab-item style="background: white !important;">
+                                        <v-tab-item
+                                            style="background: white !important;"
+                                        >
                                             <ClientesShowVentas></ClientesShowVentas>
                                         </v-tab-item>
-                                        <v-tab-item style="background: white !important;">
+                                        <v-tab-item
+                                            style="background: white !important;"
+                                        >
                                             <ClientesShowCuentas></ClientesShowCuentas>
                                         </v-tab-item>
                                     </v-tabs>
@@ -159,14 +186,18 @@
                         </div>
                         <div v-else-if="mode == 'delete'">
                             <div class="show-delete">
-                                <h2 class="text-center white--text">¿Estas Seguro?</h2>
+                                <h2 class="text-center white--text">
+                                    ¿Estas Seguro?
+                                </h2>
                                 <br />
                                 <v-divider dark></v-divider>
                                 <br />
-                                <p
-                                    class="text-center white--text"
-                                >¿Realmente deseas eliminar este Cliente?</p>
-                                <p class="text-center white--text">Este Cambio es Irreversible</p>
+                                <p class="text-center white--text">
+                                    ¿Realmente deseas eliminar este Cliente?
+                                </p>
+                                <p class="text-center white--text">
+                                    Este Cambio es Irreversible
+                                </p>
                                 <br />
                                 <v-row justify="center">
                                     <v-btn
@@ -175,7 +206,8 @@
                                         :disabled="$store.state.inProcess"
                                         class="mx-2 red--text elevation-0"
                                         color="white"
-                                    >Cancelar</v-btn>
+                                        >Cancelar</v-btn
+                                    >
                                     <v-btn
                                         tile
                                         :loading="$store.state.inProcess"
@@ -184,7 +216,8 @@
                                         outlined
                                         color="white "
                                         class="mx-2"
-                                    >Eliminar</v-btn>
+                                        >Eliminar</v-btn
+                                    >
                                 </v-row>
                                 <br />
                             </div>
@@ -302,5 +335,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

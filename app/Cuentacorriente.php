@@ -9,6 +9,11 @@ class Cuentacorriente extends Model
 {
     protected $guarded = [];
 
+    protected $casts = [
+        'importe' => 'decimal:2',
+        'saldo' => 'decimal:2',
+    ];
+
     public function factura()
     {
         return $this->hasOne(Venta::class, 'id', 'venta_id');

@@ -136,7 +136,7 @@ class EstadisticasController extends Controller
         foreach ($facturas as $factura) {
             $seller = User::find($factura->user_id);
             $sellers->push($seller);
-            $client = Cliente::find($factura->cliente_id);
+            $client = Cliente::withTrashed()->find($factura->cliente_id);
             $clients->push($client);
         }
 
@@ -304,7 +304,7 @@ class EstadisticasController extends Controller
             ->get();
 
         foreach ($remitos as $remito) {
-            $supplier = Supplier::find($remito->supplier_id);
+            $supplier = Supplier::withTrashed()->find($remito->supplier_id);
             $suppliers->push($supplier);
         }
 
@@ -414,7 +414,7 @@ class EstadisticasController extends Controller
         // Productos
         foreach ($detallesVentas as $detalle) {
             $detalle->articulo_id;
-            $product = Articulo::find($detalle->articulo_id);
+            $product = Articulo::withTrashed()->find($detalle->articulo_id);
             $products->push($product);
         }
         $auxProductos = $products->unique();
@@ -449,7 +449,7 @@ class EstadisticasController extends Controller
         for ($i = 0; $i < count($ventasProductos); $i++) {
             $otro = $ventasProductos[$i];
             foreach ($otro as $a) {
-                $prod = Articulo::find($a->articulo_id);
+                $prod = Articulo::withTrashed()->find($a->articulo_id);
                 $total = $a->cantidad;
             }
             $rowsProductos->push([
@@ -502,7 +502,7 @@ class EstadisticasController extends Controller
         // Productos
         foreach ($detallesCompras as $detalle) {
             $detalle->articulo_id;
-            $product = Articulo::find($detalle->articulo_id);
+            $product = Articulo::withTrashed()->find($detalle->articulo_id);
             $products->push($product);
         }
         $auxProductos = $products->unique();
@@ -537,7 +537,7 @@ class EstadisticasController extends Controller
         for ($i = 0; $i < count($comprasProductos); $i++) {
             $otro = $comprasProductos[$i];
             foreach ($otro as $a) {
-                $prod = Articulo::find($a->articulo_id);
+                $prod = Articulo::withTrashed()->find($a->articulo_id);
                 $total = $a->cantidad;
             }
             $rowsProductos->push([

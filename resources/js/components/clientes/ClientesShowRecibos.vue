@@ -21,16 +21,21 @@
                                 </v-col>
 
                                 <v-col cols="12" sm="6" class="header-left">
-                                    <h2
-                                        class="text-center"
-                                    >{{ recibo.configuracion.nombrefantasia }}</h2>
+                                    <h2 class="text-center">
+                                        {{
+                                            recibo.configuracion.nombrefantasia
+                                        }}
+                                    </h2>
                                     <p>
                                         <b>Razón Social:</b>
                                         {{ recibo.configuracion.razonsocial }}
                                     </p>
                                     <p>
                                         <b>Domicilio Comercial:</b>
-                                        {{ recibo.configuracion.domiciliocomercial }}
+                                        {{
+                                            recibo.configuracion
+                                                .domiciliocomercial
+                                        }}
                                     </p>
                                     <p>
                                         <b>Condición Frente al IVA:</b>
@@ -41,7 +46,9 @@
                                     <h2 class="text-center">RECIBO</h2>
                                     <p>
                                         <b>Punto de Venta:</b>
-                                        0000{{ recibo.configuracion.puntoventa }}
+                                        0000{{
+                                            recibo.configuracion.puntoventa
+                                        }}
                                         <b>Comprobante Nº:</b>
                                         {{ recibo.recibo.numrecibo }}
                                     </p>
@@ -59,7 +66,10 @@
                                     </p>
                                     <p>
                                         <b>Inicio de Actividades:</b>
-                                        {{ recibo.configuracion.inicioactividades }}
+                                        {{
+                                            recibo.configuracion
+                                                .inicioactividades
+                                        }}
                                     </p>
                                 </v-col>
                                 <v-col cols="12" class="pre-body">
@@ -67,15 +77,15 @@
                                     <br />
                                     <p>
                                         <b>CUIT:</b>
-                                        {{recibo.cliente.documentounico}}
+                                        {{ recibo.cliente.documentounico }}
                                     </p>
                                     <p>
                                         <b>Razón Social:</b>
-                                        {{recibo.cliente.razonsocial}}
+                                        {{ recibo.cliente.razonsocial }}
                                     </p>
                                     <p>
                                         <b>Domicilio:</b>
-                                        {{recibo.cliente.direccion}}
+                                        {{ recibo.cliente.direccion }}
                                     </p>
                                     <v-divider></v-divider>
                                 </v-col>
@@ -93,14 +103,22 @@
                                             </thead>
                                             <tbody>
                                                 <tr
-                                                    v-for="(pago, index) in recibo.pagos"
+                                                    v-for="(pago,
+                                                    index) in recibo.pagos"
                                                     :key="index"
                                                 >
-                                                    <th>{{pago.numpago}}</th>
-                                                    <th>USD $ {{pago.importe}}</th>
-                                                    <th>{{pago.fecha}}</th>
-                                                    <th>{{pago.forma[0]}}</th>
-                                                    <th>$ {{pago.forma[1].pesos}}</th>
+                                                    <th>{{ pago.numpago }}</th>
+                                                    <th>
+                                                        USD $ {{ pago.importe }}
+                                                    </th>
+                                                    <th>{{ pago.fecha }}</th>
+                                                    <th>{{ pago.forma[0] }}</th>
+                                                    <th>
+                                                        $
+                                                        {{
+                                                            pago.forma[1].pesos
+                                                        }}
+                                                    </th>
                                                 </tr>
                                             </tbody>
                                         </template>
@@ -112,17 +130,17 @@
                                     <div class="footer-final">
                                         <p>
                                             <b>Cotización:</b>
-                                            ${{recibo.recibo.cotizacion}}
+                                            ${{ recibo.recibo.cotizacion }}
                                         </p>
                                         <p>
                                             <b>Fecha Cotización:</b>
-                                            {{recibo.recibo.fecha_cotizacion}}
+                                            {{ recibo.recibo.fecha_cotizacion }}
                                         </p>
                                         <v-divider></v-divider>
                                         <br />
                                         <p>
                                             <b>Total:</b>
-                                            USD ${{recibo.recibo.total}}
+                                            USD ${{ recibo.recibo.total }}
                                         </p>
                                     </div>
                                 </v-col>
@@ -133,7 +151,12 @@
             </div>
             <div v-else>
                 <v-row justify="center" style="margin-top: 200px;">
-                    <v-progress-circular :size="70" :width="7" color="primary" indeterminate></v-progress-circular>
+                    <v-progress-circular
+                        :size="70"
+                        :width="7"
+                        color="primary"
+                        indeterminate
+                    ></v-progress-circular>
                 </v-row>
             </div>
         </div>
@@ -177,5 +200,4 @@ export default {
 };
 </script>
 
-<style lang="scss">
-</style>
+<style lang="scss"></style>

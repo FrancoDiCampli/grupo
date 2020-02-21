@@ -14,6 +14,8 @@ use App\Movimientocuenta;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Traits\ArticulosNotificacionesTrait;
+use App\Traits\InventariosAdmin;
 
 class VentasController extends Controller
 {
@@ -67,7 +69,7 @@ class VentasController extends Controller
         foreach ($eliminadas as $eliminada) {
             $dateFac = new Carbon($eliminada->fecha);
             $eliminada->fecha = $dateFac->format('d-m-Y');
-            $fac->cliente = Cliente::withTrashed()->find($fac->cliente_id);
+            $eliminada->cliente;
         }
 
         if ($facturas->count() <= $request->get('limit')) {
@@ -182,46 +184,46 @@ class VentasController extends Controller
             ]);
         }
         $aux = collect($det);
+
         // DESCUENTA LOS INVENTARIOS
         for ($i = 0; $i < count($aux); $i++) {
-            $cond = true;
-            $res = $aux[$i]['cantidad'];
-            while ($cond) {
-                $article = Inventario::where('cantidad', '>', 0)
+            if (auth()->user()->role_id == 1 || auth()->user()->role_id == 2) {
+                $article = Inventario::where('dependencia', null)
+                    ->where('cantidad', '>', 0)
                     ->where('articulo_id', $aux[$i]['articulo_id'])->get();
-                if ($article[0]->cantidad < $res) {
-                    $res = $aux[$i]['cantidad'] - $article[0]->cantidad;
-                    Movimiento::create([
-                        'inventario_id' => $article[0]->id,
-                        'tipo' => 'VENTA',
-                        'cantidadlitros' => $aux[$i]['cantidad'] * $aux[$i]['cantidadLitros'],
-                        'cantidad' => $article[0]->cantidad,
-                        'fecha' => now(),
-                        'numcomprobante' => $factura->id,
-                        'user_id' => auth()->user()->id
-                    ]);
-                    $article[0]->cantidad = 0;
-                    $article[0]->cantidadlitros = 0;
-                    if ($res <= 0) {
-                        $cond = false;
-                    }
-                } else {
-                    $article[0]->cantidad = $article[0]->cantidad - $res;
-                    $article[0]->cantidadlitros = $article[0]->cantidadlitros - $aux[$i]['cantidadLitros'];
-                    $cond = false;
-                    Movimiento::create([
-                        'inventario_id' => $article[0]->id,
-                        'tipo' => 'VENTA',
-                        'cantidad' => $res,
-                        'cantidadlitros' => $aux[$i]['cantidad'] * $aux[$i]['cantidadLitros'],
-                        'fecha' => now(),
-                        'numcomprobante' => $factura->id,
-                        'user_id' => auth()->user()->id
-                    ]);
-                }
-                $article[0]->save();
-                unset($article);
+            } else {
+                $article = Inventario::where('dependencia', auth()->user()->id)
+                    ->where('cantidad', '>', 0)
+                    ->where('articulo_id', $aux[$i]['articulo_id'])->get();
             }
+
+            if ($aux[$i]['cantidad'] <= $article[0]['cantidad']) {
+                $art = Articulo::find($aux[$i]['articulo_id']);
+                $article[0]['cantidad'] -= $aux[$i]['cantidad'];
+                $article[0]['cantidadLitros'] = $article[0]['cantidad'] * $art->litros;
+                $article[0]->save();
+                Movimiento::create([
+                    'inventario_id' => $article[0]->id,
+                    'tipo' => 'VENTA',
+                    'cantidadlitros' => ($aux[$i]['cantidad'] * $art->litros),
+                    'cantidad' => $aux[$i]['cantidad'],
+                    'fecha' => now(),
+                    'numcomprobante' => $factura->id,
+                    'user_id' => auth()->user()->id
+                ]);
+            } else {
+                $factura->articulos()->detach();
+                $factura->forceDelete();
+            }
+
+            if ($article[0]['cantidad'] == 0) {
+                // Probando notificaciones
+                $arti = Articulo::find($article[0]->articulo_id);
+                ArticulosNotificacionesTrait::crearNotificacion($arti);
+                // ------------
+            }
+
+            unset($article);
         }
         return $factura->id;
     }

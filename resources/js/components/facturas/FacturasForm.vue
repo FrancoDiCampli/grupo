@@ -43,7 +43,10 @@
                             </v-row>
                         </div>
                         <div v-show="!inProcess">
-                            <v-form ref="CreateFactura" @submit.prevent="saveFactura()">
+                            <v-form
+                                ref="CreateFactura"
+                                @submit.prevent="saveFactura()"
+                            >
                                 <v-row justify="space-around">
                                     <!-- CLIENTE -->
                                     <v-col cols="12" class="py-0">
@@ -75,31 +78,58 @@
                                                 ></v-progress-circular>
                                             </v-row>
                                             <div
-                                                v-else-if="searchCliente != null && searchCliente != ''"
+                                                v-else-if="
+                                                    searchCliente != null &&
+                                                        searchCliente != ''
+                                                "
                                             >
-                                                <v-simple-table v-if="clientes.length > 0">
+                                                <v-simple-table
+                                                    v-if="clientes.length > 0"
+                                                >
                                                     <thead>
                                                         <tr>
-                                                            <th class="text-xs-left">Apellido Nombre</th>
-                                                            <th class="text-xs-left">Documento</th>
+                                                            <th
+                                                                class="text-xs-left"
+                                                            >
+                                                                Apellido Nombre
+                                                            </th>
+                                                            <th
+                                                                class="text-xs-left"
+                                                            >
+                                                                Documento
+                                                            </th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
                                                         <tr
-                                                            v-for="(cliente, index) in clientes"
+                                                            v-for="(cliente,
+                                                            index) in clientes"
                                                             :key="index"
                                                             class="search-client-select"
-                                                            @click="selectCliente(cliente)"
+                                                            @click="
+                                                                selectCliente(
+                                                                    cliente
+                                                                )
+                                                            "
                                                         >
-                                                            <td>{{ cliente.razonsocial }}</td>
-                                                            <td>{{ cliente.documentounico }}</td>
+                                                            <td>
+                                                                {{
+                                                                    cliente.razonsocial
+                                                                }}
+                                                            </td>
+                                                            <td>
+                                                                {{
+                                                                    cliente.documentounico
+                                                                }}
+                                                            </td>
                                                         </tr>
                                                     </tbody>
                                                 </v-simple-table>
                                                 <div v-else class="py-5">
-                                                    <h3
-                                                        class="text-center"
-                                                    >Ningun dato coincide con lel criterio de busqueda</h3>
+                                                    <h3 class="text-center">
+                                                        Ningun dato coincide con
+                                                        lel criterio de busqueda
+                                                    </h3>
                                                 </div>
                                             </div>
                                         </v-card>
@@ -107,7 +137,10 @@
                                     <!-- CONDICION VENTA -->
                                     <v-col cols="12" sm="6" class="py-0">
                                         <v-text-field
-                                            v-model="$store.state.facturas.form.condicionventa"
+                                            v-model="
+                                                $store.state.facturas.form
+                                                    .condicionventa
+                                            "
                                             label="Condición"
                                             outlined
                                             disabled
@@ -116,7 +149,10 @@
                                     <!-- COMPROBANTE ADHERIDO -->
                                     <v-col cols="12" sm="6" class="py-0">
                                         <v-text-field
-                                            v-model="$store.state.facturas.form.comprobanteadherido"
+                                            v-model="
+                                                $store.state.facturas.form
+                                                    .comprobanteadherido
+                                            "
                                             :disabled="disabled.cliente"
                                             label="Comprobante Adherido Nº"
                                             outlined
@@ -129,32 +165,70 @@
                                                 <template v-slot:default>
                                                     <thead>
                                                         <tr>
-                                                            <th class="text-left">Articulo</th>
+                                                            <th
+                                                                class="text-left"
+                                                            >
+                                                                Articulo
+                                                            </th>
                                                             <th
                                                                 class="text-left hidden-sm-and-down"
-                                                            >Precio</th>
-                                                            <th class="text-left">Unidades</th>
+                                                            >
+                                                                Precio
+                                                            </th>
+                                                            <th
+                                                                class="text-left"
+                                                            >
+                                                                Unidades
+                                                            </th>
 
-                                                            <th class="text-left">Subtotal</th>
+                                                            <th
+                                                                class="text-left"
+                                                            >
+                                                                Subtotal
+                                                            </th>
                                                             <th
                                                                 class="text-left hidden-sm-and-down"
-                                                            >Subtotal en pesos</th>
+                                                            >
+                                                                Subtotal en
+                                                                pesos
+                                                            </th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
                                                         <tr
-                                                            v-for="(detalle, index) in detalles"
+                                                            v-for="(detalle,
+                                                            index) in detalles"
                                                             :key="index"
                                                         >
-                                                            <td>{{ detalle.articulo }}</td>
+                                                            <td>
+                                                                {{
+                                                                    detalle.articulo
+                                                                }}
+                                                            </td>
                                                             <td
                                                                 class="hidden-sm-and-down"
-                                                            >{{ detalle.precio }}</td>
-                                                            <td>{{ detalle.cantidad }}</td>
-                                                            <td>{{ detalle.subtotalDolares }}</td>
+                                                            >
+                                                                {{
+                                                                    detalle.precio
+                                                                }}
+                                                            </td>
+                                                            <td>
+                                                                {{
+                                                                    detalle.cantidad
+                                                                }}
+                                                            </td>
+                                                            <td>
+                                                                {{
+                                                                    detalle.subtotalDolares
+                                                                }}
+                                                            </td>
                                                             <td
                                                                 class="hidden-sm-and-down"
-                                                            >{{ detalle.subtotalPesos }}</td>
+                                                            >
+                                                                {{
+                                                                    detalle.subtotalPesos
+                                                                }}
+                                                            </td>
                                                         </tr>
                                                     </tbody>
                                                 </template>
@@ -164,7 +238,10 @@
                                     <v-col cols="12" sm="6" class="py-0 px-0">
                                         <v-col cols="12" class="py-0">
                                             <v-text-field
-                                                v-model="$store.state.facturas.form.bonificacion"
+                                                v-model="
+                                                    $store.state.facturas.form
+                                                        .bonificacion
+                                                "
                                                 type="number"
                                                 label="Bonificacion %"
                                                 outlined
@@ -172,7 +249,10 @@
                                         </v-col>
                                         <v-col cols="12" class="py-0">
                                             <v-text-field
-                                                v-model="$store.state.facturas.form.recargo"
+                                                v-model="
+                                                    $store.state.facturas.form
+                                                        .recargo
+                                                "
                                                 type="number"
                                                 label="Recargo %"
                                                 outlined
@@ -180,7 +260,10 @@
                                         </v-col>
                                         <v-col cols="12" class="py-0">
                                             <v-text-field
-                                                v-model="$store.state.facturas.form.tipocomprobante"
+                                                v-model="
+                                                    $store.state.facturas.form
+                                                        .tipocomprobante
+                                                "
                                                 label="Tipo de comprobante"
                                                 outlined
                                                 disabled
@@ -217,7 +300,10 @@
                                     </v-col>
                                     <v-col cols="12" class="py-0">
                                         <v-textarea
-                                            v-model="$store.state.facturas.form.observaciones"
+                                            v-model="
+                                                $store.state.facturas.form
+                                                    .observaciones
+                                            "
                                             outlined
                                             label="Observaciones"
                                             no-resize
@@ -231,14 +317,19 @@
                                         color="secondary"
                                         class="mx-2"
                                         to="/ventas"
-                                    >Cancelar</v-btn>
+                                        >Cancelar</v-btn
+                                    >
                                     <v-btn
-                                        :disabled="$store.state.facturas.form.cliente_id == null"
+                                        :disabled="
+                                            $store.state.facturas.form
+                                                .cliente_id == null
+                                        "
                                         type="submit"
                                         tile
                                         color="secondary"
                                         class="mx-2 elevation-0"
-                                    >Guardar</v-btn>
+                                        >Guardar</v-btn
+                                    >
                                 </v-row>
                                 <br />
                             </v-form>
@@ -474,5 +565,4 @@ export default {
 };
 </script>
 
-<style lang="scss">
-</style>
+<style lang="scss"></style>

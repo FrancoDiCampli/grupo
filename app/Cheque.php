@@ -8,6 +8,12 @@ class Cheque extends Model
 {
     protected $guarded = [];
 
+    protected $casts = [
+        'pesos' => 'decimal:2',
+        'dolares' => 'decimal:2',
+        'cotizacion' => 'decimal:2',
+    ];
+
     public function getEmisorAttribute($value)
     {
         return ucwords($value);

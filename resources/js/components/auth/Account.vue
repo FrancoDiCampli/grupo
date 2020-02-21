@@ -16,26 +16,31 @@
                                 >
                                     <img
                                         v-if="
-                                            $store.state.auth.user.user.foto != null
+                                            $store.state.auth.user.user.foto !=
+                                                null
                                         "
                                         :src="$store.state.auth.user.user.foto"
                                         width="100%"
                                         height="auto"
                                     />
                                     <span
-                                        v-else-if="$store.state.auth.user.user.name"
+                                        v-else-if="
+                                            $store.state.auth.user.user.name
+                                        "
                                         class="white--text text-uppercase"
                                         style="font-size: 60px;"
                                     >
                                         {{
-                                        $store.state.auth.user.user.name[0]
+                                            $store.state.auth.user.user.name[0]
                                         }}
                                     </span>
                                 </v-avatar>
                             </template>
                             <v-list>
                                 <v-list-item @click="fotoDialog = true">
-                                    <v-list-item-title>Subir foto</v-list-item-title>
+                                    <v-list-item-title
+                                        >Subir foto</v-list-item-title
+                                    >
                                 </v-list-item>
                             </v-list>
                         </v-menu>
@@ -47,16 +52,19 @@
                 <v-col cols="12" px-3 mt-5>
                     <v-form ref="editForm">
                         <v-list dense>
-                            <v-subheader class="ml-2 primary--text">Tu nombre</v-subheader>
+                            <v-subheader class="ml-2 primary--text"
+                                >Tu nombre</v-subheader
+                            >
                             <v-list-item v-if="!editName">
                                 <v-list-item-content>
                                     <v-list-item-title>
-                                        {{
-                                        $store.state.auth.user.user.name
-                                        }}
+                                        {{ $store.state.auth.user.user.name }}
                                     </v-list-item-title>
                                 </v-list-item-content>
-                                <v-list-item-icon @click="editName = true" style="cursor: pointer;">
+                                <v-list-item-icon
+                                    @click="editName = true"
+                                    style="cursor: pointer;"
+                                >
                                     <v-icon size="medium">fas fa-pen</v-icon>
                                 </v-list-item-icon>
                             </v-list-item>
@@ -73,13 +81,13 @@
                                     ></v-text-field>
                                 </v-list-item-content>
                             </v-list-item>
-                            <v-subheader class="ml-2 primary--text">Tu email</v-subheader>
+                            <v-subheader class="ml-2 primary--text"
+                                >Tu email</v-subheader
+                            >
                             <v-list-item v-if="!editEmail">
                                 <v-list-item-content>
                                     <v-list-item-title>
-                                        {{
-                                        $store.state.auth.user.user.email
-                                        }}
+                                        {{ $store.state.auth.user.user.email }}
                                     </v-list-item-title>
                                 </v-list-item-content>
                                 <v-list-item-icon
@@ -111,21 +119,34 @@
                             @click="editPassDialog = true"
                             color="primary"
                             outlined
-                        >Cambiar contraseña</v-btn>
+                            >Cambiar contraseña</v-btn
+                        >
                     </v-row>
                 </v-col>
             </v-row>
         </v-card>
         <!-- Modal para subir una foto -->
-        <v-dialog v-model="fotoDialog" persistent no-click-animation width="500">
+        <v-dialog
+            v-model="fotoDialog"
+            persistent
+            no-click-animation
+            width="500"
+        >
             <v-card>
                 <v-card-title class="primary px-2 pt-2 white--text">
                     <v-btn dark @click="fotoDialog = false" icon>
                         <v-icon size="medium">fas fa-times</v-icon>
                     </v-btn>
-                    <div class="hidden-xs-only">Arrastra la imagen para ajustar</div>
+                    <div class="hidden-xs-only">
+                        Arrastra la imagen para ajustar
+                    </div>
                     <v-spacer></v-spacer>
-                    <v-btn dark @click="foto.chooseFile()" icon style="margin-top: 2px;">
+                    <v-btn
+                        dark
+                        @click="foto.chooseFile()"
+                        icon
+                        style="margin-top: 2px;"
+                    >
                         <v-icon size="medium">fas fa-image</v-icon>
                     </v-btn>
                 </v-card-title>
@@ -192,7 +213,12 @@
             </v-card>
         </v-dialog>
         <!-- Modal para editar la contraseña -->
-        <v-dialog v-model="editPassDialog" persistent no-click-animation width="400">
+        <v-dialog
+            v-model="editPassDialog"
+            persistent
+            no-click-animation
+            width="400"
+        >
             <v-card>
                 <v-card-title class="primary px-2 pt-2 white--text">
                     <div class="ml-2">Cambiar contraseña</div>
@@ -264,7 +290,8 @@
                         color="primary"
                         text
                         @click="editPass()"
-                    >Guardar cambios</v-btn>
+                        >Guardar cambios</v-btn
+                    >
                 </v-card-actions>
             </v-card>
         </v-dialog>
@@ -333,5 +360,4 @@ export default {
 };
 </script>
 
-<style lang="scss">
-</style>
+<style lang="scss"></style>

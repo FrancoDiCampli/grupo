@@ -1,10 +1,18 @@
 <template>
     <div>
         <v-container>
-            <v-tabs right slider-color="secondary" active-class="secondary--text">
-                <v-tab v-if="$store.state.auth.user.rol != 'cliente'">Activas</v-tab>
+            <v-tabs
+                right
+                slider-color="secondary"
+                active-class="secondary--text"
+            >
+                <v-tab v-if="$store.state.auth.user.rol != 'cliente'"
+                    >Activas</v-tab
+                >
                 <v-tab>
-                    <span v-if="$store.state.auth.user.rol != 'cliente'">Todas</span>
+                    <span v-if="$store.state.auth.user.rol != 'cliente'"
+                        >Todas</span
+                    >
                     <span v-else>Cuentas</span>
                 </v-tab>
                 <v-tab>Recibos</v-tab>
@@ -42,5 +50,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

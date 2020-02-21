@@ -18,24 +18,35 @@
                                         ref="proveedoresEditForm"
                                         @submit.prevent="updateProveedor()"
                                     >
-                                        <ProveedoresForm mode="edit" ref="proveedoresForm"></ProveedoresForm>
+                                        <ProveedoresForm
+                                            mode="edit"
+                                            ref="proveedoresForm"
+                                        ></ProveedoresForm>
                                         <v-row justify="center">
                                             <v-btn
                                                 tile
                                                 @click="mode = 'show'"
                                                 outlined
-                                                :disabled="$store.state.inProcess"
+                                                :disabled="
+                                                    $store.state.inProcess
+                                                "
                                                 color="secondary"
                                                 class="mx-2"
-                                            >Cancelar</v-btn>
+                                                >Cancelar</v-btn
+                                            >
                                             <v-btn
                                                 tile
                                                 type="submit"
                                                 color="secondary"
                                                 class="mx-2 elevation-0"
-                                                :disabled="$store.state.inProcess"
-                                                :loading="$store.state.inProcess"
-                                            >Editar</v-btn>
+                                                :disabled="
+                                                    $store.state.inProcess
+                                                "
+                                                :loading="
+                                                    $store.state.inProcess
+                                                "
+                                                >Editar</v-btn
+                                            >
                                         </v-row>
                                         <br />
                                     </v-form>
@@ -47,7 +58,12 @@
                         <div>
                             <br />
                             <div
-                                v-if="$store.state.auth.user.rol == 'superAdmin' || $store.state.auth.user.rol == 'administrador'"
+                                v-if="
+                                    $store.state.auth.user.rol ==
+                                        'superAdmin' ||
+                                        $store.state.auth.user.rol ==
+                                            'administrador'
+                                "
                             >
                                 <v-menu>
                                     <template v-slot:activator="{ on }">
@@ -60,15 +76,21 @@
                                             color="secondary"
                                             v-on="on"
                                         >
-                                            <v-icon size="medium">fas fa-ellipsis-v</v-icon>
+                                            <v-icon size="medium"
+                                                >fas fa-ellipsis-v</v-icon
+                                            >
                                         </v-btn>
                                     </template>
                                     <v-list>
                                         <v-list-item @click="editProveedor()">
-                                            <v-list-item-title>Editar</v-list-item-title>
+                                            <v-list-item-title
+                                                >Editar</v-list-item-title
+                                            >
                                         </v-list-item>
                                         <v-list-item @click="mode = 'delete'">
-                                            <v-list-item-title>Eliminar</v-list-item-title>
+                                            <v-list-item-title
+                                                >Eliminar</v-list-item-title
+                                            >
                                         </v-list-item>
                                     </v-list>
                                 </v-menu>
@@ -78,16 +100,26 @@
                                     <span
                                         class="white--text text-uppercase"
                                         style="font-size: 60px;"
-                                    >{{ $store.state.proveedores.proveedor.proveedor.razonsocial[0] }}</span>
+                                        >{{
+                                            $store.state.proveedores.proveedor
+                                                .proveedor.razonsocial[0]
+                                        }}</span
+                                    >
                                 </v-avatar>
                                 <br />
                                 <v-col cols="12">
-                                    <h1
-                                        class="text-center secondary--text"
-                                    >{{ $store.state.proveedores.proveedor.proveedor.razonsocial }}</h1>
-                                    <h3
-                                        class="text-center secondary--text"
-                                    >{{ $store.state.proveedores.proveedor.proveedor.cuit }}</h3>
+                                    <h1 class="text-center secondary--text">
+                                        {{
+                                            $store.state.proveedores.proveedor
+                                                .proveedor.razonsocial
+                                        }}
+                                    </h1>
+                                    <h3 class="text-center secondary--text">
+                                        {{
+                                            $store.state.proveedores.proveedor
+                                                .proveedor.cuit
+                                        }}
+                                    </h3>
                                 </v-col>
                             </v-row>
                         </div>
@@ -102,12 +134,21 @@
                                     >
                                         <v-tab>Datos</v-tab>
                                         <v-tab>Compras</v-tab>
-                                        <v-tab-item style="background: white !important;">
-                                            <div v-if="$store.state.proveedores.proveedor">
+                                        <v-tab-item
+                                            style="background: white !important;"
+                                        >
+                                            <div
+                                                v-if="
+                                                    $store.state.proveedores
+                                                        .proveedor
+                                                "
+                                            >
                                                 <ProveedoresShowData></ProveedoresShowData>
                                             </div>
                                         </v-tab-item>
-                                        <v-tab-item style="background: white !important;">
+                                        <v-tab-item
+                                            style="background: white !important;"
+                                        >
                                             <ProveedoresShowCompras></ProveedoresShowCompras>
                                         </v-tab-item>
                                     </v-tabs>
@@ -117,14 +158,18 @@
                         </div>
                         <div v-else-if="mode == 'delete'">
                             <div class="show-delete">
-                                <h2 class="text-center white--text">¿Estas Seguro?</h2>
+                                <h2 class="text-center white--text">
+                                    ¿Estas Seguro?
+                                </h2>
                                 <br />
                                 <v-divider dark></v-divider>
                                 <br />
-                                <p
-                                    class="text-center white--text"
-                                >¿Realmente deseas eliminar este Proveedor?</p>
-                                <p class="text-center white--text">Este Cambio es Irreversible</p>
+                                <p class="text-center white--text">
+                                    ¿Realmente deseas eliminar este Proveedor?
+                                </p>
+                                <p class="text-center white--text">
+                                    Este Cambio es Irreversible
+                                </p>
                                 <br />
                                 <v-row justify="center">
                                     <v-btn
@@ -133,7 +178,8 @@
                                         class="mx-2 red--text elevation-0"
                                         color="white"
                                         :disabled="$store.state.inProcess"
-                                    >Cancelar</v-btn>
+                                        >Cancelar</v-btn
+                                    >
                                     <v-btn
                                         tile
                                         @click="deleteProveedor()"
@@ -142,7 +188,8 @@
                                         class="mx-2"
                                         :disabled="$store.state.inProcess"
                                         :loading="$store.state.inProcess"
-                                    >Eliminar</v-btn>
+                                        >Eliminar</v-btn
+                                    >
                                 </v-row>
                                 <br />
                             </div>
@@ -243,5 +290,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

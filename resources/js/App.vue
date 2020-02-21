@@ -15,13 +15,18 @@
                         light
                         placeholder="Buscar"
                         @focus="searchOnFocus = true"
-                        :class="searchOnFocus ? 'searchBar focusBar' : 'searchBar'"
+                        :class="
+                            searchOnFocus ? 'searchBar focusBar' : 'searchBar'
+                        "
                         v-click-outside="closeSearch"
                         v-model="searchItems"
                         @keyup="searchItemsAfter()"
                     >
                         <template v-slot:progress>
-                            <v-progress-linear absolute height="0"></v-progress-linear>
+                            <v-progress-linear
+                                absolute
+                                height="0"
+                            ></v-progress-linear>
                         </template>
                     </v-text-field>
                 </div>
@@ -55,12 +60,20 @@
                                         >
                                             <v-list dense>
                                                 <v-list-item
-                                                    v-for="(cliente, index) in items.clientes"
+                                                    v-for="(cliente,
+                                                    index) in items.clientes"
                                                     :key="index"
-                                                    @click="navigate('/clientes/show/' + cliente.id)"
+                                                    @click="
+                                                        navigate(
+                                                            '/clientes/show/' +
+                                                                cliente.id
+                                                        )
+                                                    "
                                                 >
                                                     <v-list-item-content>
-                                                        <v-list-item-title>{{ cliente.razonsocial }}</v-list-item-title>
+                                                        <v-list-item-title>{{
+                                                            cliente.razonsocial
+                                                        }}</v-list-item-title>
                                                     </v-list-item-content>
                                                 </v-list-item>
                                             </v-list>
@@ -79,12 +92,20 @@
                                         >
                                             <v-list dense>
                                                 <v-list-item
-                                                    v-for="(articulo, index) in items.articulos"
+                                                    v-for="(articulo,
+                                                    index) in items.articulos"
                                                     :key="index"
-                                                    @click="navigate('/articulos/show/' + articulo.id)"
+                                                    @click="
+                                                        navigate(
+                                                            '/articulos/show/' +
+                                                                articulo.id
+                                                        )
+                                                    "
                                                 >
                                                     <v-list-item-content>
-                                                        <v-list-item-title>{{ articulo.articulo }}</v-list-item-title>
+                                                        <v-list-item-title>{{
+                                                            articulo.articulo
+                                                        }}</v-list-item-title>
                                                     </v-list-item-content>
                                                 </v-list-item>
                                             </v-list>
@@ -94,7 +115,9 @@
                                 <div v-if="items.proveedores.length > 0">
                                     <v-divider></v-divider>
                                     <v-row justify="center">
-                                        <v-col cols="4" sm="3">Proveedores</v-col>
+                                        <v-col cols="4" sm="3"
+                                            >Proveedores</v-col
+                                        >
                                         <v-col
                                             cols="8"
                                             sm="9"
@@ -103,12 +126,20 @@
                                         >
                                             <v-list dense>
                                                 <v-list-item
-                                                    v-for="(proveedor, index) in items.proveedores"
+                                                    v-for="(proveedor,
+                                                    index) in items.proveedores"
                                                     :key="index"
-                                                    @click="navigate('/proveedores/show/' + proveedor.id)"
+                                                    @click="
+                                                        navigate(
+                                                            '/proveedores/show/' +
+                                                                proveedor.id
+                                                        )
+                                                    "
                                                 >
                                                     <v-list-item-content>
-                                                        <v-list-item-title>{{ proveedor.razonsocial }}</v-list-item-title>
+                                                        <v-list-item-title>{{
+                                                            proveedor.razonsocial
+                                                        }}</v-list-item-title>
                                                     </v-list-item-content>
                                                 </v-list-item>
                                             </v-list>

@@ -30,13 +30,28 @@
 
                     <v-col cols="12">
                         <v-row justify="center">
-                            <v-btn text icon color="secondary" @click="foto.zoomIn()">
+                            <v-btn
+                                text
+                                icon
+                                color="secondary"
+                                @click="foto.zoomIn()"
+                            >
                                 <v-icon>fas fa-search-plus</v-icon>
                             </v-btn>
-                            <v-btn text icon color="secondary" @click="foto.zoomOut()">
+                            <v-btn
+                                text
+                                icon
+                                color="secondary"
+                                @click="foto.zoomOut()"
+                            >
                                 <v-icon>fas fa-search-minus</v-icon>
                             </v-btn>
-                            <v-btn text icon color="secondary" @click="foto.rotate()">
+                            <v-btn
+                                text
+                                icon
+                                color="secondary"
+                                @click="foto.rotate()"
+                            >
                                 <v-icon>fas fa-redo-alt</v-icon>
                             </v-btn>
                             <div v-if="foto != null">
@@ -89,7 +104,7 @@
         </v-row>
 
         <v-row justify="space-around">
-            <v-col cols="12" :sm="mode == 'create' ?  '6' : '4'" class="py-0">
+            <v-col cols="12" :sm="mode == 'create' ? '6' : '4'" class="py-0">
                 <v-text-field
                     v-model="$store.state.articulos.form.precio"
                     :rules="[rules.required]"
@@ -98,7 +113,7 @@
                     type="number"
                 ></v-text-field>
             </v-col>
-            <v-col cols="12" :sm="mode == 'create' ?  '6' : '4'" class="py-0">
+            <v-col cols="12" :sm="mode == 'create' ? '6' : '4'" class="py-0">
                 <v-select
                     v-model="$store.state.articulos.form.litros"
                     :items="presentaciones"
@@ -109,7 +124,7 @@
                     outlined
                 ></v-select>
             </v-col>
-            <v-col cols="12" :sm="mode == 'create' ?  '6' : '4'" class="py-0">
+            <v-col cols="12" :sm="mode == 'create' ? '6' : '4'" class="py-0">
                 <v-text-field
                     v-model="$store.state.articulos.form.stockminimo"
                     :rules="[rules.required]"
@@ -143,8 +158,8 @@
                             <v-list-item-content>
                                 <v-list-item-title>
                                     No hay resultados que coincidan con "
-                                    <strong>{{ searchCategoria }}</strong>". Presione
-                                    <kbd>enter</kbd> enter para
+                                    <strong>{{ searchCategoria }}</strong
+                                    >". Presione <kbd>enter</kbd> enter para
                                     crear uno nuevo
                                 </v-list-item-title>
                             </v-list-item-content>
@@ -168,8 +183,8 @@
                             <v-list-item-content>
                                 <v-list-item-title>
                                     No hay resultados que coincidan con "
-                                    <strong>{{ searchCategoria }}</strong>". Presione
-                                    <kbd>enter</kbd> enter para
+                                    <strong>{{ searchCategoria }}</strong
+                                    >". Presione <kbd>enter</kbd> enter para
                                     crear uno nuevo
                                 </v-list-item-title>
                             </v-list-item-content>
@@ -178,10 +193,20 @@
                 </v-combobox>
             </v-col>
             <v-col cols="12" sm="6" class="py-0">
-                <v-text-field label="Medida" placeholder="Litros" disabled outlined></v-text-field>
+                <v-text-field
+                    label="Medida"
+                    placeholder="Litros"
+                    disabled
+                    outlined
+                ></v-text-field>
             </v-col>
             <v-col cols="12" sm="6" class="py-0">
-                <v-text-field label="Codigo" v-model="codigo" outlined disabled></v-text-field>
+                <v-text-field
+                    label="Codigo"
+                    v-model="codigo"
+                    outlined
+                    disabled
+                ></v-text-field>
             </v-col>
         </v-row>
     </div>
@@ -311,5 +336,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

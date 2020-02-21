@@ -48,7 +48,7 @@ class PresupuestosController extends Controller
         foreach ($pres as $pre) {
             $fecha = new Carbon($pre->fecha);
             $pre->fecha = $fecha->format('d-m-Y');
-            $pre->cliente = Cliente::withTrashed()->find($pre->cliente_id);
+            $pre->cliente = Cliente::withTrashed()->find($pre->cliente_id);;
             $pre = collect($pre);
             $presupuestos->push($pre);
         }
@@ -131,6 +131,8 @@ class PresupuestosController extends Controller
         $presupuesto = Presupuesto::find($id);
         $fecha = new Carbon($presupuesto->fecha);
         $presupuesto->fecha = $fecha->format('d-m-Y');
+        $vencimiento = new Carbon($presupuesto->vencimiento);
+        $presupuesto->vencimiento = $vencimiento->format('d-m-Y');
         $cliente = Cliente::withTrashed()->find($presupuesto->cliente_id);
         $detalles = DB::table('articulo_presupuesto')->where('presupuesto_id', $presupuesto->id)->get();
 

@@ -4,11 +4,13 @@ namespace App;
 
 use App\Role;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
+    use SoftDeletes;
     use Notifiable;
 
     /**
@@ -56,6 +58,11 @@ class User extends Authenticatable
     public function ventas()
     {
         return $this->hasMany('App\Venta');
+    }
+
+    public function consignaciones()
+    {
+        return $this->hasMany('App\Consignment');
     }
 
     public function presupuestos()

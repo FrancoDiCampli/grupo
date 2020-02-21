@@ -7,6 +7,7 @@ use App\Supplier;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Traits\ContactosTrait;
 
 class SuppliersController extends Controller
 {
@@ -48,17 +49,7 @@ class SuppliersController extends Controller
 
         $supplier = Supplier::create($data);
 
-        if ($request['contactos']) {
-            foreach ($request['contactos'] as $tel) {
-                Contacto::create([
-                    'nombre' => $tel['nombre'],
-                    'numero' => $tel['numero'],
-                    'email' => $tel['email'],
-                    'cargo' => $tel['cargo'],
-                    'referencia' => 'PR' . $supplier->id,
-                ]);
-            }
-        }
+        ContactosTrait::crearContactos($supplier, $request);
 
         return $supplier;
     }
@@ -81,31 +72,7 @@ class SuppliersController extends Controller
 
         $supplier->update($data);
 
-        $nuevosContactos = $request['contactos'];
-        $contactosEliminados = [];
-        if ($request['eliminados']) {
-            $contactosEliminados = $request['eliminados'];
-        }
-
-        // Agregar nuevos
-        foreach ($nuevosContactos as $tel) {
-            if (!array_key_exists('id', $tel)) {
-                Contacto::create([
-                    'nombre' => $tel['nombre'],
-                    'numero' => $tel['numero'],
-                    'email' => $tel['email'],
-                    'cargo' => $tel['cargo'],
-                    'referencia' => 'PR' . $supplier->id,
-                ]);
-            }
-        }
-
-        // Eliminar
-        if (count($contactosEliminados) > 0) {
-            foreach ($contactosEliminados as $tel) {
-                Contacto::destroy($tel['id']);
-            }
-        }
+        ContactosTrait::editarContactos($supplier, $request);
     }
 
     public function destroy($id)
@@ -116,16 +83,10 @@ class SuppliersController extends Controller
         return ['message' => 'eliminado'];
     }
 
-    public function contactos($supplier)
-    {
-        $referencia = 'PR' . $supplier->id;
-        return Contacto::where('referencia', $referencia)->get();
-    }
-
     public function show($id)
     {
         $supplier = Supplier::find($id);
-        $contactos = $this->contactos($supplier);
+        $contactos = ContactosTrait::contactos($supplier);
         $remitos = $supplier->remitos;
         foreach ($remitos as $remito) {
             $fecha = new Carbon($remito->fecha);

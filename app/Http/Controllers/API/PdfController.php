@@ -6,6 +6,7 @@ use App\Venta;
 use App\Compra;
 use App\Recibo;
 use App\Cliente;
+use App\Consignment;
 use App\Factura;
 use App\Supplier;
 use Carbon\Carbon;
@@ -13,6 +14,7 @@ use App\Presupuesto;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\User;
 
 class PdfController extends Controller
 {
@@ -59,6 +61,20 @@ class PdfController extends Controller
         $proveedor = Supplier::withTrashed()->find($remito->supplier_id);
         $detalles = DB::table('articulo_compra')->where('compra_id', $remito->id)->get();
         $pdf = app('dompdf.wrapper')->loadView('comprasPDF', compact('configuracion', 'remito', 'detalles', 'proveedor'))->setPaper('A4');
+        return $pdf->download();
+    }
+
+    public function consignacionesPDF($id)
+    {
+        $jsonString = file_get_contents(base_path('config.json'));
+        $configuracion = json_decode($jsonString, true);
+        $consignacion = Consignment::find($id);
+        $dependencia = User::find($consignacion->dependencia);
+        $fecha = new Carbon($consignacion->fecha);
+        $consignacion->fecha = $fecha->format('d-m-Y');
+        // $proveedor = Supplier::find($consignacion->supplier_id);
+        $detalles = DB::table('articulo_consignment')->where('consignment_id', $consignacion->id)->get();
+        $pdf = app('dompdf.wrapper')->loadView('remitoConsignacionPDF', compact('configuracion', 'consignacion', 'detalles', 'dependencia'))->setPaper('A4');
         return $pdf->download();
     }
 

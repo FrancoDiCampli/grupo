@@ -15,7 +15,7 @@ class Inventario extends Model
 
     public function articulo()
     {
-        return $this->belongsTo('App\Articulo', 'articulo_id');
+        return $this->belongsTo('App\Articulo', 'articulo_id')->withTrashed();
     }
 
     public function movimientos()
@@ -25,7 +25,7 @@ class Inventario extends Model
 
     public function proveedor()
     {
-        return $this->belongsTo('App\Supplier', 'supplier_id');
+        return $this->belongsTo('App\Supplier', 'supplier_id')->withTrashed();
     }
 
     public function scopeBuscar($query, $request)

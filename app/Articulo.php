@@ -14,6 +14,10 @@ class Articulo extends Model
 
     protected $guarded = [];
 
+    protected $casts = [
+        'precio' => 'decimal:2',
+    ];
+
     public function getArticuloAttribute($value)
     {
         return ucwords($value);

@@ -12,9 +12,14 @@
             v-if="$store.state.auth.user.rol != 'cliente'"
         >
             <v-list-item class="drawer-action primary" dark>
-                <v-list-item-icon @click="mini = !mini" class="drawer-action-icon hidden-xs-only">
+                <v-list-item-icon
+                    @click="mini = !mini"
+                    class="drawer-action-icon hidden-xs-only"
+                >
                     <v-icon v-if="mini">fas fa-bars</v-icon>
-                    <v-icon v-else style="margin-left: 6px;">fas fa-times</v-icon>
+                    <v-icon v-else style="margin-left: 6px;"
+                        >fas fa-times</v-icon
+                    >
                 </v-list-item-icon>
                 <v-list-item-icon
                     class="hidden-sm-and-up"
@@ -45,7 +50,9 @@
                             <v-icon>{{ route.icon }}</v-icon>
                         </v-list-item-icon>
                         <v-list-item-content>
-                            <v-list-item-title>{{ route.name }}</v-list-item-title>
+                            <v-list-item-title>{{
+                                route.name
+                            }}</v-list-item-title>
                         </v-list-item-content>
                     </v-list-item>
                     <v-divider v-if="route.divider"></v-divider>
@@ -70,7 +77,11 @@
             <!-- Menu del usuario -->
             <v-menu offset-y v-if="$store.state.auth.user.user != null">
                 <template v-slot:activator="{ on }">
-                    <v-avatar color="secondary" style="cursor: pointer;" v-on="on">
+                    <v-avatar
+                        color="secondary"
+                        style="cursor: pointer;"
+                        v-on="on"
+                    >
                         <img
                             v-if="$store.state.auth.user.user.foto != null"
                             :src="$store.state.auth.user.user.foto"
@@ -80,7 +91,8 @@
                         <span
                             v-else-if="$store.state.auth.user.user.name"
                             class="text-uppercase"
-                        >{{ $store.state.auth.user.user.name[0] }}</span>
+                            >{{ $store.state.auth.user.user.name[0] }}</span
+                        >
                     </v-avatar>
                 </template>
                 <v-list>
@@ -94,7 +106,13 @@
 
         <!-- Sidenav de usuario -->
         <v-slide-x-reverse-transition>
-            <v-col cols="12" sm="5" lg="4" v-show="sidenav" class="sidenav pa-0">
+            <v-col
+                cols="12"
+                sm="5"
+                lg="4"
+                v-show="sidenav"
+                class="sidenav pa-0"
+            >
                 <v-card tile class="sidenav-overflow">
                     <v-toolbar color="secondary" dark flat>
                         <v-toolbar-title>Perfil</v-toolbar-title>
@@ -103,7 +121,9 @@
                             <v-icon>fas fa-arrow-right</v-icon>
                         </v-btn>
                     </v-toolbar>
-                    <Account v-if="$store.state.auth.user.user != null"></Account>
+                    <Account
+                        v-if="$store.state.auth.user.user != null"
+                    ></Account>
                 </v-card>
             </v-col>
         </v-slide-x-reverse-transition>
@@ -254,5 +274,4 @@ export default {
 };
 </script>
 
-<style lang="scss">
-</style>
+<style lang="scss"></style>

@@ -21,7 +21,10 @@
 
         <v-row justify="center">
             <v-col cols="12" md="10" lg="8">
-                <v-form ref="CreatePresupuesto" @submit.prevent="savePresupuesto()">
+                <v-form
+                    ref="CreatePresupuesto"
+                    @submit.prevent="savePresupuesto()"
+                >
                     <PresupuestosForm ref="formPresupuestos">
                         <v-btn
                             tile
@@ -30,7 +33,8 @@
                             class="mx-2"
                             @click="resetForm()"
                             :disabled="$store.state.inProcess"
-                        >Cancelar</v-btn>
+                            >Cancelar</v-btn
+                        >
 
                         <v-btn
                             type="submit"
@@ -39,7 +43,8 @@
                             class="mx-2 elevation-0"
                             :disabled="$store.state.inProcess"
                             :loading="$store.state.inProcess"
-                        >Guardar</v-btn>
+                            >Guardar</v-btn
+                        >
                     </PresupuestosForm>
                 </v-form>
             </v-col>
