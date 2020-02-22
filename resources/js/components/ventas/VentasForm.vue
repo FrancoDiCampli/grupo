@@ -126,7 +126,6 @@
                                             $store.state.ventas.form
                                                 .comprobanteadherido
                                         "
-                                        :disabled="disabled.cliente"
                                         label="Comprobante Adherido Nº"
                                         outlined
                                         type="number"
