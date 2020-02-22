@@ -1,26 +1,20 @@
 <template>
     <div>
-        <v-card shaped outlined :loading="inProcess">
+        <v-card shaped outlined :loading="inProcess" class="pb-4">
             <v-card-title class="py-0 px-2">
                 <v-row class="pa-0 ma-0">
-                    <v-col cols="auto" align-self="center"
-                        >Nueva Presupuesto</v-col
-                    >
+                    <v-col cols="auto" align-self="center">Nueva Presupuesto</v-col>
                     <v-spacer></v-spacer>
                     <v-col cols="auto">
                         <v-list-item two-line class="text-right">
                             <v-list-item-content>
                                 <v-list-item-title>
-                                    <b v-if="$vuetify.breakpoint.xsOnly"
-                                        >N°:&nbsp;</b
-                                    >
+                                    <b v-if="$vuetify.breakpoint.xsOnly">N°:&nbsp;</b>
                                     <b v-else>Comprobante N°:&nbsp;</b>
                                     {{ NumComprobante }}
                                 </v-list-item-title>
                                 <v-list-item-subtitle>
-                                    <b v-if="$vuetify.breakpoint.xsOnly"
-                                        >P:&nbsp;</b
-                                    >
+                                    <b v-if="$vuetify.breakpoint.xsOnly">P:&nbsp;</b>
                                     <b v-else>Punto de venta:&nbsp;</b>
                                     {{ PuntoVenta }}
                                 </v-list-item-subtitle>
@@ -41,8 +35,7 @@
                         :rules="[
                             () => validateStep(1, 'presupuestosClienteForm')
                         ]"
-                        >Cliente y vencimiento.</v-stepper-step
-                    >
+                    >Cliente y vencimiento.</v-stepper-step>
                     <v-stepper-content step="1">
                         <v-form ref="presupuestosClienteForm">
                             <v-row justify="space-around" class="my-1">
@@ -62,11 +55,7 @@
                                         class="search-client-table mb-5"
                                         v-if="searchClienteTable"
                                     >
-                                        <v-row
-                                            justify="center"
-                                            v-if="searchInProcess"
-                                            class="py-5"
-                                        >
+                                        <v-row justify="center" v-if="searchInProcess" class="py-5">
                                             <v-progress-circular
                                                 :size="70"
                                                 :width="7"
@@ -80,21 +69,11 @@
                                                     searchCliente != ''
                                             "
                                         >
-                                            <v-simple-table
-                                                v-if="clientes.length > 0"
-                                            >
+                                            <v-simple-table v-if="clientes.length > 0">
                                                 <thead>
                                                     <tr>
-                                                        <th
-                                                            class="text-xs-left"
-                                                        >
-                                                            Apellido Nombre
-                                                        </th>
-                                                        <th
-                                                            class="text-xs-left"
-                                                        >
-                                                            Documento
-                                                        </th>
+                                                        <th class="text-xs-left">Apellido Nombre</th>
+                                                        <th class="text-xs-left">Documento</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -111,12 +90,12 @@
                                                     >
                                                         <td>
                                                             {{
-                                                                cliente.razonsocial
+                                                            cliente.razonsocial
                                                             }}
                                                         </td>
                                                         <td>
                                                             {{
-                                                                cliente.documentounico
+                                                            cliente.documentounico
                                                             }}
                                                         </td>
                                                     </tr>
@@ -178,8 +157,7 @@
                                                             .vencimiento
                                                     )
                                                 "
-                                                >Aceptar</v-btn
-                                            >
+                                            >Aceptar</v-btn>
                                         </v-date-picker>
                                     </v-dialog>
                                 </v-col>
@@ -191,8 +169,7 @@
                                 @click="step = 2"
                                 color="secondary"
                                 class="elevation-0 mb-2"
-                                >Continuar</v-btn
-                            >
+                            >Continuar</v-btn>
                         </v-row>
                     </v-stepper-content>
 
@@ -205,9 +182,7 @@
                         :rules="[() => validateDetail(2)]"
                     >
                         Detalles.
-                        <small v-if="!validateDetail(2)"
-                            >Debe ingresar al menos un detalle.</small
-                        >
+                        <small v-if="!validateDetail(2)">Debe ingresar al menos un detalle.</small>
                     </v-stepper-step>
                     <v-stepper-content step="2">
                         <v-row justify="space-around" class="my-1">
@@ -215,42 +190,20 @@
                             <v-col cols="12" class="py-0 articulos-panel">
                                 <v-expansion-panels v-model="articulosPanel">
                                     <v-expansion-panel>
-                                        <v-expansion-panel-header
-                                            expand-icon="fas fa-caret-down"
-                                        >
+                                        <v-expansion-panel-header expand-icon="fas fa-caret-down">
                                             <div
                                                 v-if="articuloSelected.articulo"
-                                            >
-                                                {{ articuloSelected.articulo }}
-                                            </div>
+                                            >{{ articuloSelected.articulo }}</div>
                                             <div v-else>Articulos</div>
                                         </v-expansion-panel-header>
                                         <v-expansion-panel-content>
-                                            <v-simple-table
-                                                v-if="articulos.length > 0"
-                                            >
+                                            <v-simple-table v-if="articulos.length > 0">
                                                 <thead>
                                                     <tr>
-                                                        <th
-                                                            class="text-xs-left"
-                                                        >
-                                                            Codigo
-                                                        </th>
-                                                        <th
-                                                            class="text-xs-left"
-                                                        >
-                                                            Articulo
-                                                        </th>
-                                                        <th
-                                                            class="text-xs-left"
-                                                        >
-                                                            Precio
-                                                        </th>
-                                                        <th
-                                                            class="text-xs-left"
-                                                        >
-                                                            Stock
-                                                        </th>
+                                                        <th class="text-xs-left">Codigo</th>
+                                                        <th class="text-xs-left">Articulo</th>
+                                                        <th class="text-xs-left">Precio</th>
+                                                        <th class="text-xs-left">Stock</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -271,22 +224,20 @@
                                                     >
                                                         <td>
                                                             {{
-                                                                articulo.codarticulo
+                                                            articulo.codarticulo
                                                             }}
                                                         </td>
                                                         <td>
                                                             {{
-                                                                articulo.articulo
+                                                            articulo.articulo
                                                             }}
                                                         </td>
                                                         <td>
                                                             {{
-                                                                articulo.precio
+                                                            articulo.precio
                                                             }}
                                                         </td>
-                                                        <td>
-                                                            {{ articulo.stock }}
-                                                        </td>
+                                                        <td>{{ articulo.stock }}</td>
                                                     </tr>
                                                 </tbody>
                                             </v-simple-table>
@@ -404,8 +355,7 @@
                                                         fechaCotizacion
                                                     )
                                                 "
-                                                >Aceptar</v-btn
-                                            >
+                                            >Aceptar</v-btn>
                                         </v-date-picker>
                                     </v-dialog>
                                 </v-col>
@@ -417,8 +367,7 @@
                                             tile
                                             color="secondary"
                                             :disabled="disabled.detalles"
-                                            >Añadir detalle</v-btn
-                                        >
+                                        >Añadir detalle</v-btn>
                                     </v-row>
                                 </v-col>
                             </v-row>
@@ -430,26 +379,14 @@
                                         <template v-slot:default>
                                             <thead>
                                                 <tr>
-                                                    <th class="text-left">
-                                                        Articulo
-                                                    </th>
-                                                    <th
-                                                        class="text-left hidden-sm-and-down"
-                                                    >
-                                                        Precio
-                                                    </th>
-                                                    <th class="text-left">
-                                                        Unidades
-                                                    </th>
+                                                    <th class="text-left">Articulo</th>
+                                                    <th class="text-left hidden-sm-and-down">Precio</th>
+                                                    <th class="text-left">Unidades</th>
 
-                                                    <th class="text-left">
-                                                        Subtotal
-                                                    </th>
+                                                    <th class="text-left">Subtotal</th>
                                                     <th
                                                         class="text-left hidden-sm-and-down"
-                                                    >
-                                                        Subtotal en pesos
-                                                    </th>
+                                                    >Subtotal en pesos</th>
                                                     <th></th>
                                                 </tr>
                                             </thead>
@@ -459,27 +396,19 @@
                                                     index) in detalles"
                                                     :key="index"
                                                 >
-                                                    <td>
-                                                        {{ detalle.articulo }}
-                                                    </td>
+                                                    <td>{{ detalle.articulo }}</td>
                                                     <td
                                                         class="hidden-sm-and-down"
-                                                    >
-                                                        {{ detalle.precio }}
-                                                    </td>
-                                                    <td>
-                                                        {{ detalle.cantidad }}
-                                                    </td>
+                                                    >{{ detalle.precio }}</td>
+                                                    <td>{{ detalle.cantidad }}</td>
                                                     <td>
                                                         {{
-                                                            detalle.subtotalDolares
+                                                        detalle.subtotalDolares
                                                         }}
                                                     </td>
-                                                    <td
-                                                        class="hidden-sm-and-down"
-                                                    >
+                                                    <td class="hidden-sm-and-down">
                                                         {{
-                                                            detalle.subtotalPesos
+                                                        detalle.subtotalPesos
                                                         }}
                                                     </td>
                                                     <td>
@@ -492,11 +421,10 @@
                                                                 )
                                                             "
                                                         >
-                                                            <v-icon
-                                                                size="medium"
-                                                                >fas
-                                                                fa-times</v-icon
-                                                            >
+                                                            <v-icon size="medium">
+                                                                fas
+                                                                fa-times
+                                                            </v-icon>
                                                         </v-btn>
                                                     </td>
                                                 </tr>
@@ -512,8 +440,7 @@
                                 tile
                                 class="elevation-0 mb-2"
                                 @click="step = 3"
-                                >Continuar</v-btn
-                            >
+                            >Continuar</v-btn>
                         </v-row>
                     </v-stepper-content>
 
@@ -526,8 +453,7 @@
                         :rules="[
                             () => validateStep(3, 'presupuestosTotalesForm')
                         ]"
-                        >Bonificación y recargo.</v-stepper-step
-                    >
+                    >Bonificación y recargo.</v-stepper-step>
                     <v-stepper-content step="3">
                         <v-form ref="presupuestosTotalesForm">
                             <v-row justify="space-around" class="my-1">
@@ -587,8 +513,7 @@
                                 tile
                                 class="elevation-0 mb-2"
                                 @click="step = 4"
-                                >Continuar</v-btn
-                            >
+                            >Continuar</v-btn>
                         </v-row>
                     </v-stepper-content>
 
@@ -598,8 +523,7 @@
                         step="4"
                         :editable="true"
                         edit-icon="fas fa-pen"
-                        >Observaciones</v-stepper-step
-                    >
+                    >Observaciones</v-stepper-step>
                     <v-stepper-content step="4">
                         <v-row justify="center" class="my-1">
                             <v-col cols="12" class="py-0">
@@ -622,9 +546,7 @@
 
         <v-dialog v-model="detallesDialog" width="500" persistent>
             <v-card>
-                <v-card-title primary-title
-                    >¡Ha ocurrido un error!</v-card-title
-                >
+                <v-card-title primary-title>¡Ha ocurrido un error!</v-card-title>
                 <v-divider></v-divider>
                 <v-card-text>
                     <br />Debe ingresar al menos un detalle.
@@ -639,8 +561,7 @@
                             :disabled="$store.state.inProcess"
                             color="error"
                             class="mx-2 elevation-0"
-                            >Cerrar</v-btn
-                        >
+                        >Cerrar</v-btn>
                     </v-row>
                 </v-card-text>
             </v-card>
@@ -999,6 +920,7 @@ export default {
         resetData: async function() {
             this.clientes = [];
             this.detalles = [];
+            this.articuloSelected = {};
             this.$refs.presupuestosClienteForm.reset();
             this.$refs.presupuestosTotalesForm.reset();
             this.step = 1;

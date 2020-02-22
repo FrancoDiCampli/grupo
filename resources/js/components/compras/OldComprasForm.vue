@@ -193,8 +193,14 @@
                                                     expand-icon="fas fa-caret-down"
                                                 >
                                                     <div
-                                                        v-if="articuloSelected.articulo"
-                                                    >{{ articuloSelected.articulo }}</div>
+                                                        v-if="
+                                                            articuloSelected.articulo
+                                                        "
+                                                    >
+                                                        {{
+                                                        articuloSelected.articulo
+                                                        }}
+                                                    </div>
                                                     <div v-else>Articulos</div>
                                                 </v-expansion-panel-header>
                                                 <v-expansion-panel-content>
@@ -272,18 +278,18 @@
                                                     <v-col cols="12" sm="6" class="py-0">
                                                         <v-select
                                                             v-model="
-                                                            articuloSelected.movimiento
-                                                        "
+                                                                articuloSelected.movimiento
+                                                            "
                                                             @change="
-                                                            movimientoOnChange()
-                                                        "
+                                                                movimientoOnChange()
+                                                            "
                                                             :disabled="
-                                                            disabled.movimiento 
-                                                        "
+                                                                disabled.movimiento
+                                                            "
                                                             :items="movimientos"
                                                             :rules="[
-                                                            rules.required
-                                                        ]"
+                                                                rules.required
+                                                            ]"
                                                             label="Movimiento"
                                                             outlined
                                                         ></v-select>
@@ -292,11 +298,11 @@
                                                         <div v-if="disabled.lote">
                                                             <v-text-field
                                                                 v-model="
-                                                                articuloSelected.lote
-                                                            "
+                                                                    articuloSelected.lote
+                                                                "
                                                                 :rules="[
-                                                                rules.required
-                                                            ]"
+                                                                    rules.required
+                                                                ]"
                                                                 label="Pedido N°"
                                                                 required
                                                                 outlined
@@ -307,11 +313,11 @@
                                                         <div v-else>
                                                             <v-select
                                                                 v-model="
-                                                                articuloSelected.lote
-                                                            "
+                                                                    articuloSelected.lote
+                                                                "
                                                                 :rules="[
-                                                                rules.required
-                                                            ]"
+                                                                    rules.required
+                                                                ]"
                                                                 :items="lotes"
                                                                 item-text="lote"
                                                                 item-value="lote"
@@ -323,11 +329,11 @@
                                                     <v-col cols="12" sm="4" class="py-0">
                                                         <v-text-field
                                                             v-model="
-                                                            articuloSelected.cantidad
-                                                        "
+                                                                articuloSelected.cantidad
+                                                            "
                                                             :rules="[
-                                                            rules.required
-                                                        ]"
+                                                                rules.required
+                                                            ]"
                                                             label="Unidades"
                                                             required
                                                             outlined
@@ -337,11 +343,11 @@
                                                     <v-col cols="12" sm="4" class="py-0">
                                                         <v-text-field
                                                             v-model="
-                                                            articuloSelected.litros
-                                                        "
+                                                                articuloSelected.litros
+                                                            "
                                                             :rules="[
-                                                            rules.required
-                                                        ]"
+                                                                rules.required
+                                                            ]"
                                                             label="Litros"
                                                             required
                                                             outlined
@@ -351,10 +357,12 @@
                                                     </v-col>
                                                     <v-col cols="12" sm="4" class="py-0">
                                                         <v-text-field
-                                                            v-model="cantidadLitros"
+                                                            v-model="
+                                                                cantidadLitros
+                                                            "
                                                             :rules="[
-                                                            rules.required
-                                                        ]"
+                                                                rules.required
+                                                            ]"
                                                             label="Cantidad en litros"
                                                             required
                                                             outlined
@@ -365,11 +373,11 @@
                                                     <v-col cols="12" sm="6" class="py-0">
                                                         <v-text-field
                                                             v-model="
-                                                            articuloSelected.precio
-                                                        "
+                                                                articuloSelected.precio
+                                                            "
                                                             :rules="[
-                                                            rules.required
-                                                        ]"
+                                                                rules.required
+                                                            ]"
                                                             label="Precio"
                                                             required
                                                             outlined
@@ -379,11 +387,11 @@
                                                     <v-col cols="12" sm="6" class="py-0">
                                                         <v-text-field
                                                             v-model="
-                                                            subtotalDetalle
-                                                        "
+                                                                subtotalDetalle
+                                                            "
                                                             :rules="[
-                                                            rules.required
-                                                        ]"
+                                                                rules.required
+                                                            ]"
                                                             label="Subtotal"
                                                             required
                                                             outlined
@@ -406,8 +414,8 @@
                                     <!-- TABLA DETALLES -->
                                     <v-col cols="12" class="py-0 mb-5">
                                         <v-alert type="error" v-if="errorAlert">
-                                            Uno o más pedidos de los detalles
-                                            no corresponden al proveedor
+                                            Uno o más pedidos de los detalles no
+                                            corresponden al proveedor
                                             seleccionado. Por favor, elimina los
                                             detalles en conflicto o selecciona
                                             otro proveedor
@@ -965,7 +973,7 @@ export default {
 };
 </script>
 
-<style lang="scss" >
+<style lang="scss">
 .search-proveedor-table {
     border-top: none !important;
     border-top-left-radius: 0px !important;
