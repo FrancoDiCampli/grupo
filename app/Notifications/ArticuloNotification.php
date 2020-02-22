@@ -64,8 +64,8 @@ class ArticuloNotification extends Notification
     public function toDatabase($notifiable)
     {
         return new DatabaseMessage([
-            'message' => 'El articulo necesita ser revisado',
-            'action' => url($this->articulo)
+            'message' => 'El articulo ' . $this->articulo->articulo . ' necesita ser revisado',
+            'action' => 'articulos/show/' . $this->articulo->id
         ]);
     }
 }

@@ -10,7 +10,7 @@ Route::get('/user', 'API\UsersController@user');
 Route::post('/update_account', 'API\UsersController@updateAccount');
 
 /*Notificaciones*/
-Route::get('notifications', 'API\NotificationsController@getNotifications');
+Route::apiResource('notificaciones', 'API\NotificacionesController');
 
 /*Ventas*/
 Route::apiResource('ventas', 'API\VentasController', ['except' => ['create', 'edit']]);
