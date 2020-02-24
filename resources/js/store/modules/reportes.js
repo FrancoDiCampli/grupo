@@ -46,6 +46,22 @@ const actions = {
         });
     },
 
+    cobrar({ commit, dispatch }, params) {
+        return new Promise((resolve, reject) => {
+            axios
+                .get("/api/chequeCobrado/" + params.id)
+                .then(response => {
+                    resolve(response.data);
+                })
+                .catch(error => {
+                    dispatch("errorHandle", error.response, {
+                        root: true
+                    });
+                    reject(error.response.data);
+                });
+        });
+    },
+
     ventas({ commit, dispatch }, params) {
         return new Promise((resolve, reject) => {
             axios

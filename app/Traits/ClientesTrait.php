@@ -36,6 +36,24 @@ trait ClientesTrait
         }
     }
 
+    public static function store($request)
+    {
+        $foto = FotosTrait::store($request, $ubicacion = 'clientes');
+
+        $atributos = $request->validated();
+
+        $atributos['foto'] = $foto;
+        $atributos['user_id'] = auth()->user()->id;
+        $atributos['observaciones'] = $request['observaciones'];
+
+        $cliente = Cliente::create($atributos);
+
+        ContactosTrait::crearContactos($cliente, $request);
+        ClientesTrait::crearUsuario($cliente, $request);
+
+        return ['message' => 'guardado'];
+    }
+
     public static function crearUsuario($cliente, $request)
     {
         if ($request->password == $request->confirm_password) {

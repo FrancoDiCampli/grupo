@@ -4,7 +4,6 @@ namespace App\Http\Controllers\API;
 
 use App\User;
 use App\Venta;
-use App\Cheque;
 use App\Compra;
 use App\Cliente;
 use App\Articulo;
@@ -13,6 +12,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Traits\ChequesTrait;
 
 class EstadisticasController extends Controller
 {
@@ -21,14 +21,14 @@ class EstadisticasController extends Controller
         $this->middleware('auth:airlock');
     }
 
+    public function chequeCobrado($id)
+    {
+        return ChequesTrait::chequeCobrado($id);
+    }
+
     public function cartera(Request $request)
     {
-        $data = Cheque::all();
-
-        return [
-            'cheques' => $data->take($request->get('limit', null)),
-            'total' => $data->count(),
-        ];
+        return ChequesTrait::cartera($request);
     }
 
     public function ventas(Request $request)

@@ -37,9 +37,9 @@
                                                 <v-list-item @click="showCheque(item)">
                                                     <v-list-item-title>Detalles</v-list-item-title>
                                                 </v-list-item>
-                                                <!-- <v-list-item>
-                                                <v-list-item-title>Cobrar</v-list-item-title>
-                                                </v-list-item>-->
+                                                <v-list-item @click="cobrar(item.id)">
+                                                    <v-list-item-title>Cobrar</v-list-item-title>
+                                                </v-list-item>
                                             </v-list>
                                         </v-menu>
                                     </td>
@@ -208,6 +208,12 @@ export default {
     },
 
     methods: {
+        cobrar(id) {
+            this.$store.dispatch("reportes/cobrar", {
+                id: id
+            });
+        },
+
         daysDiff(endDate) {
             let today = moment()
                 .format("YYYY-MM-DD")

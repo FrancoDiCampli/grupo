@@ -2,8 +2,10 @@
 
 namespace App\Traits;
 
+use App\User;
 use App\Venta;
 use App\Articulo;
+use Carbon\Carbon;
 use App\Inventario;
 use App\Consignment;
 use App\Traits\InventariosAdmin;
@@ -11,6 +13,40 @@ use App\Traits\ArticulosNotificacionesTrait;
 
 trait ConsignacionesTrait
 {
+    public static function index()
+    {
+        $consignaciones = Consignment::orderBy('id', 'DESC')->get();
+
+        foreach ($consignaciones as $consig) {
+            $fecha = new Carbon($consig->fecha);
+            $consig->fecha = $fecha->format('d-m-Y');
+            $consig->dependencia = User::find($consig->dependencia);
+        }
+
+        return ['consignaciones' => $consignaciones];
+    }
+
+    public static function store($request)
+    {
+        $consignacion = ConsignacionesTrait::storeConsignaciones($request);
+        $mover = ConsignacionesTrait::moverInventarios($request);
+        if ($mover) {
+            if ($request->tipo != 'TRANSFERENCIA') {
+                $venta = ConsignacionesTrait::ventaConsignaciones($request);
+                $consignacion->numventa = $venta->id;
+                $consignacion->save();
+            }
+        } else {
+            $consignacion->articulos()->detach();
+            $consignacion->forceDelete();
+        }
+    }
+
+    public static function show($id)
+    {
+        return $consignacion = Consignment::find($id);
+    }
+
     public static function storeConsignaciones($request)
     {
         $data = [
