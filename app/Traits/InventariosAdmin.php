@@ -7,6 +7,71 @@ use App\Movimiento;
 
 trait InventariosAdmin
 {
+    public static function actualizarCasaCentral($actualizar, $data)
+    {
+        switch ($data['movimiento']) {
+            case 'INCREMENTO':
+                $actualizar->cantidad += $data['cantidad'];
+                $actualizar->cantidadlitros += $data['cantidadlitros'];
+                $actualizar->save();
+
+                $move = Movimiento::create([
+                    'tipo' => 'INCREMENTO',
+                    'inventario_id' => $actualizar->id,
+                    'cantidad' => $data['cantidad'],
+                    'cantidadlitros' => $data['cantidadlitros'],
+                    'fecha' => now(),
+                    'user_id' => auth()->user()->id
+                ]);
+                break;
+
+            case 'DECREMENTO':
+                $actualizar->cantidad -= $data['cantidad'];
+                $actualizar->cantidadlitros -= $data['cantidadlitros'];
+                $actualizar->save();
+
+                $move = Movimiento::create([
+                    'tipo' => 'DECREMENTO',
+                    'inventario_id' => $actualizar->id,
+                    'cantidad' => $data['cantidad'],
+                    'cantidadlitros' => $data['cantidadlitros'],
+                    'fecha' => now(),
+                    'user_id' => auth()->user()->id
+                ]);
+                break;
+
+            case 'DEVOLUCION':
+                $actualizar->cantidad -= $data['cantidad'];
+                $actualizar->cantidadlitros -= $data['cantidadlitros'];
+                $actualizar->save();
+
+                $move = Movimiento::create([
+                    'tipo' => 'DEVOLUCION',
+                    'inventario_id' => $actualizar->id,
+                    'cantidad' => $data['cantidad'],
+                    'cantidadlitros' => $data['cantidadlitros'],
+                    'fecha' => now(),
+                    'user_id' => auth()->user()->id
+                ]);
+                break;
+
+            case 'MODIFICACION':
+                $actualizar->cantidad = $data['cantidad'];
+                $actualizar->cantidadlitros = $data['cantidadlitros'];
+                $actualizar->save();
+
+                $move = Movimiento::create([
+                    'tipo' => 'MODIFICACION',
+                    'inventario_id' => $actualizar->id,
+                    'cantidad' => $data['cantidad'],
+                    'cantidadlitros' => $data['cantidadlitros'],
+                    'fecha' => now(),
+                    'user_id' => auth()->user()->id
+                ]);
+                break;
+        }
+    }
+
     // Inventarios
     public static function altaInventario($data)
     {
