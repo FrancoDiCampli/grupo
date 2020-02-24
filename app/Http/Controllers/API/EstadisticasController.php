@@ -4,7 +4,6 @@ namespace App\Http\Controllers\API;
 
 use App\User;
 use App\Venta;
-use App\Cheque;
 use App\Compra;
 use App\Cliente;
 use App\Articulo;

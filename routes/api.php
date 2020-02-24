@@ -58,6 +58,7 @@ Route::middleware('auth:airlock')->group(function () {
 
     /*Cartera*/
     Route::get('cartera', 'API\EstadisticasController@cartera');
+    Route::get('chequeCobrado/{id}', 'API\EstadisticasController@chequeCobrado');
 
     /*Users*/
     Route::apiResource('users', 'API\UsersController', ['except' => ['create', 'edit', 'show']]);

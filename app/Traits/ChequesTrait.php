@@ -11,7 +11,7 @@ trait ChequesTrait
     {
         $cheque = Cheque::findOrFail($id);
         $cheque->estado = 'COBRADO';
-        $cheque->udpate();
+        $cheque->save();
 
         return ['message' => 'actualizado'];
     }
