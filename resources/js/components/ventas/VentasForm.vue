@@ -860,7 +860,7 @@ export default {
         },
 
         selectArticulo(articulo) {
-            if (true) {
+            if (articulo.stock > 0) {
                 this.articuloSelected = Object.assign(
                     { cantidad: 1 },
                     articulo

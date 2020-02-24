@@ -14,8 +14,7 @@
                     <tr>
                         <td>{{ item.item.cantidad }}</td>
                         <td>{{ item.item.cantidadlitros }}</td>
-                        <td>{{ item.item.lote }}</td>
-                        <td>{{ item.item.proveedor.razonsocial }}</td>
+                        <td v-if="item.item.proveedor">{{ item.item.proveedor.razonsocial }}</td>
                     </tr>
                 </template>
             </v-data-table>
@@ -34,10 +33,17 @@ export default {
         headers: [
             { text: "Cantidad", sortable: false },
             { text: "Cantidad en litros", sortable: false },
-            { text: "Nota de pedido", sortable: false },
             { text: "Proveedor", sortable: false }
         ]
-    })
+    }),
+
+    mounted() {
+        if (this.$store.state.articulos.articulo.articulo.inventarios) {
+            console.log(
+                this.$store.state.articulos.articulo.articulo.inventarios
+            );
+        }
+    }
 };
 </script>
 

@@ -21,18 +21,12 @@
                                         color="secondary"
                                         @click="formPanel = !formPanel"
                                     >
-                                        <v-icon v-if="formPanel" size="medium"
-                                            >fas fa-times</v-icon
-                                        >
-                                        <v-icon v-else size="medium"
-                                            >fas fa-plus</v-icon
-                                        >
+                                        <v-icon v-if="formPanel" size="medium">fas fa-times</v-icon>
+                                        <v-icon v-else size="medium">fas fa-plus</v-icon>
                                     </v-btn>
                                 </template>
                                 <span v-if="formPanel">Cerrar</span>
-                                <span v-else
-                                    >Añadir o modificar inventarios</span
-                                >
+                                <span v-else>Añadir o modificar inventarios</span>
                             </v-tooltip>
                         </v-row>
                     </v-col>
@@ -41,10 +35,7 @@
                 <v-expand-transition>
                     <v-card class="elevation-0" v-if="formPanel">
                         <v-card-text>
-                            <v-form
-                                ref="inventariosForm"
-                                @submit.prevent="preventSave()"
-                            >
+                            <v-form ref="inventariosForm" @submit.prevent="preventSave()">
                                 <v-row justify="space-around">
                                     <v-col cols="12" sm="6" class="py-0">
                                         <v-select
@@ -57,30 +48,6 @@
                                             :items="movimientos"
                                             :rules="[rules.required]"
                                             label="Movimiento"
-                                            outlined
-                                        ></v-select>
-                                    </v-col>
-                                    <v-col cols="12" sm="6" class="py-0">
-                                        <v-text-field
-                                            v-if="disabled.lote"
-                                            v-model="
-                                                $store.state.inventarios.form
-                                                    .lote
-                                            "
-                                            label="Pedido N°"
-                                            outlined
-                                            disabled
-                                        ></v-text-field>
-                                        <v-select
-                                            v-else
-                                            v-model="
-                                                $store.state.inventarios.form
-                                                    .lote
-                                            "
-                                            @change="lotesOnChange()"
-                                            :items="lotes"
-                                            :rules="[rules.required]"
-                                            label="Pedido N°"
                                             outlined
                                         ></v-select>
                                     </v-col>
@@ -109,7 +76,7 @@
                                             disabled
                                         ></v-text-field>
                                     </v-col>
-                                    <v-col cols="12" class="py-0">
+                                    <v-col cols="12" sm="6" class="py-0">
                                         <v-text-field
                                             v-model="searchSupplier"
                                             @keyup="searchSupplierAfter()"
@@ -124,11 +91,7 @@
                                             class="search-supplier-table mb-5"
                                             v-if="searchSupplierTable"
                                         >
-                                            <v-row
-                                                justify="center"
-                                                v-if="inProcess"
-                                                class="py-5"
-                                            >
+                                            <v-row justify="center" v-if="inProcess" class="py-5">
                                                 <v-progress-circular
                                                     :size="70"
                                                     :width="7"
@@ -142,31 +105,11 @@
                                                         searchSupplier != ''
                                                 "
                                             >
-                                                <v-simple-table
-                                                    v-if="suppliers.length > 0"
-                                                >
+                                                <v-simple-table v-if="suppliers.length > 0">
                                                     <thead>
                                                         <tr>
-                                                            <th
-                                                                class="text-xs-left"
-                                                            >
-                                                                Apellido Nombre
-                                                            </th>
-                                                            <th
-                                                                class="text-xs-left"
-                                                            >
-                                                                Cuit
-                                                            </th>
-                                                            <th
-                                                                class="txt-xs-left hidden-sm-and-down"
-                                                            >
-                                                                Dirección
-                                                            </th>
-                                                            <th
-                                                                class="text-xs-left hidden-sm-and-down"
-                                                            >
-                                                                Telefono
-                                                            </th>
+                                                            <th class="text-xs-left">Apellido Nombre</th>
+                                                            <th class="text-xs-left">Cuit</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -183,26 +126,12 @@
                                                         >
                                                             <td>
                                                                 {{
-                                                                    supplier.razonsocial
+                                                                supplier.razonsocial
                                                                 }}
                                                             </td>
                                                             <td>
                                                                 {{
-                                                                    supplier.cuit
-                                                                }}
-                                                            </td>
-                                                            <td
-                                                                class="hidden-sm-and-down"
-                                                            >
-                                                                {{
-                                                                    supplier.direccion
-                                                                }}
-                                                            </td>
-                                                            <td
-                                                                class="hidden-sm-and-down"
-                                                            >
-                                                                {{
-                                                                    supplier.telefono
+                                                                supplier.cuit
                                                                 }}
                                                             </td>
                                                         </tr>
@@ -213,10 +142,7 @@
                                                         Ningun dato coincide con
                                                         el creterio de busqueda
                                                     </h3>
-                                                    <v-row
-                                                        justify="center"
-                                                        class="mt-3"
-                                                    >
+                                                    <v-row justify="center" class="mt-3">
                                                         <v-btn
                                                             v-model="proveedor"
                                                             color="secondary"
@@ -225,9 +151,10 @@
                                                             @click="
                                                                 proveedor = true
                                                             "
-                                                            >Añadir
-                                                            Proveedor</v-btn
                                                         >
+                                                            Añadir
+                                                            Proveedor
+                                                        </v-btn>
                                                     </v-row>
                                                 </div>
                                             </div>
@@ -252,8 +179,7 @@
                                         color="secondary"
                                         tile
                                         class="elevation-0"
-                                        >Guardar</v-btn
-                                    >
+                                    >Guardar</v-btn>
                                 </v-row>
                             </v-form>
                         </v-card-text>
@@ -266,14 +192,8 @@
                 <v-card-title>Nuevo Proveedor</v-card-title>
                 <v-divider></v-divider>
                 <v-card-text>
-                    <v-form
-                        ref="ProveedoresCreate"
-                        @submit.prevent="saveProveedores"
-                    >
-                        <ProveedoresForm
-                            mode="create"
-                            ref="ProveedoresForm"
-                        ></ProveedoresForm>
+                    <v-form ref="ProveedoresCreate" @submit.prevent="saveProveedores">
+                        <ProveedoresForm mode="create" ref="ProveedoresForm"></ProveedoresForm>
                         <v-row justify="center">
                             <v-btn
                                 @click="cancelProveedores()"
@@ -283,8 +203,7 @@
                                 tile
                                 color="secondary"
                                 class="mx-2"
-                                >Cancelar</v-btn
-                            >
+                            >Cancelar</v-btn>
                             <v-btn
                                 type="submit"
                                 tile
@@ -292,8 +211,7 @@
                                 :loading="$store.state.inProcess"
                                 :disabled="$store.state.inProcess"
                                 color="secondary"
-                                >Guardar</v-btn
-                            >
+                            >Guardar</v-btn>
                         </v-row>
                     </v-form>
                 </v-card-text>
@@ -317,8 +235,7 @@
                             tile
                             color="secondary"
                             class="mx-2"
-                            >Cancelar</v-btn
-                        >
+                        >Cancelar</v-btn>
                         <v-btn
                             :loading="$store.state.inProcess"
                             :disabled="$store.state.inProcess"
@@ -326,8 +243,7 @@
                             tile
                             class="mx-2 elevation-0"
                             color="secondary"
-                            >Aceptar</v-btn
-                        >
+                        >Aceptar</v-btn>
                     </v-row>
                 </v-card-text>
             </v-card>
@@ -352,10 +268,8 @@ export default {
             "DECREMENTO",
             "MODIFICACION"
         ],
-        lotes: [],
         disabled: {
             movimiento: false,
-            lote: false,
             proveedor: false
         },
         searchSupplier: null,
@@ -397,23 +311,25 @@ export default {
     },
 
     mounted() {
-        this.checkLote();
+        this.checkStock();
         this.searchSupplier = "GRUPO APC";
         this.$store.state.inventarios.form.supplier_id = 1;
     },
 
     methods: {
-        checkLote() {
-            if (this.$store.state.articulos.articulo.lotes.lotes.length <= 0) {
+        checkStock() {
+            console.log(this.$store.state.articulos.articulo);
+            if (this.$store.state.articulos.articulo.stock <= 0) {
+                this.$store.state.inventarios.form.movimiento = "ALTA";
                 this.disabled.movimiento = true;
                 this.disabled.lote = true;
             } else {
+                this.$store.state.inventarios.form.movimiento = "INCREMENTO";
+                this.movimientos.splice(0, 1);
                 this.disabled.movimiento = false;
                 this.disabled.lote = false;
             }
 
-            this.lotes = this.$store.state.articulos.articulo.lotes.lotes;
-            this.$store.state.inventarios.form.movimiento = "ALTA";
             this.movimientoOnChange();
         },
 
@@ -422,34 +338,10 @@ export default {
                 let movimiento = this.$store.state.inventarios.form.movimiento;
 
                 if (movimiento == "ALTA") {
-                    this.$store.state.inventarios.form.lote = this.$store.state.articulos.articulo.lotes.proximo;
                     this.disabled.proveedor = false;
-                    this.disabled.lote = true;
                 } else {
-                    this.$store.state.inventarios.form.lote = this.lotes[0];
                     this.disabled.proveedor = true;
-                    this.disabled.lote = false;
-
-                    this.lotesOnChange();
                 }
-            }
-        },
-
-        lotesOnChange: async function() {
-            let movimiento = this.$store.state.inventarios.form.movimiento;
-            let find = this.$store.state.articulos.articulo.inventarios.find(
-                element =>
-                    element.lote == this.$store.state.inventarios.form.lote
-            );
-            if (movimiento != "ALTA") {
-                await this.selectSupplier(find.proveedor);
-                this.suppliers = [];
-            }
-
-            if (movimiento == "DEVOLUCION" || movimiento == "DECREMENTO") {
-                cantidadMaxima = find.cantidad;
-            } else {
-                cantidadMaxima = 999999999999999999;
             }
         },
 
@@ -490,15 +382,12 @@ export default {
         preventSave() {
             if (this.$refs.inventariosForm.validate()) {
                 let movimiento = this.$store.state.inventarios.form.movimiento;
-                let lote = this.$store.state.inventarios.form.lote;
                 let cantidad = this.$store.state.inventarios.form.cantidad;
 
-                if (movimiento == "ALTA") {
-                    this.msg = `Se agregará la siguiente nota de pedido ${lote} con stock de ${cantidad} productos`;
-                } else if (movimiento == "INCREMENTO") {
-                    this.msg = `Se agregará ${cantidad} productos al stock`;
+                if (movimiento == "ALTA" || movimiento == "INCREMENTO") {
+                    this.msg = `Se agregaran ${cantidad} productos al stock`;
                 } else if (movimiento == "MODIFICACION") {
-                    this.msg = `Se modificará la cantidad de la nota de pedido ${lote} a ${cantidad} productos`;
+                    this.msg = `Se modificará la cantidad ${cantidad} productos`;
                 } else {
                     this.msg = `Se restarán ${cantidad} productos al stock`;
                 }
@@ -509,16 +398,16 @@ export default {
             if (this.$refs.inventariosForm.validate()) {
                 this.$store.state.inventarios.form.articulo_id = this.$store.state.articulos.articulo.articulo.id;
                 this.$store.state.inventarios.form.cantidadlitros = this.cantidadLitros;
-
+                console.log(this.$store.state.inventarios.form);
                 await this.$store.dispatch("inventarios/save").catch(() => {
                     this.preventSaveDialog = false;
                 });
-                this.preventSaveDialog = false;
-                this.formPanel = false;
-                await this.$store.dispatch("articulos/show", {
-                    id: this.$store.state.articulos.articulo.articulo.id
-                });
-                this.checkLote();
+                // this.preventSaveDialog = false;
+                // this.formPanel = false;
+                // await this.$store.dispatch("articulos/show", {
+                //     id: this.$store.state.articulos.articulo.articulo.id
+                // });
+                // this.checkStock();
             }
         },
 

@@ -171,6 +171,13 @@ export default {
                 icon: "fas fa-shopping-cart",
                 url: "/compras",
                 roles: ["superAdmin", "administrador"],
+                divider: false
+            },
+            {
+                name: "Consignaciones",
+                icon: "fas fa-file-signature",
+                url: "/consignaciones",
+                roles: ["superAdmin", "administrador"],
                 divider: true
             },
             {

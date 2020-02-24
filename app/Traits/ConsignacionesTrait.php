@@ -8,12 +8,13 @@ use App\Articulo;
 use Carbon\Carbon;
 use App\Inventario;
 use App\Consignment;
+use Illuminate\Http\Request;
 use App\Traits\InventariosAdmin;
 use App\Traits\ArticulosNotificacionesTrait;
 
 trait ConsignacionesTrait
 {
-    public static function index()
+    public static function index($request)
     {
         $consignaciones = Consignment::orderBy('id', 'DESC')->get();
 
@@ -23,7 +24,10 @@ trait ConsignacionesTrait
             $consig->dependencia = User::find($consig->dependencia);
         }
 
-        return ['consignaciones' => $consignaciones];
+        return [
+            'consignaciones' => $consignaciones->take($request->get('limit', null)),
+            'total' => $consignaciones->count()
+        ];
     }
 
     public static function store($request)

@@ -8,6 +8,7 @@ import auth from "./modules/auth";
 import categorias from "./modules/categorias";
 import clientes from "./modules/clientes";
 import compras from "./modules/compras";
+import consignaciones from "./modules/consignaciones";
 import facturas from "./modules/facturas";
 import inventarios from "./modules/inventarios";
 import marcas from "./modules/marcas";
@@ -76,6 +77,7 @@ export default new Vuex.Store({
         categorias: categorias,
         clientes: clientes,
         compras: compras,
+        consignaciones: consignaciones,
         facturas: facturas,
         inventarios: inventarios,
         marcas: marcas,

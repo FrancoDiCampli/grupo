@@ -1,9 +1,14 @@
 <template>
     <div>
-        <v-card shaped outlined :loading="$store.state.inProcess">
+        <v-card
+            shaped
+            outlined
+            :loading="$store.state.inProcess"
+            v-if="$store.state.consignaciones.consignaciones"
+        >
             <v-card-title>Consignaciones</v-card-title>
             <v-divider></v-divider>
-            <v-card-text v-if="$store.state.consignaciones.consignaciones" class="px-0">
+            <v-card-text class="px-0">
                 <v-data-table
                     :headers="headers"
                     :items="$store.state.consignaciones.consignaciones.consignaciones"

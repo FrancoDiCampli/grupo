@@ -18,7 +18,28 @@
             </template>
             <span>Nueva consignacion</span>
         </v-tooltip>
-        <ConsignacionesIndex></ConsignacionesIndex>
+
+        <v-container>
+            <v-row justify="center">
+                <v-col cols="12" md="10" lg="8">
+                    <ConsignacionesIndex>
+                        <!-- <br />
+                        <v-row justify="center" v-if="$store.state.compras.compras">
+                            <v-btn
+                                :loading="$store.state.inProcess"
+                                :disabled="
+                                    limit >= $store.state.compras.compras.total
+                                "
+                                @click="loadMore()"
+                                color="secondary"
+                                outlined
+                                tile
+                            >Cargar Más</v-btn>
+                        </v-row>-->
+                    </ConsignacionesIndex>
+                </v-col>
+            </v-row>
+        </v-container>
     </div>
 </template>
 
@@ -26,20 +47,31 @@
 import ConsignacionesIndex from "../../components/consignaciones/ConsignacionesIndex";
 
 export default {
+    data: () => ({
+        limit: 10
+    }),
+
     components: {
         ConsignacionesIndex
     },
+
     mounted() {
         this.getConsignaciones();
     },
 
     methods: {
         getConsignaciones: async function() {
-            await this.$store.dispatch("consignaciones/index");
+            await this.$store.dispatch("consignaciones/index", {
+                limit: this.limit
+            });
+        },
+
+        loadMore: async function() {
+            this.limit += this.limit;
+            await this.getConsignaciones();
         }
     }
 };
 </script>
 
-<style>
-</style>
+<style></style>
