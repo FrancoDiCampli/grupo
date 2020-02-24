@@ -8,6 +8,7 @@ use App\Traits\MarcasTrait;
 use App\Traits\CategoriasTrait;
 use App\Traits\InventariosAdmin;
 use App\Traits\ArticulosNotificacionesTrait;
+use App\User;
 
 trait ArticulosTrait
 {
@@ -28,9 +29,6 @@ trait ArticulosTrait
                     $inventarios = [];
                     $stock = 0;
                 }
-
-                // $inventarios = $art->inventarios;
-                // $stock = $inventarios->sum('cantidad');
                 $art = collect($art);
                 $art->put('stock', $stock);
             } else {
@@ -145,7 +143,12 @@ trait ArticulosTrait
         $lotes = ArticulosTrait::lotes($id);
         foreach ($inventarios as $inventario) {
             $inv = collect($inventario);
-            $inv->put('proveedor', $inventario->proveedor);
+            if ($inventario->proveedor) {
+                $inv->put('proveedor', $inventario->proveedor);
+            } else if ($inventario->dependencia) {
+                $user = User::find($inventario->dependencia);
+                $inv->put('dependencia', $user);
+            }
         }
         return ['articulo' => $articulo, 'stock' => $stock, 'inventarios' => $inventarios, 'lotes' => $lotes, 'marca' => $marca, 'categoria' => $categoria];
     }
