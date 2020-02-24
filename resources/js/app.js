@@ -26,6 +26,17 @@ Vue.prototype.$user.set({
     permissions: []
 });
 
+// ELIMINAR ADVERTENCIA AL USAR V-CALENDAR
+const ignoreWarnMessage =
+    "The .native modifier for v-on is only valid on components but it was used on <div>.";
+Vue.config.warnHandler = function(msg, vm, trace) {
+    if (msg === ignoreWarnMessage) {
+        msg = null;
+        vm = null;
+        trace = null;
+    }
+};
+
 Vue.config.productionTip = false;
 
 new Vue({

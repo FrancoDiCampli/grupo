@@ -41,8 +41,14 @@ import Compras from "../views/compras/Compras";
 import ComprasCreate from "../views/compras/Create";
 import ComprasShow from "../views/compras/Show";
 
+// Reportes
+import Reportes from "../views/reportes/Reportes";
+
 // Movimientos
 import Movimientos from "../views/movimientos/Movimientos";
+
+// Cartera
+import Cartera from "../views/cartera/Cartera";
 
 // Roles
 import Roles from "../views/roles/Roles";
@@ -53,10 +59,6 @@ import RolesEdit from "../views/roles/Edit";
 import Users from "../views/users/Users";
 import UsersCreate from "../views/users/Create";
 import UsersEdit from "../views/users/Edit";
-
-// Reportes
-import Cartera from "../views/reportes/Cartera";
-import Reportes from "../views/reportes/Reportes";
 
 Vue.use(Router);
 
@@ -222,11 +224,25 @@ export default new Router({
             props: true
         },
 
+        // Reportes
+        {
+            path: "/reportes",
+            name: "reportes",
+            component: Reportes
+        },
+
         // Movimientos
         {
             path: "/movimientos",
             name: "movimientos",
             component: Movimientos
+        },
+
+        // Cartera
+        {
+            path: "/cartera",
+            name: "cartera",
+            component: Cartera
         },
 
         // Roles
@@ -261,18 +277,6 @@ export default new Router({
             path: "/users/editar",
             name: "users_edit",
             component: UsersEdit
-        },
-
-        // Reportes
-        {
-            path: "/cartera",
-            name: "cartera",
-            component: Cartera
-        },
-        {
-            path: "/reportes",
-            name: "reportes",
-            component: Reportes
         }
     ]
 });

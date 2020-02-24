@@ -1,4 +1,5 @@
 const state = {
+    cheques: null,
     ventas: null,
     compras: null,
     productosVentas: null,
@@ -6,6 +7,10 @@ const state = {
 };
 
 const mutations = {
+    fillCheques(state, cheques) {
+        state.cheques = cheques;
+    },
+
     fillVentas(state, ventas) {
         state.ventas = ventas;
     },
@@ -24,6 +29,23 @@ const mutations = {
 };
 
 const actions = {
+    cartera({ commit, dispatch }, params) {
+        return new Promise((resolve, reject) => {
+            axios
+                .get("/api/cartera", { params: params })
+                .then(response => {
+                    commit("fillCheques", response.data);
+                    resolve(response.data);
+                })
+                .catch(error => {
+                    dispatch("errorHandle", error.response, {
+                        root: true
+                    });
+                    reject(error.response.data);
+                });
+        });
+    },
+
     ventas({ commit, dispatch }, params) {
         return new Promise((resolve, reject) => {
             axios

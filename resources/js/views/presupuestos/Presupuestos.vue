@@ -23,13 +23,13 @@
             <v-row justify="center">
                 <v-col cols="12" md="10" lg="8">
                     <PresupuestosIndex>
-                        <v-row justify="center" v-if="$store.state.clientes.clientes">
+                        <v-row justify="center" v-if="$store.state.presupuestos.presupuestos">
                             <br />
                             <v-btn
                                 :loading="$store.state.inProcess"
                                 :disabled="
                                         limit >=
-                                            $store.state.clientes.clientes.total
+                                            $store.state.presupuestos.presupuestos.total
                                     "
                                 @click="loadMore()"
                                 color="secondary"
@@ -49,20 +49,11 @@ import PresupuestosIndex from "../../components/presupuestos/PresupuestosIndex";
 
 export default {
     data: () => ({
-        limit: 10,
-        sucursales: [],
-        sucursalID: null,
-        filterMenu: false
+        limit: 10
     }),
 
     components: {
         PresupuestosIndex
-    },
-
-    watch: {
-        sucursalID() {
-            this.getPresupuestos();
-        }
     },
 
     mounted() {
