@@ -71,6 +71,7 @@
                             type="month"
                             :events="events"
                             @change="getEvents"
+                            @click:event="showEvent"
                             :event-color="getEventColor"
                         ></v-calendar>
                     </v-card-text>
@@ -222,6 +223,12 @@ export default {
             } else {
                 return "Hoy";
             }
+        },
+
+        showEvent({ nativeEvent, event }) {
+            let cheques = this.$store.state.reportes.cheques.cheques;
+            let find = cheques.find(element => element.numero == event.name);
+            this.showCheque(find);
         },
 
         showCheque(cheque) {
