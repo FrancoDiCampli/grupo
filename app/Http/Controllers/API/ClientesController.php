@@ -36,21 +36,7 @@ class ClientesController extends Controller
 
     public function store(StoreCliente $request)
     {
-        $name = 'noimage.png';
-        $foto = '/img/clientes/' . $name;
-
-        $atributos = $request->validated();
-
-        $atributos['foto'] = $foto;
-        $atributos['user_id'] = auth()->user()->id;
-        $atributos['observaciones'] = $request['observaciones'];
-
-        $cliente = Cliente::create($atributos);
-
-        ContactosTrait::crearContactos($cliente, $request);
-        ClientesTrait::crearUsuario($cliente, $request);
-
-        return ['message' => 'guardado'];
+        return ClientesTrait::store($request);
     }
 
     public function show($id)
