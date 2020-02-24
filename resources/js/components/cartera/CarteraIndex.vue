@@ -153,7 +153,7 @@
                             </p>
                             <p>{{ cheque.fechacobro }}</p>
                         </v-col>
-                        <v-col cols="6" class="py-0">
+                        <v-col cols="12" sm="6" class="py-0">
                             <p>
                                 <b>CUIT:</b>
                             </p>
