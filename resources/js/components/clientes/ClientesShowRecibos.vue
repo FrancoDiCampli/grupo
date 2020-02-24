@@ -23,7 +23,7 @@
                                 <v-col cols="12" sm="6" class="header-left">
                                     <h2 class="text-center">
                                         {{
-                                            recibo.configuracion.nombrefantasia
+                                        recibo.configuracion.nombrefantasia
                                         }}
                                     </h2>
                                     <p>
@@ -33,8 +33,8 @@
                                     <p>
                                         <b>Domicilio Comercial:</b>
                                         {{
-                                            recibo.configuracion
-                                                .domiciliocomercial
+                                        recibo.configuracion
+                                        .domiciliocomercial
                                         }}
                                     </p>
                                     <p>
@@ -47,7 +47,7 @@
                                     <p>
                                         <b>Punto de Venta:</b>
                                         0000{{
-                                            recibo.configuracion.puntoventa
+                                        recibo.configuracion.puntoventa
                                         }}
                                         <b>Comprobante Nº:</b>
                                         {{ recibo.recibo.numrecibo }}
@@ -67,8 +67,8 @@
                                     <p>
                                         <b>Inicio de Actividades:</b>
                                         {{
-                                            recibo.configuracion
-                                                .inicioactividades
+                                        recibo.configuracion
+                                        .inicioactividades
                                         }}
                                     </p>
                                 </v-col>
@@ -108,15 +108,13 @@
                                                     :key="index"
                                                 >
                                                     <th>{{ pago.numpago }}</th>
-                                                    <th>
-                                                        USD $ {{ pago.importe }}
-                                                    </th>
+                                                    <th>USD $ {{ pago.importe }}</th>
                                                     <th>{{ pago.fecha }}</th>
                                                     <th>{{ pago.forma[0] }}</th>
                                                     <th>
                                                         $
                                                         {{
-                                                            pago.forma[1].pesos
+                                                        pago.forma[1].pesos
                                                         }}
                                                     </th>
                                                 </tr>
@@ -124,7 +122,7 @@
                                         </template>
                                     </v-simple-table>
                                 </v-col>
-                                <v-col cols="12" class="venta-footer">
+                                <v-col cols="12" class="comprobantes-footer">
                                     <v-divider></v-divider>
                                     <br />
                                     <div class="footer-final">
@@ -151,12 +149,7 @@
             </div>
             <div v-else>
                 <v-row justify="center" style="margin-top: 200px;">
-                    <v-progress-circular
-                        :size="70"
-                        :width="7"
-                        color="primary"
-                        indeterminate
-                    ></v-progress-circular>
+                    <v-progress-circular :size="70" :width="7" color="primary" indeterminate></v-progress-circular>
                 </v-row>
             </div>
         </div>

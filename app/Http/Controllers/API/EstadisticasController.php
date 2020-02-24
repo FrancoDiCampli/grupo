@@ -27,9 +27,9 @@ class EstadisticasController extends Controller
         return ChequesTrait::chequeCobrado($id);
     }
 
-    public function cartera()
+    public function cartera(Request $request)
     {
-        return ChequesTrait::cartera();
+        return ChequesTrait::cartera($request);
     }
 
     public function ventas(Request $request)
