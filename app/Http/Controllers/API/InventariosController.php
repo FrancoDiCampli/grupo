@@ -64,24 +64,36 @@ class InventariosController extends Controller
     public function store(Request $request)
     {
         $data = $request;
-        $actualizar = Inventario::where('dependencia', $data['dependencia'])->where('articulo_id', $data['articulo_id'])->get()->first();
-        // return $actualizar;
-        if ($actualizar) {
 
-            InventariosAdmin::actualizarInventario($data, $actualizar);
-            InventariosAdmin::decrementarInventario($data);
+        if (!array_key_exists('dependencia', $request->toArray())) {
+            $actualizar = Inventario::where('articulo_id', $data['articulo_id'])->get()->first();
 
-            InventariosAdmin::movimientoIncrementoConsignacion($data);
-            InventariosAdmin::movimientoBajaConsignacion($data);
+            if ($actualizar) {
+                return InventariosAdmin::actualizarCasaCentral($actualizar, $data);
+            } else {
+                $inventario = InventariosAdmin::altaInventario($data);
+                InventariosAdmin::movimientoAlta($inventario, $data);
+            }
         } else {
-            $inventario = InventariosAdmin::altaConsignacion($data);
-            InventariosAdmin::movimientoAltaConsignacion($inventario, $data);
+            $actualizar = Inventario::where('dependencia', $data['dependencia'])->where('articulo_id', $data['articulo_id'])->get()->first();
+            // return $actualizar;
+            if ($actualizar) {
 
-            InventariosAdmin::decrementarInventario($data);
-            InventariosAdmin::movimientoBajaConsignacion($data);
-        };
+                InventariosAdmin::actualizarInventario($data, $actualizar);
+                InventariosAdmin::decrementarInventario($data);
 
-        return (['message' => 'guardado']);
+                InventariosAdmin::movimientoIncrementoConsignacion($data);
+                InventariosAdmin::movimientoBajaConsignacion($data);
+            } else {
+                $inventario = InventariosAdmin::altaConsignacion($data);
+                InventariosAdmin::movimientoAltaConsignacion($inventario, $data);
+
+                InventariosAdmin::decrementarInventario($data);
+                InventariosAdmin::movimientoBajaConsignacion($data);
+            };
+
+            return (['message' => 'guardado']);
+        }
     }
 
     public function update(Request $request, $id)
