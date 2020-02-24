@@ -17,6 +17,10 @@ import "vue-croppa/dist/vue-croppa.css";
 import Croppa from "vue-croppa";
 Vue.use(Croppa);
 
+// V-Charts
+import VCharts from "v-charts";
+Vue.use(VCharts);
+
 // Vue Auth
 import VueAuth from "./plugins/vue-auth";
 Vue.use(VueAuth, { router });

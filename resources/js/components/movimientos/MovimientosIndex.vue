@@ -22,18 +22,10 @@
                                     <slot name="filter"></slot>
                                 </div>
                             </v-expand-transition>
-                            <v-card
-                                shaped
-                                outlined
-                                :loading="$store.state.inProcess"
-                            >
-                                <v-card-title
-                                    >Movimientos de articulos</v-card-title
-                                >
+                            <v-card shaped outlined :loading="$store.state.inProcess">
+                                <v-card-title>Movimientos de articulos</v-card-title>
                                 <v-divider></v-divider>
-                                <v-card-text
-                                    v-if="$store.state.movimientos.movimientos"
-                                >
+                                <v-card-text v-if="$store.state.movimientos.movimientos">
                                     <v-timeline>
                                         <v-timeline-item
                                             v-for="(move, index) in $store.state
@@ -44,9 +36,7 @@
                                             right
                                             small
                                         >
-                                            <template v-slot:opposite>
-                                                {{ move.fecha }}
-                                            </template>
+                                            <template v-slot:opposite>{{ move.fecha }}</template>
                                             <div>
                                                 <h2>{{ move.tipo }}</h2>
                                                 <v-divider></v-divider>
@@ -55,10 +45,10 @@
                                                     <p>
                                                         <b>Articulo:</b>
                                                         {{
-                                                            move.inventario
-                                                                .inventario
-                                                                .articulo
-                                                                .articulo
+                                                        move.inventario
+                                                        .inventario
+                                                        .articulo
+                                                        .articulo
                                                         }}
                                                     </p>
                                                     <p>
@@ -68,22 +58,22 @@
                                                     <p>
                                                         <b>Litros:</b>
                                                         {{
-                                                            move.inventario
-                                                                .cantidadlitros
+                                                        move.inventario
+                                                        .cantidadlitros
                                                         }}
                                                     </p>
                                                     <p>
                                                         <b>Lote:</b>
                                                         {{
-                                                            move.inventario
-                                                                .inventario.lote
+                                                        move.inventario
+                                                        .inventario.lote
                                                         }}
                                                     </p>
                                                     <p>
                                                         <b>Usuario:</b>
                                                         {{
-                                                            move.inventario.user
-                                                                .name
+                                                        move.inventario.user
+                                                        .name
                                                         }}
                                                     </p>
                                                 </div>
@@ -99,18 +89,10 @@
                                     <slot name="filter"></slot>
                                 </div>
                             </v-expand-transition>
-                            <v-card
-                                shaped
-                                outlined
-                                :loading="$store.state.inProcess"
-                            >
-                                <v-card-title
-                                    >Movimientos de cuentas</v-card-title
-                                >
+                            <v-card shaped outlined :loading="$store.state.inProcess">
+                                <v-card-title>Movimientos de cuentas</v-card-title>
                                 <v-divider></v-divider>
-                                <v-card-text
-                                    v-if="$store.state.movimientos.movimientos"
-                                >
+                                <v-card-text v-if="$store.state.movimientos.movimientos">
                                     <v-timeline>
                                         <v-timeline-item
                                             v-for="(move, index) in $store.state
@@ -121,9 +103,7 @@
                                             right
                                             small
                                         >
-                                            <template v-slot:opposite>
-                                                {{ move.fecha }}
-                                            </template>
+                                            <template v-slot:opposite>{{ move.fecha }}</template>
                                             <div>
                                                 <h2>{{ move.tipo }}</h2>
                                                 <v-divider></v-divider>
@@ -136,9 +116,9 @@
                                                     <p>
                                                         <b>Cliente:</b>
                                                         {{
-                                                            move.cuenta.ctacte
-                                                                .factura.cliente
-                                                                .razonsocial
+                                                        move.cuenta.ctacte
+                                                        .factura.cliente
+                                                        .razonsocial
                                                         }}
                                                     </p>
                                                     <p>
@@ -148,8 +128,8 @@
                                                     <p v-if="move.user.negocio">
                                                         <b>Sucursal:</b>
                                                         {{
-                                                            move.user.negocio
-                                                                .nombre
+                                                        move.user.negocio
+                                                        .nombre
                                                         }}
                                                     </p>
                                                 </div>

@@ -104,10 +104,6 @@ export default {
     },
 
     watch: {
-        sucursalID() {
-            this.getMovimientos();
-        },
-
         fechaDesde() {
             this.getMovimientos();
         },
@@ -127,7 +123,6 @@ export default {
                 desde: this.fechaDesde,
                 hasta: this.fechaHasta
             });
-            console.log(response);
         }
     }
 };
