@@ -35,15 +35,7 @@ export default {
             { text: "Cantidad en litros", sortable: false },
             { text: "Proveedor", sortable: false }
         ]
-    }),
-
-    mounted() {
-        if (this.$store.state.articulos.articulo.articulo.inventarios) {
-            console.log(
-                this.$store.state.articulos.articulo.articulo.inventarios
-            );
-        }
-    }
+    })
 };
 </script>
 

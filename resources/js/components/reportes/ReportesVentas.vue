@@ -16,6 +16,7 @@
                 <v-fade-transition mode="out-in">
                     <div v-if="activeTab == 0" key="0">
                         <ve-line
+                            v-if="$store.state.reportes.ventas"
                             :legend-visible="false"
                             :data="$store.state.reportes.ventas.ventas.ventasFechaChart"
                         ></ve-line>

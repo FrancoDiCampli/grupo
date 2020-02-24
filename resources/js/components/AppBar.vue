@@ -71,6 +71,14 @@
 
             <slot name="searchBar"></slot>
             <v-spacer></v-spacer>
+            <!-- Notificaciones -->
+
+            <v-btn icon @click="notification++" class="mx-2">
+                <v-badge :content="notification" :value="notification" color="red">
+                    <v-icon>fas fa-bell</v-icon>
+                </v-badge>
+            </v-btn>
+
             <!-- Menu del usuario -->
             <v-menu offset-y v-if="$store.state.auth.user.user != null">
                 <template v-slot:activator="{ on }">
@@ -119,6 +127,7 @@ import Account from "./auth/Account";
 
 export default {
     data: () => ({
+        notification: 0,
         clientes: [],
         proveedores: [],
         articulos: [],
