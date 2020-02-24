@@ -63,9 +63,9 @@ class InventariosController extends Controller
     // CREA INVENTARIO DE NO EXISTIR, CASO CONTRARIO LO ACTUALIZA
     public function store(Request $request)
     {
-        $data = $request->datos;
+        $data = $request;
         $actualizar = Inventario::where('dependencia', $data['dependencia'])->where('articulo_id', $data['articulo_id'])->get()->first();
-
+        // return $actualizar;
         if ($actualizar) {
 
             InventariosAdmin::actualizarInventario($data, $actualizar);
