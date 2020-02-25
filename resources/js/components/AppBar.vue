@@ -165,14 +165,24 @@ export default {
                 name: "Ventas",
                 icon: "fas fa-dollar-sign",
                 url: "/ventas",
-                roles: ["superAdmin", "administrador", "vendedor"],
+                roles: [
+                    "superAdmin",
+                    "administrador",
+                    "vendedor",
+                    "distribuidor"
+                ],
                 divider: false
             },
             {
                 name: "Presupuestos",
                 icon: "fas fa-file",
                 url: "/presupuestos",
-                roles: ["superAdmin", "administrador", "vendedor"],
+                roles: [
+                    "superAdmin",
+                    "administrador",
+                    "vendedor",
+                    "distribuidor"
+                ],
                 divider: true
             },
 
@@ -180,7 +190,12 @@ export default {
                 name: "Clientes",
                 icon: "fas fa-user-friends",
                 url: "/clientes",
-                roles: ["superAdmin", "administrador", "vendedor"],
+                roles: [
+                    "superAdmin",
+                    "administrador",
+                    "vendedor",
+                    "distribuidor"
+                ],
                 divider: false
             },
 
@@ -188,7 +203,12 @@ export default {
                 name: "Articulos",
                 icon: "fas fa-box-open",
                 url: "/articulos",
-                roles: ["superAdmin", "administrador", "vendedor"],
+                roles: [
+                    "superAdmin",
+                    "administrador",
+                    "vendedor",
+                    "distribuidor"
+                ],
                 divider: true
             },
             {

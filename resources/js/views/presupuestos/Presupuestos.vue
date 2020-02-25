@@ -23,6 +23,7 @@
             <v-row justify="center">
                 <v-col cols="12" md="10" lg="8">
                     <PresupuestosIndex>
+                        <br />
                         <v-row justify="center" v-if="$store.state.presupuestos.presupuestos">
                             <br />
                             <v-btn

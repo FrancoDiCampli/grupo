@@ -68,23 +68,21 @@ class PermissionServiceProvider extends ServiceProvider
             'movimientos-index' => 'Listar movimientos',
 
             // Proveedores
-            'suppliers-index' => 'Listar suppliers',
-            'suppliers-show' => 'Ver suppliers',
-            'suppliers-store' => 'Guardar suppliers',
-            'suppliers-update' => 'Editar suppliers',
-            'suppliers-destroy' => 'Eliminar suppliers',
+            'suppliers-index' => 'Listar proveedores',
+            'suppliers-show' => 'Ver proveedores',
+            'suppliers-store' => 'Guardar proveedores',
+            'suppliers-update' => 'Editar proveedores',
+            'suppliers-destroy' => 'Eliminar proveedores',
 
             // Compras
             'compras-index' => 'Listar compras',
             'compras-show' => 'Ver compras',
             'compras-store' => 'Guardar compras',
 
-            // Negocios
-            'negocios-index' => 'Listar sucursales',
-            'negocios-show' => 'Ver sucursales',
-            'negocios-store' => 'Guardar sucursales',
-            'negocios-update' => 'Editar sucursales',
-            'negocios-destroy' => 'Eliminar sucursales',
+            // Compras
+            'consignaciones-index' => 'Listar consignaciones',
+            'consignaciones-show' => 'Ver consignaciones',
+            'consignaciones-store' => 'Guardar consignaciones',
 
             // Usuario
             'users-index' => 'Listar usuarios',
