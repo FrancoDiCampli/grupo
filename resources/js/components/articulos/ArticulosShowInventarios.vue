@@ -398,14 +398,9 @@ export default {
             if (this.$refs.inventariosForm.validate()) {
                 this.$store.state.inventarios.form.articulo_id = this.$store.state.articulos.articulo.articulo.id;
                 this.$store.state.inventarios.form.cantidadlitros = this.cantidadLitros;
-                await this.$store
-                    .dispatch("inventarios/save")
-                    .then(response => {
-                        console.log(response);
-                    })
-                    .catch(() => {
-                        this.preventSaveDialog = false;
-                    });
+                await this.$store.dispatch("inventarios/save").catch(() => {
+                    this.preventSaveDialog = false;
+                });
                 this.preventSaveDialog = false;
                 this.formPanel = false;
                 await this.$store.dispatch("articulos/show", {

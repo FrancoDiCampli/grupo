@@ -204,17 +204,24 @@
                             </v-col>
                             <v-col cols="12" class="py-0">
                                 <v-expand-transition>
+                                    <v-row justify="center" v-if="searchInProcess">
+                                        <v-progress-circular
+                                            :size="70"
+                                            :width="7"
+                                            color="primary"
+                                            indeterminate
+                                        ></v-progress-circular>
+                                    </v-row>
                                     <v-form
                                         ref="detailForm"
                                         @submit.prevent="addDetail"
-                                        v-if="!disabled.detalles"
+                                        v-else-if="!disabled.detalles"
                                     >
                                         <v-row justify="center">
                                             <v-col cols="12" sm="6" class="py-0">
                                                 <v-select
                                                     v-model="articuloSelected.movimiento"
-                                                    @change="movimientoOnChange()"
-                                                    :disabled="disabled.movimiento"
+                                                    disabled
                                                     :items="movimientos"
                                                     :rules="[rules.required]"
                                                     label="Movimiento"
@@ -222,30 +229,6 @@
                                                 ></v-select>
                                             </v-col>
                                             <v-col cols="12" sm="6" class="py-0">
-                                                <div v-if="disabled.lote">
-                                                    <v-text-field
-                                                        v-model="articuloSelected.lote"
-                                                        :rules="[rules.required]"
-                                                        label="Pedido N°"
-                                                        required
-                                                        outlined
-                                                        disabled
-                                                        type="number"
-                                                    ></v-text-field>
-                                                </div>
-                                                <div v-else>
-                                                    <v-select
-                                                        v-model="articuloSelected.lote"
-                                                        :rules="[rules.required]"
-                                                        :items="lotes"
-                                                        item-text="lote"
-                                                        item-value="lote"
-                                                        label="Pedido N°"
-                                                        outlined
-                                                    ></v-select>
-                                                </div>
-                                            </v-col>
-                                            <v-col cols="12" sm="4" class="py-0">
                                                 <v-text-field
                                                     v-model="articuloSelected.cantidad"
                                                     :rules="[rules.required]"
@@ -255,7 +238,7 @@
                                                     type="number"
                                                 ></v-text-field>
                                             </v-col>
-                                            <v-col cols="12" sm="4" class="py-0">
+                                            <v-col cols="12" sm="6" class="py-0">
                                                 <v-text-field
                                                     v-model="articuloSelected.litros"
                                                     :rules="[rules.required]"
@@ -266,7 +249,7 @@
                                                     type="number"
                                                 ></v-text-field>
                                             </v-col>
-                                            <v-col cols="12" sm="4" class="py-0">
+                                            <v-col cols="12" sm="6" class="py-0">
                                                 <v-text-field
                                                     v-model="cantidadLitros"
                                                     :rules="[rules.required]"
@@ -329,7 +312,6 @@
                                                     <th class="text-left hidden-sm-and-down">Precio</th>
                                                     <th class="text-left">Unidades</th>
                                                     <th class="text-left">Subtotal</th>
-                                                    <th class="text-left">Lote</th>
                                                     <th></th>
                                                 </tr>
                                             </thead>
@@ -355,7 +337,6 @@
                                                     >{{detalle.precio}}</td>
                                                     <td>{{detalle.cantidad}}</td>
                                                     <td>{{detalle.subtotal}}</td>
-                                                    <td>{{detalle.lote}}</td>
                                                     <td>
                                                         <v-btn
                                                             icon
@@ -490,8 +471,7 @@ export default {
             proveedor: false,
             articulo: true,
             detalles: false,
-            movimientos: false,
-            lote: true
+            movimientos: false
         },
         rules: {
             required: value => !!value || "Este campo es obligatorio"
@@ -508,7 +488,6 @@ export default {
         articuloSelected: {},
         // DETALLES
         movimientos: ["ALTA", "INCREMENTO"],
-        lotes: [],
         detalles: [],
         // SUBTOTAL
         subtotal: null,
@@ -710,33 +689,19 @@ export default {
                 id: articulo.id
             });
 
-            // Establecer el proximo lote disponible
-            let proximoLote = response.lotes.proximo;
+            this.searchInProcess = false;
 
-            // Establecer todos los lotes disponibles
-            for (let i = 0; i < response.inventarios.length; i++) {
-                if (
-                    response.inventarios[i].supplier_id ==
-                    this.$store.state.compras.form.supplier_id
-                ) {
-                    this.lotes.push(response.inventarios[i]);
-                }
-            }
-
-            // Habilitar o desabilitar los movimientos
-            if (this.lotes.length > 0) {
-                this.disabled.movimientos = false;
+            let movimiento;
+            if (response.stock > 0) {
+                movimiento = "INCREMENTO";
             } else {
-                this.disabled.movimientos = true;
+                movimiento = "ALTA";
             }
-
-            this.disabled.lote = true;
 
             this.articuloSelected = {
                 cantidad: 1,
                 totalLitros: articulo.litros,
                 movimiento: "ALTA",
-                lote: proximoLote,
                 supplier_id: this.$store.state.compras.form.supplier_id,
                 articulo_id: articulo.id,
                 codarticulo: articulo.codarticulo,
@@ -753,22 +718,12 @@ export default {
             this.disabled.detalles = false;
         },
 
-        // DETALLES
-        movimientoOnChange() {
-            if (this.articuloSelected.movimiento == "ALTA") {
-                this.disabled.lote = true;
-            } else {
-                this.disabled.lote = false;
-            }
-        },
-
         addDetail: async function() {
             if (this.$refs.detailForm.validate()) {
                 await this.pushDetail();
 
                 this.disabled.detalles = true;
                 this.articuloSelected = {};
-                this.lotes = [];
                 this.searchArticulo = null;
             }
         },
