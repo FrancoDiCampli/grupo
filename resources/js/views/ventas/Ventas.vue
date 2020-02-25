@@ -72,9 +72,13 @@ export default {
         },
 
         getFacturas: async function() {
-            await this.$store.dispatch("facturas/index", {
-                limit: this.limit
-            });
+            if (this.$store.state.auth.user) {
+                if (this.$store.state.auth.user.rol != "distribuidor") {
+                    await this.$store.dispatch("facturas/index", {
+                        limit: this.limit
+                    });
+                }
+            }
         },
 
         loadMore: async function() {
