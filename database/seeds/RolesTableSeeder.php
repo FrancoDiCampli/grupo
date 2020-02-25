@@ -34,6 +34,12 @@ class RolesTableSeeder extends Seeder
         ]);
 
         Role::create([
+            'role' => 'distribuidor',
+            'permission' => 'ventas-index ventas-show ventas-store presupuestos-index presupuestos-show presupuestos-store clientes-index clientes-show clientes-store clientes-update cuentascorrientes-index articulos-index articulos-show inventarios-index',
+            'description' => 'Listar ventas, Ver ventas, Guardar ventas, Listar facturas, Ver facturas, Guardar facturas, Listar presupuestos, Ver presupuestos, Guardar presupuestos, Listar clientes, Ver clientes, Guardar clientes, Editar clientes, Establecer el pago de cuentas, Listar articulos, Ver articulos, '
+        ]);
+
+        Role::create([
             'role' => 'cliente',
             'permission' => 'clientes-miCuenta ventas-show',
             'description' => 'Ver su cuenta, Ver ventas'
