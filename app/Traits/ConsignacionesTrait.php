@@ -103,7 +103,7 @@ trait ConsignacionesTrait
                 'tipocomprobante' => 'VENTA X CONSIGNACION',
                 'numventa' => 0,
                 'cuit' => 0,
-                'fecha' => now(),
+                'fecha' => now()->format('Ymd'),
                 'observaciones' => $request->observaciones,
                 'bonificacion' => $request->get('bonificacion', 0),
                 'recargo' => $request->get('recargo', 0),
