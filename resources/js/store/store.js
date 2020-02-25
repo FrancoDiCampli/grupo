@@ -21,9 +21,11 @@ import sucursales from "./modules/sucursales";
 import users from "./modules/users";
 import ventas from "./modules/ventas";
 import PDF from "./modules/PDF";
+import notificaciones from "./modules/notificaciones";
 
 // Plugins
 import { processHandle } from "./plugins/processHandle";
+import { notificationHandle } from "./plugins/notificationHandle";
 
 Vue.use(Vuex);
 
@@ -89,8 +91,9 @@ export default new Vuex.Store({
         sucursales: sucursales,
         users: users,
         ventas: ventas,
-        PDF: PDF
+        PDF: PDF,
+        notificaciones: notificaciones
     },
 
-    plugins: [processHandle]
+    plugins: [processHandle, notificationHandle]
 });

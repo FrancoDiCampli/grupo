@@ -57,6 +57,25 @@
             </v-list>
         </v-navigation-drawer>
 
+        <!-- Drawer Notificaciones -->
+        <v-navigation-drawer v-model="notificationDrawer" absolute temporary right>
+            <v-list dense>
+                <v-list-item
+                    v-for="noti in $store.state.notificaciones.unread"
+                    :key="noti.id"
+                    @click="markRead(noti)"
+                >
+                    <v-list-item-icon>
+                        <v-icon color="amber">fas fa-box-open</v-icon>
+                    </v-list-item-icon>
+
+                    <v-list-item-content>
+                        <v-list-item-title>{{ noti.data.message }}</v-list-item-title>
+                    </v-list-item-content>
+                </v-list-item>
+            </v-list>
+        </v-navigation-drawer>
+
         <!-- Navbar superior -->
         <v-app-bar color="primary" dark flat app fixed>
             <!-- Boton para activar el navigation drawer -->
@@ -73,8 +92,12 @@
             <v-spacer></v-spacer>
             <!-- Notificaciones -->
 
-            <v-btn icon @click="notification++" class="mx-2">
-                <v-badge :content="notification" :value="notification" color="red">
+            <v-btn icon @click="notificationDrawer = true" class="mx-2">
+                <v-badge
+                    :content="$store.state.notificaciones.unread.length"
+                    :value="$store.state.notificaciones.unread.length"
+                    color="red"
+                >
                     <v-icon>fas fa-bell</v-icon>
                 </v-badge>
             </v-btn>
@@ -127,7 +150,7 @@ import Account from "./auth/Account";
 
 export default {
     data: () => ({
-        notification: 0,
+        notificationDrawer: false,
         clientes: [],
         proveedores: [],
         articulos: [],
@@ -270,6 +293,11 @@ export default {
             this.negocios = [];
             this.proveedores = [];
             this.noMostrar = true;
+        },
+
+        markRead(noti) {
+            this.$store.dispatch("notificaciones/markRead", { id: noti.id });
+            this.$router.push(noti.data.action);
         }
     }
 };

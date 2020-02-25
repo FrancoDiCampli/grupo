@@ -1,10 +1,14 @@
 export function processHandle(store) {
     store.subscribeAction({
-        before: () => {
-            store.commit("iterateProcess", true);
+        before: action => {
+            if (action.type != "notificaciones/index") {
+                store.commit("iterateProcess", true);
+            }
         },
-        after: () => {
-            store.commit("iterateProcess", false);
+        after: action => {
+            if (action.type != "notificaciones/index") {
+                store.commit("iterateProcess", false);
+            }
         }
     });
 }

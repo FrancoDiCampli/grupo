@@ -8,13 +8,20 @@
             <v-data-table
                 hide-default-footer
                 :headers="headers"
-                :items="$store.state.articulos.articulo.articulo.inventarios"
+                :items="$store.state.articulos.articulo.inventarios"
             >
                 <template v-slot:item="item">
                     <tr>
                         <td>{{ item.item.cantidad }}</td>
                         <td>{{ item.item.cantidadlitros }}</td>
-                        <td v-if="item.item.proveedor">{{ item.item.proveedor.razonsocial }}</td>
+                        <td>
+                            <div
+                                v-if="item.item.dependencia.id == 1"
+                            >{{ item.item.dependencia.razonsocial }}</div>
+                            <div
+                                v-else
+                            >{{ item.item.dependencia.role.role }} - {{ item.item.dependencia.name }}</div>
+                        </td>
                     </tr>
                 </template>
             </v-data-table>
@@ -33,7 +40,7 @@ export default {
         headers: [
             { text: "Cantidad", sortable: false },
             { text: "Cantidad en litros", sortable: false },
-            { text: "Proveedor", sortable: false }
+            { text: "Proveedor | Consignación", sortable: false }
         ]
     })
 };

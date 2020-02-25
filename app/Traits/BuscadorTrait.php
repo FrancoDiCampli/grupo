@@ -27,7 +27,7 @@ trait BuscadorTrait
                     'clientes' => $aux,
                     'proveedores' => Supplier::orWhere('razonsocial', 'LIKE', "$buscar%")->orWhere('cuit', 'LIKE', "$buscar%")->get(),
                     'articulos' => Articulo::orWhere('articulo', 'LIKE', "$buscar%")->orWhere('codarticulo', "$buscar%")->get(),
-                    'dependencias' => $users->where('role_id', '>', 2)->where('role_id', '<>', 4)
+                    'dependencias' => $users->where('role_id', '>', 2)->where('role_id', '<>', 5)
                 ];
                 break;
 
