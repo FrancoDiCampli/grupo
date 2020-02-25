@@ -140,17 +140,19 @@ trait ArticulosTrait
         $categoria = $articulo->categoria->categoria;
         $stock = $articulo->inventarios->sum('cantidad');
         $inventarios = $articulo->inventarios;
-        $lotes = ArticulosTrait::lotes($id);
+        $aux = collect();
         foreach ($inventarios as $inventario) {
             $inv = collect($inventario);
-            if ($inventario->proveedor) {
-                $inv->put('proveedor', $inventario->proveedor);
-            } else if ($inventario->dependencia) {
+            if ($inventario->supplier_id) {
+                $inv->put('dependencia', $inventario->proveedor);
+            } else {
                 $user = User::find($inventario->dependencia);
+                $user->role;
                 $inv->put('dependencia', $user);
             }
+            $aux->push($inv);
         }
-        return ['articulo' => $articulo, 'stock' => $stock, 'inventarios' => $inventarios, 'lotes' => $lotes, 'marca' => $marca, 'categoria' => $categoria];
+        return ['articulo' => $articulo, 'stock' => $stock, 'inventarios' => $aux, 'marca' => $marca, 'categoria' => $categoria];
     }
 
     public static function lotes($id)
