@@ -60,7 +60,6 @@ export default {
                 let checkData = await this.$refs.formConsignacion.setData();
                 if (checkData) {
                     await this.$store.dispatch("consignaciones/save");
-                    console.log(this.$store.state.consignaciones.form);
                     this.$refs.formConsignacion.getPoint();
                     this.$refs.formConsignacion.getArticles();
                     this.resetForm();

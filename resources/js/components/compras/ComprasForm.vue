@@ -683,16 +683,8 @@ export default {
         },
 
         selectArticulo: async function(articulo) {
-            this.searchInProcess = true;
-
-            let response = await this.$store.dispatch("articulos/show", {
-                id: articulo.id
-            });
-
-            this.searchInProcess = false;
-
             let movimiento;
-            if (response.stock > 0) {
+            if (articulo.stock > 0) {
                 movimiento = "INCREMENTO";
             } else {
                 movimiento = "ALTA";
@@ -701,7 +693,7 @@ export default {
             this.articuloSelected = {
                 cantidad: 1,
                 totalLitros: articulo.litros,
-                movimiento: "ALTA",
+                movimiento: movimiento,
                 supplier_id: this.$store.state.compras.form.supplier_id,
                 articulo_id: articulo.id,
                 codarticulo: articulo.codarticulo,
@@ -713,7 +705,6 @@ export default {
                 error: false,
                 update: false
             };
-
             this.articulosPanel = [];
             this.disabled.detalles = false;
         },

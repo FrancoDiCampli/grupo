@@ -22,7 +22,7 @@
                             <td>{{ item.dependencia.name }}</td>
                             <td class="hidden-xs-only">{{ item.fecha }}</td>
                             <td>{{ item.tipo }}</td>
-                            <td>
+                            <!-- <td>
                                 <v-menu offset-y>
                                     <template v-slot:activator="{ on }">
                                         <v-btn color="secondary" text icon v-on="on">
@@ -41,7 +41,7 @@
                                         </v-list-item>
                                     </v-list>
                                 </v-menu>
-                            </td>
+                            </td>-->
                         </tr>
                     </template>
                 </v-data-table>
@@ -58,8 +58,8 @@ export default {
             { text: "Número", sortable: false },
             { text: "Nombre", sortable: false },
             { text: "Fecha", sortable: false, class: "hidden-xs-only" },
-            { text: "Tipo", sortable: false },
-            { text: "", sortable: false }
+            { text: "Tipo", sortable: false }
+            // { text: "", sortable: false }
         ]
     }),
 

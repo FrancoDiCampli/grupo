@@ -325,7 +325,10 @@ export default {
                 this.disabled.lote = true;
             } else {
                 this.$store.state.inventarios.form.movimiento = "INCREMENTO";
-                this.movimientos.splice(0, 1);
+                let find = this.movimientos.find(element => element == "ALTA");
+                if (find) {
+                    this.movimientos.splice(0, 1);
+                }
                 this.disabled.movimiento = false;
                 this.disabled.lote = false;
             }

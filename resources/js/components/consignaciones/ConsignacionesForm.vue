@@ -856,23 +856,32 @@ export default {
 
         // FORM
         setData: async function() {
-            if (this.detalles.length <= 0) {
-                this.detallesDialog = true;
-                return false;
-            } else {
-                this.$store.state.consignaciones.form.subtotal = this.subtotal;
-                this.$store.state.consignaciones.form.total = this.total;
-                this.$store.state.consignaciones.form.totalPesos = this.totalPesos;
-                this.$store.state.consignaciones.form.detalles = this.detalles;
-                this.$store.state.consignaciones.form.cotizacion = this.cotizacion;
-                this.$store.state.consignaciones.form.fechaCotizacion = this.fechaCotizacion;
-                return true;
+            if (
+                this.$refs.consignacionesVendedorForm.validate() &&
+                this.$refs.consignacionesTotalesForm.validate()
+            ) {
+                if (this.detalles.length <= 0) {
+                    this.detallesDialog = true;
+                    return false;
+                } else {
+                    this.$store.state.consignaciones.form.subtotal = this.subtotal;
+                    this.$store.state.consignaciones.form.total = this.total;
+                    this.$store.state.consignaciones.form.totalPesos = this.totalPesos;
+                    this.$store.state.consignaciones.form.detalles = this.detalles;
+                    this.$store.state.consignaciones.form.cotizacion = this.cotizacion;
+                    this.$store.state.consignaciones.form.fechaCotizacion = this.fechaCotizacion;
+                    return true;
+                }
             }
         },
 
         resetData: async function() {
             this.vendedores = [];
             this.detalles = [];
+            this.articuloSelected = {};
+            this.$refs.consignacionesVendedorForm.reset();
+            this.$refs.consignacionesTotalesForm.reset();
+            this.step = 1;
             this.checkCurrency();
         }
     }
