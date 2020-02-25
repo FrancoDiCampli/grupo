@@ -94,7 +94,7 @@ class ComprasController extends Controller
                 'litros' => $detail['litros'],
                 'preciounitario' => $detail['precio'] * 1,
                 'subtotal' => $detail['subtotal'] * 1,
-                'lote' => $detail['lote'],
+                // 'lote' => $detail['lote'],
                 'articulo_id' => $detail['articulo_id'],
                 'compra_id' => $remito->id,
                 'created_at' => now(),
@@ -136,7 +136,7 @@ class ComprasController extends Controller
                 $att['supplier_id'] = $remito->supplier_id;
                 $att['cantidad'] = $detail['cantidad'];
                 $att['cantidadlitros'] = $detail['cantidad'] * $detail['litros'];
-                $att['lote'] = $detail['lote'];
+                // $att['lote'] = $detail['lote'];
                 $arti = Inventario::create($att);
                 $data['inventario_id'] = $arti->id;
             }

@@ -26,7 +26,7 @@ class StoreInventario extends FormRequest
         return [
             'cantidad' => 'required|min:1',
             'cantidadlitros' => 'required|min:1',
-            'lote' => 'min:1',
+            // 'lote' => 'min:1',
             'articulo_id' => 'required',
             'supplier_id' => 'nullable',
             'dependencia' => 'required',

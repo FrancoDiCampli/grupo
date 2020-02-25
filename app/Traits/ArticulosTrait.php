@@ -84,7 +84,7 @@ trait ArticulosTrait
             $data = [
                 'cantidad' => $stockInicial,
                 'cantidadlitros' => $stockInicial * $articulo->litros,
-                'lote' => 1,
+                // 'lote' => 1,
                 'articulo_id' => $articulo->id,
                 'supplier_id' => 1
             ];
@@ -153,18 +153,5 @@ trait ArticulosTrait
             $aux->push($inv);
         }
         return ['articulo' => $articulo, 'stock' => $stock, 'inventarios' => $aux, 'marca' => $marca, 'categoria' => $categoria];
-    }
-
-    public static function lotes($id)
-    {
-        $articulo = Articulo::find($id);
-        $inventarios = $articulo->inventarios;
-        $lotes = collect();
-        foreach ($inventarios as $inventario) {
-            $lotes->push($inventario->lote);
-        }
-        $lotes = $lotes->sort();
-        $proximo = $lotes->max() + 1;
-        return ['lotes' => $lotes, 'proximo' => $proximo];
     }
 }
