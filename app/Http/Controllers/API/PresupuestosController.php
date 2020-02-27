@@ -23,7 +23,7 @@ class PresupuestosController extends Controller
 
     public function index(Request $request)
     {
-        if (auth()->user()->role_id <> 3) {
+        if (auth()->user()->role->role != 'vendedor') {
             if ($request->fec) {
                 $fec = $request->fec;
                 $pres = Presupuesto::whereDate('created_at', $fec)->orderBy('id', 'DESC')->buscar($request)->get();

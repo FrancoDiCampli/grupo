@@ -20,7 +20,7 @@ trait ArticulosTrait
 
         foreach ($articles as $art) {
 
-            if (auth()->user()->role_id == 1 || auth()->user()->role_id == 2) {
+            if (auth()->user()->role->role == 'superAdmin' || auth()->user()->role->role == 'administrador') {
 
                 if ($art->inventarios->count() > 0) {
                     $stock = $art->inventarios[0]['cantidad'];

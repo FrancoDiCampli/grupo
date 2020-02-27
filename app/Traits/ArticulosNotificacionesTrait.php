@@ -12,7 +12,7 @@ trait ArticulosNotificacionesTrait
     {
         $user = User::findOrFail(auth()->user()->id);
 
-        if ($user->role_id == 2) {
+        if ($user->role->role == 'administrador') {
             $user->notify(new ArticuloNotification($articulo));
         } else {
             $tiene = Inventario::where('dependencia', $user->id)->where('articulo_id', $articulo->id)->get();
