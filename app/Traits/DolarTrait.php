@@ -34,8 +34,8 @@ trait DolarTrait
             $dolar = collect(json_decode((string) $response->getBody(), true));
 
             $ultima = $dolar->last();
-            $fec = new Carbon($ultima['d']);
-            $ultima['d'] = $fec->format('d-m-Y');
+            // $fec = new Carbon($ultima['d']);
+            // $ultima['d'] = $fec->format('d-m-Y');
 
             $nuevo = [
                 'fecha' => $ultima['d'],

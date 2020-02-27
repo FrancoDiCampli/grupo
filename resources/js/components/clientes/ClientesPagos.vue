@@ -2,12 +2,7 @@
     <div>
         <div v-if="inProcess">
             <v-row justify="center" style="margin-top: 50px;">
-                <v-progress-circular
-                    :size="70"
-                    :width="7"
-                    color="secondary"
-                    indeterminate
-                ></v-progress-circular>
+                <v-progress-circular :size="70" :width="7" color="secondary" indeterminate></v-progress-circular>
             </v-row>
         </div>
         <div v-else>
@@ -51,17 +46,11 @@
                                                     small
                                                     fab
                                                 >
-                                                    <v-icon v-if="fabs[item.id]"
-                                                        >fas fa-times</v-icon
-                                                    >
-                                                    <v-icon v-else
-                                                        >fas fa-plus</v-icon
-                                                    >
+                                                    <v-icon v-if="fabs[item.id]">fas fa-times</v-icon>
+                                                    <v-icon v-else>fas fa-plus</v-icon>
                                                 </v-btn>
                                             </template>
-                                            <span v-if="fabs[item.id]"
-                                                >Cerrar</span
-                                            >
+                                            <span v-if="fabs[item.id]">Cerrar</span>
                                             <span v-else>Añadir pago</span>
                                         </v-tooltip>
                                     </template>
@@ -81,9 +70,7 @@
                                                 <v-icon
                                                     v-on="on"
                                                     style="font-size: 18px;"
-                                                >
-                                                    fas fa-hand-holding-usd
-                                                </v-icon>
+                                                >fas fa-hand-holding-usd</v-icon>
                                             </template>
                                             <span>Haber</span>
                                         </v-tooltip>
@@ -105,8 +92,7 @@
                                                 <v-icon
                                                     v-on="on"
                                                     style="font-size: 18px;"
-                                                    >fas fa-exchange-alt</v-icon
-                                                >
+                                                >fas fa-exchange-alt</v-icon>
                                             </template>
                                             <span>Transferencia</span>
                                         </v-tooltip>
@@ -125,9 +111,7 @@
                                                 <v-icon
                                                     v-on="on"
                                                     style="font-size: 18px;"
-                                                >
-                                                    fas fa-money-check-alt
-                                                </v-icon>
+                                                >fas fa-money-check-alt</v-icon>
                                             </template>
                                             <span>Cheque</span>
                                         </v-tooltip>
@@ -146,8 +130,7 @@
                                                 <v-icon
                                                     v-on="on"
                                                     style="font-size: 18px;"
-                                                    >fas fa-money-bill</v-icon
-                                                >
+                                                >fas fa-money-bill</v-icon>
                                             </template>
                                             <span>Efectivo</span>
                                         </v-tooltip>
@@ -157,16 +140,10 @@
                                     <v-simple-table v-if="pagos.length > 0">
                                         <thead>
                                             <tr>
+                                                <th class="text-xs-left">Tipo</th>
+                                                <th class="txt-xs-left">Monto</th>
                                                 <th class="text-xs-left">
-                                                    Tipo
-                                                </th>
-                                                <th class="txt-xs-left">
-                                                    Monto
-                                                </th>
-                                                <th class="text-xs-left">
-                                                    <span class="hidden-xs-only"
-                                                        >Monto en</span
-                                                    >
+                                                    <span class="hidden-xs-only">Monto en</span>
                                                     pesos
                                                 </th>
                                                 <th class="text-xs-left"></th>
@@ -194,9 +171,7 @@
                                                             )
                                                         "
                                                     >
-                                                        <v-icon size="medium">
-                                                            fas fa-times
-                                                        </v-icon>
+                                                        <v-icon size="medium">fas fa-times</v-icon>
                                                     </v-btn>
                                                 </td>
                                             </tr>
@@ -216,8 +191,7 @@
                         outlined
                         @click="pagar()"
                         :disabled="disabledPay"
-                        >Pagar</v-btn
-                    >
+                    >Pagar</v-btn>
                 </v-row>
             </div>
             <div v-else>
@@ -239,19 +213,10 @@
                 <v-divider></v-divider>
                 <v-card-text v-if="adding">
                     <v-row justify="center" class="my-5">
-                        <v-progress-circular
-                            :size="70"
-                            :width="7"
-                            color="secondary"
-                            indeterminate
-                        ></v-progress-circular>
+                        <v-progress-circular :size="70" :width="7" color="secondary" indeterminate></v-progress-circular>
                     </v-row>
                 </v-card-text>
-                <v-form
-                    v-else
-                    ref="efectivoForm"
-                    @submit.prevent="addPay('Efectivo')"
-                >
+                <v-form v-else ref="efectivoForm" @submit.prevent="addPay('Efectivo')">
                     <v-card-text>
                         <br />
                         <v-row justify="space-around">
@@ -266,14 +231,39 @@
                                 ></v-text-field>
                             </v-col>
                             <v-col cols="12" sm="6" class="py-0">
-                                <v-text-field
-                                    v-model="cotizacion"
-                                    :rules="[rules.required]"
-                                    @focus="inputFocus = 'cotizacion'"
-                                    label="Cotizacion"
-                                    outlined
-                                    type="number"
-                                ></v-text-field>
+                                <v-dialog
+                                    ref="dialogCotizacionEfectivo"
+                                    v-model="dialogCotizacionEfectivo"
+                                    :return-value.sync="fechaCotizacion"
+                                    persistent
+                                    :width="
+                                            $vuetify.breakpoint.xsOnly
+                                                ? '100%'
+                                                : '300px'
+                                        "
+                                >
+                                    <template v-slot:activator="{ on }">
+                                        <v-text-field
+                                            v-model="latinDate"
+                                            label="Fecha de la cotización"
+                                            readonly
+                                            outlined
+                                            v-on="on"
+                                        ></v-text-field>
+                                    </template>
+                                    <v-date-picker v-model="fechaCotizacion" scrollable locale="es">
+                                        <v-spacer></v-spacer>
+                                        <v-btn
+                                            text
+                                            color="primary"
+                                            @click="
+                                                    $refs.dialogCotizacionEfectivo.save(
+                                                        fechaCotizacion
+                                                    )
+                                                "
+                                        >Aceptar</v-btn>
+                                    </v-date-picker>
+                                </v-dialog>
                             </v-col>
                             <v-col cols="12" sm="6" class="py-0">
                                 <v-text-field
@@ -304,15 +294,13 @@
                                 tile
                                 outlined
                                 @click="dialogs.efectivo = false"
-                                >Cancelar</v-btn
-                            >
+                            >Cancelar</v-btn>
                             <v-btn
                                 color="secondary"
                                 tile
                                 class="elevation-0 mx-3"
                                 type="submit"
-                                >Añadir</v-btn
-                            >
+                            >Añadir</v-btn>
                         </v-row>
                     </v-card-text>
                 </v-form>
@@ -332,19 +320,10 @@
                 <v-divider></v-divider>
                 <v-card-text v-if="adding">
                     <v-row justify="center" class="my-5">
-                        <v-progress-circular
-                            :size="70"
-                            :width="7"
-                            color="secondary"
-                            indeterminate
-                        ></v-progress-circular>
+                        <v-progress-circular :size="70" :width="7" color="secondary" indeterminate></v-progress-circular>
                     </v-row>
                 </v-card-text>
-                <v-form
-                    v-else
-                    ref="chequeForm"
-                    @submit.prevent="addPay('Cheque')"
-                >
+                <v-form v-else ref="chequeForm" @submit.prevent="addPay('Cheque')">
                     <v-card-text>
                         <br />
 
@@ -381,7 +360,7 @@
                             </v-col>
                             <v-col cols="12" sm="6" class="py-0">
                                 <v-text-field
-                                    v-model="fechaCotizacion"
+                                    v-model="fechaCotizacionLatin"
                                     :rules="[rules.required]"
                                     label="Fecha de la cotización"
                                     outlined
@@ -448,8 +427,7 @@
                                                     chequesForm.fecharecibido
                                                 )
                                             "
-                                            >Aceptar</v-btn
-                                        >
+                                        >Aceptar</v-btn>
                                     </v-date-picker>
                                 </v-dialog>
                             </v-col>
@@ -489,8 +467,7 @@
                                                     chequesForm.fechacobro
                                                 )
                                             "
-                                            >Aceptar</v-btn
-                                        >
+                                        >Aceptar</v-btn>
                                     </v-date-picker>
                                 </v-dialog>
                             </v-col>
@@ -532,15 +509,13 @@
                                 tile
                                 outlined
                                 @click="dialogs.cheque = false"
-                                >Cancelar</v-btn
-                            >
+                            >Cancelar</v-btn>
                             <v-btn
                                 color="secondary"
                                 tile
                                 class="elevation-0 mx-3"
                                 type="submit"
-                                >Añadir</v-btn
-                            >
+                            >Añadir</v-btn>
                         </v-row>
                     </v-card-text>
                 </v-form>
@@ -560,19 +535,10 @@
                 <v-divider></v-divider>
                 <v-card-text v-if="adding">
                     <v-row justify="center" class="my-5">
-                        <v-progress-circular
-                            :size="70"
-                            :width="7"
-                            color="secondary"
-                            indeterminate
-                        ></v-progress-circular>
+                        <v-progress-circular :size="70" :width="7" color="secondary" indeterminate></v-progress-circular>
                     </v-row>
                 </v-card-text>
-                <v-form
-                    v-else
-                    ref="transferenciaForm"
-                    @submit.prevent="addPay('Transferencia')"
-                >
+                <v-form v-else ref="transferenciaForm" @submit.prevent="addPay('Transferencia')">
                     <v-card-text>
                         <br />
                         <v-row justify="space-around">
@@ -673,8 +639,7 @@
                                                     transferenciaForm.fecha
                                                 )
                                             "
-                                            >Aceptar</v-btn
-                                        >
+                                        >Aceptar</v-btn>
                                     </v-date-picker>
                                 </v-dialog>
                             </v-col>
@@ -716,15 +681,13 @@
                                 tile
                                 outlined
                                 @click="dialogs.transferencia = false"
-                                >Cancelar</v-btn
-                            >
+                            >Cancelar</v-btn>
                             <v-btn
                                 color="secondary"
                                 tile
                                 class="elevation-0 mx-3"
                                 type="submit"
-                                >Añadir</v-btn
-                            >
+                            >Añadir</v-btn>
                         </v-row>
                     </v-card-text>
                 </v-form>
@@ -744,19 +707,10 @@
                 <v-divider></v-divider>
                 <v-card-text v-if="adding">
                     <v-row justify="center" class="my-5">
-                        <v-progress-circular
-                            :size="70"
-                            :width="7"
-                            color="secondary"
-                            indeterminate
-                        ></v-progress-circular>
+                        <v-progress-circular :size="70" :width="7" color="secondary" indeterminate></v-progress-circular>
                     </v-row>
                 </v-card-text>
-                <v-form
-                    v-else
-                    ref="haberForm"
-                    @submit.prevent="addPay('Haber')"
-                >
+                <v-form v-else ref="haberForm" @submit.prevent="addPay('Haber')">
                     <v-card-text>
                         <br />
                         <v-row justify="space-around">
@@ -808,15 +762,13 @@
                                 tile
                                 outlined
                                 @click="dialogs.haber = false"
-                                >Cancelar</v-btn
-                            >
+                            >Cancelar</v-btn>
                             <v-btn
                                 color="secondary"
                                 tile
                                 class="elevation-0 mx-3"
                                 type="submit"
-                                >Añadir</v-btn
-                            >
+                            >Añadir</v-btn>
                         </v-row>
                     </v-card-text>
                 </v-form>
@@ -827,11 +779,12 @@
 
 <script>
 var haberRule = 0;
+
+import moment from "moment";
 import Bancos from "../../utils/bancos";
 
 export default {
     data: () => ({
-        // Diseño____________________________________________________________
         inProcess: false,
         // Cuentas Seleccionadas
         selected: [],
@@ -892,6 +845,11 @@ export default {
         // Bancos
         bancos: Bancos.bancos,
         bancosForm: {},
+        // Variables para los date pickers de cotizacion
+        dialogCotizacionEfectivo: false,
+        dialogCotizacionCheque: false,
+        dialogCotizacionTransferencia: false,
+        dialogCotizacionHaber: false,
         // Variables para los date pickers
         chequeFechaRecibidoDialog: false,
         chequeFechaCobroDialog: false,
@@ -948,6 +906,19 @@ export default {
                 return true;
             } else {
                 return true;
+            }
+        },
+
+        // Cotización
+        latinDate: {
+            set() {},
+            get() {
+                if (this.fechaCotizacion) {
+                    let date = moment(this.fechaCotizacion).format(
+                        "DD-MM-YYYY"
+                    );
+                    return date;
+                }
             }
         }
     },

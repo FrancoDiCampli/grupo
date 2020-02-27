@@ -13,7 +13,7 @@
                             :headers="headers"
                             :items="$store.state.ventas.ventas.ventas"
                             hide-default-footer
-                            :items-per-page="limit"
+                            :items-per-page="-1"
                             :mobile-breakpoint="0"
                             :single-select="false"
                         >
@@ -29,31 +29,16 @@
                                             "
                                         ></v-checkbox>
                                     </td>
-                                    <td class="hidden-xs-only">
-                                        {{ item.numventa }}
-                                    </td>
-                                    <td>
-                                        {{ item.cliente.razonsocial }}
-                                    </td>
+                                    <td class="hidden-xs-only">{{ item.numventa }}</td>
+                                    <td>{{ item.cliente.razonsocial }}</td>
                                     <td>{{ item.total }}</td>
-                                    <td class="hidden-sm-and-down">
-                                        {{ item.fecha }}
-                                    </td>
-                                    <td class="hidden-sm-and-down">
-                                        {{ item.condicionventa }}
-                                    </td>
+                                    <td class="hidden-sm-and-down">{{ item.fecha }}</td>
+                                    <td class="hidden-sm-and-down">{{ item.condicionventa }}</td>
                                     <td>
                                         <v-menu offset-y>
                                             <template v-slot:activator="{ on }">
-                                                <v-btn
-                                                    color="secondary"
-                                                    text
-                                                    icon
-                                                    v-on="on"
-                                                >
-                                                    <v-icon size="medium">
-                                                        fas fa-ellipsis-v
-                                                    </v-icon>
+                                                <v-btn color="secondary" text icon v-on="on">
+                                                    <v-icon size="medium">fas fa-ellipsis-v</v-icon>
                                                 </v-btn>
                                             </template>
                                             <v-list>
@@ -62,16 +47,10 @@
                                                         `/ventas/show/${item.id}`
                                                     "
                                                 >
-                                                    <v-list-item-title
-                                                        >Detalles</v-list-item-title
-                                                    >
+                                                    <v-list-item-title>Detalles</v-list-item-title>
                                                 </v-list-item>
-                                                <v-list-item
-                                                    @click="print(item.id)"
-                                                >
-                                                    <v-list-item-title
-                                                        >Imprimir</v-list-item-title
-                                                    >
+                                                <v-list-item @click="print(item.id)">
+                                                    <v-list-item-title>Imprimir</v-list-item-title>
                                                 </v-list-item>
                                             </v-list>
                                         </v-menu>
@@ -89,8 +68,7 @@
                                 class="mr-3"
                                 outlined
                                 tile
-                                >Facturar</v-btn
-                            >
+                            >Facturar</v-btn>
                             <slot></slot>
                         </v-row>
                     </v-card-text>
@@ -100,16 +78,10 @@
                 <v-card shaped outlined :loading="$store.state.inProcess">
                     <v-card-title>Facturas</v-card-title>
                     <v-divider></v-divider>
-                    <v-card-text
-                        v-if="$store.state.facturas.facturas"
-                        class="px-0"
-                    >
+                    <v-card-text v-if="$store.state.facturas.facturas" class="px-0">
                         <FacturasIndex :limit="limit"></FacturasIndex>
                         <br />
-                        <v-row
-                            justify="center"
-                            v-if="$store.state.ventas.ventas"
-                        >
+                        <v-row justify="center" v-if="$store.state.ventas.ventas">
                             <slot></slot>
                         </v-row>
                     </v-card-text>

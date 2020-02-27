@@ -52,14 +52,12 @@ export default {
                 if (checkData) {
                     await this.$store.dispatch("ventas/save");
                     this.$refs.formVentas.getPoint();
-                    this.$refs.formVentas.getArticles();
                     this.resetForm();
                 }
             }
         },
 
         resetForm() {
-            this.$refs.CreateVenta.reset();
             this.$refs.formVentas.resetData();
             window.scrollTo(0, 0);
         }
