@@ -270,8 +270,8 @@
 <script>
 import moment from "moment";
 
-import Clientes from "../formularios/comprobantes/Clientes";
-import Detalles from "../formularios/comprobantes/Detalles";
+import Clientes from "../_formularios/comprobantes/Clientes";
+import Detalles from "../_formularios/comprobantes/Detalles";
 
 export default {
     data: () => ({
