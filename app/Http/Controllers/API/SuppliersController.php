@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Contacto;
 use App\Supplier;
 use Carbon\Carbon;
 use Illuminate\Http\Request;

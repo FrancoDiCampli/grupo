@@ -2,13 +2,10 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Articulo;
 use App\Supplier;
 use App\Inventario;
-use App\Movimiento;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreInventario;
 use App\Traits\InventariosAdmin;
 
 class InventariosController extends Controller
@@ -94,25 +91,5 @@ class InventariosController extends Controller
 
             return (['message' => 'guardado']);
         }
-    }
-
-    public function update(Request $request, $id)
-    {
-        $inventario = Inventario::findOrFail($id);
-
-        $inventario->cantidad += $request['cantidad'];
-        $inventario->cantidadlitros += $request['cantidadLitros'];
-        $inventario->save();
-
-        $movInc = Movimiento::create([
-            'tipo' => 'INCREMENTO',
-            'inventario_id' => $inventario->id,
-            'cantidad' => $request['cantidad'],
-            'cantidadlitros' => $request['cantidadLitros'],
-            'fecha' => now(),
-            'user_id' => auth()->user()->id
-        ]);
-
-        return 'actualizado';
     }
 }

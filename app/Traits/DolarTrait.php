@@ -77,8 +77,10 @@ trait DolarTrait
 
         $ultima = $dolar->last();
 
-        return $nuevo = [
-            'fecha' => $ultima['0'],
+        $fecha = new Carbon($ultima[0]);
+
+        return [
+            'fecha' => $fecha->format('Y-m-d'),
             'valor' => $ultima['1'],
         ];
     }

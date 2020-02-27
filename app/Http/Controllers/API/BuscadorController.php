@@ -2,11 +2,6 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Role;
-use App\User;
-use App\Cliente;
-use App\Articulo;
-use App\Supplier;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Traits\BuscadorTrait;
