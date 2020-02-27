@@ -5,7 +5,7 @@ namespace App\Traits;
 use App\User;
 use App\Recibo;
 use App\Cliente;
-use App\Contacto;
+use App\Role;
 use Carbon\Carbon;
 
 trait ClientesTrait
@@ -15,10 +15,12 @@ trait ClientesTrait
         if (auth()->user()->role_id <> 3) {
             $clientes = Cliente::orderBy('razonsocial', 'asc')
                 ->where('documentounico', '<>', 0)
+                ->where('distribuidor', false)
                 ->buscar($request);
         } else {
             $clientes = Cliente::orderBy('razonsocial', 'asc')
                 ->where('documentounico', '<>', 0)
+                ->where('distribuidor', false)
                 ->where('user_id', auth()->user()->id)
                 ->buscar($request);
         }
@@ -40,29 +42,39 @@ trait ClientesTrait
     {
         $foto = FotosTrait::store($request, $ubicacion = 'clientes');
 
+        if ($request['tipo'] == 'distribuidor') {
+            $isDistributor = true;
+        }
+
         $atributos = $request->validated();
 
         $atributos['foto'] = $foto;
         $atributos['user_id'] = auth()->user()->id;
         $atributos['observaciones'] = $request['observaciones'];
+        $atributos['distribuidor'] = $isDistributor;
+
+        $usuario = ClientesTrait::crearUsuario($request);
 
         $cliente = Cliente::create($atributos);
 
+        $usuario->cliente_id = $cliente->id;
+        $usuario->save();
+
         ContactosTrait::crearContactos($cliente, $request);
-        ClientesTrait::crearUsuario($cliente, $request);
 
         return ['message' => 'guardado'];
     }
 
-    public static function crearUsuario($cliente, $request)
+    public static function crearUsuario($request)
     {
         if ($request->password == $request->confirm_password) {
-            $user = User::create([
-                'name' => $cliente['razonsocial'],
-                'email' => $cliente['email'],
+            $rol = Role::where('role', 'cliente')->get()->first();
+
+            return $user = User::create([
+                'name' => $request['razonsocial'],
+                'email' => $request['email'],
                 'password' => bcrypt($request->password),
-                'role_id' => 4,
-                'cliente_id'  => $cliente->id
+                'role_id' => $rol->id
             ]);
 
             // $user->notify(new Verificar($user));

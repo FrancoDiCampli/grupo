@@ -4,6 +4,7 @@ namespace App\Traits;
 
 use Carbon\Carbon;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\RequestException;
 
 trait DolarTrait
 {
@@ -24,12 +25,17 @@ trait DolarTrait
         $url = 'https://api.estadisticasbcra.com/usd_of_minorista';
 
         if ($hoy != $dolarFecha->format('Ymd')) {
-            $response = $client->get($url, [
-                'headers' => [
-                    'Authorization' => 'Bearer ' . $token,
-                    'Accept' => 'application/json',
-                ],
-            ]);
+
+            try {
+                $response = $client->get($url, [
+                    'headers' => [
+                        'Authorization' => 'Bearer ' . $token,
+                        'Accept' => 'application/json',
+                    ],
+                ]);
+            } catch (RequestException $res) {
+                return 502;
+            }
 
             $dolar = collect(json_decode((string) $response->getBody(), true));
 

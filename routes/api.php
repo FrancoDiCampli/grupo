@@ -93,6 +93,9 @@ Route::middleware('auth:airlock')->group(function () {
     Route::get('mi_cuenta', 'API\ClientesController@miCuenta');
     Route::get('showRecibo/{id}', 'API\ClientesController@showRecibo');
 
+    // Distribuidores
+    Route::apiResource('distribuidores', 'API\DistribuidoresController');
+
     // REVISAR
     // Route::post('/nuevo', 'API\InventariosController@nuevo');
     // Route::post('/devolucion', 'API\InventariosController@devolucion');

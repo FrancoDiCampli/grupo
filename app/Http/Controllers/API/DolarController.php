@@ -15,7 +15,10 @@ class DolarController extends Controller
 
     public function consultar()
     {
-        return DolarTrait::consultar();
-        // return DolarTrait::alternativa();
+        $res = DolarTrait::consultar();
+
+        if ($res != 502) {
+            return $res;
+        } else return DolarTrait::alternativa();
     }
 }
