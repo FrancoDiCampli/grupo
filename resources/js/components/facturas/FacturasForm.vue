@@ -109,6 +109,7 @@
                                         </div>
                                     </v-card>
                                 </v-col>
+
                                 <!-- CONDICION VENTA -->
                                 <v-col cols="12" sm="6" class="py-0">
                                     <v-text-field
