@@ -108,6 +108,13 @@
                                         </div>
                                     </v-card>
                                 </v-col>
+                                <!-- <v-col cols="12" sm="6" class="py-0">
+                                    <v-select
+                                        outlined
+                                        :items="['Efectivo', 'Tarjeta', 'Cheque', 'Transferencia']"
+                                        label="Tipo de pago"
+                                    ></v-select>
+                                </v-col>-->
                                 <!-- CONDICION VENTA -->
                                 <v-col cols="12" sm="6" class="py-0">
                                     <v-select
