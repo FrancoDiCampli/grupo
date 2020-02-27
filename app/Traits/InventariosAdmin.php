@@ -80,7 +80,7 @@ trait InventariosAdmin
             'cantidadlitros' => $data['cantidadlitros'],
             'articulo_id' => $data['articulo_id'],
             'supplier_id' => $data['supplier_id'],
-            'lote' => $data['lote']
+            // 'lote' => $data['lote']
         ]);
         return $inventario;
     }
