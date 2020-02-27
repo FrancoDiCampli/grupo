@@ -12,28 +12,45 @@ trait ClientesTrait
 {
     public static function index($request)
     {
-        if (auth()->user()->role_id <> 3) {
+        $distribuidores = collect();
+        if (auth()->user()->role->role != 'vendedor') {
             $clientes = Cliente::orderBy('razonsocial', 'asc')
                 ->where('documentounico', '<>', 0)
                 ->where('distribuidor', false)
                 ->buscar($request);
+
+            $distribuidores = Cliente::orderBy('razonsocial', 'asc')
+                ->where('documentounico', '<>', 0)
+                ->where('distribuidor', true)
+                ->buscar($request)->get();
         } else {
             $clientes = Cliente::orderBy('razonsocial', 'asc')
                 ->where('documentounico', '<>', 0)
-                ->where('distribuidor', false)
                 ->where('user_id', auth()->user()->id)
                 ->buscar($request);
         }
 
         if ($clientes->count() <= $request->get('limit')) {
             return [
-                'clientes' => $clientes->get(),
-                'total' => $clientes->count()
+                'clientes' => [
+                    'clientes' => $clientes->get(),
+                    'total' => $clientes->count()
+                ],
+                'distribuidores' => [
+                    'distribuidores' => $distribuidores,
+                    'total' => $distribuidores->count()
+                ]
             ];
         } else {
             return [
-                'clientes' => $clientes->take($request->get('limit', null))->get(),
-                'total' => $clientes->count()
+                'clientes' => [
+                    'clientes' => $clientes->take($request->get('limit', null))->get(),
+                    'total' => $clientes->count()
+                ],
+                'distribuidores' => [
+                    'distribuidores' => $distribuidores->take($request->get('limit', null)),
+                    'total' => $distribuidores->count()
+                ]
             ];
         }
     }
@@ -41,6 +58,7 @@ trait ClientesTrait
     public static function store($request)
     {
         $foto = FotosTrait::store($request, $ubicacion = 'clientes');
+        $isDistributor = false;
 
         if ($request['tipo'] == 'distribuidor') {
             $isDistributor = true;
