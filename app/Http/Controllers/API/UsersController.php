@@ -4,10 +4,10 @@ namespace App\Http\Controllers\API;
 
 use App\Role;
 use App\User;
+use App\Traits\FotosTrait;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
-use Intervention\Image\Facades\Image;
 
 class UsersController extends Controller
 {
@@ -121,14 +121,8 @@ class UsersController extends Controller
         $user = User::find(auth()->user()->id);
 
         if ($request->get('newFoto')) {
-            $eliminar = $user->foto;
-            if ($eliminar) {
-                @unlink(public_path($eliminar));
-            }
-            $image = $request->get('newFoto');
-            $name = time() . '.' . explode('/', explode(':', substr($image, 0, strpos($image, ';')))[1])[1];
-            Image::make($request->get('newFoto'))->save(public_path('img/usuarios/') . $name);
-            $foto = '/img/usuarios/' . $name;
+            $data = new Request(['foto' => $request->get('newFoto')]);
+            $foto = FotosTrait::update($data, $ubicacion = 'usuarios', $user);
             $user->foto = $foto;
         }
 

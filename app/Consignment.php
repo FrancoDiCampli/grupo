@@ -30,13 +30,8 @@ class Consignment extends Model
             ->withTimestamps();
     }
 
-    public function dependencia()
-    {
-        return $this->belongsTo('App\User');
-    }
-
-    public function venta()
-    {
-        return $this->belongsTo(Venta::class);
-    }
+    // public function dependencia()
+    // {
+    //     return $this->belongsTo('App\User');
+    // }
 }

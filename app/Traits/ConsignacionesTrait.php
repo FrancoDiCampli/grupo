@@ -32,23 +32,21 @@ trait ConsignacionesTrait
 
     public static function store($request)
     {
-        $consignacion = ConsignacionesTrait::storeConsignaciones($request);
-        $mover = ConsignacionesTrait::moverInventarios($request);
-        if ($mover) {
-            if ($request->tipo != 'TRANSFERENCIA') {
-                $venta = ConsignacionesTrait::ventaConsignaciones($request);
-                $consignacion->numventa = $venta->id;
-                $consignacion->save();
-            }
-        } else {
-            $consignacion->articulos()->detach();
-            $consignacion->forceDelete();
-        }
+        ConsignacionesTrait::storeConsignaciones($request);
+        ConsignacionesTrait::moverInventarios($request);
     }
 
     public static function show($id)
     {
-        return $consignacion = Consignment::find($id);
+        $consignacion = Consignment::find($id);
+        $detalles = $consignacion->articulos;
+        $dependencia = User::find($consignacion->dependencia);
+
+        return [
+            'consignacion' => $consignacion,
+            'dependencia' => $dependencia,
+            'detalles' => $detalles
+        ];
     }
 
     public static function storeConsignaciones($request)
@@ -94,58 +92,6 @@ trait ConsignacionesTrait
         $consignacion->articulos()->attach($detalles);
 
         return $consignacion;
-    }
-
-    public static function ventaConsignaciones($request)
-    {
-        if ($request->tipo != 'TRANSFERENCIA') {
-            $data = [
-                'tipocomprobante' => 'VENTA X CONSIGNACION',
-                'numventa' => 0,
-                'cuit' => 0,
-                'fecha' => now()->format('Ymd'),
-                'observaciones' => $request->observaciones,
-                'bonificacion' => $request->get('bonificacion', 0),
-                'recargo' => $request->get('recargo', 0),
-                'pagada' => true,
-                'condicionventa' => 'CONTADO',
-                'subtotal' => $request->subtotal,
-                'total' => $request->total,
-                'subtotalPesos' => $request->subtotalPesos,
-                'totalPesos' => $request->totalPesos,
-                'cotizacion' => $request->cotizacion,
-                'fechaCotizacion' => $request->fechaCotizacion,
-                'numfactura' => 0,
-                'cliente_id' => 1,
-                // 'dependencia' => $request->vendedor_id,
-                'user_id' => auth()->user()->id
-            ];
-
-            $venta = Venta::create($data);
-
-            foreach ($request->detalles as $detail) {
-                $det = array(
-                    'codarticulo' => $detail['codarticulo'],
-                    'articulo' => $detail['articulo'],
-                    'cantidad' => $detail['cantidad'],
-                    'cantidadLitros' => $detail['cantidadLitros'],
-                    'medida' => $detail['medida'],
-                    'preciounitario' => $detail['precio'],
-                    'subtotalPesos' => $detail['subtotalPesos'],
-                    'subtotal' => $detail['subtotalDolares'],
-                    'cotizacion' => $detail['cotizacion'],
-                    'fechaCotizacion' => $detail['fechaCotizacion'],
-                    'articulo_id' => $detail['id'],
-                    'venta_id' => $venta->id,
-                );
-
-                $detalles[] = $det;
-            }
-
-            $venta->articulos()->attach($detalles);
-
-            return $venta;
-        }
     }
 
     public static function moverInventarios($request)
