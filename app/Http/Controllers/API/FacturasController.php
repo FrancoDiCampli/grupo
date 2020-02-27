@@ -22,7 +22,7 @@ class FacturasController extends Controller
 
     public function index(Request $request)
     {
-        if (auth()->user()->role_id == 1 || auth()->user()->role_id == 2) {
+        if (auth()->user()->role->role == 'superAdmin' || auth()->user()->role->role == 'administrador') {
             $facs = Factura::orderBy('id', 'DESC')
                 ->get();
         } else {

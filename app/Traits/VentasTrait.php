@@ -16,7 +16,7 @@ trait VentasTrait
 {
     public static function index($request)
     {
-        if (auth()->user()->role_id <> 3) {
+        if (auth()->user()->role->role != 'vendedor') {
             if ($request->fec) {
                 $fec = $request->fec;
                 $facs = Venta::whereDate('created_at', $fec)
@@ -172,7 +172,7 @@ trait VentasTrait
 
         // DESCUENTA LOS INVENTARIOS
         for ($i = 0; $i < count($aux); $i++) {
-            if (auth()->user()->role_id == 1 || auth()->user()->role_id == 2) {
+            if (auth()->user()->role->role == 'superAdmin' || auth()->user()->role->role == 'administrador') {
                 $article = Inventario::where('dependencia', null)
                     ->where('cantidad', '>', 0)
                     ->where('articulo_id', $aux[$i]['articulo_id'])->get();
