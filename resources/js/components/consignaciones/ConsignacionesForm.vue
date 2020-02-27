@@ -3,7 +3,7 @@
         <v-card shaped outlined :loading="inProcess" class="pb-4">
             <v-card-title class="py-0 px-2">
                 <v-row class="pa-0 ma-0">
-                    <v-col cols="auto" align-self="center">Nueva Venta</v-col>
+                    <v-col cols="auto" align-self="center">Nueva Consignacion</v-col>
                     <v-spacer></v-spacer>
                     <v-col cols="auto">
                         <v-list-item two-line class="text-right">
@@ -28,7 +28,7 @@
                         :editable="true"
                         edit-icon="fas fa-pen"
                         :rules="[() => validateStep(1, 'consignacionesVendedorForm')]"
-                    >Cliente y condición de compra.</v-stepper-step>
+                    >Vendedor.</v-stepper-step>
                     <v-stepper-content step="1">
                         <v-form ref="consignacionesVendedorForm">
                             <v-row justify="space-around" class="my-1">
@@ -270,7 +270,7 @@
                                     >
                                         <template v-slot:activator="{ on }">
                                             <v-text-field
-                                                v-model="fechaCotizacion"
+                                                v-model="latinDate"
                                                 label="Fecha de la cotización"
                                                 readonly
                                                 outlined
@@ -578,6 +578,18 @@ export default {
         },
 
         // COTIZACION
+        latinDate: {
+            set() {},
+            get() {
+                if (this.fechaCotizacion) {
+                    let date = moment(this.fechaCotizacion).format(
+                        "DD-MM-YYYY"
+                    );
+                    return date;
+                }
+            }
+        },
+
         dolares: {
             set() {},
             get() {

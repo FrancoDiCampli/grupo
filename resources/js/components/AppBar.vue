@@ -74,6 +74,18 @@
                     </v-list-item-content>
                 </v-list-item>
             </v-list>
+            <v-divider></v-divider>
+            <v-list dense disabled>
+                <v-list-item v-for="noti in $store.state.notificaciones.read" :key="noti.id">
+                    <v-list-item-icon>
+                        <v-icon>fas fa-box-open</v-icon>
+                    </v-list-item-icon>
+
+                    <v-list-item-content>
+                        <v-list-item-title>{{ noti.data.message }}</v-list-item-title>
+                    </v-list-item-content>
+                </v-list-item>
+            </v-list>
         </v-navigation-drawer>
 
         <!-- Navbar superior -->
