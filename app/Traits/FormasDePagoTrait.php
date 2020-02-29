@@ -23,20 +23,7 @@ trait FormasDePagoTrait
                     'cotizacion' => $pay['cotizacion'],
                 ]);
                 if ($cliente) {
-                    if ($cliente->haber) {
-                        if ($diferencia != null) {
-                            $haber = Saldo::findOrFail($cliente->haber->id);
-                            $haber->haber = $haber->haber + $diferencia;
-                            $haber->save();
-                        }
-                    } else {
-                        if ($diferencia != null) {
-                            Saldo::create([
-                                'cliente_id' => $cliente->id,
-                                'haber' => $diferencia
-                            ]);
-                        }
-                    }
+                    static::saldo($cliente, $diferencia, $cond = false, $dolares = null);
                 }
                 return 'EF' . $efectivo->id;
                 break;
@@ -50,24 +37,7 @@ trait FormasDePagoTrait
                     'cotizacion' => $pay['cotizacion'],
                 ]);
                 if ($cliente) {
-                    if ($cliente->haber) {
-                        if ($diferencia != null) {
-                            $haber = Saldo::findOrFail($cliente->haber->id);
-                            $haber->haber = $diferencia;
-                            $haber->save();
-                        } else {
-                            $haber = Saldo::findOrFail($cliente->haber->id);
-                            $haber->haber = 0;
-                            $haber->save();
-                        }
-                    } else {
-                        if ($diferencia != null) {
-                            Saldo::create([
-                                'cliente_id' => $cliente->id,
-                                'haber' => $diferencia
-                            ]);
-                        }
-                    }
+                    static::saldo($cliente, $diferencia, $cond = true, $dolares = $pay['dolares'] * 1);
                 }
                 return 'HA' . $haber->id;
                 break;
@@ -96,20 +66,7 @@ trait FormasDePagoTrait
                     'observaciones' => $pay['observaciones'],
                 ]);
                 if ($cliente) {
-                    if ($cliente->haber) {
-                        if ($diferencia != null) {
-                            $haber = Saldo::findOrFail($cliente->haber->id);
-                            $haber->haber = $haber->haber + $diferencia;
-                            $haber->save();
-                        }
-                    } else {
-                        if ($diferencia != null) {
-                            Saldo::create([
-                                'cliente_id' => $cliente->id,
-                                'haber' => $diferencia
-                            ]);
-                        }
-                    }
+                    static::saldo($cliente, $diferencia, $cond = false, $dolares = null);
                 }
                 return 'CH' . $cheque->id;
                 break;
@@ -128,20 +85,7 @@ trait FormasDePagoTrait
                     'observaciones' => $pay['observaciones'],
                 ]);
                 if ($cliente) {
-                    if ($cliente->haber) {
-                        if ($diferencia != null) {
-                            $haber = Saldo::findOrFail($cliente->haber->id);
-                            $haber->haber = $haber->haber + $diferencia;
-                            $haber->save();
-                        }
-                    } else {
-                        if ($diferencia != null) {
-                            Saldo::create([
-                                'cliente_id' => $cliente->id,
-                                'haber' => $diferencia
-                            ]);
-                        }
-                    }
+                    static::saldo($cliente, $diferencia, $cond = false, $dolares = null);
                 }
                 return 'TB' . $transferencia->id;
                 break;
@@ -177,6 +121,46 @@ trait FormasDePagoTrait
                 }
             }
             return $aux;
+        }
+    }
+
+    public static function saldo($cliente, $diferencia, $cond, $dolares)
+    {
+        if ($cliente->haber) {
+            switch ($cond) {
+                case true:
+                    $haber = Saldo::findOrFail($cliente->haber->id);
+                    if ($diferencia != null && $dolares != null) {
+                        if ($dolares < $haber->haber) {
+                            $haber->haber = ($haber->haber - $dolares) + $diferencia;
+                            $haber->save();
+                        } else {
+                            $haber->haber = $diferencia;
+                            $haber->save();
+                        }
+                    } else if ($diferencia == 0) {
+                        $haber->haber = $haber->haber - $dolares;
+                        $haber->save();
+                    } else {
+                        $haber->haber = 0;
+                        $haber->save();
+                    }
+                    break;
+                case false:
+                    if ($diferencia != null) {
+                        $haber = Saldo::findOrFail($cliente->haber->id);
+                        $haber->haber = $haber->haber + $diferencia;
+                        $haber->save();
+                    }
+                    break;
+            }
+        } else {
+            if ($diferencia != null) {
+                Saldo::create([
+                    'cliente_id' => $cliente->id,
+                    'haber' => $diferencia
+                ]);
+            }
         }
     }
 }

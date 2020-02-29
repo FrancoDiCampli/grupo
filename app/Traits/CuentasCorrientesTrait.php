@@ -8,6 +8,7 @@ use App\Recibo;
 use App\Cuentacorriente;
 use App\Movimientocuenta;
 use App\Traits\FormasDePagoTrait;
+use App\Traits\ConfiguracionTrait;
 
 trait CuentasCorrientesTrait
 {
@@ -29,17 +30,11 @@ trait CuentasCorrientesTrait
                         $cuenta->update();
                         $total = $total + $pay['dolares'];
 
-                        if (Pago::all()->last() == null) {
-                            $jsonString = file_get_contents(base_path('config.json'));
-                            $config = json_decode($jsonString, true);
-                            $numpago = $config['numpago'] + 1;
-                        } else $numpago = Pago::all()->last()->numpago + 1;
-
                         $nuevoPago = Pago::create([
                             'ctacte_id' => $cuenta->id,
                             'importe' => $pay['dolares'],
                             'fecha' => now()->format('Ymd'),
-                            'numpago' => $numpago,
+                            'numpago' => static::nroPago(),
                             'referencia' => FormasDePagoTrait::formaPago($pay, $cliente, $diferencia = null) // ACA ESTA EL PROBLEMA
                         ]);
 
@@ -62,17 +57,11 @@ trait CuentasCorrientesTrait
                         $factura->update();
                         $total = $total + $pay['dolares'];
 
-                        if (Pago::all()->last() == null) {
-                            $jsonString = file_get_contents(base_path('config.json'));
-                            $config = json_decode($jsonString, true);
-                            $numpago = $config['numpago'] + 1;
-                        } else $numpago = Pago::all()->last()->numpago + 1;
-
                         $nuevoPago = Pago::create([
                             'ctacte_id' => $cuenta->id,
                             'importe' => $pay['dolares'],
                             'fecha' => now()->format('Ymd'),
-                            'numpago' => $numpago,
+                            'numpago' => static::nroPago(),
                             'referencia' => FormasDePagoTrait::formaPago($pay, $cliente, $diferencia = null) // ACA ESTA EL PROBLEMA
                         ]);
                         array_push($aux, $nuevoPago->id);
@@ -94,17 +83,11 @@ trait CuentasCorrientesTrait
                         $factura->pagada = true;
                         $factura->update();
 
-                        if (Pago::all()->last() == null) {
-                            $jsonString = file_get_contents(base_path('config.json'));
-                            $config = json_decode($jsonString, true);
-                            $numpago = $config['numpago'] + 1;
-                        } else $numpago = Pago::all()->last()->numpago + 1;
-
                         $nuevoPago = Pago::create([
                             'ctacte_id' => $cuenta->id,
                             'importe' => $pay['dolares'],
                             'fecha' => now()->format('Ymd'),
-                            'numpago' => $numpago,
+                            'numpago' => static::nroPago(),
                             'referencia' => FormasDePagoTrait::formaPago($pay, $cliente, $diferencia) // ACA ESTA EL PROBLEMA
                         ]);
 
@@ -122,8 +105,7 @@ trait CuentasCorrientesTrait
         }
         // ALMACENAMIENTO DE RECIBO
         if (Recibo::all()->last() == null) {
-            $jsonString = file_get_contents(base_path('config.json'));
-            $config = json_decode($jsonString, true);
+            $config = ConfiguracionTrait::configuracion();
             $numrecibo = $config['numrecibo'] + 1;
         } else $numrecibo = Recibo::all()->last()->numrecibo + 1;
         $recibo = Recibo::create([
@@ -133,5 +115,13 @@ trait CuentasCorrientesTrait
         ]);
         $recibo->pagos()->attach($aux);
         return $recibo->id;
+    }
+
+    public static function nroPago()
+    {
+        if (Pago::all()->last() == null) {
+            $config = ConfiguracionTrait::configuracion();
+            return $config['numpago'] + 1;
+        } else return Pago::all()->last()->numpago + 1;
     }
 }

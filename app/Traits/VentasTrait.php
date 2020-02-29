@@ -10,10 +10,10 @@ use App\Inventario;
 use App\Movimiento;
 use App\Cuentacorriente;
 use App\Movimientocuenta;
+use App\Traits\ArticulosTrait;
 use App\Traits\FormasDePagoTrait;
 use App\Traits\ConfiguracionTrait;
 use Illuminate\Support\Facades\DB;
-use App\Traits\ArticulosNotificacionesTrait;
 
 trait VentasTrait
 {
@@ -208,7 +208,7 @@ trait VentasTrait
             if ($article[0]['cantidad'] == 0) {
                 // Probando notificaciones
                 $arti = Articulo::find($article[0]->articulo_id);
-                ArticulosNotificacionesTrait::crearNotificacion($arti);
+                ArticulosTrait::crearNotificacion($arti);
                 // ------------
             }
 
