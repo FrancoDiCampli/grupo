@@ -30,22 +30,12 @@ trait CuentasCorrientesTrait
                         $cuenta->update();
                         $total = $total + $pay['dolares'];
 
-                        $nuevoPago = Pago::create([
-                            'ctacte_id' => $cuenta->id,
-                            'importe' => $pay['dolares'],
-                            'fecha' => now()->format('Ymd'),
-                            'numpago' => static::nroPago(),
-                            'referencia' => FormasDePagoTrait::formaPago($pay, $cliente, $diferencia = null) // ACA ESTA EL PROBLEMA
-                        ]);
+                        $referencia = FormasDePagoTrait::formaPago($pay, $cliente, $diferencia = null);
+                        $nuevoPago = static::crearPago($cuenta, $pay['dolares'], $referencia);
 
                         array_push($aux, $nuevoPago->id);
-                        $movimiento = Movimientocuenta::create([
-                            'ctacte_id' => $cuenta->id,
-                            'tipo' => 'PAGO PARCIAL',
-                            'fecha' => now(),
-                            'importe' => $pay['dolares'],
-                            'user_id' => auth()->user()->id
-                        ]);
+
+                        static::crearMovimiento($cuenta, $tipo = 'PAGO PARCIAL', $pay['dolares']);
                     } else if ($pay['dolares'] == $cuenta->saldo) {
                         // PAGO TOTAL
                         $cuenta->saldo = 0;
@@ -57,21 +47,12 @@ trait CuentasCorrientesTrait
                         $factura->update();
                         $total = $total + $pay['dolares'];
 
-                        $nuevoPago = Pago::create([
-                            'ctacte_id' => $cuenta->id,
-                            'importe' => $pay['dolares'],
-                            'fecha' => now()->format('Ymd'),
-                            'numpago' => static::nroPago(),
-                            'referencia' => FormasDePagoTrait::formaPago($pay, $cliente, $diferencia = null) // ACA ESTA EL PROBLEMA
-                        ]);
+                        $referencia = FormasDePagoTrait::formaPago($pay, $cliente, $diferencia = null);
+                        $nuevoPago = static::crearPago($cuenta, $pay['dolares'], $referencia);
+
                         array_push($aux, $nuevoPago->id);
-                        $movimiento = Movimientocuenta::create([
-                            'ctacte_id' => $cuenta->id,
-                            'tipo' => 'PAGO TOTAL',
-                            'fecha' => now(),
-                            'importe' => $pay['dolares'],
-                            'user_id' => auth()->user()->id
-                        ]);
+
+                        static::crearMovimiento($cuenta, $tipo = 'PAGO TOTAL', $pay['dolares']);
                     } elseif ($pay['dolares'] > $cuenta->saldo) {
                         $diferencia = $pay['dolares'] - $cuenta->saldo;
                         $total = $total + $pay['dolares'];
@@ -83,22 +64,12 @@ trait CuentasCorrientesTrait
                         $factura->pagada = true;
                         $factura->update();
 
-                        $nuevoPago = Pago::create([
-                            'ctacte_id' => $cuenta->id,
-                            'importe' => $pay['dolares'],
-                            'fecha' => now()->format('Ymd'),
-                            'numpago' => static::nroPago(),
-                            'referencia' => FormasDePagoTrait::formaPago($pay, $cliente, $diferencia) // ACA ESTA EL PROBLEMA
-                        ]);
+                        $referencia = FormasDePagoTrait::formaPago($pay, $cliente, $diferencia);
+                        $nuevoPago = static::crearPago($cuenta, $pay['dolares'], $referencia);
 
                         array_push($aux, $nuevoPago->id);
-                        $movimiento = Movimientocuenta::create([
-                            'ctacte_id' => $cuenta->id,
-                            'tipo' => 'PAGO TOTAL',
-                            'fecha' => now(),
-                            'importe' => $pay['dolares'],
-                            'user_id' => auth()->user()->id
-                        ]);
+
+                        static::crearMovimiento($cuenta, $tipo = 'PAGO TOTAL', $pay['dolares']);
                     }
                 }
             }
@@ -108,12 +79,15 @@ trait CuentasCorrientesTrait
             $config = ConfiguracionTrait::configuracion();
             $numrecibo = $config['numrecibo'] + 1;
         } else $numrecibo = Recibo::all()->last()->numrecibo + 1;
+
         $recibo = Recibo::create([
             'fecha' => now()->format('Ymd'),
             'total' => $total,
             'numrecibo' => $numrecibo
         ]);
+
         $recibo->pagos()->attach($aux);
+
         return $recibo->id;
     }
 
@@ -123,5 +97,29 @@ trait CuentasCorrientesTrait
             $config = ConfiguracionTrait::configuracion();
             return $config['numpago'] + 1;
         } else return Pago::all()->last()->numpago + 1;
+    }
+
+    public static function crearPago($cuenta, $pago, $referencia)
+    {
+        $numPago = static::nroPago();
+
+        return Pago::create([
+            'ctacte_id' => $cuenta->id,
+            'importe' => $pago,
+            'fecha' => now()->format('Ymd'),
+            'numpago' => $numPago,
+            'referencia' => $referencia
+        ]);
+    }
+
+    public static function crearMovimiento($cuenta, $tipo, $pago)
+    {
+        return Movimientocuenta::create([
+            'ctacte_id' => $cuenta->id,
+            'tipo' => $tipo,
+            'fecha' => now(),
+            'importe' => $pago,
+            'user_id' => auth()->user()->id
+        ]);
     }
 }

@@ -7,10 +7,10 @@ use App\Articulo;
 use Carbon\Carbon;
 use App\Inventario;
 use App\Consignment;
+use App\Traits\ArticulosTrait;
 use App\Traits\InventariosAdmin;
 use App\Traits\ConfiguracionTrait;
 use Illuminate\Support\Facades\DB;
-use App\Traits\ArticulosNotificacionesTrait;
 
 trait ConsignacionesTrait
 {
@@ -131,7 +131,7 @@ trait ConsignacionesTrait
                     if ($inventory['cantidad'] == 0) {
                         // Probando notificaciones
                         $arti = Articulo::find($inventory['articulo_id']);
-                        ArticulosNotificacionesTrait::crearNotificacion($arti);
+                        ArticulosTrait::crearNotificacion($arti);
                         // ------------
                     }
 
@@ -148,7 +148,7 @@ trait ConsignacionesTrait
                     if ($inventory['cantidad'] == 0) {
                         // Probando notificaciones
                         $arti = Articulo::find($inventory['articulo_id']);
-                        ArticulosNotificacionesTrait::crearNotificacion($arti);
+                        ArticulosTrait::crearNotificacion($arti);
                         // ------------
                     }
                     $data['inventario_id'] = $origen['id'];

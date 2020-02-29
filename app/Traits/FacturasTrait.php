@@ -82,8 +82,7 @@ trait FacturasTrait
 
     public static function show($id)
     {
-        $jsonString = file_get_contents(base_path('config.json'));
-        $configuracion = json_decode($jsonString, true);
+        $configuracion = ConfiguracionTrait::configuracion();
         $factura = Factura::find($id);
         $detalles = collect();
         foreach ($factura->ventas as $venta) {
