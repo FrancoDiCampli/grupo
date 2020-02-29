@@ -8,6 +8,7 @@ use App\Supplier;
 use Carbon\Carbon;
 use App\Inventario;
 use App\Movimiento;
+use App\Traits\ConfiguracionTrait;
 use Illuminate\Support\Facades\DB;
 
 trait ComprasTrait
@@ -130,9 +131,12 @@ trait ComprasTrait
 
     public static function show($id)
     {
-        // RETORNA LOS DETALLES DE UNA COMPRA
-        $jsonString = file_get_contents(base_path('config.json'));
-        $configuracion = json_decode($jsonString, true);
+        return static::verCompra($id);
+    }
+
+    public static function verCompra($id)
+    {
+        $configuracion = ConfiguracionTrait::configuracion();
         $remito = Compra::find($id);
         $fecha = new Carbon($remito->fecha);
         $remito->fecha = $fecha->format('d-m-Y');

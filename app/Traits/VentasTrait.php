@@ -10,7 +10,10 @@ use App\Inventario;
 use App\Movimiento;
 use App\Cuentacorriente;
 use App\Movimientocuenta;
+use App\Traits\FormasDePagoTrait;
+use App\Traits\ConfiguracionTrait;
 use Illuminate\Support\Facades\DB;
+use App\Traits\ArticulosNotificacionesTrait;
 
 trait VentasTrait
 {
@@ -46,7 +49,10 @@ trait VentasTrait
             $fecha = new Carbon($fac->fecha);
             $fac->fecha = $fecha->format('d-m-Y');
             $fac->cliente = Cliente::withTrashed()->find($fac->cliente_id);
+            $fac->forma;
+            $pagos = FormasDePagoTrait::verPagos($fac);
             $fac = collect($fac);
+            $fac->put('pagos', $pagos);
             $facturas->push($fac);
         }
         $eliminadas = Venta::onlyTrashed()->get();
@@ -91,17 +97,14 @@ trait VentasTrait
             $atributos['cotizacion'] = null;
             $atributos['fechaCotizacion'] = null;
         }
-        // if ($atributos['tipo'] != 'REMITO X') {
-        //     $atributos['codcomprobante'] = 11;
-        //     $atributos['letracomprobante'] = 'C';
-        // } else {
-        //     $solicitarCAE = false;
-        //     $atributos['codcomprobante'] = null;
-        //     $atributos['letracomprobante'] = 'X';
-        // }
 
-        $jsonString = file_get_contents(base_path('config.json'));
-        $config = json_decode($jsonString, true);
+        // $config = ConfiguracionTrait::configuracion();
+
+        if ($atributos['pagada']) {
+            foreach ($atributos['pagos'] as $pay) {
+                $referencia[] = FormasDePagoTrait::formaPago($pay, $cliente, $diferencia = null);
+            }
+        } else $referencia = null;
 
         // ALMACENAMIENTO DE FACTURA
         $factura = Venta::create([
@@ -114,6 +117,7 @@ trait VentasTrait
             "bonificacion" => $atributos['bonificacion'] * 1,
             "recargo" => $atributos['recargo'] * 1,
             "pagada" => $atributos['pagada'],
+            "referencia" => $referencia,
             "condicionventa" => $atributos['condicionventa'],
             "subtotal" => $atributos['subtotal'],
             "total" => $atributos['total'],
@@ -215,14 +219,17 @@ trait VentasTrait
 
     public static function show($id)
     {
-        $jsonString = file_get_contents(base_path('config.json'));
-        $configuracion = json_decode($jsonString, true);
+        return static::verVenta($id);
+    }
+
+    public static function verVenta($id)
+    {
+        $configuracion = ConfiguracionTrait::configuracion();
         $factura = Venta::find($id);
         $fecha = new Carbon($factura->fecha);
         $factura->fecha = $fecha->format('d-m-Y');
         $cliente = Cliente::withTrashed()->find($factura->cliente_id);
         $detalles = DB::table('articulo_venta')->where('venta_id', $factura->id)->get();
-
         return [
             'configuracion' => $configuracion,
             'factura' => $factura,

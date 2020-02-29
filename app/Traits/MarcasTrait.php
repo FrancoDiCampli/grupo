@@ -32,7 +32,7 @@ trait MarcasTrait
             return $brand[0]->id;
         } else {
             $request = new Request(['marca' => $marca]);
-            $nuevaMarca = MarcasTrait::store($request);
+            $nuevaMarca = static::store($request);
             return  $nuevaMarca->id;
         }
     }

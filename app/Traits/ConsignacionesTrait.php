@@ -3,13 +3,13 @@
 namespace App\Traits;
 
 use App\User;
-use App\Venta;
 use App\Articulo;
 use Carbon\Carbon;
 use App\Inventario;
 use App\Consignment;
-use Illuminate\Http\Request;
 use App\Traits\InventariosAdmin;
+use App\Traits\ConfiguracionTrait;
+use Illuminate\Support\Facades\DB;
 use App\Traits\ArticulosNotificacionesTrait;
 
 trait ConsignacionesTrait
@@ -32,20 +32,29 @@ trait ConsignacionesTrait
 
     public static function store($request)
     {
-        ConsignacionesTrait::storeConsignaciones($request);
-        ConsignacionesTrait::moverInventarios($request);
+        static::storeConsignaciones($request);
+        static::moverInventarios($request);
     }
 
     public static function show($id)
     {
+        return static::verConsignacion($id);
+    }
+
+    public static function verConsignacion($id)
+    {
+        $configuracion = ConfiguracionTrait::configuracion();
         $consignacion = Consignment::find($id);
-        $detalles = $consignacion->articulos;
         $dependencia = User::find($consignacion->dependencia);
+        $fecha = new Carbon($consignacion->fecha);
+        $consignacion->fecha = $fecha->format('d-m-Y');
+        $detalles = DB::table('articulo_consignment')->where('consignment_id', $consignacion->id)->get();
 
         return [
+            'configuracion' => $configuracion,
             'consignacion' => $consignacion,
-            'dependencia' => $dependencia,
-            'detalles' => $detalles
+            'detalles' => $detalles,
+            'dependencia' => $dependencia
         ];
     }
 
