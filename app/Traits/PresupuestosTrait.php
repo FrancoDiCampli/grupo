@@ -5,6 +5,7 @@ namespace App\Traits;
 use App\Cliente;
 use Carbon\Carbon;
 use App\Presupuesto;
+use App\Traits\ConfiguracionTrait;
 use Illuminate\Support\Facades\DB;
 
 trait PresupuestosTrait
@@ -113,9 +114,22 @@ trait PresupuestosTrait
 
     public static function show($id)
     {
-        // RETORNA LOS DETALLES DE UN PRESUPUESTO
-        $jsonString = file_get_contents(base_path('config.json'));
-        $configuracion = json_decode($jsonString, true);
+        $res = static::verPresupuesto($id);
+        $articulos = collect($res['presupuesto']->articulos);
+        $detallesVenta = collect();
+        foreach ($articulos as $art) {
+            $stock = $art->inventarios->sum('cantidad');
+            if ($stock > 0) {
+                $detallesVenta->push($art->pivot);
+            }
+        }
+        $res['detallesVenta'] = $detallesVenta;
+        return $res;
+    }
+
+    public static function verPresupuesto($id)
+    {
+        $configuracion = ConfiguracionTrait::configuracion();
         $presupuesto = Presupuesto::find($id);
         $fecha = new Carbon($presupuesto->fecha);
         $presupuesto->fecha = $fecha->format('d-m-Y');
@@ -124,20 +138,10 @@ trait PresupuestosTrait
         $cliente = Cliente::withTrashed()->find($presupuesto->cliente_id);
         $detalles = DB::table('articulo_presupuesto')->where('presupuesto_id', $presupuesto->id)->get();
 
-        $articulos = collect($presupuesto->articulos);
-        $detallesVenta = collect();
-        foreach ($articulos as $art) {
-            $stock = $art->inventarios->sum('cantidad');
-            if ($stock > 0) {
-                $detallesVenta->push($art->pivot);
-            }
-        }
-
         return [
             'configuracion' => $configuracion,
             'presupuesto' => $presupuesto,
             'detalles' => $detalles,
-            'detallesVenta' => $detallesVenta,
             'cliente' => $cliente
         ];
     }

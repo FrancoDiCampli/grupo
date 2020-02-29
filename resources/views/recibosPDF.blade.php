@@ -237,32 +237,32 @@
                     <th>USD {{$pago->importe}}</th>
                     <th>{{$pago->fecha}}</th>
                     <th>{{$pago->ctacte_id}}</th>
-                    @if($pago->forma()[0] == 'Efectivo')
-                    <th>{{$pago->forma()[0]}} |
-                        Dolar: ${{$pago->forma()[1]->cotizacion}} |
-                        Fecha Cotización: {{$pago->forma()[1]->fecha_cotizacion}}</th>
+                    @if($pago['forma'][0] == 'Efectivo')
+                    <th>{{$pago['forma'][0]}} |
+                        Dolar: ${{$pago['forma'][1]->cotizacion}} |
+                        Fecha Cotización: {{$pago['forma'][1]->fecha_cotizacion}}</th>
                     @endif
-                    @if($pago->forma()[0] == 'Cheque')
-                    <th>{{$pago->forma()[0]}} |
-                        Número: {{$pago->forma()[1]->numero}} |
-                        Recibido: {{$pago->forma()[1]->fecharecibido}} |
-                        Cobro: {{$pago->forma()[1]->fechacobro}} |
-                        Banco: {{$pago->forma()[1]->banco}} |
-                        Emisor: {{$pago->forma()[1]->emisor}} |
-                        Estado: {{$pago->forma()[1]->estado}} |
-                        Dolar: {{$pago->forma()[1]->cotizacion}} |
-                        Fecha Cotización: {{$pago->forma()[1]->fecha_cotizacion}}</th>
+                    @if($pago['forma'][0] == 'Cheque')
+                    <th>{{$pago['forma'][0]}} |
+                        Número: {{$pago['forma'][1]->numero}} |
+                        Recibido: {{$pago['forma'][1]->fecharecibido}} |
+                        Cobro: {{$pago['forma'][1]->fechacobro}} |
+                        Banco: {{$pago['forma'][1]->banco}} |
+                        Emisor: {{$pago['forma'][1]->emisor}} |
+                        Estado: {{$pago['forma'][1]->estado}} |
+                        Dolar: {{$pago['forma'][1]->cotizacion}} |
+                        Fecha Cotización: {{$pago['forma'][1]->fecha_cotizacion}}</th>
                     @endif
-                    @if($pago->forma()[0] == 'Transferencia')
-                    <th>{{$pago->forma()[0]}} |
-                        Número: {{$pago->forma()[1]->numero}} |
-                        Fecha: {{$pago->forma()[1]->fecha}} |
-                        Banco: {{$pago->forma()[1]->banco}} |
-                        Emisor: {{$pago->forma()[1]->emisor}} |
-                        Dolar: {{$pago->forma()[1]->cotizacion}} |
-                        Fecha Cotización: {{$pago->forma()[1]->fecha_cotizacion}}</th>
+                    @if($pago['forma'][0] == 'Transferencia')
+                    <th>{{$pago['forma'][0]}} |
+                        Número: {{$pago['forma'][1]->numero}} |
+                        Fecha: {{$pago['forma'][1]->fecha}} |
+                        Banco: {{$pago['forma'][1]->banco}} |
+                        Emisor: {{$pago['forma'][1]->emisor}} |
+                        Dolar: {{$pago['forma'][1]->cotizacion}} |
+                        Fecha Cotización: {{$pago['forma'][1]->fecha_cotizacion}}</th>
                     @endif
-                    <th>$ {{$pago->forma()[1]->pesos}}</th>
+                    <th>$ {{$pago['forma'][1]->pesos}}</th>
                 </tr>
                 @endforeach
             </table>
@@ -329,32 +329,32 @@
                     <th>USD {{$pago->importe}}</th>
                     <th>{{$pago->fecha}}</th>
                     <th>{{$pago->ctacte_id}}</th>
-                    @if($pago->forma()[0] == 'Efectivo')
-                    <th>{{$pago->forma()[0]}} |
-                        Dolar: ${{$pago->forma()[1]->cotizacion}} |
-                        Fecha Cotización: {{$pago->forma()[1]->fecha_cotizacion}}</th>
+                    @if($pago['forma'][0] == 'Efectivo')
+                    <th>{{$pago['forma'][0]}} |
+                        Dolar: ${{$pago['forma'][1]->cotizacion}} |
+                        Fecha Cotización: {{$pago['forma'][1]->fecha_cotizacion}}</th>
                     @endif
-                    @if($pago->forma()[0] == 'Cheque')
-                    <th>{{$pago->forma()[0]}} |
-                        Número: {{$pago->forma()[1]->numero}} |
-                        Recibido: {{$pago->forma()[1]->fecharecibido}} |
-                        Cobro: {{$pago->forma()[1]->fechacobro}} |
-                        Banco: {{$pago->forma()[1]->banco}} |
-                        Emisor: {{$pago->forma()[1]->emisor}} |
-                        Estado: {{$pago->forma()[1]->estado}} |
-                        Dolar: {{$pago->forma()[1]->cotizacion}} |
-                        Fecha Cotización: {{$pago->forma()[1]->fecha_cotizacion}}</th>
+                    @if($pago['forma'][0] == 'Cheque')
+                    <th>{{$pago['forma'][0]}} |
+                        Número: {{$pago['forma'][1]->numero}} |
+                        Recibido: {{$pago['forma'][1]->fecharecibido}} |
+                        Cobro: {{$pago['forma'][1]->fechacobro}} |
+                        Banco: {{$pago['forma'][1]->banco}} |
+                        Emisor: {{$pago['forma'][1]->emisor}} |
+                        Estado: {{$pago['forma'][1]->estado}} |
+                        Dolar: {{$pago['forma'][1]->cotizacion}} |
+                        Fecha Cotización: {{$pago['forma'][1]->fecha_cotizacion}}</th>
                     @endif
-                    @if($pago->forma()[0] == 'Transferencia')
-                    <th>{{$pago->forma()[0]}} |
-                        Número: {{$pago->forma()[1]->numero}} |
-                        Fecha: {{$pago->forma()[1]->fecha}} |
-                        Banco: {{$pago->forma()[1]->banco}} |
-                        Emisor: {{$pago->forma()[1]->emisor}} |
-                        Dolar: {{$pago->forma()[1]->cotizacion}} |
-                        Fecha Cotización: {{$pago->forma()[1]->fecha_cotizacion}}</th>
+                    @if($pago['forma'][0] == 'Transferencia')
+                    <th>{{$pago['forma'][0]}} |
+                        Número: {{$pago['forma'][1]->numero}} |
+                        Fecha: {{$pago['forma'][1]->fecha}} |
+                        Banco: {{$pago['forma'][1]->banco}} |
+                        Emisor: {{$pago['forma'][1]->emisor}} |
+                        Dolar: {{$pago['forma'][1]->cotizacion}} |
+                        Fecha Cotización: {{$pago['forma'][1]->fecha_cotizacion}}</th>
                     @endif
-                    <th>$ {{$pago->forma()[1]->pesos}}</th>
+                    <th>$ {{$pago['forma'][1]->pesos}}</th>
                 </tr>
                 @endforeach
             </table>

@@ -21,6 +21,7 @@ class Venta extends Model
         'subtotalPesos' => 'decimal:2',
         'totalPesos' => 'decimal:2',
         'cotizacion' => 'decimal:2',
+        'referencia' => 'array'
     ];
 
     public function user()
