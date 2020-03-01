@@ -4,7 +4,6 @@ namespace App\Traits;
 
 use App\Pago;
 use App\Venta;
-use App\Recibo;
 use App\Cuentacorriente;
 use App\Movimientocuenta;
 use App\Traits\FormasDePagoTrait;
@@ -75,20 +74,29 @@ trait CuentasCorrientesTrait
             }
         }
         // ALMACENAMIENTO DE RECIBO
-        if (Recibo::all()->last() == null) {
-            $config = ConfiguracionTrait::configuracion();
-            $numrecibo = $config['numrecibo'] + 1;
-        } else $numrecibo = Recibo::all()->last()->numrecibo + 1;
-
-        $recibo = Recibo::create([
-            'fecha' => now()->format('Ymd'),
-            'total' => $total,
-            'numrecibo' => $numrecibo
-        ]);
+        $recibo = RecibosTrait::crearRecibo($total);
 
         $recibo->pagos()->attach($aux);
 
         return $recibo->id;
+    }
+
+    public static function crearCuenta($factura)
+    {
+        $cuenta = Cuentacorriente::create([
+            'venta_id' => $factura->id,
+            'importe' => $factura->total,
+            'saldo' => $factura->total,
+            'alta' => now(),
+            'estado' => 'ACTIVA'
+        ]);
+        Movimientocuenta::create([
+            'ctacte_id' => $cuenta->id,
+            'tipo' => 'ALTA',
+            'fecha' => now(),
+            'user_id' => auth()->user()->id,
+            'importe' => $cuenta->importe
+        ]);
     }
 
     public static function nroPago()

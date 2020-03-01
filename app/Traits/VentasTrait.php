@@ -7,13 +7,11 @@ use App\Cliente;
 use App\Articulo;
 use Carbon\Carbon;
 use App\Inventario;
-use App\Movimiento;
-use App\Cuentacorriente;
-use App\Movimientocuenta;
 use App\Traits\ArticulosTrait;
 use App\Traits\FormasDePagoTrait;
 use App\Traits\ConfiguracionTrait;
 use Illuminate\Support\Facades\DB;
+use App\Traits\CuentasCorrientesTrait;
 
 trait VentasTrait
 {
@@ -82,7 +80,6 @@ trait VentasTrait
 
     public static function store($request)
     {
-        // return $request;
         $atributos = $request;
         $cliente = Cliente::find($atributos['cliente_id']);
         $atributos['cuit'] = $cliente->documentounico;
@@ -98,16 +95,103 @@ trait VentasTrait
             $atributos['fechaCotizacion'] = null;
         }
 
-        // $config = ConfiguracionTrait::configuracion();
-
-        if ($atributos['pagada']) {
-            foreach ($atributos['pagos'] as $pay) {
-                $referencia[] = FormasDePagoTrait::formaPago($pay, $cliente, $diferencia = null);
-            }
-        } else $referencia = null;
+        // if ($atributos['pagada']) {
+        //     foreach ($atributos['pagos'] as $pay) {
+        //         $referencia[] = FormasDePagoTrait::formaPago($pay, $cliente, $diferencia = null);
+        //     }
+        // } else $referencia = null;
+        $referencia = null;
 
         // ALMACENAMIENTO DE FACTURA
-        $factura = Venta::create([
+        $factura = static::crearVenta($atributos, $referencia);
+
+        // ALMACENAMIENTO DE DETALLES
+        $det = static::detallesVentas($request->get('detalles'), $atributos, $factura);
+
+        $factura->articulos()->attach($det);
+        // CREACION DE CUENTA CORRIENTE
+        if (($factura->pagada == false) && ($cliente->id != 1)) {
+            CuentasCorrientesTrait::crearCuenta($factura);
+        }
+        $aux = collect($det);
+
+        // DESCUENTA LOS INVENTARIOS
+        static::actualizarInventarios($aux, $factura);
+
+        return $factura->id;
+    }
+
+    public static function show($id)
+    {
+        return static::verVenta($id);
+    }
+
+    public static function actualizarInventarios($aux, $factura)
+    {
+        for ($i = 0; $i < count($aux); $i++) {
+            if (auth()->user()->role->role == 'superAdmin' || auth()->user()->role->role == 'administrador') {
+                $article = Inventario::where('dependencia', null)
+                    ->where('cantidad', '>', 0)
+                    ->where('articulo_id', $aux[$i]['articulo_id'])->get();
+            } else {
+                $article = Inventario::where('dependencia', auth()->user()->id)
+                    ->where('cantidad', '>', 0)
+                    ->where('articulo_id', $aux[$i]['articulo_id'])->get();
+            }
+
+            if ($aux[$i]['cantidad'] <= $article[0]['cantidad']) {
+                $art = Articulo::find($aux[$i]['articulo_id']);
+                $article[0]['cantidad'] -= $aux[$i]['cantidad'];
+                $article[0]['cantidadLitros'] = $article[0]['cantidad'] * $art->litros;
+                $article[0]->save();
+
+                MovimientosTrait::crearMovimiento('VENTA', $aux[$i]['cantidad'], ($aux[$i]['cantidad'] * $art->litros), $article[0], $factura);
+            } else {
+                $factura->articulos()->detach();
+                $factura->forceDelete();
+            }
+
+            if ($article[0]['cantidad'] == 0) {
+                $arti = Articulo::find($article[0]->articulo_id);
+                ArticulosTrait::crearNotificacion($arti);
+            }
+
+            unset($article);
+        }
+    }
+
+    public static function detallesVentas($details, $atributos, $factura)
+    {
+        foreach ($details as $detail) {
+            if ($atributos['condicionventa'] == 'CUENTA CORRIENTE') {
+                $detail['subtotalPesos'] = null;
+                $detail['cotizacion'] = null;
+                $detail['fechaCotizacion'] = null;
+            }
+            $detalles = array(
+                'codarticulo' => $detail['codarticulo'],
+                'articulo' => $detail['articulo'],
+                'cantidad' => $detail['cantidad'],
+                'cantidadLitros' => $detail['cantidadLitros'],
+                'medida' => $detail['medida'],
+                'preciounitario' => $detail['precio'],
+                'subtotalPesos' => $detail['subtotalPesos'],
+                'subtotal' => $detail['subtotalDolares'],
+                'cotizacion' => $detail['cotizacion'],
+                'fechaCotizacion' => $detail['fechaCotizacion'],
+                'articulo_id' => $detail['id'],
+                'venta_id' => $factura->id,
+                'created_at' => now()->format('Ymd'),
+            );
+            $det[] = $detalles;
+        }
+
+        return $det;
+    }
+
+    public static function crearVenta($atributos, $referencia)
+    {
+        return Venta::create([
             "cuit" => $atributos['cuit'], //cliente
             "tipocomprobante" => $atributos['tipoComprobante'],
             "numventa" => $atributos['numventa'],
@@ -128,98 +212,6 @@ trait VentasTrait
             "cliente_id" => $atributos['cliente_id'],
             "user_id" => auth()->user()->id,
         ]);
-        // ALMACENAMIENTO DE DETALLES
-        foreach ($request->get('detalles') as $detail) {
-            if ($atributos['condicionventa'] == 'CUENTA CORRIENTE') {
-                $detail['subtotalPesos'] = null;
-                $detail['cotizacion'] = null;
-                $detail['fechaCotizacion'] = null;
-            }
-            $detalles = array(
-                'codarticulo' => $detail['codarticulo'],
-                'articulo' => $detail['articulo'],
-                'cantidad' => $detail['cantidad'],
-                'cantidadLitros' => $detail['cantidadLitros'],
-                'medida' => $detail['medida'],
-                // 'bonificacion' => 0,
-                // 'alicuota' => 0,
-                'preciounitario' => $detail['precio'],
-                'subtotalPesos' => $detail['subtotalPesos'],
-                'subtotal' => $detail['subtotalDolares'],
-                'cotizacion' => $detail['cotizacion'],
-                'fechaCotizacion' => $detail['fechaCotizacion'],
-                'articulo_id' => $detail['id'],
-                'venta_id' => $factura->id,
-                'created_at' => now()->format('Ymd'),
-            );
-            $det[] = $detalles;
-        }
-        $factura->articulos()->attach($det);
-        // CREACION DE CUENTA CORRIENTE
-        if (($factura->pagada == false) && ($cliente->id != 1)) {
-            $cuenta = Cuentacorriente::create([
-                'venta_id' => $factura->id,
-                'importe' => $factura->total,
-                'saldo' => $factura->total,
-                'alta' => now(),
-                'estado' => 'ACTIVA'
-            ]);
-            Movimientocuenta::create([
-                'ctacte_id' => $cuenta->id,
-                'tipo' => 'ALTA',
-                'fecha' => now(),
-                'user_id' => auth()->user()->id,
-                'importe' => $cuenta->importe
-            ]);
-        }
-        $aux = collect($det);
-
-        // DESCUENTA LOS INVENTARIOS
-        for ($i = 0; $i < count($aux); $i++) {
-            if (auth()->user()->role->role == 'superAdmin' || auth()->user()->role->role == 'administrador') {
-                $article = Inventario::where('dependencia', null)
-                    ->where('cantidad', '>', 0)
-                    ->where('articulo_id', $aux[$i]['articulo_id'])->get();
-            } else {
-                $article = Inventario::where('dependencia', auth()->user()->id)
-                    ->where('cantidad', '>', 0)
-                    ->where('articulo_id', $aux[$i]['articulo_id'])->get();
-            }
-
-            if ($aux[$i]['cantidad'] <= $article[0]['cantidad']) {
-                $art = Articulo::find($aux[$i]['articulo_id']);
-                $article[0]['cantidad'] -= $aux[$i]['cantidad'];
-                $article[0]['cantidadLitros'] = $article[0]['cantidad'] * $art->litros;
-                $article[0]->save();
-                Movimiento::create([
-                    'inventario_id' => $article[0]->id,
-                    'tipo' => 'VENTA',
-                    'cantidadlitros' => ($aux[$i]['cantidad'] * $art->litros),
-                    'cantidad' => $aux[$i]['cantidad'],
-                    'fecha' => now(),
-                    'numcomprobante' => $factura->id,
-                    'user_id' => auth()->user()->id
-                ]);
-            } else {
-                $factura->articulos()->detach();
-                $factura->forceDelete();
-            }
-
-            if ($article[0]['cantidad'] == 0) {
-                // Probando notificaciones
-                $arti = Articulo::find($article[0]->articulo_id);
-                ArticulosTrait::crearNotificacion($arti);
-                // ------------
-            }
-
-            unset($article);
-        }
-        return $factura->id;
-    }
-
-    public static function show($id)
-    {
-        return static::verVenta($id);
     }
 
     public static function verVenta($id)
@@ -241,10 +233,6 @@ trait VentasTrait
     public static function facturar($request)
     {
         $factura = collect();
-        // if (array_key_exists('cliente', $request->id)) {
-        //     $cliente = Cliente::findOrFail($request->id['cliente']);
-        //     $factura->put('cliente', $cliente);
-        // }
         $ids = $request->id['seleccionadas'];
 
         $details = collect();
@@ -301,15 +289,8 @@ trait VentasTrait
                 $inventario = $a->inventario;
                 $inventario->cantidad = $inventario->cantidad + $a->cantidad;
                 $inventario->save();
-                Movimiento::create([
-                    'inventario_id' => $inventario->id,
-                    'tipo' => 'ANULACION',
-                    'cantidad' => $a->cantidad,
-                    'cantidadlitros' => $a->cantidadlitros,
-                    'fecha' => now(),
-                    'numcomprobante' => $factura->id,
-                    'user_id' => auth()->user()->id
-                ]);
+
+                MovimientosTrait::crearMovimiento('ANULACION', $a->cantidad, $a->cantidadlitros, $inventario, $factura);
             }
         }
         return ['msg' => 'Factura Anulada'];

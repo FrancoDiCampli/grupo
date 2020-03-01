@@ -211,6 +211,11 @@ trait ClientesTrait
                     $fechamov = new Carbon($aux->fecha);
                     $aux->fecha = $fechamov->format('d-m-Y');
                 }
+
+                $orderMoves = collect($cuentas[$i]['movimientos']);
+                $ord = $orderMoves->sortByDesc('id');
+                $cuentas[$i]['movimientos'] = $ord->values()->all();
+
                 $orden = collect($cuentas[$i]->pagos);
                 $order = $orden->sortByDesc('id');
                 $pagos = $order->values()->all();
