@@ -43,6 +43,24 @@ trait MovimientosTrait
         return $arreglo->take($request->get('limit', null));
     }
 
+    public static function crearMovimiento(
+        $tipo,
+        $cantidad,
+        $cantLitros,
+        $inventario,
+        $factura
+    ) {
+        Movimiento::create([
+            'tipo' => $tipo,
+            'cantidadlitros' => $cantLitros,
+            'cantidad' => $cantidad,
+            'fecha' => now(),
+            'inventario_id' => $inventario->id,
+            'numcomprobante' => $factura->id,
+            'user_id' => auth()->user()->id
+        ]);
+    }
+
     public static function movimientosCuenta($request)
     {
         $movimientosCuentas = Movimientocuenta::orderBy('id', 'ASC')->get();

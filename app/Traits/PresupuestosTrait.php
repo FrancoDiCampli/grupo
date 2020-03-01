@@ -63,11 +63,44 @@ trait PresupuestosTrait
         $cliente = Cliente::find($atributos['cliente_id']);
         $atributos['cuit'] = $cliente->documentounico;
 
-        $jsonString = file_get_contents(base_path('config.json'));
-        $configuracion = json_decode($jsonString, true);
-
         // ALMACENAMIENTO DE PRESUPUESTO
-        $presupuesto = Presupuesto::create([
+        $presupuesto = static::crearPresupuesto($atributos);
+
+        // ALMACENAMIENTO DE DETALLES
+        $det = static::detallesPresupuesto($request->get('detalles'), $presupuesto);
+
+        $presupuesto->articulos()->attach($det);
+
+        return $presupuesto->id;
+    }
+
+    public static function detallesPresupuesto($details, $presupuesto)
+    {
+        foreach ($details as $detail) {
+            $detalles = array(
+                'codarticulo' => $detail['codarticulo'],
+                'articulo' => $detail['articulo'],
+                'cantidad' => $detail['cantidad'],
+                'cantidadLitros' => $detail['cantidadLitros'],
+                'medida' => $detail['medida'],
+                'preciounitario' => $detail['precio'],
+                'subtotalPesos' => $detail['subtotalPesos'],
+                'subtotal' => $detail['subtotalDolares'],
+                'cotizacion' => $detail['cotizacion'],
+                'fechaCotizacion' => $detail['fechaCotizacion'],
+                'articulo_id' => $detail['id'],
+                'presupuesto_id' => $presupuesto->id,
+            );
+            $det[] = $detalles;
+        }
+        return $det;
+    }
+
+    public static function crearPresupuesto($atributos)
+    {
+        $configuracion = ConfiguracionTrait::configuracion();
+
+        return Presupuesto::create([
             "ptoventa" => $configuracion['puntoventa'],
             "numpresupuesto" => $atributos['numpresupuesto'],
             "cuit" => $atributos['cuit'],
@@ -85,31 +118,6 @@ trait PresupuestosTrait
             "cliente_id" => $atributos['cliente_id'],
             "user_id" => auth()->user()->id
         ]);
-
-        // ALMACENAMIENTO DE DETALLES
-        foreach ($request->get('detalles') as $detail) {
-            $detalles = array(
-                'codarticulo' => $detail['codarticulo'],
-                'articulo' => $detail['articulo'],
-                'cantidad' => $detail['cantidad'],
-                'cantidadLitros' => $detail['cantidadLitros'],
-                'medida' => $detail['medida'],
-                // 'bonificacion' => 0,
-                // 'alicuota' => 0,
-                'preciounitario' => $detail['precio'],
-                'subtotalPesos' => $detail['subtotalPesos'],
-                'subtotal' => $detail['subtotalDolares'],
-                'cotizacion' => $detail['cotizacion'],
-                'fechaCotizacion' => $detail['fechaCotizacion'],
-                'articulo_id' => $detail['id'],
-                'presupuesto_id' => $presupuesto->id,
-            );
-            $det[] = $detalles;
-        }
-
-        $presupuesto->articulos()->attach($det);
-
-        return $presupuesto->id;
     }
 
     public static function show($id)

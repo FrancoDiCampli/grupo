@@ -129,10 +129,8 @@ trait ConsignacionesTrait
                     $data['inventario_id'] = $origen['id'];
                     $inventory = InventariosAdmin::decrementarInventario($data);
                     if ($inventory['cantidad'] == 0) {
-                        // Probando notificaciones
                         $arti = Articulo::find($inventory['articulo_id']);
                         ArticulosTrait::crearNotificacion($arti);
-                        // ------------
                     }
 
                     $data['inventario_id'] = $actualizar['id'];
@@ -146,10 +144,8 @@ trait ConsignacionesTrait
 
                     $inventory = InventariosAdmin::decrementarInventario($data);
                     if ($inventory['cantidad'] == 0) {
-                        // Probando notificaciones
                         $arti = Articulo::find($inventory['articulo_id']);
                         ArticulosTrait::crearNotificacion($arti);
-                        // ------------
                     }
                     $data['inventario_id'] = $origen['id'];
                     InventariosAdmin::movimientoBajaConsignacion($data);
