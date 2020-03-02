@@ -25,7 +25,11 @@
                     outlined
                 ></v-select>
             </v-col>
-            <v-col cols="12" sm="6" class="py-0">
+            <v-col
+                cols="12"
+                :sm="$store.state.auth.user.rol != 'vendedor' ? '6' : '12'"
+                class="py-0"
+            >
                 <v-text-field
                     v-model="$store.state.clientes.form.razonsocial"
                     :rules="[rules.required, rules.max]"
@@ -34,7 +38,12 @@
                     outlined
                 ></v-text-field>
             </v-col>
-            <v-col cols="12" sm="6" class="py-0">
+            <v-col
+                cols="12"
+                sm="6"
+                class="py-0"
+                v-if="$store.state.auth.user.rol != 'vendedor'"
+            >
                 <v-select
                     label="Tipo"
                     v-model="$store.state.clientes.form.tipo"
