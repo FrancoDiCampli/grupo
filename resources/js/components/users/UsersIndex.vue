@@ -8,7 +8,7 @@
                     hide-default-footer
                     :headers="headers"
                     :items="$store.state.users.users.users"
-                    :items-per-page="limit"
+                    :items-per-page="-1"
                     :mobile-breakpoint="0"
                 >
                     <template v-slot:item="item">

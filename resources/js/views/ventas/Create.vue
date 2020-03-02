@@ -39,12 +39,10 @@
 
 <script>
 import VentasForm from "../../components/ventas/VentasForm";
-
 export default {
     components: {
         VentasForm
     },
-
     methods: {
         async saveVenta() {
             if (this.$refs.CreateVenta.validate()) {
@@ -52,12 +50,13 @@ export default {
                 if (checkData) {
                     await this.$store.dispatch("ventas/save");
                     this.$refs.formVentas.getPoint();
+                    this.$refs.formVentas.getArticles();
                     this.resetForm();
                 }
             }
         },
-
         resetForm() {
+            this.$refs.CreateVenta.reset();
             this.$refs.formVentas.resetData();
             window.scrollTo(0, 0);
         }

@@ -23,7 +23,7 @@ const mutations = {
 };
 
 const actions = {
-    index({ commit, dispatch }, params) {
+    index({ state, commit, dispatch }, params) {
         return new Promise((resolve, reject) => {
             axios
                 .get("/api/clientes", { params: params })

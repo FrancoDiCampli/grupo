@@ -52,7 +52,7 @@
 export default {
     data: () => ({
         activeTab: 0,
-        reports: ["Ventas", "Vend. | Dist.", "Clientes", "Condiciones"]
+        reports: ["Ventas", "Vendedor", "Client. | Dist.", "Condiciones"]
     })
 };
 </script>

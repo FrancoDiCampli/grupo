@@ -65,7 +65,6 @@
                                                 <thead>
                                                     <tr>
                                                         <th class="text-xs-left">Apellido Nombre</th>
-                                                        <th class="text-xs-left">Rol</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -79,7 +78,6 @@
                                                 "
                                                     >
                                                         <td>{{ vendedor.name }}</td>
-                                                        <td>{{ vendedor.rol.role }}</td>
                                                     </tr>
                                                 </tbody>
                                             </v-simple-table>
@@ -670,6 +668,7 @@ export default {
         await this.checkCurrency();
         await this.getPoint();
         await this.getArticles();
+        this.$store.state.consignaciones.form.tipo = "TRANSFERENCIA";
         this.inProcess = false;
     },
 
@@ -744,7 +743,8 @@ export default {
                     buscar: this.searchVendedor
                 })
                 .then(response => {
-                    this.vendedores = response.data.dependencias;
+                    // console.log(response.data);
+                    this.vendedores = response.data.vendedores;
                     this.searchInProcess = false;
                 })
                 .catch(error => {
@@ -754,12 +754,6 @@ export default {
         },
 
         selectVendedor(vendedor) {
-            if (vendedor.rol.role == "vendedor") {
-                this.$store.state.consignaciones.form.tipo = "TRANSFERENCIA";
-            } else if (vendedor.rol.role == "distribuidor") {
-                this.$store.state.consignaciones.form.tipo = "REMITO X";
-            }
-
             this.searchVendedor = vendedor.name;
             this.$store.state.consignaciones.form.vendedor_id = vendedor.id;
             this.vendedores = [];

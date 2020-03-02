@@ -24,7 +24,6 @@ const actions = {
                 .get("/api/users", { params: params })
                 .then(response => {
                     commit("fillUsers", response.data);
-                    console.log(response.data);
                     resolve(response.data);
                 })
                 .catch(error => {

@@ -318,7 +318,6 @@ export default {
 
     methods: {
         checkStock() {
-            console.log(this.$store.state.articulos.articulo);
             if (this.$store.state.articulos.articulo.stock <= 0) {
                 this.$store.state.inventarios.form.movimiento = "ALTA";
                 this.disabled.movimiento = true;

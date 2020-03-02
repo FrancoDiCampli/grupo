@@ -13,7 +13,7 @@
                     :headers="headers"
                     :items="$store.state.compras.compras.remitos"
                     hide-default-footer
-                    :items-per-page="limit"
+                    :items-per-page="-1"
                     :mobile-breakpoint="0"
                 >
                     <template v-slot:item="{ item }">

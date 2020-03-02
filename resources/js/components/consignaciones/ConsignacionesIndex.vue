@@ -13,7 +13,7 @@
                     :headers="headers"
                     :items="$store.state.consignaciones.consignaciones.consignaciones"
                     hide-default-footer
-                    :items-per-page="limit"
+                    :items-per-page="-1"
                     :mobile-breakpoint="0"
                 >
                     <template v-slot:item="{ item }">
@@ -22,7 +22,7 @@
                             <td>{{ item.dependencia.name }}</td>
                             <td class="hidden-xs-only">{{ item.fecha }}</td>
                             <td>{{ item.tipo }}</td>
-                            <!-- <td>
+                            <td>
                                 <v-menu offset-y>
                                     <template v-slot:activator="{ on }">
                                         <v-btn color="secondary" text icon v-on="on">
@@ -30,18 +30,12 @@
                                         </v-btn>
                                     </template>
                                     <v-list>
-                                        <v-list-item
-                                            v-if="item.numventa"
-                                            @click="printVenta(item.numventa)"
-                                        >
-                                            <v-list-item-title>Venta</v-list-item-title>
-                                        </v-list-item>
                                         <v-list-item @click="print(item.id)">
-                                            <v-list-item-title>Remito</v-list-item-title>
+                                            <v-list-item-title>Imprimir</v-list-item-title>
                                         </v-list-item>
                                     </v-list>
                                 </v-menu>
-                            </td>-->
+                            </td>
                         </tr>
                     </template>
                 </v-data-table>
@@ -58,8 +52,8 @@ export default {
             { text: "Número", sortable: false },
             { text: "Nombre", sortable: false },
             { text: "Fecha", sortable: false, class: "hidden-xs-only" },
-            { text: "Tipo", sortable: false }
-            // { text: "", sortable: false }
+            { text: "Tipo", sortable: false },
+            { text: "", sortable: false }
         ]
     }),
 
@@ -68,10 +62,6 @@ export default {
     methods: {
         print(id) {
             this.$store.dispatch("PDF/printConsignacion", { id: id });
-        },
-
-        printVenta(id) {
-            this.$store.dispatch("PDF/printVenta", { id: id });
         }
     }
 };

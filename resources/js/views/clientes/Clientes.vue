@@ -23,20 +23,38 @@
             <v-row justify="center">
                 <v-col cols="12" md="10" lg="8">
                     <ClientesIndex :limit="limit">
-                        <br />
-                        <v-row justify="center" v-if="$store.state.clientes.clientes">
-                            <v-btn
-                                :loading="$store.state.inProcess"
-                                :disabled="
+                        <template slot="cliente">
+                            <br />
+                            <v-row justify="center" v-if="$store.state.clientes.clientes">
+                                <v-btn
+                                    :loading="$store.state.inProcess"
+                                    :disabled="
                                         limit >=
-                                            $store.state.clientes.clientes.total
+                                           $store.state.clientes.clientes.clientes.total
                                     "
-                                @click="loadMore()"
-                                color="secondary"
-                                outlined
-                                tile
-                            >Cargar Más</v-btn>
-                        </v-row>
+                                    @click="loadMore()"
+                                    color="secondary"
+                                    outlined
+                                    tile
+                                >Cargar Más</v-btn>
+                            </v-row>
+                        </template>
+                        <template slot="distribuidor">
+                            <br />
+                            <v-row justify="center" v-if="$store.state.clientes.clientes">
+                                <v-btn
+                                    :loading="$store.state.inProcess"
+                                    :disabled="
+                                        limit >=
+                                            $store.state.clientes.clientes.distribuidores.total
+                                    "
+                                    @click="loadMore()"
+                                    color="secondary"
+                                    outlined
+                                    tile
+                                >Cargar Más</v-btn>
+                            </v-row>
+                        </template>
                     </ClientesIndex>
                 </v-col>
             </v-row>
