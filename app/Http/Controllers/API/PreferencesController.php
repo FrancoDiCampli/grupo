@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Traits\ConfiguracionTrait;
 
 class PreferencesController extends Controller
 {
@@ -14,9 +14,6 @@ class PreferencesController extends Controller
 
     public function getConfig()
     {
-        $jsonString = file_get_contents(base_path('config.json'));
-        $preferences = json_decode($jsonString, true);
-
-        return $preferences;
+        return ConfiguracionTrait::configuracion();
     }
 }

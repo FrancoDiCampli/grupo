@@ -2,11 +2,15 @@
 
 namespace App\Traits;
 
-use App\User;
-use App\Recibo;
-use App\Cliente;
 use App\Role;
+use App\User;
+use App\Cliente;
 use Carbon\Carbon;
+use App\Traits\FotosTrait;
+use App\Traits\RecibosTrait;
+use App\Traits\ContactosTrait;
+use App\Notifications\Verificar;
+use App\Traits\FormasDePagoTrait;
 
 trait ClientesTrait
 {
@@ -71,7 +75,7 @@ trait ClientesTrait
         $atributos['observaciones'] = $request['observaciones'];
         $atributos['distribuidor'] = $isDistributor;
 
-        $usuario = ClientesTrait::crearUsuario($request);
+        $usuario = static::crearUsuario($request);
 
         $cliente = Cliente::create($atributos);
 
@@ -158,34 +162,7 @@ trait ClientesTrait
 
     public  static function showRecibos($id)
     {
-        $jsonString = file_get_contents(base_path('config.json'));
-        $configuracion = json_decode($jsonString, true);
-        $recibo = Recibo::find($id);
-        $fecha = new Carbon($recibo->fecha);
-        $recibo->fecha = $fecha->format('d-m-Y');
-        $pagos = $recibo->pagos;
-        $cliente = null;
-        $cotizacion = null;
-        $fechaCotizacion = null;
-        foreach ($pagos as $pay) {
-            $fecha = new Carbon($pay->fecha);
-            $pay->fecha = $fecha->format('d-m-Y');
-            $pay['cuenta'] = $pay->ctacte;
-            $pay['factura'] = $pay->ctacte->factura;
-            $pay['forma'] = $pay->forma();
-            $cliente = $pay->ctacte->factura->cliente;
-            $cotizacion = $pay['forma'][1]['cotizacion'];
-            $fechaCotizacion = $pay['forma'][1]['fecha_cotizacion'];
-        }
-        $recibo['cotizacion'] = $cotizacion;
-        $recibo['fecha_cotizacion'] = $fechaCotizacion;
-
-        return [
-            'configuracion' => $configuracion,
-            'recibo' => $recibo,
-            'cliente' => $cliente,
-            'pagos' => $pagos
-        ];
+        return RecibosTrait::verRecibo($id);
     }
 
     public static function showCliente($id)
@@ -234,6 +211,11 @@ trait ClientesTrait
                     $fechamov = new Carbon($aux->fecha);
                     $aux->fecha = $fechamov->format('d-m-Y');
                 }
+
+                $orderMoves = collect($cuentas[$i]['movimientos']);
+                $ord = $orderMoves->sortByDesc('id');
+                $cuentas[$i]['movimientos'] = $ord->values()->all();
+
                 $orden = collect($cuentas[$i]->pagos);
                 $order = $orden->sortByDesc('id');
                 $pagos = $order->values()->all();
@@ -246,7 +228,8 @@ trait ClientesTrait
                 foreach ($cuentas[$i]['pagos'] as $key) {
                     $fec = new Carbon($key->fecha);
                     $key->fecha = $fec->format('d-m-Y');
-                    $key['forma'] = $key->forma();
+                    $pays = FormasDePagoTrait::verPagos($key);
+                    $key['forma'] = $pays;
                 }
 
                 if ($cuentas[$i]->estado == 'ACTIVA') {

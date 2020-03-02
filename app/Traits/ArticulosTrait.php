@@ -2,13 +2,14 @@
 
 namespace App\Traits;
 
+use App\User;
 use App\Articulo;
+use App\Inventario;
 use App\Traits\FotosTrait;
 use App\Traits\MarcasTrait;
 use App\Traits\CategoriasTrait;
 use App\Traits\InventariosAdmin;
-use App\Traits\ArticulosNotificacionesTrait;
-use App\User;
+use App\Notifications\ArticuloNotification;
 
 trait ArticulosTrait
 {
@@ -20,7 +21,7 @@ trait ArticulosTrait
 
         foreach ($articles as $art) {
 
-            if (auth()->user()->role_id == 1 || auth()->user()->role_id == 2) {
+            if (auth()->user()->role->role == 'superAdmin' || auth()->user()->role->role == 'administrador') {
 
                 if ($art->inventarios->count() > 0) {
                     $stock = $art->inventarios[0]['cantidad'];
@@ -97,7 +98,7 @@ trait ArticulosTrait
             ];
             InventariosAdmin::movimientoAlta($inventario, $datos);
         } else {
-            ArticulosNotificacionesTrait::crearNotificacion($articulo);
+            static::crearNotificacion($articulo);
         }
 
         return 'creado';
@@ -153,5 +154,19 @@ trait ArticulosTrait
             $aux->push($inv);
         }
         return ['articulo' => $articulo, 'stock' => $stock, 'inventarios' => $aux, 'marca' => $marca, 'categoria' => $categoria];
+    }
+
+    public static function crearNotificacion($articulo)
+    {
+        $user = User::findOrFail(auth()->user()->id);
+
+        if ($user->role->role == 'administrador') {
+            $user->notify(new ArticuloNotification($articulo));
+        } else {
+            $tiene = Inventario::where('dependencia', $user->id)->where('articulo_id', $articulo->id)->get();
+            if ($tiene) {
+                $user->notify(new ArticuloNotification($articulo));
+            }
+        }
     }
 }

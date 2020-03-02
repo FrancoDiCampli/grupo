@@ -32,7 +32,7 @@ trait CategoriasTrait
             return $category[0]->id;
         } else {
             $request = new Request(['categoria' => $categoria]);
-            $nuevaCategoria = CategoriasTrait::store($request);
+            $nuevaCategoria = static::store($request);
             return $nuevaCategoria->id;
         }
     }

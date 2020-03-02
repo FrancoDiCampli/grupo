@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Contacto;
 use App\Supplier;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Traits\ContactosTrait;
+use App\Http\Requests\StoreSupplier;
+use App\Http\Requests\UpdateSupplier;
+use App\Traits\SuppliersTrait;
 
 class SuppliersController extends Controller
 {
@@ -24,55 +24,17 @@ class SuppliersController extends Controller
 
     public function index(Request $request)
     {
-        $suppliers = Supplier::orderBy('razonsocial', 'asc')
-            ->buscar($request);
-
-        return [
-            'proveedores' => $suppliers->take($request->get('limit', null))->get(),
-            'total' => $suppliers->count(),
-        ];
+        return SuppliersTrait::index($request);
     }
 
-    public function store(Request $request)
+    public function store(StoreSupplier $request)
     {
-        $data = $request->validate([
-            'razonsocial' => 'required|unique:suppliers|min:1|max:190',
-            'cuit' => 'required|unique:suppliers|min:11|max:11',
-            'direccion' => 'required|min:1|max:190',
-            'telefono' => 'required|min:6|max:13',
-            'email' => 'required|email',
-            'codigopostal' => 'required|min:4|max:4',
-            'localidad' => 'required|min:1|max:190',
-            'provincia' => 'required|min:1|max:190',
-            'observaciones' => 'nullable'
-        ]);
-
-        $supplier = Supplier::create($data);
-
-        ContactosTrait::crearContactos($supplier, $request);
-
-        return $supplier;
+        return SuppliersTrait::store($request);
     }
 
-    public function update(Request $request, $id)
+    public function update(UpdateSupplier $request, $id)
     {
-        $supplier = Supplier::findOrFail($id);
-
-        $data = $request->validate([
-            'razonsocial' => 'required|min:1|max:190|unique:suppliers,razonsocial,' . $supplier->id,
-            'cuit' => 'required|min:11|max:11|unique:suppliers,cuit,' . $supplier->id,
-            'direccion' => 'required|min:1|max:190',
-            'telefono' => 'required|min:6|max:13',
-            'email' => 'required|email',
-            'codigopostal' => 'required|min:4|max:4',
-            'localidad' => 'required|min:1|max:190',
-            'provincia' => 'required|min:1|max:190',
-            'observaciones' => 'nullable'
-        ]);
-
-        $supplier->update($data);
-
-        ContactosTrait::editarContactos($supplier, $request);
+        return SuppliersTrait::update($request, $id);
     }
 
     public function destroy($id)
@@ -85,15 +47,7 @@ class SuppliersController extends Controller
 
     public function show($id)
     {
-        $supplier = Supplier::find($id);
-        $contactos = ContactosTrait::contactos($supplier);
-        $remitos = $supplier->remitos;
-        foreach ($remitos as $remito) {
-            $fecha = new Carbon($remito->fecha);
-            $remito->fecha = $fecha->format('d-m-Y');
-        }
-
-        return ['proveedor' => $supplier, 'remitos' => $remitos, 'contactos' => $contactos];
+        return SuppliersTrait::show($id);
     }
 
     public function restaurar($id)

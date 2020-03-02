@@ -3,11 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use Afip;
-use App\User;
-use App\Recibo;
 use App\Cliente;
-use App\Contacto;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreCliente;
 use App\Http\Controllers\Controller;

@@ -13,6 +13,18 @@ trait BuscadorTrait
     {
         $buscar = $request->get('buscar');
 
+        $auxClientes = Cliente::orWhere('razonsocial', 'LIKE', "$buscar%")
+            ->orWhere('documentounico', 'LIKE', "$buscar%")
+            ->get();
+
+        $auxProveedores = Supplier::orWhere('razonsocial', 'LIKE', "$buscar%")
+            ->orWhere('cuit', 'LIKE', "$buscar%")
+            ->get();
+
+        $auxArticulos = Articulo::orWhere('articulo', 'LIKE', "$buscar%")
+            ->orWhere('codarticulo', "$buscar%")
+            ->get();
+
         $vendedores = collect();
         $distribuidores = collect();
 
@@ -25,52 +37,25 @@ trait BuscadorTrait
         }
         $vendedores->push($usuarios);
 
-        $distributors = Cliente::orWhere('razonsocial', 'LIKE', "$buscar%")
-            ->orWhere('documentounico', 'LIKE', "$buscar%")
-            ->get()
-            ->where('distribuidor', true);
+        $distributors = $auxClientes->where('distribuidor', true);
         $distribuidores->push($distributors);
 
         switch (auth()->user()->role->role) {
             case 'superAdmin':
-                $aux = Cliente::orWhere('razonsocial', 'LIKE', "$buscar%")
-                    ->orWhere('documentounico', 'LIKE', "$buscar%")
-                    ->get();
-
                 return [
-                    'clientes' => $aux->where('distribuidor', false),
-                    'proveedores' => Supplier::orWhere('razonsocial', 'LIKE', "$buscar%")
-                        ->orWhere('cuit', 'LIKE', "$buscar%")
-                        ->get(),
-                    'articulos' => Articulo::orWhere('articulo', 'LIKE', "$buscar%")
-                        ->orWhere('codarticulo', "$buscar%")
-                        ->get(),
+                    'clientes' => $auxClientes->where('distribuidor', false),
+                    'proveedores' => $auxProveedores,
+                    'articulos' => $auxArticulos,
                     'distribuidores' => $distribuidores->flatten(),
                     'vendedores' => $vendedores->flatten()
                 ];
                 break;
 
             case 'administrador':
-                if ($request->exists('nuevoComp')) {
-                    $user = User::find(auth()->user()->id);
-                    $aux = Cliente::orWhere('razonsocial', 'LIKE', "$buscar%")
-                        ->orWhere('documentounico', 'LIKE', "$buscar%")
-                        ->get()
-                        ->where('distribuidor', false);
-                } else {
-                    $aux = Cliente::orWhere('razonsocial', 'LIKE', "$buscar%")
-                        ->orWhere('documentounico', 'LIKE', "$buscar%")
-                        ->get()
-                        ->where('distribuidor', false);
-                }
                 return [
-                    'clientes' => $aux->where('distribuidor', false),
-                    'proveedores' => Supplier::orWhere('razonsocial', 'LIKE', "$buscar%")
-                        ->orWhere('cuit', 'LIKE', "$buscar%")
-                        ->get(),
-                    'articulos' => Articulo::orWhere('articulo', 'LIKE', "$buscar%")
-                        ->orWhere('codarticulo', "$buscar%")
-                        ->get(),
+                    'clientes' => $auxClientes->where('distribuidor', false),
+                    'proveedores' => $auxProveedores,
+                    'articulos' => $auxArticulos,
                     'distribuidores' => $distribuidores->flatten(),
                     'vendedores' => $vendedores->flatten()
                 ];
