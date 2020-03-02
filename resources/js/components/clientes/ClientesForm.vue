@@ -39,7 +39,10 @@
                     label="Tipo"
                     v-model="$store.state.clientes.form.tipo"
                     :rules="[rules.required]"
-                    :items="[{text: 'Cliente', value: false}, {text: 'Distribuidor', value: true}]"
+                    :items="[
+                        { text: 'Cliente', value: 'cliente' },
+                        { text: 'Distribuidor', value: 'distribuidor' }
+                    ]"
                     item-text="text"
                     item-value="value"
                     required
@@ -117,8 +120,12 @@
                             <tr>
                                 <th class="text-xs-left">Nombre</th>
                                 <th class="text-xs-left">TEL / CEL</th>
-                                <th class="text-xs-left hidden-sm-and-down">Email</th>
-                                <th class="text-xs-left hidden-sm-and-down">Cargo</th>
+                                <th class="text-xs-left hidden-sm-and-down">
+                                    Email
+                                </th>
+                                <th class="text-xs-left hidden-sm-and-down">
+                                    Cargo
+                                </th>
                                 <th class="text-xs-left"></th>
                             </tr>
                         </thead>
@@ -126,11 +133,22 @@
                             <tr v-for="(item, index) in contactos" :key="index">
                                 <td>{{ item.nombre }}</td>
                                 <td>{{ item.numero }}</td>
-                                <td class="hidden-sm-and-down">{{ item.email }}</td>
-                                <td class="hidden-sm-and-down">{{ item.cargo }}</td>
+                                <td class="hidden-sm-and-down">
+                                    {{ item.email }}
+                                </td>
+                                <td class="hidden-sm-and-down">
+                                    {{ item.cargo }}
+                                </td>
                                 <td>
-                                    <v-btn color="primary" text icon @click="deleteContact(item)">
-                                        <v-icon size="medium">fas fa-times</v-icon>
+                                    <v-btn
+                                        color="primary"
+                                        text
+                                        icon
+                                        @click="deleteContact(item)"
+                                    >
+                                        <v-icon size="medium"
+                                            >fas fa-times</v-icon
+                                        >
                                     </v-btn>
                                 </td>
                             </tr>
@@ -139,10 +157,15 @@
                     <v-card-text>
                         <v-dialog v-model="contactDialog" width="500">
                             <v-card>
-                                <v-card-title primary-title>Agregar contacto</v-card-title>
+                                <v-card-title primary-title
+                                    >Agregar contacto</v-card-title
+                                >
                                 <v-divider></v-divider>
                                 <v-card-text>
-                                    <v-form ref="contactForm" @submit.prevent="addContact()">
+                                    <v-form
+                                        ref="contactForm"
+                                        @submit.prevent="addContact()"
+                                    >
                                         <br />
                                         <v-row justify="space-around">
                                             <v-col cols="12" class="py-0">
@@ -194,13 +217,15 @@
                                                 outlined
                                                 class="mx-2"
                                                 color="secondary"
-                                            >Cancelar</v-btn>
+                                                >Cancelar</v-btn
+                                            >
                                             <v-btn
                                                 type="submit"
                                                 tile
                                                 class="mx-2 elevation-0"
                                                 color="secondary"
-                                            >Guardar</v-btn>
+                                                >Guardar</v-btn
+                                            >
                                         </v-row>
                                     </v-form>
                                 </v-card-text>
