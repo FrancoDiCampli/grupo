@@ -64,4 +64,9 @@ class Venta extends Model
             return $query->where('cuit', 'LIKE', "$factura%");
         }
     }
+
+    public function formasPago()
+    {
+        return $this->belongsToMany(Formapago::class);
+    }
 }
