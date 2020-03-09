@@ -23,10 +23,7 @@
                         @keyup="searchItemsAfter()"
                     >
                         <template v-slot:progress>
-                            <v-progress-linear
-                                absolute
-                                height="0"
-                            ></v-progress-linear>
+                            <v-progress-linear absolute height="0"></v-progress-linear>
                         </template>
                     </v-text-field>
                 </div>
@@ -73,7 +70,7 @@
                                                     <v-list-item-content>
                                                         <v-list-item-title>
                                                             {{
-                                                                cliente.razonsocial
+                                                            cliente.razonsocial
                                                             }}
                                                         </v-list-item-title>
                                                     </v-list-item-content>
@@ -107,7 +104,7 @@
                                                     <v-list-item-content>
                                                         <v-list-item-title>
                                                             {{
-                                                                articulo.articulo
+                                                            articulo.articulo
                                                             }}
                                                         </v-list-item-title>
                                                     </v-list-item-content>
@@ -119,9 +116,7 @@
                                 <div v-if="items.distribuidores.length > 0">
                                     <v-divider></v-divider>
                                     <v-row justify="center">
-                                        <v-col cols="4" sm="3"
-                                            >Distribuidores</v-col
-                                        >
+                                        <v-col cols="4" sm="3">Distribuidores</v-col>
                                         <v-col
                                             cols="8"
                                             sm="9"
@@ -143,7 +138,7 @@
                                                     <v-list-item-content>
                                                         <v-list-item-title>
                                                             {{
-                                                                distribuidor.razonsocial
+                                                            distribuidor.razonsocial
                                                             }}
                                                         </v-list-item-title>
                                                     </v-list-item-content>
@@ -155,9 +150,7 @@
                                 <div v-if="items.proveedores.length > 0">
                                     <v-divider></v-divider>
                                     <v-row justify="center">
-                                        <v-col cols="4" sm="3"
-                                            >Proveedores</v-col
-                                        >
+                                        <v-col cols="4" sm="3">Proveedores</v-col>
                                         <v-col
                                             cols="8"
                                             sm="9"
@@ -179,7 +172,7 @@
                                                     <v-list-item-content>
                                                         <v-list-item-title>
                                                             {{
-                                                                proveedor.razonsocial
+                                                            proveedor.razonsocial
                                                             }}
                                                         </v-list-item-title>
                                                     </v-list-item-content>
@@ -236,7 +229,8 @@ export default {
         items: {
             clientes: [],
             proveedores: [],
-            articulos: []
+            articulos: [],
+            distribuidores: []
         }
     }),
 
@@ -274,7 +268,10 @@ export default {
                     }
                 } else if (this.$store.state.auth.user.rol == "vendedor") {
                     if (this.items) {
-                        if (this.items.clientes.length > 0) {
+                        if (
+                            this.items.clientes.length > 0 ||
+                            this.items.articulos.length > 0
+                        ) {
                             return true;
                         } else {
                             return false;
@@ -331,10 +328,10 @@ export default {
                 .post("/api/buscando", { buscar: this.searchItems })
                 .then(response => {
                     this.items = {
-                        proveedores: response.data.proveedores,
-                        clientes: response.data.clientes,
-                        distribuidores: response.data.distribuidores,
-                        articulos: response.data.articulos
+                        proveedores: response.data.proveedores || [],
+                        clientes: response.data.clientes || [],
+                        distribuidores: response.data.distribuidores || [],
+                        articulos: response.data.articulos || []
                     };
                     this.searchInProcess = false;
                 })

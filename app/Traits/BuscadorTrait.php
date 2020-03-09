@@ -67,7 +67,8 @@ trait BuscadorTrait
                     ->get()
                     ->where('distribuidor', false);
                 return [
-                    'clientes' => $clientes
+                    'clientes' => $clientes,
+                    'articulos' => $auxArticulos
                 ];
                 break;
         }
