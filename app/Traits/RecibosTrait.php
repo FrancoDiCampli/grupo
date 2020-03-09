@@ -38,7 +38,7 @@ trait RecibosTrait
             $pay->fecha = $fecha->format('d-m-Y');
             $pay['cuenta'] = $pay->ctacte;
             $pay['factura'] = $pay->ctacte->factura;
-            $pays = FormasDePagoTrait::verPagos($pay);
+            $pays = FormasDePagoTrait::verPagos([$pay]); // el parametro debe ser array
             $pay['forma'] = $pays->flatten();
             $cliente = $pay->ctacte->factura->cliente;
             $cotizacion = $pay['forma'][1]['cotizacion'];

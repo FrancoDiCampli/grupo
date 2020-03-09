@@ -92,36 +92,34 @@ trait FormasDePagoTrait
         }
     }
 
-    public static function verPagos($objeto)
+    public static function verPagos($refs) // el parametro debe ser array
     {
         $aux = collect();
-        if ($objeto->referencia) {
-            $refs = collect($objeto->referencia);
-            foreach ($refs as $ref) {
-                $referencia = str_split($ref);
-                $cadena = $referencia[0] . $referencia[1];
-                $numero = null;
 
-                for ($i = 2; $i < count($referencia); $i++) {
-                    $numero = $numero . $referencia[$i];
-                }
+        foreach ($refs as $ref) {
+            $referencia = str_split($ref['referencia']);
+            $cadena = $referencia[0] . $referencia[1];
+            $numero = null;
 
-                switch ($cadena) {
-                    case 'EF':
-                        $aux->push(['Efectivo', Efectivo::find($numero)]);
-                        break;
-
-                    case 'CH':
-                        $aux->push(['Cheque', Cheque::find($numero)]);
-                        break;
-
-                    case 'TB':
-                        $aux->push(['Transferencia', Transferencia::find($numero)]);
-                        break;
-                }
+            for ($i = 2; $i < count($referencia); $i++) {
+                $numero = $numero . $referencia[$i];
             }
-            return $aux;
+
+            switch ($cadena) {
+                case 'EF':
+                    $aux->push(['Efectivo', Efectivo::find($numero)]);
+                    break;
+
+                case 'CH':
+                    $aux->push(['Cheque', Cheque::find($numero)]);
+                    break;
+
+                case 'TB':
+                    $aux->push(['Transferencia', Transferencia::find($numero)]);
+                    break;
+            }
         }
+        return $aux;
     }
 
     public static function saldo($cliente, $diferencia, $cond, $dolares)
