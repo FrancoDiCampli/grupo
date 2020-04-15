@@ -5,6 +5,7 @@ namespace App\Traits;
 use App\Venta;
 use App\Cliente;
 use App\Articulo;
+use App\Formapago;
 use Carbon\Carbon;
 use App\Inventario;
 use App\Traits\ArticulosTrait;
@@ -48,7 +49,8 @@ trait VentasTrait
             $fac->fecha = $fecha->format('d-m-Y');
             $fac->cliente = Cliente::withTrashed()->find($fac->cliente_id);
             $fac->forma;
-            $pagos = FormasDePagoTrait::verPagos($fac);
+            $formas = $fac->formasPago;
+            $pagos = FormasDePagoTrait::verPagos($formas); // el parametro debe ser array
             $fac = collect($fac);
             $fac->put('pagos', $pagos);
             $facturas->push($fac);
@@ -95,15 +97,20 @@ trait VentasTrait
             $atributos['fechaCotizacion'] = null;
         }
 
-        // if ($atributos['pagada']) {
-        //     foreach ($atributos['pagos'] as $pay) {
-        //         $referencia[] = FormasDePagoTrait::formaPago($pay, $cliente, $diferencia = null);
-        //     }
-        // } else $referencia = null;
-        $referencia = null;
-
         // ALMACENAMIENTO DE FACTURA
-        $factura = static::crearVenta($atributos, $referencia);
+        $factura = static::crearVenta($atributos);
+
+        // Metodos de pago
+        if ($atributos['pagada'] && $atributos['pagos']) {
+            foreach ($atributos['pagos'] as $pay) {
+                $ref = FormasDePagoTrait::formaPago($pay, $cliente, $diferencia = null);
+                $forma = Formapago::create([
+                    'referencia' => $ref
+                ]);
+                $auxiliar[] = $forma->id;
+            }
+            $factura->formasPago()->attach($auxiliar);
+        }
 
         // ALMACENAMIENTO DE DETALLES
         $det = static::detallesVentas($request->get('detalles'), $atributos, $factura);
@@ -189,7 +196,7 @@ trait VentasTrait
         return $det;
     }
 
-    public static function crearVenta($atributos, $referencia)
+    public static function crearVenta($atributos)
     {
         return Venta::create([
             "cuit" => $atributos['cuit'], //cliente
@@ -201,7 +208,7 @@ trait VentasTrait
             "bonificacion" => $atributos['bonificacion'] * 1,
             "recargo" => $atributos['recargo'] * 1,
             "pagada" => $atributos['pagada'],
-            "referencia" => $referencia,
+            // "referencia" => $referencia,
             "condicionventa" => $atributos['condicionventa'],
             "subtotal" => $atributos['subtotal'],
             "total" => $atributos['total'],
@@ -218,6 +225,8 @@ trait VentasTrait
     {
         $configuracion = ConfiguracionTrait::configuracion();
         $factura = Venta::find($id);
+        $formas = $factura->formasPago;
+        $aux = FormasDePagoTrait::verPagosVenta($formas);
         $fecha = new Carbon($factura->fecha);
         $factura->fecha = $fecha->format('d-m-Y');
         $cliente = Cliente::withTrashed()->find($factura->cliente_id);
@@ -226,7 +235,8 @@ trait VentasTrait
             'configuracion' => $configuracion,
             'factura' => $factura,
             'detalles' => $detalles,
-            'cliente' => $cliente
+            'cliente' => $cliente,
+            'forma' => $aux
         ];
     }
 

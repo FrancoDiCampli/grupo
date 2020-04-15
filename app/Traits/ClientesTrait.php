@@ -228,7 +228,7 @@ trait ClientesTrait
                 foreach ($cuentas[$i]['pagos'] as $key) {
                     $fec = new Carbon($key->fecha);
                     $key->fecha = $fec->format('d-m-Y');
-                    $pays = FormasDePagoTrait::verPagos($key);
+                    $pays = FormasDePagoTrait::verPagos([$key]); // el parametro debe ser array
                     $key['forma'] = $pays;
                 }
 
