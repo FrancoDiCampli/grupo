@@ -206,6 +206,7 @@
             <div class="header-right">
                 <h2 class="center">REMITO</h2>
                 <p><b>Punto de Venta: </b>0000{{$configuracion['puntoventa']}}<b> Comprobante Nº: </b>{{$factura->numventa}}</p>
+                <p><b>Comprobante Adherido: </b>{{$factura->comprobanteadherido}}</p>
                 <p><b>Fecha de Emisión: </b>{{$factura->fecha}}</p>
                 <p><b>Cuit: </b>{{$configuracion['cuit']}}</p>
                 <p><b>Ingresos Brutos: </b>{{$configuracion['cuit']}}</p>
@@ -285,6 +286,7 @@
             <div class="header-right">
                 <h2 class="center">REMITO</h2>
                 <p><b>Punto de Venta: </b>0000{{$configuracion['puntoventa']}}<b> Comprobante Nº: </b>{{$factura->numventa}}</p>
+                <p><b>Comprobante Adherido: </b>{{$factura->comprobanteadherido}}</p>
                 <p><b>Fecha de Emisión: </b>{{$factura->fecha}}</p>
                 <p><b>Cuit: </b>{{$configuracion['cuit']}}</p>
                 <p><b>Ingresos Brutos: </b>{{$configuracion['cuit']}}</p>

@@ -97,6 +97,7 @@ const actions = {
 
     destroy({ dispatch }, params) {
         return new Promise((resolve, reject) => {
+            // MODIFICA LA RUTA DE ESTE AXIOS PARA ANULAR LA FACTURA
             axios
                 .delete("/api/ventas/" + params.id)
                 .then(response => {

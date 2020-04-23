@@ -29,7 +29,7 @@
                                             "
                                         ></v-checkbox>
                                     </td>
-                                    <td class="hidden-xs-only">{{ item.numventa }}</td>
+                                    <td class="hidden-xs-only">{{ item.comprobanteadherido }}</td>
                                     <td>{{ item.cliente.razonsocial }}</td>
                                     <td>{{ item.total }}</td>
                                     <td class="hidden-sm-and-down">{{ item.fecha }}</td>
@@ -51,6 +51,12 @@
                                                 </v-list-item>
                                                 <v-list-item @click="print(item.id)">
                                                     <v-list-item-title>Imprimir</v-list-item-title>
+                                                </v-list-item>
+                                                <v-list-item
+                                                    @click="erase(item.id)"
+                                                    :disabled="item.pagada != true"
+                                                >
+                                                    <v-list-item-title>Anular</v-list-item-title>
                                                 </v-list-item>
                                             </v-list>
                                         </v-menu>
@@ -98,7 +104,7 @@ export default {
     data: () => ({
         headers: [
             { text: "", sortable: false },
-            { text: "Número", sortable: false, class: "hidden-xs-only" },
+            { text: "N°. Adhe.", sortable: false, class: "hidden-xs-only" },
             { text: "Cliente", sortable: false },
             { text: "Importe", sortable: false },
             { text: "Fecha", sortable: false, class: "hidden-sm-and-down" },
@@ -129,6 +135,10 @@ export default {
 
         print(id) {
             this.$store.dispatch("PDF/printVenta", { id: id });
+        },
+
+        erase(id) {
+            this.$store.dispatch("ventas/destroy", { id: id });
         }
     }
 };
