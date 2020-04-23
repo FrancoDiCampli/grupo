@@ -139,6 +139,7 @@ export default {
 
         erase(id) {
             this.$store.dispatch("ventas/destroy", { id: id });
+            this.$emit("erase", true);
         }
     }
 };

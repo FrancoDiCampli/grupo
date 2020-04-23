@@ -22,7 +22,7 @@
         <v-container>
             <v-row justify="center">
                 <v-col cols="12" md="10" lg="8">
-                    <VentasIndex>
+                    <VentasIndex @erase="test()">
                         <div v-if="$store.state.ventas.ventas">
                             <v-btn
                                 :loading="$store.state.inProcess"
@@ -81,6 +81,10 @@ export default {
             this.limit += 10;
             await this.getVentas();
             await this.getFacturas();
+        },
+
+        test() {
+            this.getVentas();
         }
     }
 };
