@@ -61,6 +61,13 @@
                                     }}
                                 </p>
                                 <p>
+                                    <b>Comprobante Adherido</b>
+                                    {{
+                                    $store.state.ventas.venta.factura
+                                    .comprobanteadherido
+                                    }}
+                                </p>
+                                <p>
                                     <b>Fecha de Emisión:</b>
                                     {{
                                     $store.state.ventas.venta.factura.fecha

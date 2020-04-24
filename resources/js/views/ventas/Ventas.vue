@@ -22,7 +22,7 @@
         <v-container>
             <v-row justify="center">
                 <v-col cols="12" md="10" lg="8">
-                    <VentasIndex>
+                    <VentasIndex @erase="restart()">
                         <div v-if="$store.state.ventas.ventas">
                             <v-btn
                                 :loading="$store.state.inProcess"
@@ -69,6 +69,8 @@ export default {
             await this.$store.dispatch("ventas/index", {
                 limit: this.limit
             });
+
+            console.log(this.$store.state.ventas.ventas);
         },
 
         getFacturas: async function() {
@@ -81,6 +83,10 @@ export default {
             this.limit += 10;
             await this.getVentas();
             await this.getFacturas();
+        },
+
+        restart() {
+            this.getVentas();
         }
     }
 };
