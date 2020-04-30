@@ -69,8 +69,6 @@ export default {
             await this.$store.dispatch("ventas/index", {
                 limit: this.limit
             });
-
-            console.log(this.$store.state.ventas.ventas);
         },
 
         getFacturas: async function() {
