@@ -74,6 +74,7 @@
                                                     <tr>
                                                         <th class="text-xs-left">Apellido Nombre</th>
                                                         <th class="text-xs-left">Documento</th>
+                                                        <th>Tipo</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -97,6 +98,12 @@
                                                             {{
                                                             cliente.documentounico
                                                             }}
+                                                        </td>
+                                                        <td>
+                                                            <div
+                                                                v-if="cliente.distribuidor"
+                                                            >Distribuidor</div>
+                                                            <div v-else>Cliente</div>
                                                         </td>
                                                     </tr>
                                                 </tbody>
@@ -809,7 +816,14 @@ export default {
                     nuevoComp: true
                 })
                 .then(response => {
-                    this.clientes = response.data.clientes;
+                    let responseClientes = response.data.clientes;
+                    let responseDistribuidores = response.data.distribuidores;
+                    for (let i = 0; i < responseClientes.length; i++) {
+                        this.clientes.push(responseClientes[i]);
+                    }
+                    for (let i = 0; i < responseDistribuidores.length; i++) {
+                        this.clientes.push(responseDistribuidores[i]);
+                    }
                     this.searchInProcess = false;
                 })
                 .catch(error => {
