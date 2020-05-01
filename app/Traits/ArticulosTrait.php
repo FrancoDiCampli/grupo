@@ -24,7 +24,7 @@ trait ArticulosTrait
             if (auth()->user()->role->role == 'superAdmin' || auth()->user()->role->role == 'administrador') {
 
                 if ($art->inventarios->count() > 0) {
-                    $stock = $art->inventarios[0]['cantidad'];
+                    $stock = $art->inventarios[0]['cantidadlitros'];
                     $inventarios = $art->inventarios[0];
                 } else {
                     $inventarios = [];
@@ -36,7 +36,7 @@ trait ArticulosTrait
                 foreach ($art->inventarios as $inv) {
                     if ($inv->dependencia == auth()->user()->id) {
                         $inventarios->push($inv);
-                        $stock = $inv['cantidad'];
+                        $stock = $inv['cantidadlitros'];
                         $art = collect($art);
                         $art->put('stock', $stock);
                     }

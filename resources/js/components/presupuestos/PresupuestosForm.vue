@@ -74,6 +74,7 @@
                                                     <tr>
                                                         <th class="text-xs-left">Apellido Nombre</th>
                                                         <th class="text-xs-left">Documento</th>
+                                                        <th>Tipo</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -97,6 +98,12 @@
                                                             {{
                                                             cliente.documentounico
                                                             }}
+                                                        </td>
+                                                        <td>
+                                                            <div
+                                                                v-if="cliente.distribuidor"
+                                                            >Distribuidor</div>
+                                                            <div v-else>Cliente</div>
                                                         </td>
                                                     </tr>
                                                 </tbody>
@@ -203,7 +210,7 @@
                                                         <th class="text-xs-left">Codigo</th>
                                                         <th class="text-xs-left">Articulo</th>
                                                         <th class="text-xs-left">Precio</th>
-                                                        <th class="text-xs-left">Stock</th>
+                                                        <th class="text-xs-left">Total Litros</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -803,13 +810,21 @@ export default {
 
         findCliente: async function() {
             this.$store.state.presupuestos.form.cliente_id = null;
+            this.clientes = [];
             axios
                 .post("/api/buscando", {
                     buscar: this.searchCliente,
                     nuevoComp: true
                 })
                 .then(response => {
-                    this.clientes = response.data.clientes;
+                    let responseClientes = response.data.clientes;
+                    let responseDistribuidores = response.data.distribuidores;
+                    for (let i = 0; i < responseClientes.length; i++) {
+                        this.clientes.push(responseClientes[i]);
+                    }
+                    for (let i = 0; i < responseDistribuidores.length; i++) {
+                        this.clientes.push(responseDistribuidores[i]);
+                    }
                     this.searchInProcess = false;
                 })
                 .catch(error => {
