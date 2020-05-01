@@ -732,14 +732,24 @@ export default {
                         this.detalles[i].precio == detail.precio &&
                         this.detalles[i].movimiento == detail.movimiento
                     ) {
+                        // SE DEFINE LA NUEVA CANTIDAD
                         this.detalles[i].cantidad = Number(
                             Number(this.detalles[i].cantidad) +
                                 Number(detail.cantidad)
                         );
-
-                        this.detalles[i].subtotal =
+                        // SE DEFINE LA CANTIDAD EN LITROS
+                        this.detalles[i].cantidadLitros = Number(
+                            Number(this.detalles[i].cantidad) *
+                                Number(this.detalles[i].litros)
+                        );
+                        // SE DEFINE EL SUBTOTAL EN DOLARES
+                        this.detalles[i].subtotalDolares =
                             Number(this.detalles[i].precio) *
-                            Number(this.detalles[i].cantidad);
+                            Number(this.detalles[i].cantidadLitros);
+                        // SE DEFINE EL SUBTOTAL EN PESOS
+                        this.detalles[i].subtotalPesos =
+                            Number(this.detalles[i].subtotalDolares) *
+                            Number(this.cotizacion);
 
                         nuevoDetalle = false;
                     }
