@@ -4,7 +4,7 @@
         <v-card shaped outlined :loading="inProcess" class="pb-4">
             <v-card-title class="py-0 px-2">
                 <v-row class="pa-0 ma-0">
-                    <v-col cols="auto" align-self="center">Nueva Venta</v-col>
+                    <v-col cols="auto" align-self="center">Nueva Factura</v-col>
                     <v-spacer></v-spacer>
                     <v-col cols="auto">
                         <v-list-item two-line class="text-right">
@@ -73,6 +73,7 @@
                                                     <tr>
                                                         <th class="text-xs-left">Apellido Nombre</th>
                                                         <th class="text-xs-left">Documento</th>
+                                                        <th>Tipo</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -96,6 +97,12 @@
                                                             {{
                                                             cliente.documentounico
                                                             }}
+                                                        </td>
+                                                        <td>
+                                                            <div
+                                                                v-if="cliente.distribuidor"
+                                                            >Distribuidor</div>
+                                                            <div v-else>Cliente</div>
                                                         </td>
                                                     </tr>
                                                 </tbody>
@@ -474,10 +481,18 @@ export default {
 
         findCliente: async function() {
             this.$store.state.facturas.form.cliente_id = null;
+            this.clientes = [];
             axios
                 .post("/api/buscando", { buscar: this.searchCliente })
                 .then(response => {
-                    this.clientes = response.data.clientes;
+                    let responseClientes = response.data.clientes;
+                    let responseDistribuidores = response.data.distribuidores;
+                    for (let i = 0; i < responseClientes.length; i++) {
+                        this.clientes.push(responseClientes[i]);
+                    }
+                    for (let i = 0; i < responseDistribuidores.length; i++) {
+                        this.clientes.push(responseDistribuidores[i]);
+                    }
                     this.searchInProcess = false;
                 })
                 .catch(error => {

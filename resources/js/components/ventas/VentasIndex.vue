@@ -24,8 +24,7 @@
                                             v-model="selected"
                                             :value="item.id"
                                             :disabled="
-                                                item.numfactura ||
-                                                    !item.pagada
+                                                item.numfactura
                                             "
                                         ></v-checkbox>
                                     </td>
