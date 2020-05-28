@@ -88,9 +88,9 @@ trait ConsignacionesTrait
                 'cantidadLitros' => $detail['cantidadLitros'],
                 'preciounitario' => $detail['precio'],
                 'subtotal' => $detail['subtotalDolares'],
-                'subtotalPesos' => $detail['subtotalPesos'],
-                'cotizacion' => $detail['cotizacion'],
-                'fechaCotizacion' => $detail['fechaCotizacion'],
+                'subtotalPesos' => null,
+                'cotizacion' => null,
+                'fechaCotizacion' => null,
                 'articulo_id' => $detail['id'],
                 'consignment_id' => $consignacion->id,
             ];

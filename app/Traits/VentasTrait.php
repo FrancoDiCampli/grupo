@@ -165,11 +165,11 @@ trait VentasTrait
     public static function detallesVentas($details, $atributos, $factura)
     {
         foreach ($details as $detail) {
-            if ($atributos['condicionventa'] == 'CUENTA CORRIENTE') {
-                $detail['subtotalPesos'] = null;
-                $detail['cotizacion'] = null;
-                $detail['fechaCotizacion'] = null;
-            }
+            // if ($atributos['condicionventa'] == 'CUENTA CORRIENTE') {
+            //     $detail['subtotalPesos'] = null;
+            //     $detail['cotizacion'] = null;
+            //     $detail['fechaCotizacion'] = null;
+            // }
             $detalles = array(
                 'codarticulo' => $detail['codarticulo'],
                 'articulo' => $detail['articulo'],
@@ -177,10 +177,10 @@ trait VentasTrait
                 'cantidadLitros' => $detail['cantidadLitros'],
                 'medida' => $detail['medida'],
                 'preciounitario' => $detail['precio'],
-                'subtotalPesos' => $detail['subtotalPesos'],
+                'subtotalPesos' => null,
                 'subtotal' => $detail['subtotalDolares'],
-                'cotizacion' => $detail['cotizacion'],
-                'fechaCotizacion' => $detail['fechaCotizacion'],
+                'cotizacion' => null,
+                'fechaCotizacion' => null,
                 'articulo_id' => $detail['id'],
                 'venta_id' => $factura->id,
                 'created_at' => now()->format('Ymd'),
@@ -198,7 +198,8 @@ trait VentasTrait
             "tipocomprobante" => $atributos['tipoComprobante'],
             "numventa" => $atributos['numventa'],
             "comprobanteadherido" => $atributos['comprobanteadherido'],
-            "fecha" => now()->format('Ymd'),
+            // "fecha" => now()->format('Ymd'),
+            'fecha' => $atributos['fecha'],
             'observaciones' => $atributos['observaciones'],
             "bonificacion" => $atributos['bonificacion'] * 1,
             "recargo" => $atributos['recargo'] * 1,

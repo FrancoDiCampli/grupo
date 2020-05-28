@@ -15,7 +15,7 @@
     <div id="app">
     </div>
 
-    <script src="{{ url('/js/app.js') }}"></script>
+    <script src="{{ url('/js/app.js?v=8') }}"></script>
 </body>
 
 </html>

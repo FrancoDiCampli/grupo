@@ -38,7 +38,7 @@
                         <v-form ref="ventasClienteForm">
                             <v-row justify="space-around" class="my-1">
                                 <!-- CLIENTE -->
-                                <v-col cols="12" class="py-0">
+                                <v-col cols="12" sm="9" class="py-0">
                                     <v-text-field
                                         v-model="searchCliente"
                                         :rules="[rules.required]"
@@ -114,6 +114,39 @@
                                             </div>
                                         </div>
                                     </v-card>
+                                </v-col>
+                                <!-- FECHA -->
+                                <v-col cols="12" sm="3" class="py-0">
+                                    <v-dialog
+                                        ref="dialogFecha"
+                                        v-model="fechaDialog"
+                                        :return-value.sync="$store.state.ventas.form.fecha"
+                                        persistent
+                                        :width="$vuetify.breakpoint.xsOnly ? '100%' : '300px'"
+                                    >
+                                        <template v-slot:activator="{ on }">
+                                            <v-text-field
+                                                v-model="$store.state.ventas.form.fecha"
+                                                label="Fecha"
+                                                :rules="[rules.required]"
+                                                readonly
+                                                outlined
+                                                v-on="on"
+                                            ></v-text-field>
+                                        </template>
+                                        <v-date-picker
+                                            v-model="$store.state.ventas.form.fecha"
+                                            scrollable
+                                            locale="es"
+                                        >
+                                            <v-spacer></v-spacer>
+                                            <v-btn
+                                                text
+                                                color="primary"
+                                                @click="$refs.dialogFecha.save($store.state.ventas.form.fecha)"
+                                            >Aceptar</v-btn>
+                                        </v-date-picker>
+                                    </v-dialog>
                                 </v-col>
                                 <!-- CONDICION VENTA -->
                                 <v-col cols="12" sm="6" class="py-0">
@@ -241,7 +274,7 @@
                             <v-form ref="detailForm">
                                 <v-row justify="center" class="px-3">
                                     <!-- DETALLES -->
-                                    <v-col cols="12" sm="4" class="py-0">
+                                    <v-col cols="12" sm="6" class="py-0">
                                         <v-text-field
                                             v-model="articuloSelected.precio"
                                             :rules="[rules.required]"
@@ -252,7 +285,7 @@
                                             type="number"
                                         ></v-text-field>
                                     </v-col>
-                                    <v-col cols="12" sm="4" class="py-0">
+                                    <v-col cols="12" sm="6" class="py-0">
                                         <v-text-field
                                             v-model="articuloSelected.cantidad"
                                             :rules="[rules.required]"
@@ -263,7 +296,7 @@
                                             type="number"
                                         ></v-text-field>
                                     </v-col>
-                                    <v-col cols="12" sm="4" class="py-0">
+                                    <v-col cols="12" sm="6" class="py-0">
                                         <v-text-field
                                             v-model="cantidadLitros"
                                             :rules="[rules.required]"
@@ -285,7 +318,7 @@
                                             type="number"
                                         ></v-text-field>
                                     </v-col>
-                                    <v-col cols="12" sm="6" class="py-0">
+                                    <!-- <v-col cols="12" sm="6" class="py-0">
                                         <v-text-field
                                             v-model="pesos"
                                             :rules="[rules.required]"
@@ -294,10 +327,154 @@
                                             disabled
                                             type="number"
                                         ></v-text-field>
-                                    </v-col>
+                                    </v-col>-->
                                 </v-row>
                             </v-form>
                             <v-row justify="center" class="px-3">
+                                <!-- <v-col cols="12" sm="6" class="py-0">
+                                    <v-text-field
+                                        v-model="cotizacion"
+                                        :rules="[rules.required]"
+                                        label="Cotizacion"
+                                        outlined
+                                        type="number"
+                                    ></v-text-field>
+                                </v-col>
+                                <v-col cols="12" sm="6" class="py-0">
+                                    <v-dialog
+                                        ref="dialogCotizacion"
+                                        v-model="dialogCotizacion"
+                                        :return-value.sync="fechaCotizacion"
+                                        persistent
+                                        :width="
+                                            $vuetify.breakpoint.xsOnly
+                                                ? '100%'
+                                                : '300px'
+                                        "
+                                    >
+                                        <template v-slot:activator="{ on }">
+                                            <v-text-field
+                                                v-model="fechaCotizacion"
+                                                label="Fecha de la cotización"
+                                                readonly
+                                                outlined
+                                                v-on="on"
+                                            ></v-text-field>
+                                        </template>
+                                        <v-date-picker
+                                            v-model="fechaCotizacion"
+                                            scrollable
+                                            locale="es"
+                                        >
+                                            <v-spacer></v-spacer>
+                                            <v-btn
+                                                text
+                                                color="primary"
+                                                @click="
+                                                    $refs.dialogCotizacion.save(
+                                                        fechaCotizacion
+                                                    )
+                                                "
+                                            >Aceptar</v-btn>
+                                        </v-date-picker>
+                                    </v-dialog>
+                                </v-col>-->
+                                <v-col cols="12">
+                                    <v-row justify="center" class="mb-5">
+                                        <v-btn
+                                            @click="addDetail()"
+                                            outlined
+                                            tile
+                                            color="secondary"
+                                            :disabled="disabled.detalles"
+                                        >Añadir detalle</v-btn>
+                                    </v-row>
+                                </v-col>
+                            </v-row>
+
+                            <!-- TABLA DETALLES -->
+                            <v-col cols="12" class="py-0 mb-5">
+                                <v-card outlined>
+                                    <v-simple-table>
+                                        <template v-slot:default>
+                                            <thead>
+                                                <tr>
+                                                    <th class="text-left">Articulo</th>
+                                                    <th class="text-left hidden-sm-and-down">Precio</th>
+                                                    <th class="text-left">Unidades</th>
+
+                                                    <th class="text-left">Subtotal</th>
+                                                    <!-- <th
+                                                        class="text-left hidden-sm-and-down"
+                                                    >Subtotal en pesos</th>-->
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr
+                                                    v-for="(detalle,
+                                                    index) in detalles"
+                                                    :key="index"
+                                                >
+                                                    <td>{{ detalle.articulo }}</td>
+                                                    <td
+                                                        class="hidden-sm-and-down"
+                                                    >{{ detalle.precio }}</td>
+                                                    <td>{{ detalle.cantidad }}</td>
+                                                    <td>
+                                                        {{
+                                                        detalle.subtotalDolares
+                                                        }}
+                                                    </td>
+                                                    <!-- <td class="hidden-sm-and-down">
+                                                        {{
+                                                        detalle.subtotalPesos
+                                                        }}
+                                                    </td>-->
+                                                    <td>
+                                                        <v-btn
+                                                            icon
+                                                            color="secondary"
+                                                            @click="
+                                                                deleteDetail(
+                                                                    detalle
+                                                                )
+                                                            "
+                                                        >
+                                                            <v-icon size="medium">
+                                                                fas
+                                                                fa-times
+                                                            </v-icon>
+                                                        </v-btn>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </template>
+                                    </v-simple-table>
+                                </v-card>
+                            </v-col>
+                        </v-row>
+                        <v-row justify="center">
+                            <v-btn
+                                color="secondary"
+                                tile
+                                class="elevation-0 mb-2"
+                                @click="step = 3"
+                            >Continuar</v-btn>
+                        </v-row>
+                    </v-stepper-content>
+
+                    <!-- BONIFICACION, RECARGO, SUBTOTAL, TOTAL -->
+                    <v-stepper-step
+                        :complete="step > 3"
+                        step="3"
+                        :editable="true"
+                        edit-icon="fas fa-pen"
+                        :rules="[() => validateStep(3, 'ventasTotalesForm')]"
+                    >Bonificación y recargo.</v-stepper-step>
+                    <v-stepper-content step="3">
+                        <v-form ref="ventasTotalesForm">
+                            <v-row justify="space-around" class="my-1">
                                 <v-col cols="12" sm="6" class="py-0">
                                     <v-text-field
                                         v-model="cotizacion"
@@ -346,102 +523,6 @@
                                         </v-date-picker>
                                     </v-dialog>
                                 </v-col>
-                                <v-col cols="12">
-                                    <v-row justify="center" class="mb-5">
-                                        <v-btn
-                                            @click="addDetail()"
-                                            outlined
-                                            tile
-                                            color="secondary"
-                                            :disabled="disabled.detalles"
-                                        >Añadir detalle</v-btn>
-                                    </v-row>
-                                </v-col>
-                            </v-row>
-
-                            <!-- TABLA DETALLES -->
-                            <v-col cols="12" class="py-0 mb-5">
-                                <v-card outlined>
-                                    <v-simple-table>
-                                        <template v-slot:default>
-                                            <thead>
-                                                <tr>
-                                                    <th class="text-left">Articulo</th>
-                                                    <th class="text-left hidden-sm-and-down">Precio</th>
-                                                    <th class="text-left">Unidades</th>
-
-                                                    <th class="text-left">Subtotal</th>
-                                                    <th
-                                                        class="text-left hidden-sm-and-down"
-                                                    >Subtotal en pesos</th>
-                                                    <th></th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr
-                                                    v-for="(detalle,
-                                                    index) in detalles"
-                                                    :key="index"
-                                                >
-                                                    <td>{{ detalle.articulo }}</td>
-                                                    <td
-                                                        class="hidden-sm-and-down"
-                                                    >{{ detalle.precio }}</td>
-                                                    <td>{{ detalle.cantidad }}</td>
-                                                    <td>
-                                                        {{
-                                                        detalle.subtotalDolares
-                                                        }}
-                                                    </td>
-                                                    <td class="hidden-sm-and-down">
-                                                        {{
-                                                        detalle.subtotalPesos
-                                                        }}
-                                                    </td>
-                                                    <td>
-                                                        <v-btn
-                                                            icon
-                                                            color="secondary"
-                                                            @click="
-                                                                deleteDetail(
-                                                                    detalle
-                                                                )
-                                                            "
-                                                        >
-                                                            <v-icon size="medium">
-                                                                fas
-                                                                fa-times
-                                                            </v-icon>
-                                                        </v-btn>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </template>
-                                    </v-simple-table>
-                                </v-card>
-                            </v-col>
-                        </v-row>
-                        <v-row justify="center">
-                            <v-btn
-                                color="secondary"
-                                tile
-                                class="elevation-0 mb-2"
-                                @click="step = 3"
-                            >Continuar</v-btn>
-                        </v-row>
-                    </v-stepper-content>
-
-                    <!-- BONIFICACION, RECARGO, SUBTOTAL, TOTAL -->
-                    <v-stepper-step
-                        :complete="step > 3"
-                        step="3"
-                        :editable="true"
-                        edit-icon="fas fa-pen"
-                        :rules="[() => validateStep(3, 'ventasTotalesForm')]"
-                    >Bonificación y recargo.</v-stepper-step>
-                    <v-stepper-content step="3">
-                        <v-form ref="ventasTotalesForm">
-                            <v-row justify="space-around" class="my-1">
                                 <v-col cols="12" sm="6" class="py-0 px-0">
                                     <!-- BONIFICACION -->
                                     <v-col cols="12" class="py-0">
@@ -639,6 +720,7 @@ export default {
         // SUBTOTAL
         subtotal: null,
         // MODALS
+        fechaDialog: false,
         detallesDialog: false,
         condicionDialog: false
     }),
@@ -782,6 +864,19 @@ export default {
                     });
             });
         },
+        setCurrency: async function() {
+            await axios
+                .post("/api/setCotizacion", {
+                    cotizacion: this.cotizacion,
+                    fechaCotizacion: this.fechaCotizacion
+                })
+                .then(response => {
+                    console.log(response.data);
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+        },
         // HEADER
         getPoint: async function() {
             let data;
@@ -887,7 +982,7 @@ export default {
         pushDetail() {
             let detailData = {
                 cantidadLitros: this.cantidadLitros,
-                subtotalPesos: this.pesos,
+                // subtotalPesos: this.pesos,
                 subtotalDolares: this.dolares,
                 cotizacion: this.cotizacion,
                 fechaCotizacion: this.fechaCotizacion
@@ -912,9 +1007,9 @@ export default {
                             Number(this.detalles[i].precio) *
                             Number(this.detalles[i].cantidadLitros);
                         // SE DEFINE EL SUBTOTAL EN PESOS
-                        this.detalles[i].subtotalPesos =
-                            Number(this.detalles[i].subtotalDolares) *
-                            Number(this.cotizacion);
+                        // this.detalles[i].subtotalPesos =
+                        //     Number(this.detalles[i].subtotalDolares) *
+                        //     Number(this.cotizacion);
 
                         nuevoDetalle = false;
                     }
@@ -971,6 +1066,7 @@ export default {
             }
         },
         resetData: async function() {
+            await this.setCurrency();
             this.clientes = [];
             this.detalles = [];
             this.articuloSelected = {};

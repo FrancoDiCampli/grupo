@@ -84,10 +84,10 @@ trait PresupuestosTrait
                 'cantidadLitros' => $detail['cantidadLitros'],
                 'medida' => $detail['medida'],
                 'preciounitario' => $detail['precio'],
-                'subtotalPesos' => $detail['subtotalPesos'],
+                'subtotalPesos' => null,
                 'subtotal' => $detail['subtotalDolares'],
-                'cotizacion' => $detail['cotizacion'],
-                'fechaCotizacion' => $detail['fechaCotizacion'],
+                'cotizacion' => null,
+                'fechaCotizacion' => null,
                 'articulo_id' => $detail['id'],
                 'presupuesto_id' => $presupuesto->id,
             );
