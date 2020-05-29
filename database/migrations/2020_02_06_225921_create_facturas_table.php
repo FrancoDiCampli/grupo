@@ -17,7 +17,7 @@ class CreateFacturasTable extends Migration
             $table->bigIncrements('id');
             $table->string('tipocomprobante');
             $table->bigInteger('numfactura');
-            $table->bigInteger('comprobanteadherido')->nullable();
+            $table->string('comprobanteadherido')->nullable();
             $table->bigInteger('cuit'); //cliente
             $table->string('fecha');
             $table->text('observaciones')->nullable();

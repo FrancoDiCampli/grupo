@@ -168,7 +168,6 @@
                                         "
                                         label="Comprobante Adherido Nº"
                                         outlined
-                                        type="number"
                                     ></v-text-field>
                                 </v-col>
                             </v-row>

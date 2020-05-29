@@ -135,7 +135,6 @@
                                         :rules="[rules.required]"
                                         label="Comprobante Adherido Nº"
                                         outlined
-                                        type="number"
                                     ></v-text-field>
                                 </v-col>
                             </v-row>
@@ -171,9 +170,9 @@
                                                     <th class="text-left">Unidades</th>
 
                                                     <th class="text-left">Subtotal</th>
-                                                    <th
+                                                    <!-- <th
                                                         class="text-left hidden-sm-and-down"
-                                                    >Subtotal en pesos</th>
+                                                    >Subtotal en pesos</th>-->
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -192,11 +191,11 @@
                                                         detalle.subtotalDolares
                                                         }}
                                                     </td>
-                                                    <td class="hidden-sm-and-down">
+                                                    <!-- <td class="hidden-sm-and-down">
                                                         {{
                                                         detalle.subtotalPesos
                                                         }}
-                                                    </td>
+                                                    </td>-->
                                                 </tr>
                                             </tbody>
                                         </template>
@@ -281,14 +280,14 @@
                                         ></v-text-field>
                                     </v-col>
                                     <!-- TOTAL PESOS -->
-                                    <v-col cols="12" class="py-0">
+                                    <!-- <v-col cols="12" class="py-0">
                                         <v-text-field
                                             v-model="totalPesos"
                                             label="Total en pesos"
                                             outlined
                                             disabled
                                         ></v-text-field>
-                                    </v-col>
+                                    </v-col>-->
                                 </v-col>
                             </v-row>
                         </v-form>
@@ -393,18 +392,18 @@ export default {
                     return null;
                 }
             }
-        },
-
-        totalPesos: {
-            set() {},
-            get() {
-                if (this.total && this.cotizacion) {
-                    return Number(this.total * this.cotizacion).toFixed(2);
-                } else {
-                    return null;
-                }
-            }
         }
+
+        // totalPesos: {
+        //     set() {},
+        //     get() {
+        //         if (this.total && this.cotizacion) {
+        //             return Number(this.total * this.cotizacion).toFixed(2);
+        //         } else {
+        //             return null;
+        //         }
+        //     }
+        // }
     },
 
     created() {
@@ -524,10 +523,10 @@ export default {
             if (this.$refs.facturasClienteForm.validate()) {
                 this.$store.state.facturas.form.subtotal = this.subtotal;
                 this.$store.state.facturas.form.total = this.total;
-                this.$store.state.facturas.form.totalPesos = this.totalPesos;
+                // this.$store.state.facturas.form.totalPesos = this.totalPesos;
                 this.$store.state.facturas.form.detalles = this.detalles;
-                this.$store.state.facturas.form.cotizacion = this.cotizacion;
-                this.$store.state.facturas.form.fechaCotizacion = this.fechaCotizacion;
+                // this.$store.state.facturas.form.cotizacion = this.cotizacion;
+                // this.$store.state.facturas.form.fechaCotizacion = this.fechaCotizacion;
                 this.$store.state.facturas.form.numfactura = this.NumComprobante;
                 return true;
             }
