@@ -269,6 +269,15 @@
                                             disabled
                                         ></v-text-field>
                                     </v-col>
+                                    <!-- IVA -->
+                                    <v-col cols="12" class="py-0">
+                                        <v-text-field
+                                            v-model="valorAgregado"
+                                            label="IVA 21%"
+                                            outlined
+                                            disabled
+                                        ></v-text-field>
+                                    </v-col>
                                     <!-- TOTAL -->
                                     <v-col cols="12" class="py-0">
                                         <v-text-field
@@ -279,15 +288,6 @@
                                             disabled
                                         ></v-text-field>
                                     </v-col>
-                                    <!-- TOTAL PESOS -->
-                                    <!-- <v-col cols="12" class="py-0">
-                                        <v-text-field
-                                            v-model="totalPesos"
-                                            label="Total en pesos"
-                                            outlined
-                                            disabled
-                                        ></v-text-field>
-                                    </v-col>-->
                                 </v-col>
                             </v-row>
                         </v-form>
@@ -387,7 +387,19 @@ export default {
                             ) / 100;
                     }
 
+                    total = Number(total) + Number(this.valorAgregado);
                     return Number(total - bonificacion + recargo).toFixed(2);
+                } else {
+                    return null;
+                }
+            }
+        },
+
+        valorAgregado: {
+            set() {},
+            get() {
+                if (this.subtotal) {
+                    return Number((this.subtotal * 21) / 100).toFixed(2);
                 } else {
                     return null;
                 }
@@ -522,6 +534,7 @@ export default {
         setData: async function() {
             if (this.$refs.facturasClienteForm.validate()) {
                 this.$store.state.facturas.form.subtotal = this.subtotal;
+                this.$store.state.facturas.form.valorAgregado = this.valorAgregado;
                 this.$store.state.facturas.form.total = this.total;
                 // this.$store.state.facturas.form.totalPesos = this.totalPesos;
                 this.$store.state.facturas.form.detalles = this.detalles;

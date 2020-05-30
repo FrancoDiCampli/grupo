@@ -118,6 +118,10 @@ trait FormasDePagoTrait
                     case 'TB':
                         $aux->push(['Transferencia', Transferencia::find($numero)]);
                         break;
+
+                    case 'HA':
+                        $aux->push(['Haber', Credito::find($numero)]);
+                        break;
                 }
             }
             return $aux;

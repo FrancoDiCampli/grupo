@@ -229,43 +229,6 @@
                                     outlined
                                     type="number"
                                 ></v-text-field>
-                            </v-col>
-                            <v-col cols="12" sm="6" class="py-0">
-                                <v-dialog
-                                    ref="dialogCotizacionEfectivo"
-                                    v-model="dialogCotizacionEfectivo"
-                                    :return-value.sync="fechaCotizacion"
-                                    persistent
-                                    :width="
-                                            $vuetify.breakpoint.xsOnly
-                                                ? '100%'
-                                                : '300px'
-                                        "
-                                >
-                                    <template v-slot:activator="{ on }">
-                                        <v-text-field
-                                            v-model="latinDate"
-                                            label="Fecha de la cotización"
-                                            readonly
-                                            outlined
-                                            v-on="on"
-                                        ></v-text-field>
-                                    </template>
-                                    <v-date-picker v-model="fechaCotizacion" scrollable locale="es">
-                                        <v-spacer></v-spacer>
-                                        <v-btn
-                                            text
-                                            color="primary"
-                                            @click="
-                                                    $refs.dialogCotizacionEfectivo.save(
-                                                        fechaCotizacion
-                                                    )
-                                                "
-                                        >Aceptar</v-btn>
-                                    </v-date-picker>
-                                </v-dialog>
-                            </v-col>
-                            <v-col cols="12" sm="6" class="py-0">
                                 <v-text-field
                                     v-model="pesos"
                                     :rules="[rules.required]"
@@ -277,7 +240,16 @@
                             </v-col>
                             <v-col cols="12" sm="6" class="py-0">
                                 <v-text-field
-                                    v-model="fechaCotizacion"
+                                    v-model="divisa.cotizacion"
+                                    :rules="[rules.required]"
+                                    label="Cotizacion"
+                                    outlined
+                                    type="number"
+                                    disabled
+                                ></v-text-field>
+
+                                <v-text-field
+                                    v-model="divisa.fechaCotizacion"
                                     :rules="[rules.required]"
                                     label="Fecha de la cotización"
                                     outlined
@@ -340,11 +312,12 @@
                             </v-col>
                             <v-col cols="12" sm="6" class="py-0">
                                 <v-text-field
-                                    v-model="cotizacion"
+                                    v-model="divisa.cotizacion"
                                     :rules="[rules.required]"
                                     @focus="inputFocus = 'cotizacion'"
                                     label="Cotizacion"
                                     outlined
+                                    disabled
                                     type="number"
                                 ></v-text-field>
                             </v-col>
@@ -360,7 +333,7 @@
                             </v-col>
                             <v-col cols="12" sm="6" class="py-0">
                                 <v-text-field
-                                    v-model="fechaCotizacionLatin"
+                                    v-model="divisa.fechaCotizacion"
                                     :rules="[rules.required]"
                                     label="Fecha de la cotización"
                                     outlined
@@ -554,11 +527,12 @@
                             </v-col>
                             <v-col cols="12" sm="6" class="py-0">
                                 <v-text-field
-                                    v-model="cotizacion"
+                                    v-model="divisa.cotizacion"
                                     :rules="[rules.required]"
                                     @focus="inputFocus = 'cotizacion'"
                                     label="Cotizacion"
                                     outlined
+                                    disabled
                                     type="number"
                                 ></v-text-field>
                             </v-col>
@@ -574,7 +548,7 @@
                             </v-col>
                             <v-col cols="12" sm="6" class="py-0">
                                 <v-text-field
-                                    v-model="fechaCotizacion"
+                                    v-model="divisa.fechaCotizacion"
                                     :rules="[rules.required]"
                                     label="Fecha de la cotización"
                                     outlined
@@ -726,11 +700,12 @@
                             </v-col>
                             <v-col cols="12" sm="6" class="py-0">
                                 <v-text-field
-                                    v-model="cotizacion"
+                                    v-model="divisa.cotizacion"
                                     :rules="[rules.required]"
                                     @focus="inputFocus = 'cotizacion'"
                                     label="Cotizacion"
                                     outlined
+                                    disabled
                                     type="number"
                                 ></v-text-field>
                             </v-col>
@@ -746,7 +721,7 @@
                             </v-col>
                             <v-col cols="12" sm="6" class="py-0">
                                 <v-text-field
-                                    v-model="fechaCotizacion"
+                                    v-model="divisa.fechaCotizacion"
                                     :rules="[rules.required]"
                                     label="Fecha de la cotización"
                                     outlined
@@ -816,9 +791,6 @@ export default {
             transferencia: false,
             haber: false
         },
-        // Variables para la cotización e intercambio
-        cotizacion: 1,
-        fechaCotizacion: "",
         pesos: null,
         dolares: null,
         // Variables para el formulario de cheques
@@ -845,11 +817,6 @@ export default {
         // Bancos
         bancos: Bancos.bancos,
         bancosForm: {},
-        // Variables para los date pickers de cotizacion
-        dialogCotizacionEfectivo: false,
-        dialogCotizacionCheque: false,
-        dialogCotizacionTransferencia: false,
-        dialogCotizacionHaber: false,
         // Variables para los date pickers
         chequeFechaRecibidoDialog: false,
         chequeFechaCobroDialog: false,
@@ -867,6 +834,8 @@ export default {
                 "Este campo debe contener 11 digitos"
         }
     }),
+
+    props: ["divisa"],
 
     computed: {
         // Array con las cuentas activas
@@ -907,50 +876,40 @@ export default {
             } else {
                 return true;
             }
-        },
+        }
 
         // Cotización
-        latinDate: {
-            set() {},
-            get() {
-                if (this.fechaCotizacion) {
-                    let date = moment(this.fechaCotizacion).format(
-                        "DD-MM-YYYY"
-                    );
-                    return date;
-                }
-            }
-        }
+        // latinDate: {
+        //     set() {},
+        //     get() {
+        //         if (this.fechaCotizacion) {
+        //             let date = moment(this.fechaCotizacion).format(
+        //                 "DD-MM-YYYY"
+        //             );
+        //             return date;
+        //         }
+        //     }
+        // }
     },
 
     watch: {
         // Modificador del dolar o pesos cuando cambia la cotización
         cotizacion() {
-            if (this.inputFocus == "cotizacion") {
-                if (this.pesos) {
-                    this.dolares = Number(this.pesos / this.cotizacion).toFixed(
-                        2
-                    );
-                    return;
-                } else if (this.dolares) {
-                    this.pesos = Number(this.dolares * this.cotizacion).toFixed(
-                        2
-                    );
-                    return;
-                } else {
-                    this.pesos = null;
-                    this.dolares = null;
-                }
-            }
+            this.dolares = Number(this.pesos / this.divisa.cotizacion).toFixed(
+                2
+            );
+            this.pesos = Number(this.dolares * this.divisa.cotizacion).toFixed(
+                2
+            );
         },
 
         // Modificador del dolar cuando cambian los pesos
         pesos() {
             if (this.inputFocus == "pesos") {
                 if (this.pesos) {
-                    this.dolares = Number(this.pesos / this.cotizacion).toFixed(
-                        2
-                    );
+                    this.dolares = Number(
+                        this.pesos / this.divisa.cotizacion
+                    ).toFixed(2);
                 } else {
                     this.dolares = null;
                 }
@@ -961,9 +920,9 @@ export default {
         dolares() {
             if (this.inputFocus == "dolares") {
                 if (this.dolares) {
-                    this.pesos = Number(this.dolares * this.cotizacion).toFixed(
-                        2
-                    );
+                    this.pesos = Number(
+                        this.dolares * this.divisa.cotizacion
+                    ).toFixed(2);
                 } else {
                     this.pesos = null;
                 }
@@ -973,30 +932,12 @@ export default {
 
     mounted: async function() {
         this.inProcess = true;
-        await this.consultarDivisa();
         await this.pagosControl();
         await this.setHaber();
         this.inProcess = false;
     },
 
     methods: {
-        // Consultar el intercabio de divizas de la API
-        consultarDivisa() {
-            return new Promise(resolve => {
-                axios
-                    .get("/api/consultar")
-                    .then(response => {
-                        this.cotizacion = response.data.valor;
-                        this.fechaCotizacion = response.data.fecha;
-                        resolve(response.data);
-                    })
-                    .catch(error => {
-                        this.inProcess = false;
-                        throw new Error(error);
-                    });
-            });
-        },
-
         pagosControl() {
             let arrayPagos = [];
 
@@ -1058,8 +999,8 @@ export default {
                 if (this.$refs.efectivoForm.validate()) {
                     let pago = {
                         tipo: type,
-                        cotizacion: this.cotizacion,
-                        fecha_cotizacion: this.fechaCotizacion,
+                        cotizacion: this.divisa.cotizacion,
+                        fecha_cotizacion: this.divisa.fechaCotizacion,
                         pesos: this.pesos,
                         dolares: this.dolares
                     };
@@ -1067,15 +1008,15 @@ export default {
                     this.pagos[this.cuentaFocus].pagos.push(pago);
 
                     this.$refs.efectivoForm.reset();
-                    await this.consultarDivisa();
+                    this.$emit("eventCurrency");
                     this.dialogs.efectivo = false;
                 }
             } else if (type == "Cheque") {
                 if (this.$refs.chequeForm.validate()) {
                     let pago = {
                         tipo: type,
-                        cotizacion: this.cotizacion,
-                        fecha_cotizacion: this.fechaCotizacion,
+                        cotizacion: this.divisa.cotizacion,
+                        fecha_cotizacion: this.divisa.fechaCotizacion,
                         pesos: this.pesos,
                         dolares: this.dolares,
                         observaciones: this.observaciones
@@ -1089,14 +1030,14 @@ export default {
                     this.pagos[this.cuentaFocus].pagos.push(pagoCheque);
 
                     this.$refs.chequeForm.reset();
-                    await this.consultarDivisa();
+                    this.$emit("eventCurrency");
                     this.dialogs.cheque = false;
                 }
             } else if (type == "Transferencia") {
                 let pago = {
                     tipo: type,
-                    cotizacion: this.cotizacion,
-                    fecha_cotizacion: this.fechaCotizacion,
+                    cotizacion: this.divisa.cotizacion,
+                    fecha_cotizacion: this.divisa.fechaCotizacion,
                     pesos: this.pesos,
                     dolares: this.dolares,
                     observaciones: this.observaciones
@@ -1110,14 +1051,14 @@ export default {
                 this.pagos[this.cuentaFocus].pagos.push(pagoTra);
 
                 this.$refs.transferenciaForm.reset();
-                await this.consultarDivisa();
+                this.$emit("eventCurrency");
                 this.dialogs.transferencia = false;
             } else if (type == "Haber") {
                 if (this.$refs.haberForm.validate()) {
                     let pago = {
                         tipo: type,
-                        cotizacion: this.cotizacion,
-                        fecha_cotizacion: this.fechaCotizacion,
+                        cotizacion: this.divisa.cotizacion,
+                        fecha_cotizacion: this.divisa.fechaCotizacion,
                         pesos: this.pesos,
                         dolares: this.dolares,
                         observaciones: this.observaciones
@@ -1126,7 +1067,7 @@ export default {
                     this.pagos[this.cuentaFocus].pagos.push(pago);
 
                     this.$refs.haberForm.reset();
-                    await this.consultarDivisa();
+                    this.$emit("eventCurrency");
                     this.dialogs.haber = false;
                 }
             }

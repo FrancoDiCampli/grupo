@@ -262,6 +262,11 @@
                         Dolar: {{$pago['forma'][1]->cotizacion}} |
                         Fecha Cotización: {{$pago['forma'][1]->fecha_cotizacion}}</th>
                     @endif
+                    @if($pago['forma'][0] == 'Haber')
+                    <th>{{$pago['forma'][0]}} |
+                        Dolar: ${{$pago['forma'][1]->cotizacion}} |
+                        Fecha Cotización: {{$pago['forma'][1]->fecha_cotizacion}}</th>
+                    @endif
                     <th>$ {{$pago['forma'][1]->pesos}}</th>
                 </tr>
                 @endforeach

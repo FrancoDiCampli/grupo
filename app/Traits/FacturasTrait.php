@@ -60,6 +60,7 @@ trait FacturasTrait
             "recargo" => $request['recargo'] * 1,
             "condicionventa" => $request['condicionventa'],
             "subtotal" => $request['subtotal'],
+            "iva" => $request['valorAgregado'],
             "total" => $request['total'],
             "subtotalPesos" => ($request['subtotal'] * 1) * ($request['cotizacion'] * 1),
             "totalPesos" => $request['totalPesos'],

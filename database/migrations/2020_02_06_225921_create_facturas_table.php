@@ -24,6 +24,7 @@ class CreateFacturasTable extends Migration
             $table->decimal('bonificacion', 12, 2);
             $table->decimal('recargo', 12, 2);
             $table->decimal('subtotal', 12, 2);
+            $table->decimal('iva', 12, 2);
             $table->decimal('total', 12, 2);
             $table->decimal('subtotalPesos', 12, 2)->nullable();
             $table->decimal('totalPesos', 12, 2)->nullable();

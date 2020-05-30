@@ -12,29 +12,29 @@
                             <v-col cols="12" sm="6" class="header-left">
                                 <h2 class="text-center">
                                     {{
-                                        $store.state.facturas.factura
-                                            .configuracion.nombrefantasia
+                                    $store.state.facturas.factura
+                                    .configuracion.nombrefantasia
                                     }}
                                 </h2>
                                 <p>
                                     <b>Razón Social:</b>
                                     {{
-                                        $store.state.facturas.factura
-                                            .configuracion.razonsocial
+                                    $store.state.facturas.factura
+                                    .configuracion.razonsocial
                                     }}
                                 </p>
                                 <p>
                                     <b>Domicilio Comercial:</b>
                                     {{
-                                        $store.state.facturas.factura
-                                            .configuracion.domiciliocomercial
+                                    $store.state.facturas.factura
+                                    .configuracion.domiciliocomercial
                                     }}
                                 </p>
                                 <p>
                                     <b>Condición Frente al IVA:</b>
                                     {{
-                                        $store.state.facturas.factura
-                                            .configuracion.condicioniva
+                                    $store.state.facturas.factura
+                                    .configuracion.condicioniva
                                     }}
                                 </p>
                             </v-col>
@@ -43,48 +43,48 @@
                                 <p>
                                     <b>Punto de Venta:</b>
                                     0000{{
-                                        $store.state.facturas.factura
-                                            .configuracion.puntoventa
+                                    $store.state.facturas.factura
+                                    .configuracion.puntoventa
                                     }}
                                     <b>Comprobante Nº:</b>
                                     {{
-                                        $store.state.facturas.factura.factura
-                                            .numventa
+                                    $store.state.facturas.factura.factura
+                                    .numventa
                                     }}
                                 </p>
                                 <p>
                                     <b>Fecha de Emisión:</b>
                                     {{
-                                        $store.state.facturas.factura.factura
-                                            .fecha
+                                    $store.state.facturas.factura.factura
+                                    .fecha
                                     }}
                                 </p>
                                 <p>
                                     <b>Cuit:</b>
                                     {{
-                                        $store.state.facturas.factura
-                                            .configuracion.cuit
+                                    $store.state.facturas.factura
+                                    .configuracion.cuit
                                     }}
                                 </p>
                                 <p>
                                     <b>Ingresos Brutos:</b>
                                     {{
-                                        $store.state.facturas.factura
-                                            .configuracion.cuit
+                                    $store.state.facturas.factura
+                                    .configuracion.cuit
                                     }}
                                 </p>
                                 <p>
                                     <b>Inicio de Actividades:</b>
                                     {{
-                                        $store.state.facturas.factura
-                                            .configuracion.inicioactividades
+                                    $store.state.facturas.factura
+                                    .configuracion.inicioactividades
                                     }}
                                 </p>
                                 <p>
                                     <b>Comprobante Adherido:</b>
                                     {{
-                                        $store.state.facturas.factura.factura
-                                            .comprobanteadherido
+                                    $store.state.facturas.factura.factura
+                                    .comprobanteadherido
                                     }}
                                 </p>
                             </v-col>
@@ -94,36 +94,36 @@
                                 <p>
                                     <b>CUIT:</b>
                                     {{
-                                        $store.state.facturas.factura.cliente
-                                            .documentounico
+                                    $store.state.facturas.factura.cliente
+                                    .documentounico
                                     }}
                                 </p>
                                 <p>
                                     <b>Razón Social:</b>
                                     {{
-                                        $store.state.facturas.factura.cliente
-                                            .razonsocial
+                                    $store.state.facturas.factura.cliente
+                                    .razonsocial
                                     }}
                                 </p>
                                 <p>
                                     <b>Condición Frente al IVA:</b>
                                     {{
-                                        $store.state.facturas.factura.cliente
-                                            .condicioniva
+                                    $store.state.facturas.factura.cliente
+                                    .condicioniva
                                     }}
                                 </p>
                                 <p>
                                     <b>Domicilio:</b>
                                     {{
-                                        $store.state.facturas.factura.cliente
-                                            .direccion
+                                    $store.state.facturas.factura.cliente
+                                    .direccion
                                     }}
                                 </p>
                                 <p>
                                     <b>Condición de Venta:</b>
                                     {{
-                                        $store.state.facturas.factura.factura
-                                            .condicionventa
+                                    $store.state.facturas.factura.factura
+                                    .condicionventa
                                     }}
                                 </p>
                                 <v-divider></v-divider>
@@ -133,15 +133,11 @@
                                     <template v-slot:default>
                                         <thead>
                                             <tr>
-                                                <th class="hidden-sm-and-down">
-                                                    Cod. Producto
-                                                </th>
+                                                <th class="hidden-sm-and-down">Cod. Producto</th>
                                                 <th>Producto</th>
                                                 <th>Cantidad</th>
                                                 <th>Cantidad Litros</th>
-                                                <th class="hidden-sm-and-down">
-                                                    U. Medida
-                                                </th>
+                                                <th class="hidden-sm-and-down">U. Medida</th>
                                                 <th>Precio Unit.</th>
                                                 <th>Subtotal</th>
                                             </tr>
@@ -153,20 +149,14 @@
                                                     .factura.detalles"
                                                 :key="index"
                                             >
-                                                <th class="hidden-sm-and-down">
-                                                    {{ detalle.codarticulo }}
-                                                </th>
+                                                <th
+                                                    class="hidden-sm-and-down"
+                                                >{{ detalle.codarticulo }}</th>
                                                 <th>{{ detalle.articulo }}</th>
                                                 <th>{{ detalle.cantidad }}</th>
-                                                <th>
-                                                    {{ detalle.cantidadLitros }}
-                                                </th>
-                                                <th class="hidden-sm-and-down">
-                                                    {{ detalle.medida }}
-                                                </th>
-                                                <th>
-                                                    {{ detalle.preciounitario }}
-                                                </th>
+                                                <th>{{ detalle.cantidadLitros }}</th>
+                                                <th class="hidden-sm-and-down">{{ detalle.medida }}</th>
+                                                <th>{{ detalle.preciounitario }}</th>
                                                 <th>{{ detalle.subtotal }}</th>
                                             </tr>
                                         </tbody>
@@ -185,8 +175,8 @@
                                     </p>
                                     <p>
                                         {{
-                                            $store.state.facturas.factura
-                                                .factura.observaciones
+                                        $store.state.facturas.factura
+                                        .factura.observaciones
                                         }}
                                     </p>
                                 </div>
@@ -198,30 +188,38 @@
                                         <b>Subtotal:</b>
                                         U$D
                                         {{
-                                            $store.state.facturas.factura
-                                                .factura.subtotal
+                                        $store.state.facturas.factura
+                                        .factura.subtotal
                                         }}
                                     </p>
                                     <p>
                                         <b>Bonificación:</b>
                                         {{
-                                            $store.state.facturas.factura
-                                                .factura.bonificacion
+                                        $store.state.facturas.factura
+                                        .factura.bonificacion
                                         }}%
                                     </p>
                                     <p>
                                         <b>Recargo:</b>
                                         {{
-                                            $store.state.facturas.factura
-                                                .factura.recargo
+                                        $store.state.facturas.factura
+                                        .factura.recargo
                                         }}%
+                                    </p>
+                                    <p>
+                                        <b>IVA 21%:</b>
+                                        U$D
+                                        {{
+                                        $store.state.facturas.factura
+                                        .factura.iva
+                                        }}
                                     </p>
                                     <p>
                                         <b>Total:</b>
                                         U$D
                                         {{
-                                            $store.state.facturas.factura
-                                                .factura.total
+                                        $store.state.facturas.factura
+                                        .factura.total
                                         }}
                                     </p>
                                 </div>
@@ -233,12 +231,7 @@
         </div>
         <div v-else>
             <v-row justify="center" style="margin-top: 200px;">
-                <v-progress-circular
-                    :size="70"
-                    :width="7"
-                    color="primary"
-                    indeterminate
-                ></v-progress-circular>
+                <v-progress-circular :size="70" :width="7" color="primary" indeterminate></v-progress-circular>
             </v-row>
         </div>
     </div>
