@@ -7,6 +7,7 @@
                 tile
                 @click="modalCotizacion = true"
             >Cotizacion</v-btn>
+            <v-btn tile color="secondary" :to="`/clientes/resumenCuenta`">Resumen de Cuenta</v-btn>
             <v-tabs right slider-color="secondary" active-class="secondary--text">
                 <v-tab v-if="$store.state.auth.user.rol != 'cliente'">Activas</v-tab>
                 <v-tab>

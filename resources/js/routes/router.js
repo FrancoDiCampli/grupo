@@ -25,6 +25,7 @@ import ClientesCreate from "../views/clientes/Create";
 import ClientesShow from "../views/clientes/Show";
 import MiCuenta from "../views/clientes/MiCuenta";
 import ShowRecibos from "../views/clientes/ShowRecibos";
+import ResumenCuenta from "../views/clientes/ResumenCuenta";
 
 // Articulos
 import Articulos from "../views/articulos/Articulos";
@@ -173,6 +174,11 @@ export default new Router({
             name: "clientes_showRecibos",
             component: ShowRecibos,
             props: true
+        },
+        {
+            path: "/clientes/resumenCuenta",
+            name: "clientes_resumenCuenta",
+            component: ResumenCuenta
         },
 
         // Articulos

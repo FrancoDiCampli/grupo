@@ -74,6 +74,7 @@ Route::middleware('auth:airlock')->group(function () {
     Route::get('comprasPDF/{id}', 'API\PdfController@comprasPDF');
     Route::get('recibosPDF/{id}', 'API\PdfController@recibosPDF');
     Route::get('consignacionesPDF/{id}', 'API\PdfController@consignacionesPDF');
+    Route::post('/resumenCuentaPDF', 'API\PdfController@resumenCuentaPDF');
 
     /*Busqueda*/
     Route::post('/buscando', 'API\BuscadorController@buscando');
@@ -93,6 +94,8 @@ Route::middleware('auth:airlock')->group(function () {
     /*Mi Cuenta*/
     Route::get('mi_cuenta', 'API\ClientesController@miCuenta');
     Route::get('showRecibo/{id}', 'API\ClientesController@showRecibo');
+
+    Route::post('/resumenCuenta', 'API\ClientesController@resumenCuenta');
 
     // REVISAR
     // Route::post('/nuevo', 'API\InventariosController@nuevo');
