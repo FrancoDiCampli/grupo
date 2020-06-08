@@ -62,7 +62,7 @@ trait ConsignacionesTrait
     {
         $data = [
             'tipo' => $request->tipo,
-            'fecha' => now(),
+            'fecha' => $request->fecha,
             'observaciones' => $request->observaciones,
             'bonificacion' => $request->bonificacion,
             'recargo' => $request->recargo,
