@@ -36,7 +36,7 @@ Route::middleware('auth:airlock')->group(function () {
     Route::apiResource('marcas', 'API\MarcasController', ['only' => ['index']]);
 
     /*Inventarios*/
-    Route::apiResource('inventarios', 'API\InventariosController', ['only' => ['index', 'store', 'update']]);
+    Route::apiResource('inventarios', 'API\InventariosController', ['only' => ['index', 'store']]);
 
     /*Proveedores*/
     Route::apiResource('suppliers', 'API\SuppliersController',  ['except' => ['create', 'edit']]);
@@ -46,6 +46,10 @@ Route::middleware('auth:airlock')->group(function () {
 
     /*Consiganciones*/
     Route::apiResource('consignaciones', 'API\ConsignmentsController', ['only' => ['index', 'store', 'show']]);
+
+    /*Devoluciones*/
+    Route::apiResource('devoluciones', 'API\GiveBacksController', ['only' => ['index', 'store', 'show']]);
+    Route::post('/inventariosVendedor', 'API\GiveBacksController@inventariosVendedor');
 
     /*Reportes*/
     Route::get('estadisticas/ventas', 'API\EstadisticasController@ventas');
@@ -74,6 +78,7 @@ Route::middleware('auth:airlock')->group(function () {
     Route::get('comprasPDF/{id}', 'API\PdfController@comprasPDF');
     Route::get('recibosPDF/{id}', 'API\PdfController@recibosPDF');
     Route::get('consignacionesPDF/{id}', 'API\PdfController@consignacionesPDF');
+    Route::get('devolucionesPDF/{id}', 'API\PdfController@devolucionesPDF');
     Route::post('/resumenCuentaPDF', 'API\PdfController@resumenCuentaPDF');
 
     /*Busqueda*/
@@ -96,10 +101,4 @@ Route::middleware('auth:airlock')->group(function () {
     Route::get('showRecibo/{id}', 'API\ClientesController@showRecibo');
 
     Route::post('/resumenCuenta', 'API\ClientesController@resumenCuenta');
-
-    // REVISAR
-    // Route::post('/nuevo', 'API\InventariosController@nuevo');
-    // Route::post('/devolucion', 'API\InventariosController@devolucion');
-    // _____________________________________________________________
-
 });

@@ -31,32 +31,6 @@ class InventariosController extends Controller
         return $inventarios->take(1);
     }
 
-    // Consignacion de Inventarios para Distribuidores
-
-    public function nuevo(Request $request)
-    {
-        // return $request;
-        $inventario = InventariosAdmin::altaInventario($request);
-        InventariosAdmin::movimientoAlta($inventario, $request);
-    }
-
-    public function devolucion(Request $request)
-    {
-        $data = $request->datos;
-        $origen  =  InventariosAdmin::decrementarInventario($data);
-        $data['cantidadlitros'] = $origen->articulo->litros * $data['cantidad'];
-        InventariosAdmin::movimientoBajaDevolucion($data);
-
-        $inventario = $origen->articulo->inventarios->first();
-        $destino = Inventario::findOrFail($inventario['id']);
-
-        $data['inventario_id'] = $destino->id;
-        $data['origen'] = $origen->id;
-
-        InventariosAdmin::incrementarInventario($data);
-        InventariosAdmin::movimientoAltaDevolucion($data);
-    }
-
     // CREA INVENTARIO DE NO EXISTIR, CASO CONTRARIO LO ACTUALIZA
     public function store(Request $request)
     {

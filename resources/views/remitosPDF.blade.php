@@ -243,6 +243,10 @@
         </div>
         <br>
         <div class="footer">
+            @if($factura->observaciones)
+            <p><b>Observaciones: </b>{{$factura->observaciones}}</p>
+            @endif
+            <br>
 
             Firma................................................................. Aclaración................................................................
 
@@ -309,6 +313,10 @@
         </div>
         <br>
         <div class="footer">
+            @if($factura->observaciones)
+            <p><b>Observaciones: </b>{{$factura->observaciones}}</p>
+            @endif
+            <br>
 
             Firma................................................................. Aclaración................................................................
 

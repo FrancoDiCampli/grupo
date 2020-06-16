@@ -235,7 +235,7 @@
                                     <v-col cols="12" sm="6" class="py-0">
                                         <v-text-field
                                             v-model="articuloSelected.cantidad"
-                                            :rules="[rules.required]"
+                                            :rules="[rules.cantidadMaxima]"
                                             :disabled="disabled.detalles"
                                             label="Unidades"
                                             required
@@ -812,7 +812,9 @@ export default {
                     let stockExistente = 0;
                     for (let i = 0; i < this.detalles.length; i++) {
                         if (this.detalles[i].id == articulo.id) {
-                            stockExistente += Number(this.detalles[i].cantidad);
+                            stockExistente += Number(
+                                this.detalles[i].cantidadlitros
+                            );
                         }
                     }
                     cantidadMaxima = cantidadMaxima - stockExistente;

@@ -6,6 +6,7 @@ use App\Cliente;
 use App\Traits\VentasTrait;
 use App\Traits\ComprasTrait;
 use App\Traits\RecibosTrait;
+use App\Traits\DevolucionesTrait;
 use App\Traits\PresupuestosTrait;
 use App\Traits\ConsignacionesTrait;
 
@@ -52,6 +53,17 @@ trait PdfTrait
         $detalles = $res['detalles'];
         $dependencia = $res['dependencia'];
         $pdf = app('dompdf.wrapper')->loadView('remitoConsignacionPDF', compact('configuracion', 'consignacion', 'detalles', 'dependencia'))->setPaper('A4');
+        return $pdf->download();
+    }
+
+    public static function devoluciones($id)
+    {
+        $res = DevolucionesTrait::verDevolucion($id);
+        $configuracion = $res['configuracion'];
+        $devolucion = $res['devolucion'];
+        $detalles = $res['detalles'];
+        $dependencia = $res['dependencia'];
+        $pdf = app('dompdf.wrapper')->loadView('remitoDevolucionPDF', compact('configuracion', 'devolucion', 'detalles', 'dependencia'))->setPaper('A4');
         return $pdf->download();
     }
 

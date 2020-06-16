@@ -42,10 +42,14 @@ import Compras from "../views/compras/Compras";
 import ComprasCreate from "../views/compras/Create";
 import ComprasShow from "../views/compras/Show";
 
-// Compras
+// Consignaciones
 import Consignaciones from "../views/consignaciones/Consignaciones";
 import ConsignacionesCreate from "../views/consignaciones/Create";
 import ConsignacionesShow from "../views/consignaciones/Show";
+
+// Devoluciones
+import Devoluciones from "../views/devoluciones/Devoluciones";
+import DevolucionesCreate from "../views/devoluciones/Create";
 
 // Reportes
 import Reportes from "../views/reportes/Reportes";
@@ -251,6 +255,18 @@ export default new Router({
             name: "consignaciones_show",
             component: ConsignacionesShow,
             props: true
+        },
+
+        // Devoluciones
+        {
+            path: "/devoluciones",
+            name: "devoluciones",
+            component: Devoluciones
+        },
+        {
+            path: "/devoluciones/nueva",
+            name: "devoluciones_nueva",
+            component: DevolucionesCreate
         },
 
         // Reportes

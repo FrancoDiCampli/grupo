@@ -33,6 +33,11 @@ class PdfController extends Controller
         return PdfTrait::consignaciones($id);
     }
 
+    public function devolucionesPDF($id)
+    {
+        return PdfTrait::devoluciones($id);
+    }
+
     public function recibosPDF($id)
     {
         return PdfTrait::recibos($id);

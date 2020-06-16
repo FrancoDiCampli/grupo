@@ -18,6 +18,7 @@ import users from "./modules/users";
 import ventas from "./modules/ventas";
 import PDF from "./modules/PDF";
 import notificaciones from "./modules/notificaciones";
+import devoluciones from "./modules/devoluciones";
 
 export default {
     articulos,
@@ -38,5 +39,6 @@ export default {
     users,
     ventas,
     PDF,
-    notificaciones
+    notificaciones,
+    devoluciones
 };

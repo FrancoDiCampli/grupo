@@ -246,6 +246,9 @@
         </div>
         <br>
         <div class="footer">
+            @if($consignacion->observaciones)
+            <p><b>Observaciones: </b>{{$consignacion->observaciones}}</p>
+            @endif
             <div class="details">
                 @if($consignacion->cotizacion)
                 <p><b>Cotizacion: </b>${{$consignacion->cotizacion}}</p>
