@@ -181,6 +181,32 @@
                                     </p>
                                 </div>
 
+                                <div>
+                                    <v-divider></v-divider>
+                                    <br />
+                                    <p>
+                                        <b>Cotización:</b>
+                                        $
+                                        {{
+                                        $store.state.facturas.factura.factura
+                                        .cotizacion
+                                        }}
+                                        <b>Fecha:</b>
+                                        {{
+                                        $store.state.facturas.factura.factura
+                                        .fechaCotizacion
+                                        }}
+                                    </p>
+                                    <p>
+                                        <b>Total en Pesos:</b>
+                                        $
+                                        {{
+                                        $store.state.facturas.factura.factura
+                                        .totalPesos
+                                        }}
+                                    </p>
+                                </div>
+
                                 <v-divider></v-divider>
                                 <br />
                                 <div class="footer-final">

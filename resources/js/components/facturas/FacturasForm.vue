@@ -39,7 +39,7 @@
                         <v-form ref="facturasClienteForm">
                             <v-row justify="space-around" class="my-1">
                                 <!-- CLIENTE -->
-                                <v-col cols="12" class="py-0">
+                                <v-col cols="9" class="py-0">
                                     <v-text-field
                                         v-model="searchCliente"
                                         :rules="[rules.required]"
@@ -115,6 +115,39 @@
                                             </div>
                                         </div>
                                     </v-card>
+                                </v-col>
+                                <!-- FECHA -->
+                                <v-col cols="12" sm="3" class="py-0">
+                                    <v-dialog
+                                        ref="dialogFecha"
+                                        v-model="fechaDialog"
+                                        :return-value.sync="$store.state.facturas.form.fecha"
+                                        persistent
+                                        :width="$vuetify.breakpoint.xsOnly ? '100%' : '300px'"
+                                    >
+                                        <template v-slot:activator="{ on }">
+                                            <v-text-field
+                                                v-model="$store.state.facturas.form.fecha"
+                                                label="Fecha"
+                                                :rules="[rules.required]"
+                                                readonly
+                                                outlined
+                                                v-on="on"
+                                            ></v-text-field>
+                                        </template>
+                                        <v-date-picker
+                                            v-model="$store.state.facturas.form.fecha"
+                                            scrollable
+                                            locale="es"
+                                        >
+                                            <v-spacer></v-spacer>
+                                            <v-btn
+                                                text
+                                                color="primary"
+                                                @click="$refs.dialogFecha.save($store.state.facturas.form.fecha)"
+                                            >Aceptar</v-btn>
+                                        </v-date-picker>
+                                    </v-dialog>
                                 </v-col>
 
                                 <!-- CONDICION VENTA -->
@@ -217,6 +250,15 @@
                         <v-form ref="facturasTotalesForm">
                             <v-row justify="space-around" class="my-1">
                                 <v-col cols="12" sm="6" class="py-0 px-0">
+                                    <v-col cols="12" class="py-0">
+                                        <v-text-field
+                                            v-model="cotizacion"
+                                            :rules="[rules.required]"
+                                            label="Cotizacion"
+                                            outlined
+                                            type="number"
+                                        ></v-text-field>
+                                    </v-col>
                                     <!-- BONIFICACION -->
                                     <v-col cols="12" class="py-0">
                                         <v-text-field
@@ -251,6 +293,45 @@
                                     </v-col>
                                 </v-col>
                                 <v-col cols="12" sm="6" class="py-0 px-0">
+                                    <v-col cols="12" class="py-0">
+                                        <v-dialog
+                                            ref="dialogCotizacion"
+                                            v-model="dialogCotizacion"
+                                            :return-value.sync="fechaCotizacion"
+                                            persistent
+                                            :width="
+                                            $vuetify.breakpoint.xsOnly
+                                                ? '100%'
+                                                : '300px'
+                                        "
+                                        >
+                                            <template v-slot:activator="{ on }">
+                                                <v-text-field
+                                                    v-model="fechaCotizacion"
+                                                    label="Fecha de la cotización"
+                                                    readonly
+                                                    outlined
+                                                    v-on="on"
+                                                ></v-text-field>
+                                            </template>
+                                            <v-date-picker
+                                                v-model="fechaCotizacion"
+                                                scrollable
+                                                locale="es"
+                                            >
+                                                <v-spacer></v-spacer>
+                                                <v-btn
+                                                    text
+                                                    color="primary"
+                                                    @click="
+                                                    $refs.dialogCotizacion.save(
+                                                        fechaCotizacion
+                                                    )
+                                                "
+                                                >Aceptar</v-btn>
+                                            </v-date-picker>
+                                        </v-dialog>
+                                    </v-col>
                                     <!-- SUBTOTAL -->
                                     <v-col cols="12" class="py-0">
                                         <v-text-field
@@ -276,6 +357,15 @@
                                             v-model="total"
                                             type="number"
                                             label="Total"
+                                            outlined
+                                            disabled
+                                        ></v-text-field>
+                                    </v-col>
+                                    <!-- TOTAL PESOS -->
+                                    <v-col cols="12" class="py-0">
+                                        <v-text-field
+                                            v-model="totalPesos"
+                                            label="Total en pesos"
                                             outlined
                                             disabled
                                         ></v-text-field>
@@ -323,6 +413,7 @@
 
 
 <script>
+import moment from "moment";
 var cantidadMaxima = 999999999;
 
 export default {
@@ -349,8 +440,13 @@ export default {
         clientes: [],
         // DETALLES
         detalles: [],
+        // COTIZACION
+        cotizacion: 1,
+        fechaCotizacion: "",
+        dialogCotizacion: false,
         // SUBTOTAL
-        subtotal: null
+        subtotal: null,
+        fechaDialog: false
     }),
 
     computed: {
@@ -387,6 +483,15 @@ export default {
             }
         },
 
+        totalPesos: {
+            set() {},
+            get() {
+                if (this.total && this.cotizacion) {
+                    return Number(this.total * this.cotizacion).toFixed(2);
+                }
+            }
+        },
+
         valorAgregado: {
             set() {},
             get() {
@@ -409,6 +514,7 @@ export default {
 
     mounted: async function() {
         this.inProcess = true;
+        await this.checkCurrency();
         await this.getPoint();
         await this.subtotalControl();
         await this.initState();
@@ -431,6 +537,37 @@ export default {
                 }
             }
             return true;
+        },
+
+        checkCurrency() {
+            return new Promise((resolve, reject) => {
+                axios
+                    .get("/api/consultar")
+                    .then(response => {
+                        this.cotizacion = response.data.valor;
+                        this.fechaCotizacion = response.data.fecha;
+                        resolve(response.data);
+                    })
+                    .catch(error => {
+                        this.cotizacion = 1;
+                        this.fechaCotizacion = moment().format("DD/MM/YYYY");
+                        this.inProcess = false;
+                        reject(error);
+                    });
+            });
+        },
+        setCurrency: async function() {
+            await axios
+                .post("/api/setCotizacion", {
+                    cotizacion: this.cotizacion,
+                    fechaCotizacion: this.fechaCotizacion
+                })
+                .then(response => {
+                    console.log(response.data);
+                })
+                .catch(error => {
+                    console.log(error);
+                });
         },
 
         // HEADER
@@ -513,10 +650,14 @@ export default {
 
         // FORM
         setData: async function() {
+            await this.setCurrency();
             if (this.$refs.facturasClienteForm.validate()) {
                 this.$store.state.facturas.form.subtotal = this.subtotal;
                 this.$store.state.facturas.form.valorAgregado = this.valorAgregado;
                 this.$store.state.facturas.form.total = this.total;
+                this.$store.state.facturas.form.totalPesos = this.totalPesos;
+                this.$store.state.facturas.form.cotizacion = this.cotizacion;
+                this.$store.state.facturas.form.fechaCotizacion = this.fechaCotizacion;
                 this.$store.state.facturas.form.detalles = this.detalles;
                 this.$store.state.facturas.form.numfactura = this.NumComprobante;
                 return true;
