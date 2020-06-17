@@ -455,7 +455,8 @@ export default {
             set() {},
             get() {
                 if (this.subtotal) {
-                    let total = this.subtotal;
+                    let total =
+                        Number(this.subtotal) + Number(this.valorAgregado);
                     let bonificacion = 0;
                     let recargo = 0;
 
@@ -463,19 +464,18 @@ export default {
                         bonificacion =
                             Number(
                                 this.$store.state.facturas.form.bonificacion *
-                                    this.subtotal
+                                    total
                             ) / 100;
                     }
 
                     if (this.$store.state.facturas.form.recargo) {
                         recargo =
                             Number(
-                                this.$store.state.facturas.form.recargo *
-                                    this.subtotal
+                                this.$store.state.facturas.form.recargo * total
                             ) / 100;
                     }
 
-                    total = Number(total) + Number(this.valorAgregado);
+                    // total = Number(total) + Number(this.valorAgregado);
                     return Number(total - bonificacion + recargo).toFixed(2);
                 } else {
                     return null;
