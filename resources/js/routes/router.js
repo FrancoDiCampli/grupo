@@ -5,6 +5,11 @@ import Welcome from "../views/Welcome";
 import NotFound from "../views/NotFound";
 import AccessDenied from "../views/AccessDenied";
 
+// Pedidos
+import Pedidos from "../views/pedidos/pedidos";
+import PedidosCreate from "../views/pedidos/Create";
+import PedidosShow from "../views/pedidos/Show";
+
 // Ventas
 import Ventas from "../views/ventas/Ventas";
 import VentasCreate from "../views/ventas/Create";
@@ -13,11 +18,6 @@ import VentasShow from "../views/ventas/Show";
 // Facturas
 import FacturasCreate from "../views/facturas/Create";
 import FacturasShow from "../views/facturas/Show";
-
-// Presupuestos
-import Presupuestos from "../views/presupuestos/presupuestos";
-import PresupuestosCreate from "../views/presupuestos/Create";
-import PresupuestosShow from "../views/presupuestos/Show";
 
 // Clientes
 import Clientes from "../views/clientes/Clientes";
@@ -102,6 +102,24 @@ export default new Router({
             }
         },
 
+        // Pedidos
+        {
+            path: "/pedidos",
+            name: "pedidos",
+            component: Pedidos
+        },
+        {
+            path: "/pedidos/nuevo",
+            name: "pedidos_nuevo",
+            component: PedidosCreate
+        },
+        {
+            path: "/pedidos/show/:id",
+            name: "pedidos_show",
+            component: PedidosShow,
+            props: true
+        },
+
         // Ventas
         {
             path: "/ventas",
@@ -130,24 +148,6 @@ export default new Router({
             path: "/facturas/show/:id",
             name: "facturas_show",
             component: FacturasShow,
-            props: true
-        },
-
-        // Presupuestos
-        {
-            path: "/presupuestos",
-            name: "presupuestos",
-            component: Presupuestos
-        },
-        {
-            path: "/presupuestos/nuevo",
-            name: "presupuestos_nuevo",
-            component: PresupuestosCreate
-        },
-        {
-            path: "/presupuestos/show/:id",
-            name: "presupuestos_show",
-            component: PresupuestosShow,
             props: true
         },
 

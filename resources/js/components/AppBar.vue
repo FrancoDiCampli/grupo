@@ -174,9 +174,9 @@ export default {
         sidenav: false,
         routes: [
             {
-                name: "Ventas",
-                icon: "fas fa-dollar-sign",
-                url: "/ventas",
+                name: "Nota de pedido",
+                icon: "fas fa-receipt",
+                url: "/pedidos",
                 roles: [
                     "superAdmin",
                     "administrador",
@@ -186,9 +186,9 @@ export default {
                 divider: false
             },
             {
-                name: "Presupuestos",
-                icon: "fas fa-file",
-                url: "/presupuestos",
+                name: "Ventas",
+                icon: "fas fa-dollar-sign",
+                url: "/ventas",
                 roles: [
                     "superAdmin",
                     "administrador",
