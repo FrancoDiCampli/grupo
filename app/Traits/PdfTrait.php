@@ -2,9 +2,11 @@
 
 namespace App\Traits;
 
+use App\Cliente;
 use App\Traits\VentasTrait;
 use App\Traits\ComprasTrait;
 use App\Traits\RecibosTrait;
+use App\Traits\DevolucionesTrait;
 use App\Traits\PresupuestosTrait;
 use App\Traits\ConsignacionesTrait;
 
@@ -54,6 +56,17 @@ trait PdfTrait
         return $pdf->download();
     }
 
+    public static function devoluciones($id)
+    {
+        $res = DevolucionesTrait::verDevolucion($id);
+        $configuracion = $res['configuracion'];
+        $devolucion = $res['devolucion'];
+        $detalles = $res['detalles'];
+        $dependencia = $res['dependencia'];
+        $pdf = app('dompdf.wrapper')->loadView('remitoDevolucionPDF', compact('configuracion', 'devolucion', 'detalles', 'dependencia'))->setPaper('A4');
+        return $pdf->download();
+    }
+
     public static function recibos($id)
     {
         $res = RecibosTrait::verRecibo($id);
@@ -62,6 +75,23 @@ trait PdfTrait
         $pagos = $res['pagos'];
         $cliente = $res['cliente'];
         $pdf = app('dompdf.wrapper')->loadView('recibosPDF', compact('configuracion', 'recibo', 'pagos', 'cliente'))->setPaper('A4');
+        return $pdf->download();
+    }
+
+    public static function resumenCuenta($request)
+    {
+        $resumen = ClientesTrait::resumenCuenta($request);
+        $configuracion = ConfiguracionTrait::configuracion();
+        $cliente = $resumen['cliente'];
+        $desde = $resumen['desde'];
+        $hasta = $resumen['hasta'];
+        $cuentas = $resumen['cuentas'];
+        $pagos = $resumen['pagos'];
+        $debe = $resumen['debe'];
+        $haber = $resumen['haber'];
+        $saldoAnterior = $resumen['saldoAnterior'];
+        $saldo = $resumen['saldo'];
+        $pdf = app('dompdf.wrapper')->loadView('resumenCuentaPDF', compact('configuracion', 'cliente', 'desde', 'hasta', 'cuentas', 'pagos', 'debe', 'haber', 'saldoAnterior', 'saldo'))->setPaper('A4');
         return $pdf->download();
     }
 }

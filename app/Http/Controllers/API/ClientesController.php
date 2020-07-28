@@ -86,4 +86,9 @@ class ClientesController extends Controller
     {
         return ClientesTrait::showRecibos($id);
     }
+
+    public function resumenCuenta(Request $request)
+    {
+        return ClientesTrait::resumenCuenta($request);
+    }
 }

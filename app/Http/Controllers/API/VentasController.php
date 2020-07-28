@@ -43,15 +43,14 @@ class VentasController extends Controller
         return VentasTrait::facturar($request);
     }
 
-    // ANULACION DE FACTURA
-    public function destroy($id)
-    {
-        return VentasTrait::anular($id);
-    }
-
     public function show($id)
     {
         return VentasTrait::show($id);
+    }
+
+    public function destroy($id)
+    {
+        return VentasTrait::anular($id);
     }
 
     public function restaurar($id)

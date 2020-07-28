@@ -24,8 +24,7 @@
                                             v-model="selected"
                                             :value="item.id"
                                             :disabled="
-                                                item.numfactura != null ||
-                                                    item.pagada != true
+                                                item.numfactura
                                             "
                                         ></v-checkbox>
                                     </td>
@@ -38,7 +37,10 @@
                                         <v-menu offset-y>
                                             <template v-slot:activator="{ on }">
                                                 <v-btn color="secondary" text icon v-on="on">
-                                                    <v-icon size="medium">fas fa-ellipsis-v</v-icon>
+                                                    <v-icon size="medium">
+                                                        fas
+                                                        fa-ellipsis-v
+                                                    </v-icon>
                                                 </v-btn>
                                             </template>
                                             <v-list>
@@ -54,7 +56,7 @@
                                                 </v-list-item>
                                                 <v-list-item
                                                     @click="erase(item.id)"
-                                                    :disabled="item.pagada != true"
+                                                    :disabled="canBeErased(item)"
                                                 >
                                                     <v-list-item-title>Anular</v-list-item-title>
                                                 </v-list-item>
@@ -104,7 +106,7 @@ export default {
     data: () => ({
         headers: [
             { text: "", sortable: false },
-            { text: "N°. Adhe.", sortable: false, class: "hidden-xs-only" },
+            { text: "N° Adhe.", sortable: false, class: "hidden-xs-only" },
             { text: "Cliente", sortable: false },
             { text: "Importe", sortable: false },
             { text: "Fecha", sortable: false, class: "hidden-sm-and-down" },
@@ -135,6 +137,22 @@ export default {
 
         print(id) {
             this.$store.dispatch("PDF/printVenta", { id: id });
+        },
+
+        canBeErased(item) {
+            if (!item.numfactura) {
+                if (item.cuenta) {
+                    if (item.cuenta.pagos.length > 0) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                } else {
+                    return false;
+                }
+            } else {
+                return true;
+            }
         },
 
         erase(id) {

@@ -2,9 +2,12 @@
 
 namespace App\Traits;
 
+use App\Pago;
 use App\Role;
 use App\User;
+use App\Venta;
 use App\Cliente;
+use App\Cuentacorriente;
 use Carbon\Carbon;
 use App\Traits\FotosTrait;
 use App\Traits\RecibosTrait;
@@ -260,5 +263,59 @@ trait ClientesTrait
         $billing = $ordenando->values()->all();
 
         return compact('cliente', 'contactos', 'user', 'facturas', 'cuentas', 'recibos', 'billing', 'haber');
+    }
+
+    public static function resumenCuenta($request)
+    {
+        $cliente = Cliente::find($request->get('id'));
+        $desde = new Carbon($request->get('desde'));
+        $hasta = new Carbon($request->get('hasta'));
+
+        $cuentas = collect();
+        $cuentasAnterior = collect();
+        $pagos = collect();
+        $pagosAnterior = collect();
+
+        foreach ($cliente->ctacte as $cuenta) {
+            if ($cuenta->created_at >= $desde->format('Y-m-d') && $cuenta->created_at <= $hasta->format('Y-m-d')) {
+                $cuenta->factura;
+                $fecha = new Carbon($cuenta->alta);
+                $cuenta->alta = $fecha->format('d-m-Y');
+                $cuentas->push($cuenta);
+            } else if ($cuenta->created_at < $desde->format('Y-m-d')) {
+                $cuentasAnterior->push($cuenta);
+            }
+
+            foreach ($cuenta->pagos as $pago) {
+                if ($pago->fecha >= $desde->format('Ymd') && $pago->fecha <= $hasta->format('Ymd')) {
+                    $pago->recibo;
+                    $fec = new Carbon($pago->fecha);
+                    $pago->fecha = $fec->format('d-m-Y');
+                    $pagos->push($pago);
+                } else if ($pago->fecha < $desde->format('Ymd')) {
+                    $pagosAnterior->push($pago);
+                }
+            }
+        }
+
+        $debe = $cuentas->sum('importe');
+        $haber = $pagos->sum('importe');
+        $saldo = $haber - $debe;
+
+        $debeAnterior = $cuentasAnterior->sum('importe');
+        $haberAnterior = $pagosAnterior->sum('importe');
+        $saldoAnterior = $haberAnterior - $debeAnterior;
+
+        return [
+            'cliente' => $cliente,
+            'desde' => $desde->format('d-m-Y'),
+            'hasta' => $hasta->format('d-m-Y'),
+            'cuentas' => $cuentas,
+            'pagos' => $pagos,
+            'debe' => number_format($debe, 2, ',', '.'),
+            'haber' => number_format($haber, 2, ',', '.'),
+            'saldoAnterior' => number_format($saldoAnterior, 2, ',', '.'),
+            'saldo' => number_format($saldo, 2, ',', '.')
+        ];
     }
 }

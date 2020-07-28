@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use App\Traits\DolarTrait;
 
 class DolarController extends Controller
@@ -19,5 +20,10 @@ class DolarController extends Controller
         if ($res != 502) {
             return $res;
         } else return DolarTrait::alternativa();
+    }
+
+    public function setCotizacion(Request $request)
+    {
+        return DolarTrait::setCotizacion($request);
     }
 }

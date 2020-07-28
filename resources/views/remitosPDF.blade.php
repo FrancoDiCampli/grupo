@@ -204,7 +204,7 @@
             </div>
             <div class="v-divider"></div>
             <div class="header-right">
-                <h2 class="center">REMITO</h2>
+                <br>
                 <p><b>Punto de Venta: </b>0000{{$configuracion['puntoventa']}}<b> Comprobante Nº: </b>{{$factura->numventa}}</p>
                 <p><b>Comprobante Adherido: </b>{{$factura->comprobanteadherido}}</p>
                 <p><b>Fecha de Emisión: </b>{{$factura->fecha}}</p>
@@ -230,8 +230,6 @@
                     <th>Producto</th>
                     <th>Cantidad</th>
                     <th>U. Medida</th>
-                    <th>Precio Unit.</th>
-                    <th>Subtotal</th>
                 </tr>
                 @foreach($detalles as $detalle)
                 <tr class="body">
@@ -239,27 +237,19 @@
                     <th>{{$detalle->articulo}}</th>
                     <th>{{$detalle->cantidad}}</th>
                     <th>{{$detalle->medida}}</th>
-                    <th>USD {{$detalle->preciounitario}}</th>
-                    <th>USD {{$detalle->subtotal}}</th>
                 </tr>
                 @endforeach
             </table>
         </div>
         <br>
         <div class="footer">
-            <div class="details">
-                @if($factura->cotizacion)
-                <p><b>Cotizacion: </b>${{$factura->cotizacion}}</p>
-                <p><b>Fecha Cotización: </b>{{$factura->fechaCotizacion}}</p>
-                <p><b>Subtotal en Pesos: </b>${{$factura->subtotalPesos}}</p>
-                <p><b>Total en Pesos </b>${{$factura->totalPesos}}</p>
-                <hr>
-                @endif
-                <p><b>Subtotal: </b>USD {{$factura->subtotal}}</p>
-                <p><b>Bonificación: </b>{{$factura->bonificacion}}%</p>
-                <p><b>Recargo: </b>{{$factura->recargo}}%</p>
-                <p><b>Total: </b>USD {{$factura->total}}</p>
-            </div>
+            @if($factura->observaciones)
+            <p><b>Observaciones: </b>{{$factura->observaciones}}</p>
+            @endif
+            <br>
+
+            Firma................................................................. Aclaración................................................................
+
         </div>
     </div>
 
@@ -284,7 +274,7 @@
             </div>
             <div class="v-divider"></div>
             <div class="header-right">
-                <h2 class="center">REMITO</h2>
+                <br>
                 <p><b>Punto de Venta: </b>0000{{$configuracion['puntoventa']}}<b> Comprobante Nº: </b>{{$factura->numventa}}</p>
                 <p><b>Comprobante Adherido: </b>{{$factura->comprobanteadherido}}</p>
                 <p><b>Fecha de Emisión: </b>{{$factura->fecha}}</p>
@@ -310,8 +300,6 @@
                     <th>Producto</th>
                     <th>Cantidad</th>
                     <th>U. Medida</th>
-                    <th>Precio Unit.</th>
-                    <th>Subtotal</th>
                 </tr>
                 @foreach($detalles as $detalle)
                 <tr class="body">
@@ -319,27 +307,19 @@
                     <th>{{$detalle->articulo}}</th>
                     <th>{{$detalle->cantidad}}</th>
                     <th>{{$detalle->medida}}</th>
-                    <th>USD {{$detalle->preciounitario}}</th>
-                    <th>USD {{$detalle->subtotal}}</th>
                 </tr>
                 @endforeach
             </table>
         </div>
         <br>
         <div class="footer">
-            <div class="details">
-                @if($factura->cotizacion)
-                <p><b>Cotizacion: </b>${{$factura->cotizacion}}</p>
-                <p><b>Fecha Cotización: </b>{{$factura->fechaCotizacion}}</p>
-                <p><b>Subtotal en Pesos: </b>${{$factura->subtotalPesos}}</p>
-                <p><b>Total en Pesos </b>${{$factura->totalPesos}}</p>
-                <hr>
-                @endif
-                <p><b>Subtotal: </b>USD {{$factura->subtotal}}</p>
-                <p><b>Bonificación: </b>{{$factura->bonificacion}}%</p>
-                <p><b>Recargo: </b>{{$factura->recargo}}%</p>
-                <p><b>Total: </b>USD {{$factura->total}}</p>
-            </div>
+            @if($factura->observaciones)
+            <p><b>Observaciones: </b>{{$factura->observaciones}}</p>
+            @endif
+            <br>
+
+            Firma................................................................. Aclaración................................................................
+
         </div>
     </div>
 

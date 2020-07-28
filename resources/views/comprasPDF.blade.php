@@ -245,6 +245,9 @@
         </div>
         <br>
         <div class="footer">
+            @if($remito->observaciones)
+            <p><b>Observaciones: </b>{{$remito->observaciones}}</p>
+            @endif
             <div class="details">
                 <p><b>Subtotal: </b>USD {{$remito->subtotal}}</p>
                 <p><b>Bonificación: </b>{{$remito->bonificacion}}%</p>
@@ -311,6 +314,9 @@
         </div>
         <br>
         <div class="footer">
+            @if($remito->observaciones)
+            <p><b>Observaciones: </b>{{$remito->observaciones}}</p>
+            @endif
             <div class="details">
                 <p><b>Subtotal: </b>USD {{$remito->subtotal}}</p>
                 <p><b>Bonificación: </b>{{$remito->bonificacion}}%</p>

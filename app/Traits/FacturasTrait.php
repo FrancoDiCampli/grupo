@@ -54,12 +54,13 @@ trait FacturasTrait
             "tipocomprobante" => $request['tipocomprobante'],
             "numfactura" => $request['numfactura'],
             "comprobanteadherido" => $request['comprobanteadherido'],
-            "fecha" => now()->format('Ymd'),
+            "fecha" => $request['fecha'],
             'observaciones' => $request['observaciones'],
             "bonificacion" => $request['bonificacion'] * 1,
             "recargo" => $request['recargo'] * 1,
             "condicionventa" => $request['condicionventa'],
             "subtotal" => $request['subtotal'],
+            "iva" => $request['valorAgregado'],
             "total" => $request['total'],
             "subtotalPesos" => ($request['subtotal'] * 1) * ($request['cotizacion'] * 1),
             "totalPesos" => $request['totalPesos'],
@@ -92,6 +93,8 @@ trait FacturasTrait
         }
         $fecha = new Carbon($factura->fecha);
         $factura->fecha = $fecha->format('d-m-Y');
+        $fechaCot = new Carbon($factura->fechaCotizacion);
+        $factura->fechaCotizacion = $fechaCot->format('d-m-Y');
         $cliente = Cliente::withTrashed()->find($factura->cliente_id);
 
         return [

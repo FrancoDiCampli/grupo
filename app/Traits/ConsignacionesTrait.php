@@ -2,6 +2,7 @@
 
 namespace App\Traits;
 
+use Error;
 use App\User;
 use App\Articulo;
 use Carbon\Carbon;
@@ -32,8 +33,11 @@ trait ConsignacionesTrait
 
     public static function store($request)
     {
-        static::storeConsignaciones($request);
-        static::moverInventarios($request);
+        $aux = static::moverInventarios($request);
+        if ($aux) {
+            static::storeConsignaciones($request);
+            return ['Consignación exitosa'];
+        } else return new Error();
     }
 
     public static function show($id)
@@ -62,7 +66,7 @@ trait ConsignacionesTrait
     {
         $data = [
             'tipo' => $request->tipo,
-            'fecha' => now(),
+            'fecha' => $request->fecha,
             'observaciones' => $request->observaciones,
             'bonificacion' => $request->bonificacion,
             'recargo' => $request->recargo,
@@ -88,9 +92,9 @@ trait ConsignacionesTrait
                 'cantidadLitros' => $detail['cantidadLitros'],
                 'preciounitario' => $detail['precio'],
                 'subtotal' => $detail['subtotalDolares'],
-                'subtotalPesos' => $detail['subtotalPesos'],
-                'cotizacion' => $detail['cotizacion'],
-                'fechaCotizacion' => $detail['fechaCotizacion'],
+                'subtotalPesos' => null,
+                'cotizacion' => null,
+                'fechaCotizacion' => null,
                 'articulo_id' => $detail['id'],
                 'consignment_id' => $consignacion->id,
             ];
@@ -107,53 +111,63 @@ trait ConsignacionesTrait
     {
         $detalles = $request->detalles;
         $dependencia_id = $request->vendedor_id;
-
+        $aux = true;
+        $contador = 0;
+        DB::beginTransaction();
         foreach ($detalles as $detalle) {
-            $articulo_id = $detalle['id'];
-            $litros = $detalle['litros'];
-            $cantidad = $detalle['cantidad'];
-            $origen = Inventario::find($detalle['inventarios']['id']);
-            $actualizar = Inventario::where('articulo_id', $articulo_id)->where('dependencia', $dependencia_id)->get()->first();
+            if ($aux) {
+                $articulo_id = $detalle['id'];
+                $litros = $detalle['litros'];
+                $cantidad = $detalle['cantidad'];
+                $origen = Inventario::find($detalle['inventarios']['id']);
+                $actualizar = Inventario::where('articulo_id', $articulo_id)->where('dependencia', $dependencia_id)->get()->first();
 
-            $data = [
-                'cantidad' => $cantidad,
-                'cantidadlitros' => $cantidad * $litros,
-                'articulo_id' => $articulo_id,
-                'dependencia' => $dependencia_id,
-            ];
+                $data = [
+                    'cantidad' => $cantidad,
+                    'cantidadlitros' => $cantidad * $litros,
+                    'articulo_id' => $articulo_id,
+                    'dependencia' => $dependencia_id,
+                ];
 
-            if ($data['cantidad'] <= $origen['cantidad']) {
-                if ($actualizar) {
-                    $data['inventario_id'] = $actualizar['id'];
-                    InventariosAdmin::actualizarInventario($data, $actualizar);
-                    $data['inventario_id'] = $origen['id'];
-                    $inventory = InventariosAdmin::decrementarInventario($data);
-                    if ($inventory['cantidad'] == 0) {
-                        $arti = Articulo::find($inventory['articulo_id']);
-                        ArticulosTrait::crearNotificacion($arti);
-                    }
+                if ($data['cantidad'] <= $origen['cantidad']) {
+                    if ($actualizar) {
+                        $data['inventario_id'] = $actualizar['id'];
+                        InventariosAdmin::actualizarInventario($data, $actualizar);
+                        $data['inventario_id'] = $origen['id'];
+                        $inventory = InventariosAdmin::decrementarInventario($data);
+                        if ($inventory['cantidad'] == 0) {
+                            $arti = Articulo::find($inventory['articulo_id']);
+                            ArticulosTrait::crearNotificacion($arti);
+                        }
 
-                    $data['inventario_id'] = $actualizar['id'];
-                    InventariosAdmin::movimientoIncrementoConsignacion($data);
-                    $data['inventario_id'] = $origen['id'];
-                    InventariosAdmin::movimientoBajaConsignacion($data);
+                        $data['inventario_id'] = $actualizar['id'];
+                        InventariosAdmin::movimientoIncrementoConsignacion($data);
+                        $data['inventario_id'] = $origen['id'];
+                        InventariosAdmin::movimientoBajaConsignacion($data);
+                    } else {
+                        $inventario = InventariosAdmin::altaConsignacion($data);
+                        $data['inventario_id'] = $origen['id'];
+                        InventariosAdmin::movimientoAltaConsignacion($inventario, $data);
+
+                        $inventory = InventariosAdmin::decrementarInventario($data);
+                        if ($inventory['cantidad'] == 0) {
+                            $arti = Articulo::find($inventory['articulo_id']);
+                            ArticulosTrait::crearNotificacion($arti);
+                        }
+                        $data['inventario_id'] = $origen['id'];
+                        InventariosAdmin::movimientoBajaConsignacion($data);
+                    };
                 } else {
-                    $inventario = InventariosAdmin::altaConsignacion($data);
-                    $data['inventario_id'] = $origen['id'];
-                    InventariosAdmin::movimientoAltaConsignacion($inventario, $data);
-
-                    $inventory = InventariosAdmin::decrementarInventario($data);
-                    if ($inventory['cantidad'] == 0) {
-                        $arti = Articulo::find($inventory['articulo_id']);
-                        ArticulosTrait::crearNotificacion($arti);
-                    }
-                    $data['inventario_id'] = $origen['id'];
-                    InventariosAdmin::movimientoBajaConsignacion($data);
-                };
-                return true;
-            } else {
-                return false;
+                    $aux = false;
+                    $contador++;
+                }
             }
         }
+        if ($contador == 0) {
+            DB::commit();
+        } else {
+            DB::rollback();
+        }
+        return $aux;
     }
 }

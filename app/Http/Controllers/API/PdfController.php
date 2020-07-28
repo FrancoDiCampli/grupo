@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Traits\PdfTrait;
+use Illuminate\Http\Request;
 
 class PdfController extends Controller
 {
@@ -32,8 +33,18 @@ class PdfController extends Controller
         return PdfTrait::consignaciones($id);
     }
 
+    public function devolucionesPDF($id)
+    {
+        return PdfTrait::devoluciones($id);
+    }
+
     public function recibosPDF($id)
     {
         return PdfTrait::recibos($id);
+    }
+
+    public function resumenCuentaPDF(Request $request)
+    {
+        return PdfTrait::resumenCuenta($request);
     }
 }

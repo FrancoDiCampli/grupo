@@ -158,7 +158,7 @@
                                     <h3 class="headline">{{ articulo.articulo }}</h3>
                                     <div>
                                         <p>{{ articulo.litros }} Litros</p>
-                                        <p>Stock: {{ articulo.stock }}</p>
+                                        <p>Total Litros: {{ articulo.stock }}</p>
                                         <p>$ {{ articulo.precio }}</p>
                                     </div>
                                 </v-card-text>
@@ -184,7 +184,11 @@ export default {
             { text: "Codigo", sortable: false, class: "hidden-sm-and-down" },
             { text: "Articulo", sortable: false },
             { text: "Precio", sortable: false },
-            { text: "Stock", sortable: false, class: "hidden-sm-and-down" },
+            {
+                text: "Total Litros",
+                sortable: false,
+                class: "hidden-sm-and-down"
+            },
             { text: "", sortable: false }
         ]
     }),

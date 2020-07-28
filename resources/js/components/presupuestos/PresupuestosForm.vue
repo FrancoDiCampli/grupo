@@ -74,6 +74,7 @@
                                                     <tr>
                                                         <th class="text-xs-left">Apellido Nombre</th>
                                                         <th class="text-xs-left">Documento</th>
+                                                        <th>Tipo</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -97,6 +98,12 @@
                                                             {{
                                                             cliente.documentounico
                                                             }}
+                                                        </td>
+                                                        <td>
+                                                            <div
+                                                                v-if="cliente.distribuidor"
+                                                            >Distribuidor</div>
+                                                            <div v-else>Cliente</div>
                                                         </td>
                                                     </tr>
                                                 </tbody>
@@ -203,7 +210,7 @@
                                                         <th class="text-xs-left">Codigo</th>
                                                         <th class="text-xs-left">Articulo</th>
                                                         <th class="text-xs-left">Precio</th>
-                                                        <th class="text-xs-left">Stock</th>
+                                                        <th class="text-xs-left">Total Litros</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -254,7 +261,7 @@
                             <v-form ref="detailForm">
                                 <v-row justify="center" class="px-3">
                                     <!-- DETALLES -->
-                                    <v-col cols="12" sm="4" class="py-0">
+                                    <v-col cols="12" sm="6" class="py-0">
                                         <v-text-field
                                             v-model="articuloSelected.precio"
                                             :rules="[rules.required]"
@@ -265,7 +272,7 @@
                                             type="number"
                                         ></v-text-field>
                                     </v-col>
-                                    <v-col cols="12" sm="4" class="py-0">
+                                    <v-col cols="12" sm="6" class="py-0">
                                         <v-text-field
                                             v-model="articuloSelected.cantidad"
                                             :rules="[rules.required]"
@@ -276,7 +283,7 @@
                                             type="number"
                                         ></v-text-field>
                                     </v-col>
-                                    <v-col cols="12" sm="4" class="py-0">
+                                    <v-col cols="12" sm="6" class="py-0">
                                         <v-text-field
                                             v-model="cantidadLitros"
                                             :rules="[rules.required]"
@@ -298,67 +305,9 @@
                                             type="number"
                                         ></v-text-field>
                                     </v-col>
-                                    <v-col cols="12" sm="6" class="py-0">
-                                        <v-text-field
-                                            v-model="pesos"
-                                            :rules="[rules.required]"
-                                            label="Subtotal en Pesos"
-                                            outlined
-                                            disabled
-                                            type="number"
-                                        ></v-text-field>
-                                    </v-col>
                                 </v-row>
                             </v-form>
                             <v-row justify="center" class="px-3">
-                                <v-col cols="12" sm="6" class="py-0">
-                                    <v-text-field
-                                        v-model="cotizacion"
-                                        :rules="[rules.required]"
-                                        label="Cotizacion"
-                                        outlined
-                                        type="number"
-                                    ></v-text-field>
-                                </v-col>
-                                <v-col cols="12" sm="6" class="py-0">
-                                    <v-dialog
-                                        ref="dialogCotizacion"
-                                        v-model="dialogCotizacion"
-                                        :return-value.sync="fechaCotizacion"
-                                        persistent
-                                        :width="
-                                            $vuetify.breakpoint.xsOnly
-                                                ? '100%'
-                                                : '300px'
-                                        "
-                                    >
-                                        <template v-slot:activator="{ on }">
-                                            <v-text-field
-                                                v-model="latinDate"
-                                                label="Fecha de la cotización"
-                                                readonly
-                                                outlined
-                                                v-on="on"
-                                            ></v-text-field>
-                                        </template>
-                                        <v-date-picker
-                                            v-model="fechaCotizacion"
-                                            scrollable
-                                            locale="es"
-                                        >
-                                            <v-spacer></v-spacer>
-                                            <v-btn
-                                                text
-                                                color="primary"
-                                                @click="
-                                                    $refs.dialogCotizacion.save(
-                                                        fechaCotizacion
-                                                    )
-                                                "
-                                            >Aceptar</v-btn>
-                                        </v-date-picker>
-                                    </v-dialog>
-                                </v-col>
                                 <v-col cols="12">
                                     <v-row justify="center" class="mb-5">
                                         <v-btn
@@ -384,9 +333,7 @@
                                                     <th class="text-left">Unidades</th>
 
                                                     <th class="text-left">Subtotal</th>
-                                                    <th
-                                                        class="text-left hidden-sm-and-down"
-                                                    >Subtotal en pesos</th>
+
                                                     <th></th>
                                                 </tr>
                                             </thead>
@@ -406,11 +353,7 @@
                                                         detalle.subtotalDolares
                                                         }}
                                                     </td>
-                                                    <td class="hidden-sm-and-down">
-                                                        {{
-                                                        detalle.subtotalPesos
-                                                        }}
-                                                    </td>
+
                                                     <td>
                                                         <v-btn
                                                             icon
@@ -457,6 +400,54 @@
                     <v-stepper-content step="3">
                         <v-form ref="presupuestosTotalesForm">
                             <v-row justify="space-around" class="my-1">
+                                <v-col cols="12" sm="6" class="py-0">
+                                    <v-text-field
+                                        v-model="cotizacion"
+                                        :rules="[rules.required]"
+                                        label="Cotizacion"
+                                        outlined
+                                        type="number"
+                                    ></v-text-field>
+                                </v-col>
+                                <v-col cols="12" sm="6" class="py-0">
+                                    <v-dialog
+                                        ref="dialogCotizacion"
+                                        v-model="dialogCotizacion"
+                                        :return-value.sync="fechaCotizacion"
+                                        persistent
+                                        :width="
+                                            $vuetify.breakpoint.xsOnly
+                                                ? '100%'
+                                                : '300px'
+                                        "
+                                    >
+                                        <template v-slot:activator="{ on }">
+                                            <v-text-field
+                                                v-model="fechaCotizacion"
+                                                label="Fecha de la cotización"
+                                                readonly
+                                                outlined
+                                                v-on="on"
+                                            ></v-text-field>
+                                        </template>
+                                        <v-date-picker
+                                            v-model="fechaCotizacion"
+                                            scrollable
+                                            locale="es"
+                                        >
+                                            <v-spacer></v-spacer>
+                                            <v-btn
+                                                text
+                                                color="primary"
+                                                @click="
+                                                    $refs.dialogCotizacion.save(
+                                                        fechaCotizacion
+                                                    )
+                                                "
+                                            >Aceptar</v-btn>
+                                        </v-date-picker>
+                                    </v-dialog>
+                                </v-col>
                                 <v-col cols="12" sm="6" class="py-0 px-0">
                                     <!-- BONIFICACION -->
                                     <v-col cols="12" class="py-0">
@@ -630,19 +621,6 @@ export default {
             }
         },
 
-        // COTIZACION
-        latinDate: {
-            set() {},
-            get() {
-                if (this.fechaCotizacion) {
-                    let date = moment(this.fechaCotizacion).format(
-                        "DD-MM-YYYY"
-                    );
-                    return date;
-                }
-            }
-        },
-
         dolares: {
             set() {},
             get() {
@@ -755,6 +733,19 @@ export default {
                     });
             });
         },
+        setCurrency: async function() {
+            await axios
+                .post("/api/setCotizacion", {
+                    cotizacion: this.cotizacion,
+                    fechaCotizacion: this.fechaCotizacion
+                })
+                .then(response => {
+                    console.log(response.data);
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+        },
 
         // HEADER
         getPoint: async function() {
@@ -803,13 +794,21 @@ export default {
 
         findCliente: async function() {
             this.$store.state.presupuestos.form.cliente_id = null;
+            this.clientes = [];
             axios
                 .post("/api/buscando", {
                     buscar: this.searchCliente,
                     nuevoComp: true
                 })
                 .then(response => {
-                    this.clientes = response.data.clientes;
+                    let responseClientes = response.data.clientes;
+                    let responseDistribuidores = response.data.distribuidores;
+                    for (let i = 0; i < responseClientes.length; i++) {
+                        this.clientes.push(responseClientes[i]);
+                    }
+                    for (let i = 0; i < responseDistribuidores.length; i++) {
+                        this.clientes.push(responseDistribuidores[i]);
+                    }
                     this.searchInProcess = false;
                 })
                 .catch(error => {
@@ -852,7 +851,6 @@ export default {
         pushDetail() {
             let detailData = {
                 cantidadLitros: this.cantidadLitros,
-                subtotalPesos: this.pesos,
                 subtotalDolares: this.dolares,
                 cotizacion: this.cotizacion,
                 fechaCotizacion: this.fechaCotizacion
@@ -864,18 +862,20 @@ export default {
                 let nuevoDetalle = true;
                 for (let i = 0; i < this.detalles.length; i++) {
                     if (this.detalles[i].precio == detail.precio) {
+                        // SE DEFINE LA NUEVA CANTIDAD
                         this.detalles[i].cantidad = Number(
                             Number(this.detalles[i].cantidad) +
                                 Number(detail.cantidad)
                         );
-
+                        // SE DEFINE LA CANTIDAD EN LITROS
+                        this.detalles[i].cantidadLitros = Number(
+                            Number(this.detalles[i].cantidad) *
+                                Number(this.detalles[i].litros)
+                        );
+                        // SE DEFINE EL SUBTOTAL EN DOLARES
                         this.detalles[i].subtotalDolares =
                             Number(this.detalles[i].precio) *
-                            Number(this.detalles[i].cantidad);
-
-                        this.detalles[i].subtotalPesos =
-                            Number(this.detalles[i].subtotalDolares) *
-                            Number(this.cotizacion);
+                            Number(this.detalles[i].cantidadLitros);
 
                         nuevoDetalle = false;
                     }
@@ -930,6 +930,7 @@ export default {
         },
 
         resetData: async function() {
+            await this.setCurrency();
             this.clientes = [];
             this.detalles = [];
             this.articuloSelected = {};

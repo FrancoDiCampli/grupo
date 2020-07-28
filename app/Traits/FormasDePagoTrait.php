@@ -110,12 +110,12 @@ trait FormasDePagoTrait
                     $aux->push(['Efectivo', Efectivo::find($numero)]);
                     break;
 
-                case 'CH':
-                    $aux->push(['Cheque', Cheque::find($numero)]);
-                    break;
-
                 case 'TB':
                     $aux->push(['Transferencia', Transferencia::find($numero)]);
+                    break;
+
+                case 'HA':
+                    $aux->push(['Haber', Credito::find($numero)]);
                     break;
             }
         }

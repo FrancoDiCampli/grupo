@@ -49,10 +49,11 @@ trait VentasTrait
             $fac->fecha = $fecha->format('d-m-Y');
             $fac->cliente = Cliente::withTrashed()->find($fac->cliente_id);
             $fac->forma;
-            $formas = $fac->formasPago;
-            $pagos = FormasDePagoTrait::verPagos($formas); // el parametro debe ser array
+            $pagos = FormasDePagoTrait::verPagos($fac);
+            $fac->cuenta ? $fac->cuenta->pagos : null;
             $fac = collect($fac);
             $fac->put('pagos', $pagos);
+
             $facturas->push($fac);
         }
         $eliminadas = Venta::onlyTrashed()->get();
@@ -170,11 +171,11 @@ trait VentasTrait
     public static function detallesVentas($details, $atributos, $factura)
     {
         foreach ($details as $detail) {
-            if ($atributos['condicionventa'] == 'CUENTA CORRIENTE') {
-                $detail['subtotalPesos'] = null;
-                $detail['cotizacion'] = null;
-                $detail['fechaCotizacion'] = null;
-            }
+            // if ($atributos['condicionventa'] == 'CUENTA CORRIENTE') {
+            //     $detail['subtotalPesos'] = null;
+            //     $detail['cotizacion'] = null;
+            //     $detail['fechaCotizacion'] = null;
+            // }
             $detalles = array(
                 'codarticulo' => $detail['codarticulo'],
                 'articulo' => $detail['articulo'],
@@ -182,10 +183,10 @@ trait VentasTrait
                 'cantidadLitros' => $detail['cantidadLitros'],
                 'medida' => $detail['medida'],
                 'preciounitario' => $detail['precio'],
-                'subtotalPesos' => $detail['subtotalPesos'],
+                'subtotalPesos' => null,
                 'subtotal' => $detail['subtotalDolares'],
-                'cotizacion' => $detail['cotizacion'],
-                'fechaCotizacion' => $detail['fechaCotizacion'],
+                'cotizacion' => null,
+                'fechaCotizacion' => null,
                 'articulo_id' => $detail['id'],
                 'venta_id' => $factura->id,
                 'created_at' => now()->format('Ymd'),
@@ -203,7 +204,8 @@ trait VentasTrait
             "tipocomprobante" => $atributos['tipoComprobante'],
             "numventa" => $atributos['numventa'],
             "comprobanteadherido" => $atributos['comprobanteadherido'],
-            "fecha" => now()->format('Ymd'),
+            // "fecha" => now()->format('Ymd'),
+            'fecha' => $atributos['fecha'],
             'observaciones' => $atributos['observaciones'],
             "bonificacion" => $atributos['bonificacion'] * 1,
             "recargo" => $atributos['recargo'] * 1,
@@ -275,34 +277,62 @@ trait VentasTrait
 
     public static function anular($id)
     {
-        $factura = Venta::findOrFail($id);
-        $detalles = collect($factura->articulos);
-        $pivot = collect();
-        $inventarios = collect();
-        $factura->delete();
-        foreach ($detalles as $art) {
-            $pivot = $pivot->push($art->pivot);
-        }
-        foreach ($pivot as $piv) {
-            $art = Articulo::findOrFail($piv->articulo_id);
-            $aux = collect($art->inventarios);
-            foreach ($aux as $a) {
-                $inventarios = $inventarios->push($a);
-            }
-        }
-        // SE REESTABLECE LA CANTIDAD EN LOS INVENTARIOS
-        unset($aux);
-        foreach ($inventarios as $inv) {
-            $aux = collect($inv->movimientos);
-            $aux = $aux->where('numcomprobante', $factura->id);
-            foreach ($aux as $a) {
-                $inventario = $a->inventario;
-                $inventario->cantidad = $inventario->cantidad + $a->cantidad;
-                $inventario->save();
+        $venta = Venta::findOrFail($id);
+        $sePuede = true;
 
-                MovimientosTrait::crearMovimiento('ANULACION', $a->cantidad, $a->cantidadlitros, $inventario, $factura);
+        if (!$venta->numfactura) {
+            if ($venta->cuenta) {
+                if (count($venta->cuenta->pagos) == 0) {
+                    $sePuede = true;
+                } else {
+                    $sePuede = false;
+                }
+            } else {
+                $sePuede = true;
             }
+        } else {
+            $sePuede = false;
         }
-        return ['msg' => 'Factura Anulada'];
+
+        if ($sePuede) {
+            if ($venta->cuenta) {
+                $venta->cuenta->movimientos->each->delete();
+                $venta->cuenta->delete();
+            }
+
+            $detalles = collect($venta->articulos);
+            $pivot = collect();
+            $inventarios = collect();
+            foreach ($detalles as $art) {
+                $pivot = $pivot->push($art->pivot);
+            }
+
+            foreach ($pivot as $piv) {
+                $art = Articulo::findOrFail($piv->articulo_id);
+                $aux = collect($art->inventarios);
+                foreach ($aux as $a) {
+                    $inventarios = $inventarios->push($a);
+                }
+            }
+            // SE REESTABLECE LA CANTIDAD EN LOS INVENTARIOS
+            unset($aux);
+            foreach ($inventarios as $inv) {
+                $aux = collect($inv->movimientos);
+                $aux = $aux->where('numcomprobante', $venta->id);
+                foreach ($aux as $a) {
+                    $inventario = $a->inventario;
+                    $inventario->cantidad = $inventario->cantidad + $a->cantidad;
+                    $inventario->cantidadlitros = $inventario->cantidadlitros + $a->cantidadlitros;
+                    $inventario->save();
+
+                    MovimientosTrait::crearMovimiento('ANULACION', $a->cantidad, $a->cantidadlitros, $inventario, $venta);
+                }
+            }
+            $venta->articulos()->detach();
+            $venta->forceDelete();
+            return ['msg' => 'Venta Anulada'];
+        } else {
+            return ['msg' => 'No es posible anular la venta'];
+        }
     }
 }

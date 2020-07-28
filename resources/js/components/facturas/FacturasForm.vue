@@ -4,7 +4,7 @@
         <v-card shaped outlined :loading="inProcess" class="pb-4">
             <v-card-title class="py-0 px-2">
                 <v-row class="pa-0 ma-0">
-                    <v-col cols="auto" align-self="center">Nueva Venta</v-col>
+                    <v-col cols="auto" align-self="center">Nueva Factura</v-col>
                     <v-spacer></v-spacer>
                     <v-col cols="auto">
                         <v-list-item two-line class="text-right">
@@ -39,7 +39,7 @@
                         <v-form ref="facturasClienteForm">
                             <v-row justify="space-around" class="my-1">
                                 <!-- CLIENTE -->
-                                <v-col cols="12" class="py-0">
+                                <v-col cols="9" class="py-0">
                                     <v-text-field
                                         v-model="searchCliente"
                                         :rules="[rules.required]"
@@ -73,6 +73,7 @@
                                                     <tr>
                                                         <th class="text-xs-left">Apellido Nombre</th>
                                                         <th class="text-xs-left">Documento</th>
+                                                        <th>Tipo</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -97,6 +98,12 @@
                                                             cliente.documentounico
                                                             }}
                                                         </td>
+                                                        <td>
+                                                            <div
+                                                                v-if="cliente.distribuidor"
+                                                            >Distribuidor</div>
+                                                            <div v-else>Cliente</div>
+                                                        </td>
                                                     </tr>
                                                 </tbody>
                                             </v-simple-table>
@@ -108,6 +115,39 @@
                                             </div>
                                         </div>
                                     </v-card>
+                                </v-col>
+                                <!-- FECHA -->
+                                <v-col cols="12" sm="3" class="py-0">
+                                    <v-dialog
+                                        ref="dialogFecha"
+                                        v-model="fechaDialog"
+                                        :return-value.sync="$store.state.facturas.form.fecha"
+                                        persistent
+                                        :width="$vuetify.breakpoint.xsOnly ? '100%' : '300px'"
+                                    >
+                                        <template v-slot:activator="{ on }">
+                                            <v-text-field
+                                                v-model="$store.state.facturas.form.fecha"
+                                                label="Fecha"
+                                                :rules="[rules.required]"
+                                                readonly
+                                                outlined
+                                                v-on="on"
+                                            ></v-text-field>
+                                        </template>
+                                        <v-date-picker
+                                            v-model="$store.state.facturas.form.fecha"
+                                            scrollable
+                                            locale="es"
+                                        >
+                                            <v-spacer></v-spacer>
+                                            <v-btn
+                                                text
+                                                color="primary"
+                                                @click="$refs.dialogFecha.save($store.state.facturas.form.fecha)"
+                                            >Aceptar</v-btn>
+                                        </v-date-picker>
+                                    </v-dialog>
                                 </v-col>
 
                                 <!-- CONDICION VENTA -->
@@ -128,7 +168,6 @@
                                         :rules="[rules.required]"
                                         label="Comprobante Adherido Nº"
                                         outlined
-                                        type="number"
                                     ></v-text-field>
                                 </v-col>
                             </v-row>
@@ -164,9 +203,6 @@
                                                     <th class="text-left">Unidades</th>
 
                                                     <th class="text-left">Subtotal</th>
-                                                    <th
-                                                        class="text-left hidden-sm-and-down"
-                                                    >Subtotal en pesos</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -183,11 +219,6 @@
                                                     <td>
                                                         {{
                                                         detalle.subtotalDolares
-                                                        }}
-                                                    </td>
-                                                    <td class="hidden-sm-and-down">
-                                                        {{
-                                                        detalle.subtotalPesos
                                                         }}
                                                     </td>
                                                 </tr>
@@ -219,6 +250,15 @@
                         <v-form ref="facturasTotalesForm">
                             <v-row justify="space-around" class="my-1">
                                 <v-col cols="12" sm="6" class="py-0 px-0">
+                                    <v-col cols="12" class="py-0">
+                                        <v-text-field
+                                            v-model="cotizacion"
+                                            :rules="[rules.required]"
+                                            label="Cotizacion"
+                                            outlined
+                                            type="number"
+                                        ></v-text-field>
+                                    </v-col>
                                     <!-- BONIFICACION -->
                                     <v-col cols="12" class="py-0">
                                         <v-text-field
@@ -253,12 +293,60 @@
                                     </v-col>
                                 </v-col>
                                 <v-col cols="12" sm="6" class="py-0 px-0">
+                                    <v-col cols="12" class="py-0">
+                                        <v-dialog
+                                            ref="dialogCotizacion"
+                                            v-model="dialogCotizacion"
+                                            :return-value.sync="fechaCotizacion"
+                                            persistent
+                                            :width="
+                                            $vuetify.breakpoint.xsOnly
+                                                ? '100%'
+                                                : '300px'
+                                        "
+                                        >
+                                            <template v-slot:activator="{ on }">
+                                                <v-text-field
+                                                    v-model="fechaCotizacion"
+                                                    label="Fecha de la cotización"
+                                                    readonly
+                                                    outlined
+                                                    v-on="on"
+                                                ></v-text-field>
+                                            </template>
+                                            <v-date-picker
+                                                v-model="fechaCotizacion"
+                                                scrollable
+                                                locale="es"
+                                            >
+                                                <v-spacer></v-spacer>
+                                                <v-btn
+                                                    text
+                                                    color="primary"
+                                                    @click="
+                                                    $refs.dialogCotizacion.save(
+                                                        fechaCotizacion
+                                                    )
+                                                "
+                                                >Aceptar</v-btn>
+                                            </v-date-picker>
+                                        </v-dialog>
+                                    </v-col>
                                     <!-- SUBTOTAL -->
                                     <v-col cols="12" class="py-0">
                                         <v-text-field
                                             v-model="subtotal"
                                             type="number"
                                             label="Subtotal"
+                                            outlined
+                                            disabled
+                                        ></v-text-field>
+                                    </v-col>
+                                    <!-- IVA -->
+                                    <v-col cols="12" class="py-0">
+                                        <v-text-field
+                                            v-model="valorAgregado"
+                                            label="IVA 21%"
                                             outlined
                                             disabled
                                         ></v-text-field>
@@ -325,6 +413,7 @@
 
 
 <script>
+import moment from "moment";
 var cantidadMaxima = 999999999;
 
 export default {
@@ -351,8 +440,13 @@ export default {
         clientes: [],
         // DETALLES
         detalles: [],
+        // COTIZACION
+        cotizacion: 1,
+        fechaCotizacion: "",
+        dialogCotizacion: false,
         // SUBTOTAL
-        subtotal: null
+        subtotal: null,
+        fechaDialog: false
     }),
 
     computed: {
@@ -361,7 +455,8 @@ export default {
             set() {},
             get() {
                 if (this.subtotal) {
-                    let total = this.subtotal;
+                    let total =
+                        Number(this.subtotal) + Number(this.valorAgregado);
                     let bonificacion = 0;
                     let recargo = 0;
 
@@ -369,18 +464,18 @@ export default {
                         bonificacion =
                             Number(
                                 this.$store.state.facturas.form.bonificacion *
-                                    this.subtotal
+                                    total
                             ) / 100;
                     }
 
                     if (this.$store.state.facturas.form.recargo) {
                         recargo =
                             Number(
-                                this.$store.state.facturas.form.recargo *
-                                    this.subtotal
+                                this.$store.state.facturas.form.recargo * total
                             ) / 100;
                     }
 
+                    // total = Number(total) + Number(this.valorAgregado);
                     return Number(total - bonificacion + recargo).toFixed(2);
                 } else {
                     return null;
@@ -393,6 +488,15 @@ export default {
             get() {
                 if (this.total && this.cotizacion) {
                     return Number(this.total * this.cotizacion).toFixed(2);
+                }
+            }
+        },
+
+        valorAgregado: {
+            set() {},
+            get() {
+                if (this.subtotal) {
+                    return Number((this.subtotal * 21) / 100).toFixed(2);
                 } else {
                     return null;
                 }
@@ -410,6 +514,7 @@ export default {
 
     mounted: async function() {
         this.inProcess = true;
+        await this.checkCurrency();
         await this.getPoint();
         await this.subtotalControl();
         await this.initState();
@@ -432,6 +537,37 @@ export default {
                 }
             }
             return true;
+        },
+
+        checkCurrency() {
+            return new Promise((resolve, reject) => {
+                axios
+                    .get("/api/consultar")
+                    .then(response => {
+                        this.cotizacion = response.data.valor;
+                        this.fechaCotizacion = response.data.fecha;
+                        resolve(response.data);
+                    })
+                    .catch(error => {
+                        this.cotizacion = 1;
+                        this.fechaCotizacion = moment().format("DD/MM/YYYY");
+                        this.inProcess = false;
+                        reject(error);
+                    });
+            });
+        },
+        setCurrency: async function() {
+            await axios
+                .post("/api/setCotizacion", {
+                    cotizacion: this.cotizacion,
+                    fechaCotizacion: this.fechaCotizacion
+                })
+                .then(response => {
+                    console.log(response.data);
+                })
+                .catch(error => {
+                    console.log(error);
+                });
         },
 
         // HEADER
@@ -474,10 +610,18 @@ export default {
 
         findCliente: async function() {
             this.$store.state.facturas.form.cliente_id = null;
+            this.clientes = [];
             axios
                 .post("/api/buscando", { buscar: this.searchCliente })
                 .then(response => {
-                    this.clientes = response.data.clientes;
+                    let responseClientes = response.data.clientes;
+                    let responseDistribuidores = response.data.distribuidores;
+                    for (let i = 0; i < responseClientes.length; i++) {
+                        this.clientes.push(responseClientes[i]);
+                    }
+                    for (let i = 0; i < responseDistribuidores.length; i++) {
+                        this.clientes.push(responseDistribuidores[i]);
+                    }
                     this.searchInProcess = false;
                 })
                 .catch(error => {
@@ -506,13 +650,15 @@ export default {
 
         // FORM
         setData: async function() {
+            await this.setCurrency();
             if (this.$refs.facturasClienteForm.validate()) {
                 this.$store.state.facturas.form.subtotal = this.subtotal;
+                this.$store.state.facturas.form.valorAgregado = this.valorAgregado;
                 this.$store.state.facturas.form.total = this.total;
                 this.$store.state.facturas.form.totalPesos = this.totalPesos;
-                this.$store.state.facturas.form.detalles = this.detalles;
                 this.$store.state.facturas.form.cotizacion = this.cotizacion;
                 this.$store.state.facturas.form.fechaCotizacion = this.fechaCotizacion;
+                this.$store.state.facturas.form.detalles = this.detalles;
                 this.$store.state.facturas.form.numfactura = this.NumComprobante;
                 return true;
             }
