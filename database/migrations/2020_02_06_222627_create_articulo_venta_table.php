@@ -29,6 +29,7 @@ class CreateArticuloVentaTable extends Migration
             $table->string('fechaCotizacion')->nullable();
             $table->unsignedBigInteger('articulo_id');
             $table->unsignedBigInteger('venta_id');
+            // $table->integer('entregado')->nullable();
             $table->timestamps();
 
             $table->foreign('articulo_id')->references('id')->on('articulos');

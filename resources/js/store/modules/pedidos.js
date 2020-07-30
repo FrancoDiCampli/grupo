@@ -59,19 +59,18 @@ const actions = {
 
     save({ state, commit, dispatch }) {
         return new Promise((resolve, reject) => {
-            console.log(state.form);
-            // axios
-            //     .post("/api/pedidos", state.form)
-            //     .then(response => {
-            //         commit("resetForm");
-            //         resolve(response.data);
-            //     })
-            //     .catch(error => {
-            //         dispatch("errorHandle", error.response, {
-            //             root: true
-            //         });
-            //         reject(error.response.data);
-            //     });
+            axios
+                .post("/api/pedidos", state.form)
+                .then(response => {
+                    commit("resetForm");
+                    resolve(response.data);
+                })
+                .catch(error => {
+                    dispatch("errorHandle", error.response, {
+                        root: true
+                    });
+                    reject(error.response.data);
+                });
         });
     },
 

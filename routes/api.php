@@ -17,7 +17,11 @@ Route::middleware('auth:airlock')->group(function () {
     Route::post('facturar', 'API\VentasController@facturar');
 
     /*Presupuestos*/
-    Route::apiResource('presupuestos', 'API\PresupuestosController', ['except' => ['create', 'edit']]);
+    // Route::apiResource('presupuestos', 'API\PresupuestosController', ['except' => ['create', 'edit']]);
+    Route::apiResource('pedidos', 'API\PresupuestosController', ['except' => ['create', 'edit']]);
+
+    //Entregas
+    Route::apiResource('entregas', 'API\EntregasController', ['except' => ['create', 'edit']]);
 
     /*Clientes*/
     Route::apiResource('clientes', 'API\ClientesController', ['except' => ['create', 'edit']]);

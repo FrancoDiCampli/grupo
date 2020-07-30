@@ -48,11 +48,11 @@ trait VentasTrait
             $fecha = new Carbon($fac->fecha);
             $fac->fecha = $fecha->format('d-m-Y');
             $fac->cliente = Cliente::withTrashed()->find($fac->cliente_id);
-            $fac->forma;
-            $pagos = FormasDePagoTrait::verPagos($fac);
-            $fac->cuenta ? $fac->cuenta->pagos : null;
-            $fac = collect($fac);
-            $fac->put('pagos', $pagos);
+            // $fac->forma;
+            // $pagos = FormasDePagoTrait::verPagos($fac);
+            // $fac->cuenta ? $fac->cuenta->pagos : null;
+            // $fac = collect($fac);
+            // $fac->put('pagos', $pagos);
 
             $facturas->push($fac);
         }
@@ -102,16 +102,16 @@ trait VentasTrait
         $factura = static::crearVenta($atributos);
 
         // Metodos de pago
-        if ($atributos['pagada'] && $atributos['pagos']) {
-            foreach ($atributos['pagos'] as $pay) {
-                $ref = FormasDePagoTrait::formaPago($pay, $cliente, $diferencia = null);
-                $forma = Formapago::create([
-                    'referencia' => $ref
-                ]);
-                $auxiliar[] = $forma->id;
-            }
-            $factura->formasPago()->attach($auxiliar);
-        }
+        // if ($atributos['pagada'] && $atributos['pagos']) {
+        //     foreach ($atributos['pagos'] as $pay) {
+        //         $ref = FormasDePagoTrait::formaPago($pay, $cliente, $diferencia = null);
+        //         $forma = Formapago::create([
+        //             'referencia' => $ref
+        //         ]);
+        //         $auxiliar[] = $forma->id;
+        //     }
+        //     $factura->formasPago()->attach($auxiliar);
+        // }
 
         // ALMACENAMIENTO DE DETALLES
         $det = static::detallesVentas($request->get('detalles'), $atributos, $factura);
@@ -227,10 +227,12 @@ trait VentasTrait
     {
         $configuracion = ConfiguracionTrait::configuracion();
         $factura = Venta::find($id);
-        $formas = $factura->formasPago;
-        $aux = FormasDePagoTrait::verPagosVenta($formas);
+        // $formas = $factura->formasPago;
+        // $aux = FormasDePagoTrait::verPagosVenta($formas);
         $fecha = new Carbon($factura->fecha);
+        $fechaCot = new Carbon($factura->fechaCotizacion);
         $factura->fecha = $fecha->format('d-m-Y');
+        $factura->fechaCotizacion = $fechaCot->format('d-m-Y');
         $cliente = Cliente::withTrashed()->find($factura->cliente_id);
         $detalles = DB::table('articulo_venta')->where('venta_id', $factura->id)->get();
         return [
@@ -238,7 +240,7 @@ trait VentasTrait
             'factura' => $factura,
             'detalles' => $detalles,
             'cliente' => $cliente,
-            'forma' => $aux
+            // 'forma' => $aux
         ];
     }
 

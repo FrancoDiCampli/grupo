@@ -26,6 +26,6 @@ class Cuentacorriente extends Model
 
     public function movimientos()
     {
-        return $this->hasMany('App\Movimientocuenta', 'ctacte_id', 'id');
+        return $this->hasMany('App\Movimientocuenta', 'ctacte_id', 'id')->orderBy('id','desc');
     }
 }
