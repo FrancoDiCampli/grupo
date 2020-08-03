@@ -38,7 +38,7 @@
                                         <v-list-item>
                                             <v-list-item-title>Editar</v-list-item-title>
                                         </v-list-item>
-                                        <v-list-item v-if="item.numventa == null" @click="vender()">
+                                        <v-list-item v-if="item.numventa == null">
                                             <v-list-item-title
                                                 @click="vender(item.id)"
                                             >Generar Venta</v-list-item-title>
