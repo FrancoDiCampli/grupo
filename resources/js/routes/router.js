@@ -10,10 +10,9 @@ import Pedidos from "../views/pedidos/pedidos";
 import PedidosCreate from "../views/pedidos/Create";
 import PedidosShow from "../views/pedidos/Show";
 
-// Ventas
-import Ventas from "../views/ventas/Ventas";
-import VentasCreate from "../views/ventas/Create";
-import VentasShow from "../views/ventas/Show";
+// Remitos
+import Remitos from "../views/remitos/Remitos";
+import RemitosShow from "../views/remitos/Show";
 
 // Facturas
 import FacturasCreate from "../views/facturas/Create";
@@ -120,21 +119,16 @@ export default new Router({
             props: true
         },
 
-        // Ventas
+        // Remitos
         {
-            path: "/ventas",
-            name: "ventas",
-            component: Ventas
+            path: "/remitos",
+            name: "remitos",
+            component: Remitos
         },
         {
-            path: "/ventas/nueva",
-            name: "ventas_nueva",
-            component: VentasCreate
-        },
-        {
-            path: "/ventas/show/:id",
-            name: "ventas_show",
-            component: VentasShow,
+            path: "/remitos/show/:id",
+            name: "remitos_show",
+            component: RemitosShow,
             props: true
         },
 

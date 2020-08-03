@@ -259,6 +259,23 @@ trait VentasTrait
             array_push($arregloIds, $ids[$i]);
             foreach ($aux->articulos as $det) {
                 $details->push($det);
+
+                $detsFact = DB::table('articulo_factura')->where('articulo_venta_id', $det->pivot->id)->get();
+
+                $cant = 0;
+                $cantLitros = 0;
+
+                if ($detsFact) {
+                    $cant = $detsFact->each(function ($item) {
+                        $item->cantidad++;
+                    });
+                    $cantLitros = $detsFact->each(function ($item) {
+                        $item->cantidadLitros++;
+                    });
+                }
+
+                $det->pivot['cantFac'] = $cant;
+                $det->pivot['cantLitrosFac'] = $cantLitros;
             }
             $sub += $aux->subtotal;
             $tot += $aux->total;

@@ -9,19 +9,15 @@ Route::middleware('auth:airlock')->group(function () {
     Route::get('/user', 'API\UsersController@user');
     Route::post('/update_account', 'API\UsersController@updateAccount');
 
-    /*Ventas*/
-    Route::apiResource('ventas', 'API\VentasController', ['except' => ['create', 'edit']]);
+    /*pedidos*/
+    Route::apiResource('pedidos', 'API\PresupuestosController', ['except' => ['create', 'edit']]);
+
+    /*remitos*/
+    Route::apiResource('remitos', 'API\VentasController', ['except' => ['create', 'edit']]);
 
     /*Facturas*/
     Route::apiResource('facturas', 'API\FacturasController', ['only' => ['index', 'store', 'show']]);
     Route::post('facturar', 'API\VentasController@facturar');
-
-    /*Presupuestos*/
-    // Route::apiResource('presupuestos', 'API\PresupuestosController', ['except' => ['create', 'edit']]);
-    Route::apiResource('pedidos', 'API\PresupuestosController', ['except' => ['create', 'edit']]);
-
-    //Entregas
-    Route::apiResource('entregas', 'API\EntregasController', ['except' => ['create', 'edit']]);
 
     /*Clientes*/
     Route::apiResource('clientes', 'API\ClientesController', ['except' => ['create', 'edit']]);

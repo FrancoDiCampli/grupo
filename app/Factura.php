@@ -27,4 +27,14 @@ class Factura extends Model
     {
         return $this->belongsTo('App\Cliente');
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function articulos()
+    {
+        return $this->belongsToMany('App\Articulo');
+    }
 }
