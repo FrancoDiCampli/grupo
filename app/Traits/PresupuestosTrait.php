@@ -61,7 +61,6 @@ trait PresupuestosTrait
     public static function store($request)
     {
         $atributos = $request;
-        // $atributos['comprobanteadheridoPresupuesto'] = $request['comprobanteadheridoPresupuesto'];
         $cliente = Cliente::find($atributos['cliente_id']);
         $atributos['cuit'] = $cliente->documentounico;
 
@@ -168,6 +167,7 @@ trait PresupuestosTrait
 
     public static function vender($request)
     {
+        return $request;
         $presupuesto = Presupuesto::find($request->id);
         $pre = Presupuesto::find($request->id);
 
