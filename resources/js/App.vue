@@ -7,25 +7,28 @@
                 </v-list-item>
             </template>
             <template slot="searchBar" v-if="$store.state.auth.user">
-                <div>
-                    <v-text-field
-                        prepend-inner-icon="fas fa-search"
-                        hide-details
-                        loading
-                        light
-                        placeholder="Buscar"
-                        @focus="searchOnFocus = true"
-                        :class="
+                <div class="search-input" v-click-outside="closeSearch">
+                    <v-row class="pa-0" justify="center" align-content="center">
+                        <v-text-field
+                            hide-details
+                            loading
+                            light
+                            placeholder="Buscar"
+                            @focus="searchOnFocus = true"
+                            :class="
                             searchOnFocus ? 'searchBar focusBar' : 'searchBar'
                         "
-                        v-click-outside="closeSearch"
-                        v-model="searchItems"
-                        @keyup="searchItemsAfter()"
-                    >
-                        <template v-slot:progress>
-                            <v-progress-linear absolute height="0"></v-progress-linear>
-                        </template>
-                    </v-text-field>
+                            v-model="searchItems"
+                            class="search-field"
+                        >
+                            <template v-slot:progress>
+                                <v-progress-linear absolute height="0"></v-progress-linear>
+                            </template>
+                        </v-text-field>
+                        <div class="px-2 py-1" @click="searchItemsAfter()" style="cursor: pointer;">
+                            <v-icon size="large">fas fa-search</v-icon>
+                        </div>
+                    </v-row>
                 </div>
             </template>
         </AppBar>
@@ -377,28 +380,15 @@ body::-webkit-scrollbar-thumb {
     background-color: #44c2f7;
 }
 
-.search-items-container {
-    width: 100%;
-    position: fixed;
-    z-index: 5;
-    margin-top: -72px;
-    .search-items-input {
-        .v-input__control {
-            height: 32px !important;
-            fieldset {
-                height: 40px !important;
-            }
-
+.search-field {
+    .v-input__control {
+        .v-input__slot {
             .v-text-field__slot {
-                height: 32px !important;
+                input {
+                    padding-left: 12px;
+                }
             }
         }
-    }
-}
-
-@media (max-width: 600px) {
-    .search-items-container {
-        margin-top: -68px;
     }
 }
 </style>

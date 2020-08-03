@@ -103,7 +103,6 @@
             <slot name="searchBar"></slot>
             <v-spacer></v-spacer>
             <!-- Notificaciones -->
-
             <v-btn icon @click="notificationDrawer = true" class="mx-2">
                 <v-badge
                     :content="$store.state.notificaciones.unread.length"
@@ -174,7 +173,7 @@ export default {
         sidenav: false,
         routes: [
             {
-                name: "Notas de pedidos",
+                name: "Pedidos",
                 icon: "fas fa-receipt",
                 url: "/pedidos",
                 roles: ["superAdmin", "administrador", "vendedor"],
@@ -315,7 +314,7 @@ export default {
                 this.temporary = true;
             } else {
                 this.drawer = true;
-                this.mini = true;
+                this.mini = false;
                 this.permanet = true;
                 this.temporary = false;
             }
