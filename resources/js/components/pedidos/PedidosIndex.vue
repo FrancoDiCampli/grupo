@@ -1,7 +1,7 @@
 <template>
     <div>
         <v-card shaped outlined :loading="$store.state.inProcess">
-            <v-card-title>Pedidos</v-card-title>
+            <v-card-title>Notas de pedidos</v-card-title>
             <v-divider></v-divider>
             <v-card-text v-if="$store.state.pedidos.pedidos" class="px-0">
                 <v-data-table
@@ -45,7 +45,7 @@
                                         </v-list-item>
                                         <v-list-item
                                             v-if="item.numventa == null"
-                                            @click="vender(item.id)"
+                                            @click="preventSold(item.id)"
                                         >
                                             <v-list-item-title>Generar Venta</v-list-item-title>
                                         </v-list-item>
@@ -58,12 +58,51 @@
                 <slot></slot>
             </v-card-text>
         </v-card>
+
+        <v-dialog v-model="preventDialog" persistent width="400px">
+            <v-card v-if="inProcess">
+                <v-progress-circular
+                    :size="70"
+                    :width="7"
+                    color="primary"
+                    indeterminate
+                    style="margin: 32px 0 32px 0;"
+                ></v-progress-circular>
+            </v-card>
+            <v-card v-else>
+                <v-card-title class="headline">¿Estas seguro?</v-card-title>
+                <v-card-text>
+                    <v-row>
+                        <v-col
+                            cols="12"
+                        >Se generará un remito a partir de la nota de pedido seleccionada</v-col>
+                        <v-col cols="12">
+                            <v-text-field
+                                outlined
+                                label="Remito adherido N°"
+                                v-model="remitoadherido"
+                            ></v-text-field>
+                        </v-col>
+                    </v-row>
+                </v-card-text>
+                <v-divider></v-divider>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="error" text @click="cancelSold()" :disabled="inProcess">Cancelar</v-btn>
+                    <v-btn color="success" text @click="sold()" :disabled="inProcess">Aceptar</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
     </div>
 </template>
 
 <script>
 export default {
     data: () => ({
+        ventaID: null,
+        preventDialog: false,
+        remitoadherido: null,
+        inProcess: false,
         headers: [
             { text: "Número", sortable: false },
             { text: "Nombre/Apellido", sortable: false },
@@ -80,8 +119,27 @@ export default {
             this.$store.dispatch("PDF/printPedido", { id: id });
         },
 
-        vender(id) {
-            this.$store.dispatch("pedidos/vender", { id: id });
+        preventSold(id) {
+            this.ventaID = id;
+            this.preventDialog = true;
+        },
+
+        async sold() {
+            this.inProcess = true;
+            await this.$store.dispatch("pedidos/vender", {
+                id: this.ventaID,
+                remitoadherido: this.remitoadherido
+            });
+            this.preventDialog = false;
+            this.inProcess = false;
+            this.ventaID = null;
+            this.remitoadherido = null;
+        },
+
+        cancelSold() {
+            this.preventDialog = false;
+            this.ventaID = null;
+            this.remitoadherido = null;
         }
     }
 };
