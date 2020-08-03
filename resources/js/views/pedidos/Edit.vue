@@ -78,9 +78,9 @@ export default {
                 let checkData = await this.$refs.formPedidos.setData();
                 if (checkData) {
                     await this.$store.dispatch("pedidos/update");
-                    // this.$refs.formPedidos.getPoint();
-                    // this.$refs.formPedidos.getArticles();
-                    // this.resetForm();
+                    this.$refs.formPedidos.getPoint();
+                    this.$refs.formPedidos.getArticles();
+                    this.resetForm();
                 }
             }
         },
@@ -88,7 +88,7 @@ export default {
         resetForm() {
             this.$refs.EdidPedido.reset();
             this.$refs.formPedidos.resetData();
-            window.scrollTo(0, 0);
+            this.$router.go(-1);
         }
     }
 };

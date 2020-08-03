@@ -49,11 +49,8 @@
                                         <v-list-item @click="print(item.id)">
                                             <v-list-item-title>Imprimir</v-list-item-title>
                                         </v-list-item>
-                                        <v-list-item
-                                            @click="erase(item.id)"
-                                            :disabled="canBeErased(item)"
-                                        >
-                                            <v-list-item-title>Anular</v-list-item-title>
+                                        <v-list-item>
+                                            <v-list-item-title>Generar Entrega</v-list-item-title>
                                         </v-list-item>
                                     </v-list>
                                 </v-menu>
