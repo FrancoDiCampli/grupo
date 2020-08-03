@@ -94,7 +94,7 @@ trait PresupuestosTrait
                 'cantidadLitros' => $detail['cantidadLitros'],
                 'medida' => $detail['medida'],
                 'preciounitario' => $detail['precio'],
-                'subtotalPesos' => null,
+                'subtotalPesos' => $detail['subtotalDolares'] * $detail['cotizacion'],
                 'subtotal' => $detail['subtotalDolares'],
                 'cotizacion' => $detail['cotizacion'],
                 'fechaCotizacion' => $detail['fechaCotizacion'],
@@ -115,16 +115,15 @@ trait PresupuestosTrait
             "numpresupuesto" => $atributos['numpedido'],
             "comprobanteadherido" => $atributos['comprobanteadherido'],
             "cuit" => $atributos['cuit'],
-            "fecha" => now()->format('Ymd'),
+            "fecha" => $atributos['fecha'],
             "bonificacion" => $atributos['bonificacion'] * 1,
             "recargo" => $atributos['recargo'] * 1,
             "subtotal" => $atributos['subtotal'],
             "total" => $atributos['total'],
-            "subtotalPesos" => $atributos['subtotalPesos'],
-            "totalPesos" => $atributos['totalPesos'],
+            "subtotalPesos" => $atributos['subtotal'] * $atributos['cotizacion'],
+            "totalPesos" => $atributos['total'] * $atributos['cotizacion'],
             'cotizacion' => $atributos['cotizacion'],
             'fechaCotizacion' => $atributos['fechaCotizacion'],
-            // "vencimiento" => $atributos['vencimiento'],
             "observaciones" => $atributos['observaciones'],
             "cliente_id" => $atributos['cliente_id'],
             "user_id" => auth()->user()->id
@@ -170,8 +169,6 @@ trait PresupuestosTrait
         $presupuesto = Presupuesto::find($request->id);
         $pre = Presupuesto::find($request->id);
 
-        // $presupuesto->articulos;
-
         $presupuesto['tipoComprobante'] = 'REMITO X';
         $numventa = Venta::all()->last()->id;
         $presupuesto['numventa'] = $numventa+1;
@@ -190,8 +187,8 @@ trait PresupuestosTrait
                 'cantidadLitros' => $detail['cantidadLitros'],
                 'medida' => $detail['medida'],
                 'preciounitario' => $detail['preciounitario'],
-                'subtotalPesos' => null,
-                'subtotal' => $detail['preciounitario']*$detail['cantidadLitros'],
+                'subtotalPesos' => ($detail['preciounitario'] * $detail['cantidadLitros'])*$detail['cotizacion'],
+                'subtotal' => $detail['preciounitario'] * $detail['cantidadLitros'],
                 'cotizacion' =>  $detail['cotizacion'],
                 'fechaCotizacion' => $detail['fechaCotizacion'],
                 'articulo_id' => $detail['articulo_id'],

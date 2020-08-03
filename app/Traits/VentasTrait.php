@@ -87,16 +87,17 @@ trait VentasTrait
         $cliente = Cliente::find($atributos['cliente_id']);
         $atributos['cuit'] = $cliente->documentounico;
         $atributos['condicionventa'] = $atributos['condicionventa'];
-        if ($atributos['condicionventa'] == 'CONTADO') {
-            $atributos['pagada'] = true;
-            $atributos['subtotalPesos'] = ($atributos['subtotal'] * 1) * ($atributos['cotizacion'] * 1);
-        } else {
+        // if ($atributos['condicionventa'] == 'CONTADO') {
             $atributos['pagada'] = false;
-            $atributos['subtotalPesos'] = null;
-            $atributos['totalPesos'] = null;
-            $atributos['cotizacion'] = null;
-            $atributos['fechaCotizacion'] = null;
-        }
+            $atributos['subtotalPesos'] = ($atributos['subtotal'] * 1) * ($atributos['cotizacion'] * 1);
+            $atributos['totalPesos'] = ($atributos['total'] * 1) * ($atributos['cotizacion'] * 1);
+        // } else {
+        //     $atributos['pagada'] = false;
+        //     $atributos['subtotalPesos'] = null;
+        //     $atributos['totalPesos'] = null;
+        //     $atributos['cotizacion'] = null;
+        //     $atributos['fechaCotizacion'] = null;
+        // }
 
         // ALMACENAMIENTO DE FACTURA
         $factura = static::crearVenta($atributos);
@@ -183,10 +184,10 @@ trait VentasTrait
                 'cantidadLitros' => $detail['cantidadLitros'],
                 'medida' => $detail['medida'],
                 'preciounitario' => $detail['precio'],
-                'subtotalPesos' => null,
+                'subtotalPesos' => $detail['subtotalDolares'] * $detail['cotizacion'],
                 'subtotal' => $detail['subtotalDolares'],
-                'cotizacion' => null,
-                'fechaCotizacion' => null,
+                'cotizacion' => $detail['cotizacion'],
+                'fechaCotizacion' => $detail['fechaCotizacion'],
                 'articulo_id' => $detail['id'],
                 'venta_id' => $factura->id,
                 'created_at' => now()->format('Ymd'),
