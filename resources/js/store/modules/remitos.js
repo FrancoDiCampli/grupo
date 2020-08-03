@@ -1,12 +1,12 @@
 const state = {
-    ventas: null,
+    remitos: null,
     venta: null,
     form: {}
 };
 
 const mutations = {
-    fillVentas(state, ventas) {
-        state.ventas = ventas;
+    fillRemitos(state, remitos) {
+        state.remitos = remitos;
     },
 
     fillVenta(state, venta) {
@@ -26,9 +26,9 @@ const actions = {
     index({ commit, dispatch }, params) {
         return new Promise((resolve, reject) => {
             axios
-                .get("/api/ventas", { params: params })
+                .get("/api/remitos", { params: params })
                 .then(response => {
-                    commit("fillVentas", response.data);
+                    commit("fillRemitos", response.data);
                     resolve(response.data);
                 })
                 .catch(error => {
@@ -43,7 +43,7 @@ const actions = {
     show({ commit, dispatch }, params) {
         return new Promise((resolve, reject) => {
             axios
-                .get("/api/ventas/" + params.id)
+                .get("/api/remitos/" + params.id)
                 .then(response => {
                     commit("fillVenta", response.data);
                     resolve(response.data);
@@ -60,7 +60,7 @@ const actions = {
     save({ state, commit, dispatch }) {
         return new Promise((resolve, reject) => {
             axios
-                .post("/api/ventas", state.form)
+                .post("/api/remitos", state.form)
                 .then(response => {
                     commit("resetForm");
                     resolve(response.data);
@@ -81,7 +81,7 @@ const actions = {
     update({ state, commit, dispatch }, params) {
         return new Promise((resolve, reject) => {
             axios
-                .put("/api/ventas/" + params.id, state.form)
+                .put("/api/remitos/" + params.id, state.form)
                 .then(response => {
                     commit("resetForm");
                     resolve(response.data);
@@ -99,7 +99,7 @@ const actions = {
         return new Promise((resolve, reject) => {
             // MODIFICA LA RUTA DE ESTE AXIOS PARA ANULAR LA FACTURA
             axios
-                .delete("/api/ventas/" + params.id)
+                .delete("/api/remitos/" + params.id)
                 .then(response => {
                     resolve(response.data);
                 })

@@ -15,7 +15,7 @@ import reportes from "./modules/reportes";
 import roles from "./modules/roles";
 import sucursales from "./modules/sucursales";
 import users from "./modules/users";
-import ventas from "./modules/ventas";
+import remitos from "./modules/remitos";
 import PDF from "./modules/PDF";
 import notificaciones from "./modules/notificaciones";
 import devoluciones from "./modules/devoluciones";
@@ -37,7 +37,7 @@ export default {
     roles,
     sucursales,
     users,
-    ventas,
+    remitos,
     PDF,
     notificaciones,
     devoluciones
