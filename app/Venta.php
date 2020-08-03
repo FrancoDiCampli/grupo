@@ -56,15 +56,6 @@ class Venta extends Model
         return $this->belongsTo('App\User');
     }
 
-    public function scopeBuscar($query, $request)
-    {
-        $factura = $request->get('buscarFactura');
-
-        if (strlen($factura)) {
-            return $query->where('cuit', 'LIKE', "$factura%");
-        }
-    }
-
     public function formasPago()
     {
         return $this->belongsToMany(Formapago::class);

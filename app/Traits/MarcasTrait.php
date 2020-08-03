@@ -9,8 +9,7 @@ trait MarcasTrait
 {
     public static function index($request)
     {
-        $marcas = Marca::orderBy('id', 'ASC')
-            ->buscar($request);
+        $marcas = Marca::orderBy('id', 'ASC');
         return [
             'marcas' => $marcas->take($request->get('limit', null))->get(),
             'total' => $marcas->count(),

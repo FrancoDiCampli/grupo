@@ -10,8 +10,7 @@ trait SuppliersTrait
 {
     public static function index($request)
     {
-        $suppliers = Supplier::orderBy('razonsocial', 'asc')
-            ->buscar($request);
+        $suppliers = Supplier::orderBy('razonsocial', 'asc');
 
         return [
             'proveedores' => $suppliers->take($request->get('limit', null))->get(),

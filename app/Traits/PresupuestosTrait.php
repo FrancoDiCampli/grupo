@@ -16,20 +16,20 @@ trait PresupuestosTrait
         if (auth()->user()->role->role != 'vendedor') {
             if ($request->fec) {
                 $fec = $request->fec;
-                $pres = Presupuesto::whereDate('created_at', $fec)->orderBy('id', 'DESC')->buscar($request)->get();
+                $pres = Presupuesto::whereDate('created_at', $fec)->orderBy('id', 'DESC')->get();
             } else {
-                $pres = Presupuesto::orderBy('id', 'DESC')->buscar($request)->get();
+                $pres = Presupuesto::orderBy('id', 'DESC')->get();
             }
         } else {
             if ($request->fec) {
                 $fec = $request->fec;
                 $pres = Presupuesto::whereDate('created_at', $fec)
                     ->where('user_id', auth()->user()->id)
-                    ->orderBy('id', 'DESC')->buscar($request)->get();
+                    ->orderBy('id', 'DESC')->get();
             } else {
                 $pres = Presupuesto::orderBy('id', 'DESC')
                     ->where('user_id', auth()->user()->id)
-                    ->buscar($request)->get();
+                    ->get();
             }
         }
 
@@ -61,6 +61,7 @@ trait PresupuestosTrait
     public static function store($request)
     {
         $atributos = $request;
+        // $atributos['comprobanteadheridoPresupuesto'] = $request['comprobanteadheridoPresupuesto'];
         $cliente = Cliente::find($atributos['cliente_id']);
         $atributos['cuit'] = $cliente->documentounico;
 
@@ -68,6 +69,7 @@ trait PresupuestosTrait
         $presupuesto = static::crearPresupuesto($atributos);
 
         if ($atributos->confirmacion) {
+            $atributos['comprobanteadherido'] = $request['remitoadherido'];
             $atributos['tipoComprobante'] = 'REMITO X';
             $atributos['condicionventa'] = 'CUENTA CORRIENTE';
             $atributos['numventa'] = 1;
@@ -113,7 +115,7 @@ trait PresupuestosTrait
         return Presupuesto::create([
             "ptoventa" => $configuracion['puntoventa'],
             "numpresupuesto" => $atributos['numpedido'],
-            "comprobanteadherido" => $atributos['comprobanteadherido'],
+            "comprobanteadherido" => $atributos['pedidoadherido'],
             "cuit" => $atributos['cuit'],
             "fecha" => $atributos['fecha'],
             "bonificacion" => $atributos['bonificacion'] * 1,

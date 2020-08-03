@@ -43,13 +43,4 @@ class Presupuesto extends Model
     {
         return $this->belongsToMany('App\Articulo');
     }
-
-    public function scopeBuscar($query, $request)
-    {
-        $presupuesto = $request->get('buscarPresupuesto');
-
-        if (strlen($presupuesto)) {
-            return $query->where('cuit', 'LIKE', "%$presupuesto%");
-        }
-    }
 }

@@ -74,15 +74,4 @@ class Articulo extends Model
             ->withPivot('lote', 'cantidad', 'medida', 'preciounitario', 'subtotal')
             ->withTimestamps();
     }
-
-    public function scopeBuscar($query, $request)
-    {
-        $articulo = $request->get('buscarArticulo');
-        $articulos = collect();
-
-        if (strlen($articulo)) {
-            return $query->orWhere('codarticulo', 'LIKE', "$articulo%")
-                ->orWhere('articulo', 'LIKE', "$articulo%");
-        }
-    }
 }
