@@ -165,27 +165,10 @@ trait PresupuestosTrait
 
     public static function vender($request)
     {
-        $id = $request->id;
+        $presupuesto = Presupuesto::find($request->id);
 
-        $details = collect();
+        $presupuesto->articulos;
 
-        $sub = 0;
-        $tot = 0;
-
-        $presupuesto = Presupuesto::find($id);
-        return $presupuesto->detalles;
-        // foreach ($presupuesto->articulos as $det) {
-        //     $details->push($det);
-        //     $sub += $presupuesto->subtotal;
-        //     $tot += $presupuesto->total;
-        // }
-
-        // $presupuesto = collect($presupuesto);
-
-        // $presupuesto->put('detalles', $details);
-        // $presupuesto->put('subtotal', $sub);
-        // $presupuesto->put('total', $tot);
-
-        // return $presupuesto;
+        return $presupuesto;
     }
 }
