@@ -111,8 +111,7 @@ trait PresupuestosTrait
 
         return Presupuesto::create([
             "ptoventa" => $configuracion['puntoventa'],
-            // "numpresupuesto" => $atributos['numpresupuesto'],
-            "numpresupuesto" => 1,
+            "numpresupuesto" => $atributos['numpedido'],
             "cuit" => $atributos['cuit'],
             "fecha" => now()->format('Ymd'),
             "bonificacion" => $atributos['bonificacion'] * 1,
