@@ -45,4 +45,9 @@ class PresupuestosController extends Controller
         Presupuesto::withTrashed()->find($id)->restore();
         return Presupuesto::find($id);
     }
+
+    public function vender(Request $request)
+    {
+        return PresupuestosTrait::vender($request);
+    }
 }
