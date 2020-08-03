@@ -37,7 +37,9 @@
                                         </v-list-item>
                                         <v-list-item
                                             v-if="item.numventa == null"
-                                            @click="editar(item.id)"
+                                            :to="
+                                                `/pedidos/editar/${item.id}`
+                                            "
                                         >
                                             <v-list-item-title>Editar</v-list-item-title>
                                         </v-list-item>
@@ -80,10 +82,6 @@ export default {
 
         vender(id) {
             this.$store.dispatch("pedidos/vender", { id: id });
-        },
-
-        editar(id) {
-            this.$store.dispatch("pedidos/edit", { id: id });
         }
     }
 };

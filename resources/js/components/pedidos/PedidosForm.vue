@@ -3,7 +3,8 @@
         <v-card shaped outlined :loading="inProcess" class="pb-4">
             <v-card-title class="py-0 px-2">
                 <v-row class="pa-0 ma-0">
-                    <v-col cols="auto" align-self="center">Nueva Nota de Pedido</v-col>
+                    <v-col cols="auto" align-self="center" v-if="mode=='edit'">Nueva nota de pedido</v-col>
+                    <v-col cols="auto" align-self="center" v-else>Editar nota de pedido</v-col>
                     <v-spacer></v-spacer>
                     <v-col cols="auto">
                         <v-list-item two-line class="text-right">
@@ -575,6 +576,8 @@ import moment from "moment";
 var cantidadMaxima = 999999999;
 
 export default {
+    props: ["mode"],
+
     data: () => ({
         step: 1,
         // GENERAL
@@ -697,9 +700,13 @@ export default {
 
     async mounted() {
         this.inProcess = true;
-        await this.checkCurrency();
-        await this.getPoint();
-        await this.getArticles();
+        if (this.mode == "edit") {
+            await this.checkCurrency();
+            await this.getArticles();
+            await this.setForm();
+        } else {
+            await this.getPoint();
+        }
         this.inProcess = false;
     },
 
@@ -776,6 +783,23 @@ export default {
                     Number(response.ultimo.numpresupuesto) + 1;
             } else {
                 this.NumComprobante = data.numpresupuesto;
+            }
+        },
+
+        setForm() {
+            this.searchCliente = this.$store.state.pedidos.form.cliente;
+            this.subtotal = this.$store.state.pedidos.form.subtotal;
+            this.total = this.$store.state.pedidos.form.total;
+            this.totalPesos = this.$store.state.pedidos.form.totalPesos;
+            this.cotizacion = this.$store.state.pedidos.form.cotizacion;
+            this.fechaCotizacion = this.$store.state.pedidos.form.fechaCotizacion;
+            this.NumComprobante = this.$store.state.pedidos.form.numpedido;
+            this.condicion = this.$store.state.pedidos.form.condicion;
+
+            this.detalles = this.$store.state.pedidos.form.detalles;
+            for (let i = 0; i < this.detalles.length; i++) {
+                this.detalles[i].precio = this.detalles[i].preciounitario;
+                this.detalles[i].subtotalDolares = this.detalles[i].subtotal;
             }
         },
 
