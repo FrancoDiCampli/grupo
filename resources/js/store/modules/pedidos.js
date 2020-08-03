@@ -11,6 +11,8 @@ const mutations = {
             total: pedidos.total,
             ultimo: pedidos.ultimo
         };
+
+        console.log(state.pedidos);
     },
 
     fillPedido(state, pedido) {
