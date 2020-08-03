@@ -105,11 +105,12 @@ const actions = {
         });
     },
 
-    destroy({ dispatch }, params) {
+    vender({ dispatch }, params) {
         return new Promise((resolve, reject) => {
             axios
-                .delete("/api/pedidos/" + params.id)
+                .post("/api/vender", params)
                 .then(response => {
+                    dispatch("index");
                     resolve(response.data);
                 })
                 .catch(error => {
@@ -120,6 +121,23 @@ const actions = {
                 });
         });
     }
+
+    // TODO: Preguntar si se van a eliminar o no.
+    // destroy({ dispatch }, params) {
+    //     return new Promise((resolve, reject) => {
+    //         axios
+    //             .delete("/api/pedidos/" + params.id)
+    //             .then(response => {
+    //                 resolve(response.data);
+    //             })
+    //             .catch(error => {
+    //                 dispatch("errorHandle", error.response, {
+    //                     root: true
+    //                 });
+    //                 reject(error.response.data);
+    //             });
+    //     });
+    // }
 };
 
 export default {

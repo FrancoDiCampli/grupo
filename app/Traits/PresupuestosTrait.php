@@ -173,16 +173,19 @@ trait PresupuestosTrait
         $tot = 0;
 
         $presupuesto = Presupuesto::find($id);
-        foreach ($presupuesto->articulos as $det) {
-            $details->push($det);
-            $sub += $presupuesto->subtotal;
-            $tot += $presupuesto->total;
-        }
+        return $presupuesto->detalles;
+        // foreach ($presupuesto->articulos as $det) {
+        //     $details->push($det);
+        //     $sub += $presupuesto->subtotal;
+        //     $tot += $presupuesto->total;
+        // }
 
-        $presupuesto->put('detalles', $details);
-        $presupuesto->put('subtotal', $sub);
-        $presupuesto->put('total', $tot);
+        // $presupuesto = collect($presupuesto);
 
-        return $presupuesto;
+        // $presupuesto->put('detalles', $details);
+        // $presupuesto->put('subtotal', $sub);
+        // $presupuesto->put('total', $tot);
+
+        // return $presupuesto;
     }
 }

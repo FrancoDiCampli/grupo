@@ -38,8 +38,10 @@
                                         <v-list-item>
                                             <v-list-item-title>Editar</v-list-item-title>
                                         </v-list-item>
-                                        <v-list-item>
-                                            <v-list-item-title>Generar Venta</v-list-item-title>
+                                        <v-list-item v-if="item.numventa == null" @click="vender()">
+                                            <v-list-item-title
+                                                @click="vender(item.id)"
+                                            >Generar Venta</v-list-item-title>
                                         </v-list-item>
                                     </v-list>
                                 </v-menu>
@@ -70,6 +72,10 @@ export default {
     methods: {
         print(id) {
             this.$store.dispatch("PDF/printPedido", { id: id });
+        },
+
+        vender(id) {
+            this.$store.dispatch("pedidos/vender", { id: id });
         }
     }
 };
