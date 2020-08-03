@@ -11,8 +11,6 @@ const mutations = {
             total: pedidos.total,
             ultimo: pedidos.ultimo
         };
-
-        console.log(state.pedidos);
     },
 
     fillPedido(state, pedido) {
@@ -86,25 +84,45 @@ const actions = {
         });
     },
 
-    edit: function({ commit }, params) {
-        commit("fillForm", params.data);
+    edit: async function({ commit, dispatch }, params) {
+        let pedido = await dispatch("show", params);
+        let newForm = {
+            bonificacion: pedido.presupuesto.bonificacion,
+            cliente_id: pedido.presupuesto.cliente_id,
+            cliente: pedido.cliente.razonsocial,
+            condicion: "CUENTA CORRIENTE",
+            comprobanteadherido: pedido.presupuesto.comprobanteadherido,
+            confirmacion: pedido.presupuesto.numventa ? true : false,
+            cotizacion: pedido.presupuesto.cotizacion,
+            detalles: pedido.detalles,
+            fecha: pedido.presupuesto.fecha,
+            fechaCotizacion: pedido.presupuesto.fechaCotizacion,
+            numpedido: pedido.presupuesto.numpresupuesto,
+            observaciones: pedido.presupuesto.observaciones,
+            recargo: pedido.presupuesto.recargo,
+            subtotal: pedido.presupuesto.subtotal,
+            total: pedido.presupuesto.total,
+            totalPesos: pedido.presupuesto.totalPesos
+        };
+        commit("fillForm", newForm);
     },
 
     update({ state, commit, dispatch }, params) {
-        return new Promise((resolve, reject) => {
-            axios
-                .put("/api/pedidos/" + params.id, state.form)
-                .then(response => {
-                    commit("resetForm");
-                    resolve(response.data);
-                })
-                .catch(error => {
-                    dispatch("errorHandle", error.response, {
-                        root: true
-                    });
-                    reject(error.response.data);
-                });
-        });
+        console.log(state.form);
+        // return new Promise((resolve, reject) => {
+        //     axios
+        //         .put("/api/pedidos/" + state.form.id, state.form)
+        //         .then(response => {
+        //             commit("resetForm");
+        //             resolve(response.data);
+        //         })
+        //         .catch(error => {
+        //             dispatch("errorHandle", error.response, {
+        //                 root: true
+        //             });
+        //             reject(error.response.data);
+        //         });
+        // });
     },
 
     vender({ dispatch }, params) {

@@ -8,6 +8,7 @@ import AccessDenied from "../views/AccessDenied";
 // Pedidos
 import Pedidos from "../views/pedidos/pedidos";
 import PedidosCreate from "../views/pedidos/Create";
+import PedidosEdit from "../views/pedidos/Edit";
 import PedidosShow from "../views/pedidos/Show";
 
 // Remitos
@@ -111,6 +112,12 @@ export default new Router({
             path: "/pedidos/nuevo",
             name: "pedidos_nuevo",
             component: PedidosCreate
+        },
+        {
+            path: "/pedidos/editar/:id",
+            name: "pedidos_editar",
+            component: PedidosEdit,
+            props: true
         },
         {
             path: "/pedidos/show/:id",

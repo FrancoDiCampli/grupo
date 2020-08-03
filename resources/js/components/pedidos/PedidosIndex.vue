@@ -35,7 +35,12 @@
                                         <v-list-item @click="print(item.id)">
                                             <v-list-item-title>Imprimir</v-list-item-title>
                                         </v-list-item>
-                                        <v-list-item>
+                                        <v-list-item
+                                            v-if="item.numventa == null"
+                                            :to="
+                                                `/pedidos/editar/${item.id}`
+                                            "
+                                        >
                                             <v-list-item-title>Editar</v-list-item-title>
                                         </v-list-item>
                                         <v-list-item

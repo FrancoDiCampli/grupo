@@ -3,7 +3,8 @@
         <v-card shaped outlined :loading="inProcess" class="pb-4">
             <v-card-title class="py-0 px-2">
                 <v-row class="pa-0 ma-0">
-                    <v-col cols="auto" align-self="center">Nueva Nota de Pedido</v-col>
+                    <v-col cols="auto" align-self="center" v-if="mode=='edit'">Nueva nota de pedido</v-col>
+                    <v-col cols="auto" align-self="center" v-else>Editar nota de pedido</v-col>
                     <v-spacer></v-spacer>
                     <v-col cols="auto">
                         <v-list-item two-line class="text-right">
@@ -35,7 +36,7 @@
                         :rules="[
                             () => validateStep(1, 'pedidosClienteForm')
                         ]"
-                    >Cliente y vencimiento.</v-stepper-step>
+                    >Cliente</v-stepper-step>
                     <v-stepper-content step="1">
                         <v-form ref="pedidosClienteForm">
                             <v-row justify="space-around" class="my-1">
@@ -156,9 +157,9 @@
                                     <v-text-field
                                         v-model="
                                             $store.state.pedidos.form
-                                                .comprobanteadherido
+                                                .pedidoadherido
                                         "
-                                        label="Comprobante Adherido Nº"
+                                        label="Nota de pedido adherida Nº"
                                         outlined
                                     ></v-text-field>
                                 </v-col>
@@ -348,10 +349,53 @@
                                                     :key="index"
                                                 >
                                                     <td>{{ detalle.articulo }}</td>
-                                                    <td
-                                                        class="hidden-sm-and-down"
-                                                    >{{ detalle.precio }}</td>
-                                                    <td>{{ detalle.cantidad }}</td>
+                                                    <td class="btn-td">
+                                                        <v-menu
+                                                            offset-y
+                                                            :close-on-content-click="false"
+                                                        >
+                                                            <template v-slot:activator="{ on }">
+                                                                <div v-on="on">{{ detalle.precio }}</div>
+                                                            </template>
+                                                            <v-card v-click-outside="resetEdit">
+                                                                <v-card-text>
+                                                                    <v-text-field
+                                                                        label="Precio"
+                                                                        outlined
+                                                                        hide-details
+                                                                        v-on:input="editDetail(detalle.id, 'precio')"
+                                                                        v-model="editPrecio"
+                                                                        type="number"
+                                                                    ></v-text-field>
+                                                                </v-card-text>
+                                                            </v-card>
+                                                        </v-menu>
+                                                    </td>
+                                                    <td class="btn-td">
+                                                        <v-menu
+                                                            offset-y
+                                                            :close-on-content-click="false"
+                                                        >
+                                                            <template v-slot:activator="{ on }">
+                                                                <div
+                                                                    v-on="on"
+                                                                >{{ detalle.cantidad }}</div>
+                                                            </template>
+                                                            <v-card v-click-outside="resetEdit">
+                                                                <v-card-text>
+                                                                    <v-text-field
+                                                                        label="Cantidad"
+                                                                        outlined
+                                                                        hide-details
+                                                                        v-on:input="editDetail(detalle.id, 'cantidad')"
+                                                                        v-model="editCantidad"
+                                                                        type="number"
+                                                                    ></v-text-field>
+                                                                </v-card-text>
+                                                            </v-card>
+                                                        </v-menu>
+                                                    </td>
+
                                                     <td>
                                                         {{
                                                         detalle.subtotalDolares
@@ -532,11 +576,22 @@
                                     no-resize
                                 ></v-textarea>
                             </v-col>
-                            <v-col cols="12" class="px-6 py-0">
+                            <v-col cols="12" sm="6" class="px-6 py-0">
                                 <v-switch
                                     v-model="$store.state.pedidos.form.confirmacion"
                                     label="¿Confirmar Venta?"
                                 ></v-switch>
+                            </v-col>
+                            <v-col cols="12" sm="6" class="py-0">
+                                <v-text-field
+                                    v-model="
+                                            $store.state.pedidos.form
+                                                .remitoadherido
+                                        "
+                                    label="Remito adherido Nº"
+                                    outlined
+                                    v-if="$store.state.pedidos.form.confirmacion"
+                                ></v-text-field>
                             </v-col>
                             <slot></slot>
                         </v-row>
@@ -572,9 +627,16 @@
 
 <script>
 import moment from "moment";
+import ClickOutside from "v-click-outside";
 var cantidadMaxima = 999999999;
 
 export default {
+    props: ["mode"],
+
+    directives: {
+        clickOutside: ClickOutside.directive
+    },
+
     data: () => ({
         step: 1,
         // GENERAL
@@ -609,6 +671,8 @@ export default {
         dialogCotizacion: false,
         // DETALLES
         detalles: [],
+        editPrecio: null,
+        editCantidad: null,
         // SUBTOTAL
         subtotal: null,
         // MODALS
@@ -697,9 +761,12 @@ export default {
 
     async mounted() {
         this.inProcess = true;
+        await this.getArticles();
         await this.checkCurrency();
         await this.getPoint();
-        await this.getArticles();
+        if (this.mode == "edit") {
+            await this.setForm();
+        }
         this.inProcess = false;
     },
 
@@ -776,6 +843,23 @@ export default {
                     Number(response.ultimo.numpresupuesto) + 1;
             } else {
                 this.NumComprobante = data.numpresupuesto;
+            }
+        },
+
+        setForm() {
+            this.searchCliente = this.$store.state.pedidos.form.cliente;
+            this.subtotal = this.$store.state.pedidos.form.subtotal;
+            this.total = this.$store.state.pedidos.form.total;
+            this.totalPesos = this.$store.state.pedidos.form.totalPesos;
+            this.cotizacion = this.$store.state.pedidos.form.cotizacion;
+            this.fechaCotizacion = this.$store.state.pedidos.form.fechaCotizacion;
+            this.NumComprobante = this.$store.state.pedidos.form.numpedido;
+            this.condicion = this.$store.state.pedidos.form.condicion;
+
+            this.detalles = this.$store.state.pedidos.form.detalles;
+            for (let i = 0; i < this.detalles.length; i++) {
+                this.detalles[i].precio = this.detalles[i].preciounitario;
+                this.detalles[i].subtotalDolares = this.detalles[i].subtotal;
             }
         },
 
@@ -901,6 +985,27 @@ export default {
             this.subtotalControl();
         },
 
+        editDetail(id, field) {
+            let index = this.detalles.indexOf(
+                this.detalles.find(element => element.id == id)
+            );
+
+            if (field == "precio") {
+                this.detalles[index].precio = this.editPrecio;
+            } else if (field == "cantidad") {
+                this.detalles[index].cantidad = this.editCantidad;
+            }
+
+            this.detalles[index].subtotalDolares =
+                Number(this.detalles[index].precio) *
+                Number(this.detalles[index].cantidad);
+        },
+
+        resetEdit() {
+            this.editPrecio = null;
+            this.editCantidad = null;
+        },
+
         deleteDetail(detalle) {
             let index = this.detalles.indexOf(detalle);
             this.detalles.splice(index, 1);
@@ -954,4 +1059,8 @@ export default {
 };
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+.btn-td {
+    cursor: pointer;
+}
+</style>

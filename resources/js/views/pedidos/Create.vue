@@ -12,7 +12,7 @@
         <v-row justify="center">
             <v-col cols="12" md="10" lg="8">
                 <v-form ref="CreatePedido" @submit.prevent="savePedido()">
-                    <PedidosForm ref="formPedidos">
+                    <PedidosForm ref="formPedidos" mode="create">
                         <v-btn
                             tile
                             outlined

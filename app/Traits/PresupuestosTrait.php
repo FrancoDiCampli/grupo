@@ -172,13 +172,13 @@ trait PresupuestosTrait
         $pre = Presupuesto::find($request->id);
 
         $presupuesto['tipoComprobante'] = 'REMITO X';
-        $numventa = Venta::all()->last()->id;
-        $presupuesto['numventa'] = $numventa+1;
+        $numventa = Venta::all()->last() ? Venta::all()->last()->id : 0;
+        $presupuesto['numventa'] = $numventa + 1;
         $presupuesto['pagada'] = false;
         $presupuesto['condicionventa'] = 'CUENTA CORRIENTE';
 
         $venta = VentasTrait::crearVenta($presupuesto);
-        
+
         foreach ($presupuesto->articulos as $item) {
             $detail = $item['pivot'];
 
@@ -189,7 +189,7 @@ trait PresupuestosTrait
                 'cantidadLitros' => $detail['cantidadLitros'],
                 'medida' => $detail['medida'],
                 'preciounitario' => $detail['preciounitario'],
-                'subtotalPesos' => ($detail['preciounitario'] * $detail['cantidadLitros'])*$detail['cotizacion'],
+                'subtotalPesos' => ($detail['preciounitario'] * $detail['cantidadLitros']) * $detail['cotizacion'],
                 'subtotal' => $detail['preciounitario'] * $detail['cantidadLitros'],
                 'cotizacion' =>  $detail['cotizacion'],
                 'fechaCotizacion' => $detail['fechaCotizacion'],

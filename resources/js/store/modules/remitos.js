@@ -6,7 +6,12 @@ const state = {
 
 const mutations = {
     fillRemitos(state, remitos) {
-        state.remitos = remitos;
+        state.remitos = {
+            remitos: remitos.ventas,
+            total: remitos.total,
+            ultima: remitos.ultimo,
+            eliminadas: remitos.eliminadas
+        };
     },
 
     fillVenta(state, venta) {
