@@ -15,7 +15,7 @@ trait ArticulosTrait
 {
     public static function index($request)
     {
-        $articles = Articulo::orderBy('id', 'desc')->buscar($request)->get();
+        $articles = Articulo::orderBy('id', 'desc')->get();
         $articulos = collect();
         $inventarios = collect();
 

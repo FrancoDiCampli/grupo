@@ -38,17 +38,6 @@ class Supplier extends Model
         return $this->hasMany('App\Inventario');
     }
 
-    public function scopeBuscar($query, $request)
-    {
-        $proveedor = $request->get('buscarProveedor');
-
-        if (strlen($proveedor)) {
-            return $query
-                ->orWhere('razonsocial', 'LIKE', "$proveedor%")
-                ->orWhere('id', 'LIKE', "$proveedor%");
-        }
-    }
-
     public function remitos()
     {
         return $this->hasMany(Compra::class);

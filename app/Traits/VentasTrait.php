@@ -23,10 +23,10 @@ trait VentasTrait
                 $fec = $request->fec;
                 $facs = Venta::whereDate('created_at', $fec)
                     ->orderBy('id', 'DESC')
-                    ->buscar($request)->get();
+                    ->get();
             } else {
                 $facs = Venta::orderBy('id', 'DESC')
-                    ->buscar($request)->get();
+                    ->get();
             }
         } else {
             if ($request->fec) {
@@ -34,11 +34,11 @@ trait VentasTrait
                 $facs = Venta::whereDate('created_at', $fec)
                     ->orderBy('id', 'DESC')
                     ->where('user_id', auth()->user()->id)
-                    ->buscar($request)->get();
+                    ->get();
             } else {
                 $facs = Venta::orderBy('id', 'DESC')
                     ->where('user_id', auth()->user()->id)
-                    ->buscar($request)->get();
+                    ->get();
             }
         }
 
@@ -204,7 +204,7 @@ trait VentasTrait
             "cuit" => $atributos['cuit'], //cliente
             "tipocomprobante" => $atributos['tipoComprobante'],
             "numventa" => $atributos['numventa'],
-            "comprobanteadherido" => $atributos['comprobanteadherido'],
+            "comprobanteadherido" => $atributos['remitoadherido'],
             // "fecha" => now()->format('Ymd'),
             'fecha' => $atributos['fecha'],
             'observaciones' => $atributos['observaciones'],

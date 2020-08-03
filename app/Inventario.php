@@ -27,14 +27,4 @@ class Inventario extends Model
     {
         return $this->belongsTo('App\Supplier', 'supplier_id')->withTrashed();
     }
-
-    public function scopeBuscar($query, $request)
-    {
-        $lote = $request->get('lote');
-        $articulo_id = $request->get('articulo_id');
-
-        if (strlen($lote)) {
-            return $query->where('lote', $lote)->where('articulo_id', $articulo_id);
-        }
-    }
 }

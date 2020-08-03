@@ -24,17 +24,17 @@ trait ClientesTrait
             $clientes = Cliente::orderBy('razonsocial', 'asc')
                 ->where('documentounico', '<>', 0)
                 ->where('distribuidor', false)
-                ->buscar($request);
+                ;
 
             $distribuidores = Cliente::orderBy('razonsocial', 'asc')
                 ->where('documentounico', '<>', 0)
                 ->where('distribuidor', true)
-                ->buscar($request)->get();
+                ->get();
         } else {
             $clientes = Cliente::orderBy('razonsocial', 'asc')
                 ->where('documentounico', '<>', 0)
                 ->where('user_id', auth()->user()->id)
-                ->buscar($request);
+                ;
         }
 
         if ($clientes->count() <= $request->get('limit')) {

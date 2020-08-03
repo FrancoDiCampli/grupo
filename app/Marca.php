@@ -18,15 +18,6 @@ class Marca extends Model
         return $this->hasMany('App\Articulo');
     }
 
-    public function scopeBuscar($query, $request)
-    {
-        $marca = $request->get('buscarMarca');
-
-        if (strlen($marca)) {
-            return $query->where('marca', 'LIKE', "$marca%");
-        }
-    }
-
     public function scopeBuscarExacto($query, $request)
     {
         $marca = $request->get('buscarExactoMarca');

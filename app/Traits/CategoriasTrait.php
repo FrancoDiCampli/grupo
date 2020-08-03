@@ -9,8 +9,7 @@ trait CategoriasTrait
 {
     public static function index($request)
     {
-        $categorias = Categoria::orderBy('id', 'ASC')
-            ->buscar($request);
+        $categorias = Categoria::orderBy('id', 'ASC');
         return [
             'categorias' => $categorias->take($request->get('limit', null))->get(),
             'total' => $categorias->count()

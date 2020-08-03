@@ -39,20 +39,19 @@ class Cliente extends Model
         return ucfirst($value);
     }
 
-    public function scopeBuscar($query, $request)
-    {
-        $cliente = $request->get('buscarCliente');
-
-        if (strlen($cliente)) {
-            return $query
-                ->orWhere('razonsocial', 'LIKE', "$cliente%")
-                ->orWhere('documentounico', 'LIKE', "$cliente%");
-        }
-    }
-
     public function facturas()
     {
         return $this->hasMany(Venta::class);
+    }
+
+    public function invoices()
+    {
+        return $this->hasMany(Factura::class);
+    }
+
+    public function entregas()
+    {
+        return $this->hasMany(Entrega::class);
     }
 
     public function ctacte()
