@@ -130,4 +130,16 @@ trait CuentasCorrientesTrait
             'user_id' => auth()->user()->id
         ]);
     }
+
+    public static function aplicarIVA($ventas, $iva)
+    {
+        $cuentas = Cuentacorriente::whereIn('venta_id', $ventas)->get();
+
+        $cuentas->map(function($cuenta) use($iva){
+            $cuenta->saldo += $iva;
+            $cuenta->update();
+
+            static::crearMovimiento($cuenta, 'IVA', $iva);
+        });
+    }
 }

@@ -45,7 +45,8 @@ trait RecibosTrait
             $fechaCotizacion = $pay['forma'][1]['fecha_cotizacion'];
         }
         $recibo['cotizacion'] = $cotizacion;
-        $recibo['fecha_cotizacion'] = $fechaCotizacion;
+        $fechaCot = new Carbon($fechaCotizacion);
+        $recibo['fecha_cotizacion'] = $fechaCot->format('d-m-Y');
 
         return [
             'configuracion' => $configuracion,

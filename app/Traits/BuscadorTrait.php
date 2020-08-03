@@ -13,22 +13,22 @@ trait BuscadorTrait
     {
         $buscar = $request->get('buscar');
 
-        $auxClientes = Cliente::orWhere('razonsocial', 'LIKE', "$buscar%")
-            ->orWhere('documentounico', 'LIKE', "$buscar%")
+        $auxClientes = Cliente::orWhere('razonsocial', 'LIKE', "%$buscar%")
+            ->orWhere('documentounico', 'LIKE', "%$buscar%")
             ->get();
 
-        $auxProveedores = Supplier::orWhere('razonsocial', 'LIKE', "$buscar%")
-            ->orWhere('cuit', 'LIKE', "$buscar%")
+        $auxProveedores = Supplier::orWhere('razonsocial', 'LIKE', "%$buscar%")
+            ->orWhere('cuit', 'LIKE', "%$buscar%")
             ->get();
 
-        $auxArticulos = Articulo::orWhere('articulo', 'LIKE', "$buscar%")
-            ->orWhere('codarticulo', "$buscar%")
+        $auxArticulos = Articulo::orWhere('articulo', 'LIKE', "%$buscar%")
+            ->orWhere('codarticulo', "%$buscar%")
             ->get();
 
         $vendedores = collect();
         $distribuidores = collect();
 
-        $users = User::where('name', 'LIKE', "$buscar%")->get();
+        $users = User::where('name', 'LIKE', "%$buscar%")->get();
         $usuarios = collect();
         foreach ($users as $user) {
             if ($user->role->role == 'vendedor') {
@@ -63,7 +63,7 @@ trait BuscadorTrait
 
             case 'vendedor':
                 $user = User::find(auth()->user()->id);
-                $clientes = $user->clientes()->where('razonsocial', 'LIKE', "$buscar%")
+                $clientes = $user->clientes()->where('razonsocial', 'LIKE', "%$buscar%")
                     ->get()
                     ->where('distribuidor', false);
                 return [

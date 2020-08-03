@@ -63,6 +63,13 @@ trait PresupuestosTrait
         $cliente = Cliente::find($atributos['cliente_id']);
         $atributos['cuit'] = $cliente->documentounico;
 
+        if ($atributos->confirmacion) {
+            $atributos['tipoComprobante'] = 'NOTA DE PEDIDO';
+            $atributos['condicionventa'] = 'CUENTA CORRIENTE';
+            $atributos['numventa'] = 1;
+            VentasTrait::store($atributos);
+        }
+
         // ALMACENAMIENTO DE PRESUPUESTO
         $presupuesto = static::crearPresupuesto($atributos);
 
@@ -102,7 +109,8 @@ trait PresupuestosTrait
 
         return Presupuesto::create([
             "ptoventa" => $configuracion['puntoventa'],
-            "numpresupuesto" => $atributos['numpresupuesto'],
+            // "numpresupuesto" => $atributos['numpresupuesto'],
+            "numpresupuesto" => 1,
             "cuit" => $atributos['cuit'],
             "fecha" => now()->format('Ymd'),
             "bonificacion" => $atributos['bonificacion'] * 1,

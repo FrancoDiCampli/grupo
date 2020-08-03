@@ -6,6 +6,7 @@ use App\Venta;
 use App\Cliente;
 use App\Factura;
 use Carbon\Carbon;
+use App\Traits\CuentasCorrientesTrait;
 
 trait FacturasTrait
 {
@@ -77,6 +78,8 @@ trait FacturasTrait
             $venta->numfactura = $nueva->id;
             $venta->save();
         }
+
+        CuentasCorrientesTrait::aplicarIVA($request->ventas, $request->valorAgregado);
 
         return ['msg' => 'factura creada'];
     }
