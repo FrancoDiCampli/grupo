@@ -31,6 +31,7 @@ class CreatePresupuestosTable extends Migration
             $table->string('observaciones')->nullable();
             $table->UnsignedBigInteger('cliente_id');
             $table->bigInteger('user_id');
+            $table->bigInteger('numventa')->nullable();
             $table->timestamps();
             $table->softDeletes();
 
