@@ -2,6 +2,7 @@
 
 namespace App\Traits;
 
+use App\Venta;
 use App\Cliente;
 use Carbon\Carbon;
 use App\Presupuesto;
@@ -95,8 +96,8 @@ trait PresupuestosTrait
                 'preciounitario' => $detail['precio'],
                 'subtotalPesos' => null,
                 'subtotal' => $detail['subtotalDolares'],
-                'cotizacion' => null,
-                'fechaCotizacion' => null,
+                'cotizacion' => $detail['cotizacion'],
+                'fechaCotizacion' => $detail['fechaCotizacion'],
                 'articulo_id' => $detail['id'],
                 'presupuesto_id' => $presupuesto->id,
             );
@@ -112,6 +113,7 @@ trait PresupuestosTrait
         return Presupuesto::create([
             "ptoventa" => $configuracion['puntoventa'],
             "numpresupuesto" => $atributos['numpedido'],
+            "comprobanteadherido" => $atributos['comprobanteadherido'],
             "cuit" => $atributos['cuit'],
             "fecha" => now()->format('Ymd'),
             "bonificacion" => $atributos['bonificacion'] * 1,
@@ -122,7 +124,7 @@ trait PresupuestosTrait
             "totalPesos" => $atributos['totalPesos'],
             'cotizacion' => $atributos['cotizacion'],
             'fechaCotizacion' => $atributos['fechaCotizacion'],
-            "vencimiento" => $atributos['vencimiento'],
+            // "vencimiento" => $atributos['vencimiento'],
             "observaciones" => $atributos['observaciones'],
             "cliente_id" => $atributos['cliente_id'],
             "user_id" => auth()->user()->id
@@ -166,9 +168,44 @@ trait PresupuestosTrait
     public static function vender($request)
     {
         $presupuesto = Presupuesto::find($request->id);
+        $pre = Presupuesto::find($request->id);
 
-        $presupuesto->articulos;
+        // $presupuesto->articulos;
 
-        return $presupuesto;
+        $presupuesto['tipoComprobante'] = 'REMITO X';
+        $numventa = Venta::all()->last()->id;
+        $presupuesto['numventa'] = $numventa+1;
+        $presupuesto['pagada'] = false;
+        $presupuesto['condicionventa'] = 'CUENTA CORRIENTE';
+
+        $venta = VentasTrait::crearVenta($presupuesto);
+        
+        foreach ($presupuesto->articulos as $item) {
+            $detail = $item['pivot'];
+
+            $detalles = array(
+                'codarticulo' => $detail['codarticulo'],
+                'articulo' => $detail['articulo'],
+                'cantidad' => $detail['cantidad'],
+                'cantidadLitros' => $detail['cantidadLitros'],
+                'medida' => $detail['medida'],
+                'preciounitario' => $detail['preciounitario'],
+                'subtotalPesos' => null,
+                'subtotal' => $detail['preciounitario']*$detail['cantidadLitros'],
+                'cotizacion' =>  $detail['cotizacion'],
+                'fechaCotizacion' => $detail['fechaCotizacion'],
+                'articulo_id' => $detail['articulo_id'],
+                'venta_id' => $venta->id,
+                'created_at' => now()->format('Ymd'),
+            );
+            $det[] = $detalles;
+        }
+
+        $venta->articulos()->attach($det);
+
+        $pre->numventa = $venta->id;
+        $pre->save();
+
+        return 'listo';
     }
 }

@@ -16,6 +16,7 @@ class CreatePresupuestosTable extends Migration
         Schema::create('presupuestos', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('ptoventa');
+            $table->string('comprobanteadherido')->nullable();
             $table->integer('numpresupuesto');
             $table->bigInteger('cuit');
             $table->string('fecha');
@@ -27,7 +28,7 @@ class CreatePresupuestosTable extends Migration
             $table->decimal('totalPesos', 12, 2)->nullable();
             $table->decimal('cotizacion', 12, 2)->nullable();
             $table->string('fechaCotizacion')->nullable();
-            $table->string('vencimiento')->nullable();
+            // $table->string('vencimiento')->nullable();
             $table->string('observaciones')->nullable();
             $table->UnsignedBigInteger('cliente_id');
             $table->bigInteger('user_id');
