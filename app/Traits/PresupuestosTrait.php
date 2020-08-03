@@ -167,7 +167,6 @@ trait PresupuestosTrait
 
     public static function vender($request)
     {
-        return $request;
         $presupuesto = Presupuesto::find($request->id);
         $pre = Presupuesto::find($request->id);
 
@@ -176,6 +175,7 @@ trait PresupuestosTrait
         $presupuesto['numventa'] = $numventa + 1;
         $presupuesto['pagada'] = false;
         $presupuesto['condicionventa'] = 'CUENTA CORRIENTE';
+        $presupuesto['remitoadherido'] = $request->remitoadherido;
 
         $venta = VentasTrait::crearVenta($presupuesto);
 
