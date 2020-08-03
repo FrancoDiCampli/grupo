@@ -155,14 +155,14 @@
                                 <v-col cols="12" sm="6" class="py-0">
                                     <v-text-field
                                         v-model="
-                                            $store.state.ventas.form
+                                            $store.state.pedidos.form
                                                 .comprobanteadherido
                                         "
                                         label="Comprobante Adherido Nº"
                                         outlined
                                     ></v-text-field>
                                 </v-col>
-                                <!-- CONDICION VENTA -->
+                                <!-- CONDICION PEDIDO -->
                                 <v-col cols="12" sm="6" class="py-0">
                                     <v-text-field
                                         v-model="condicion"
@@ -772,9 +772,10 @@ export default {
             this.PuntoVenta = data.puntoventa;
             let response = await this.$store.dispatch("pedidos/index");
             if (response.ultimo) {
-                this.NumComprobante = Number(response.ultimo.numpedido) + 1;
+                this.NumComprobante =
+                    Number(response.ultimo.numpresupuesto) + 1;
             } else {
-                this.NumComprobante = data.numpedido;
+                this.NumComprobante = data.numpresupuesto;
             }
         },
 
