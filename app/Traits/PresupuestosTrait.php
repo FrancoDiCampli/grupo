@@ -111,8 +111,7 @@ trait PresupuestosTrait
 
         return Presupuesto::create([
             "ptoventa" => $configuracion['puntoventa'],
-            // "numpresupuesto" => $atributos['numpresupuesto'],
-            "numpresupuesto" => 1,
+            "numpresupuesto" => $atributos['numpedido'],
             "cuit" => $atributos['cuit'],
             "fecha" => now()->format('Ymd'),
             "bonificacion" => $atributos['bonificacion'] * 1,
@@ -162,5 +161,28 @@ trait PresupuestosTrait
             'detalles' => $detalles,
             'cliente' => $cliente
         ];
+    }
+
+    public static function vender($request)
+    {
+        $id = $request->id;
+
+        $details = collect();
+
+        $sub = 0;
+        $tot = 0;
+
+        $presupuesto = Presupuesto::find($id);
+        foreach ($presupuesto->articulos as $det) {
+            $details->push($det);
+            $sub += $presupuesto->subtotal;
+            $tot += $presupuesto->total;
+        }
+
+        $presupuesto->put('detalles', $details);
+        $presupuesto->put('subtotal', $sub);
+        $presupuesto->put('total', $tot);
+
+        return $presupuesto;
     }
 }
