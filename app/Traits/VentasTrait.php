@@ -124,7 +124,7 @@ trait VentasTrait
         $aux = collect($det);
 
         // DESCUENTA LOS INVENTARIOS
-        static::actualizarInventarios($aux, $factura);
+        // static::actualizarInventarios($aux, $factura);
 
         return $factura->id;
     }

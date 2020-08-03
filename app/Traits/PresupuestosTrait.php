@@ -63,15 +63,17 @@ trait PresupuestosTrait
         $cliente = Cliente::find($atributos['cliente_id']);
         $atributos['cuit'] = $cliente->documentounico;
 
+        // ALMACENAMIENTO DE PRESUPUESTO
+        $presupuesto = static::crearPresupuesto($atributos);
+
         if ($atributos->confirmacion) {
             $atributos['tipoComprobante'] = 'NOTA DE PEDIDO';
             $atributos['condicionventa'] = 'CUENTA CORRIENTE';
             $atributos['numventa'] = 1;
-            VentasTrait::store($atributos);
+            $venta_id = VentasTrait::store($atributos);
+            $presupuesto->numventa = $venta_id;
+            $presupuesto->update();
         }
-
-        // ALMACENAMIENTO DE PRESUPUESTO
-        $presupuesto = static::crearPresupuesto($atributos);
 
         // ALMACENAMIENTO DE DETALLES
         $det = static::detallesPresupuesto($request->get('detalles'), $presupuesto);
