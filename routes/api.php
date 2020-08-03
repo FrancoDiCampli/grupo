@@ -11,6 +11,7 @@ Route::middleware('auth:airlock')->group(function () {
 
     /*pedidos*/
     Route::apiResource('pedidos', 'API\PresupuestosController', ['except' => ['create', 'edit']]);
+    Route::post('vender', 'API\PresupuestosController@vender');
 
     /*remitos*/
     Route::apiResource('remitos', 'API\VentasController', ['except' => ['create', 'edit']]);

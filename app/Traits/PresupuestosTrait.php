@@ -67,7 +67,7 @@ trait PresupuestosTrait
         $presupuesto = static::crearPresupuesto($atributos);
 
         if ($atributos->confirmacion) {
-            $atributos['tipoComprobante'] = 'NOTA DE PEDIDO';
+            $atributos['tipoComprobante'] = 'REMITO X';
             $atributos['condicionventa'] = 'CUENTA CORRIENTE';
             $atributos['numventa'] = 1;
             $venta_id = VentasTrait::store($atributos);
@@ -162,5 +162,28 @@ trait PresupuestosTrait
             'detalles' => $detalles,
             'cliente' => $cliente
         ];
+    }
+
+    public static function vender($request)
+    {
+        $id = $request->id;
+
+        $details = collect();
+
+        $sub = 0;
+        $tot = 0;
+
+        $presupuesto = Presupuesto::find($id);
+        foreach ($presupuesto->articulos as $det) {
+            $details->push($det);
+            $sub += $presupuesto->subtotal;
+            $tot += $presupuesto->total;
+        }
+
+        $presupuesto->put('detalles', $details);
+        $presupuesto->put('subtotal', $sub);
+        $presupuesto->put('total', $tot);
+
+        return $presupuesto;
     }
 }
