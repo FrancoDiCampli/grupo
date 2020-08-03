@@ -16,6 +16,11 @@
                     <v-icon v-if="mini">fas fa-bars</v-icon>
                     <v-icon v-else style="margin-left: 6px;">fas fa-times</v-icon>
                 </v-list-item-icon>
+                <v-list-item-content v-if="!mini">
+                    <v-list-item-title>
+                        <b style="margin-top: 120px; !important">Grupo APC</b>
+                    </v-list-item-title>
+                </v-list-item-content>
                 <v-list-item-icon
                     class="hidden-sm-and-up"
                     style="margin-left: 6px;"
@@ -96,9 +101,6 @@
                 class="hidden-sm-and-up"
                 v-if="$store.state.auth.user.user != null"
             ></v-app-bar-nav-icon>
-
-            <!-- Titulo de la aplicacion -->
-            <v-toolbar-title class="hidden-xs-only">Grupo APC</v-toolbar-title>
 
             <slot name="searchBar"></slot>
             <v-spacer></v-spacer>

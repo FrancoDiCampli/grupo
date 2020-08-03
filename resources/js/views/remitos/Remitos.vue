@@ -35,7 +35,6 @@ export default {
 
     mounted() {
         this.getRemitos();
-        this.getFacturas();
     },
 
     methods: {

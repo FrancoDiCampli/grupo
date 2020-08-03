@@ -35,7 +35,7 @@
                         :rules="[
                             () => validateStep(1, 'pedidosClienteForm')
                         ]"
-                    >Cliente y vencimiento.</v-stepper-step>
+                    >Cliente</v-stepper-step>
                     <v-stepper-content step="1">
                         <v-form ref="pedidosClienteForm">
                             <v-row justify="space-around" class="my-1">
