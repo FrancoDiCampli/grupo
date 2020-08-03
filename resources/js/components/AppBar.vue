@@ -174,27 +174,24 @@ export default {
         sidenav: false,
         routes: [
             {
-                name: "Nota de pedido",
+                name: "Notas de pedidos",
                 icon: "fas fa-receipt",
                 url: "/pedidos",
-                roles: [
-                    "superAdmin",
-                    "administrador",
-                    "vendedor",
-                    "distribuidor"
-                ],
+                roles: ["superAdmin", "administrador", "vendedor"],
                 divider: false
             },
             {
-                name: "Ventas",
+                name: "Remitos",
                 icon: "fas fa-dollar-sign",
-                url: "/ventas",
-                roles: [
-                    "superAdmin",
-                    "administrador",
-                    "vendedor",
-                    "distribuidor"
-                ],
+                url: "/remitos",
+                roles: ["superAdmin", "administrador", "vendedor"],
+                divider: false
+            },
+            {
+                name: "Facturas",
+                icon: "fas fa-file-invoice-dollar",
+                url: "/facturas",
+                roles: ["superAdmin", "administrador"],
                 divider: true
             },
 
