@@ -35,6 +35,12 @@
                                         <v-list-item @click="print(item.id)">
                                             <v-list-item-title>Imprimir</v-list-item-title>
                                         </v-list-item>
+                                        <v-list-item>
+                                            <v-list-item-title>Editar</v-list-item-title>
+                                        </v-list-item>
+                                        <v-list-item>
+                                            <v-list-item-title>Generar Venta</v-list-item-title>
+                                        </v-list-item>
                                     </v-list>
                                 </v-menu>
                             </td>
@@ -63,7 +69,7 @@ export default {
 
     methods: {
         print(id) {
-            this.$store.dispatch("PDF/printPresupuesto", { id: id });
+            this.$store.dispatch("PDF/printPedido", { id: id });
         }
     }
 };

@@ -64,7 +64,7 @@ trait PresupuestosTrait
         $atributos['cuit'] = $cliente->documentounico;
 
         if ($atributos->confirmacion) {
-            $atributos['tipoComprobante'] = 'NOTA DE PEDIDO';
+            $atributos['tipoComprobante'] = 'REMITO X';
             $atributos['condicionventa'] = 'CUENTA CORRIENTE';
             $atributos['numventa'] = 1;
             VentasTrait::store($atributos);

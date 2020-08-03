@@ -6,11 +6,21 @@ const state = {
 
 const mutations = {
     fillPedidos(state, pedidos) {
-        state.pedidos = pedidos;
+        state.pedidos = {
+            pedidos: pedidos.presupuestos,
+            total: pedidos.total,
+            ultimo: pedidos.ultimo
+        };
     },
 
-    fillPeiddo(state, pedido) {
-        state.pedido = pedido;
+    fillPedido(state, pedido) {
+        state.pedido = {
+            cliente: pedido.cliente,
+            configuracion: pedido.configuracion,
+            detalles: pedido.detalles,
+            detallesVentas: pedido.detallesVentas,
+            pedido: pedido.presupuesto
+        };
     },
 
     fillForm(state, form) {
@@ -43,7 +53,7 @@ const actions = {
     show({ commit, dispatch }, params) {
         return new Promise((resolve, reject) => {
             axios
-                .get("/api/Pedidos/" + params.id, { params: params })
+                .get("/api/pedidos/" + params.id, { params: params })
                 .then(response => {
                     commit("fillPedido", response.data);
                     resolve(response.data);

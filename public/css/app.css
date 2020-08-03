@@ -222,6 +222,24 @@
   font-size: 20px !important;
 }
 
+.option-button {
+  width: 0;
+  height: 0;
+  border-right: 30px solid #8dc638;
+  border-top: 30px solid #8dc638;
+  border-left: 30px solid transparent;
+  border-bottom: 30px solid transparent;
+  position: absolute;
+  right: 0;
+  cursor: pointer;
+}
+
+.option-button .v-icon {
+  margin: -48px 0px 0px 6px;
+  color: white !important;
+  font-size: 20px !important;
+}
+
 .form-header {
   border-bottom-right-radius: 4px !important;
 }

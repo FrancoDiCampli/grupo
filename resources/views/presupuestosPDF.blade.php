@@ -204,7 +204,7 @@
             </div>
             <div class="v-divider"></div>
             <div class="header-right">
-                <h2 class="center">PRESUPUESTO</h2>
+                <h2 class="center">NOTA DE PEDIDO</h2>
                 <p><b>Punto de Venta: </b>0000{{$configuracion['puntoventa']}}<b> Comprobante Nº: </b>{{$presupuesto->numpresupuesto}}</p>
                 <p><b>Fecha de Emisión: </b>{{$presupuesto->fecha}}</p>
                 <p><b>Cuit: </b>{{$configuracion['cuit']}}</p>
@@ -279,7 +279,7 @@
             </div>
             <div class="v-divider"></div>
             <div class="header-right">
-                <h2 class="center">PRESUPUESTO</h2>
+                <h2 class="center">NOTA DE PEDIDO</h2>
                 <p><b>Punto de Venta: </b>0000{{$configuracion['puntoventa']}}<b> Comprobante Nº: </b>{{$presupuesto->numfactura}}</p>
                 <p><b>Fecha de Emisión: </b>{{$presupuesto->fecha}}</p>
                 <p><b>Cuit: </b>{{$configuracion['cuit']}}</p>

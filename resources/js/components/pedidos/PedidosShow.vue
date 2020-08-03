@@ -1,85 +1,101 @@
 <template>
     <div>
-        <div v-if="$store.state.pedidos.presupuesto" :loading="$store.state.inProcess">
+        <div v-if="$store.state.pedidos.pedido" :loading="$store.state.inProcess">
             <v-row justify="center">
                 <v-card shaped outlined width="794" height="1123">
                     <v-card-text class="pa-0 black--text">
-                        <div class="print-button" @click="print()">
-                            <v-icon>fas fa-print</v-icon>
-                        </div>
+                        <v-menu offset-y>
+                            <template v-slot:activator="{ on }">
+                                <div class="option-button" v-on="on">
+                                    <v-icon>fas fa-ellipsis-v</v-icon>
+                                </div>
+                            </template>
+                            <v-list>
+                                <v-list-item @click="print()">
+                                    <v-list-item-title>Imprimir</v-list-item-title>
+                                </v-list-item>
+                                <v-list-item>
+                                    <v-list-item-title>Editar</v-list-item-title>
+                                </v-list-item>
+                                <v-list-item>
+                                    <v-list-item-title>Generar Venta</v-list-item-title>
+                                </v-list-item>
+                            </v-list>
+                        </v-menu>
+
                         <v-row>
                             <v-col cols="12">
-                                <h2 class="text-center mb-3">PRESUPUESTO</h2>
+                                <h2 class="text-center mb-3">NOTA DE PEDIDO</h2>
                                 <v-divider></v-divider>
                             </v-col>
                             <v-col cols="12" sm="6" class="header-left">
                                 <h2 class="text-center">
                                     {{
-                                    $store.state.pedidos.presupuesto
+                                    $store.state.pedidos.pedido
                                     .configuracion.nombrefantasia
                                     }}
                                 </h2>
                                 <p>
                                     <b>Razón Social:</b>
                                     {{
-                                    $store.state.pedidos.presupuesto
+                                    $store.state.pedidos.pedido
                                     .configuracion.razonsocial
                                     }}
                                 </p>
                                 <p>
                                     <b>Domicilio Comercial:</b>
                                     {{
-                                    $store.state.pedidos.presupuesto
+                                    $store.state.pedidos.pedido
                                     .configuracion.domiciliocomercial
                                     }}
                                 </p>
                                 <p>
                                     <b>Condición Frente al IVA:</b>
                                     {{
-                                    $store.state.pedidos.presupuesto
+                                    $store.state.pedidos.pedido
                                     .configuracion.condicioniva
                                     }}
                                 </p>
                             </v-col>
                             <v-col cols="12" sm="6" class="header-right">
-                                <h2 class="text-center">PRESUPUESTO</h2>
+                                <h2 class="text-center">NOTA DE PEDIDO</h2>
                                 <p>
                                     <b>Punto de venta:</b>
                                     0000{{
-                                    $store.state.pedidos.presupuesto
+                                    $store.state.pedidos.pedido
                                     .configuracion.puntoventa
                                     }}
                                     <b>Comprobante Nº:</b>
                                     {{
-                                    $store.state.pedidos.presupuesto
-                                    .presupuesto.numpresupuesto
+                                    $store.state.pedidos.pedido
+                                    .pedido.numpresupuesto
                                     }}
                                 </p>
                                 <p>
                                     <b>Fecha de Emisión:</b>
                                     {{
-                                    $store.state.pedidos.presupuesto
-                                    .presupuesto.fecha
+                                    $store.state.pedidos.pedido
+                                    .pedido.fecha
                                     }}
                                 </p>
                                 <p>
                                     <b>Cuit:</b>
                                     {{
-                                    $store.state.pedidos.presupuesto
+                                    $store.state.pedidos.pedido
                                     .configuracion.cuit
                                     }}
                                 </p>
                                 <p>
                                     <b>Ingresos Brutos:</b>
                                     {{
-                                    $store.state.pedidos.presupuesto
+                                    $store.state.pedidos.pedido
                                     .configuracion.cuit
                                     }}
                                 </p>
                                 <p>
                                     <b>Inicio de Actividades:</b>
                                     {{
-                                    $store.state.pedidos.presupuesto
+                                    $store.state.pedidos.pedido
                                     .configuracion.inicioactividades
                                     }}
                                 </p>
@@ -90,36 +106,36 @@
                                 <p>
                                     <b>CUIT:</b>
                                     {{
-                                    $store.state.pedidos.presupuesto
+                                    $store.state.pedidos.pedido
                                     .cliente.documentounico
                                     }}
                                 </p>
                                 <p>
                                     <b>Razón Social:</b>
                                     {{
-                                    $store.state.pedidos.presupuesto
+                                    $store.state.pedidos.pedido
                                     .cliente.razonsocial
                                     }}
                                 </p>
                                 <p>
                                     <b>Condición Frente al IVA:</b>
                                     {{
-                                    $store.state.pedidos.presupuesto
+                                    $store.state.pedidos.pedido
                                     .cliente.condicioniva
                                     }}
                                 </p>
                                 <p>
                                     <b>Domicilio:</b>
                                     {{
-                                    $store.state.pedidos.presupuesto
+                                    $store.state.pedidos.pedido
                                     .cliente.direccion
                                     }}
                                 </p>
                                 <p>
                                     <b>Vencimiento:</b>
                                     {{
-                                    $store.state.pedidos.presupuesto
-                                    .presupuesto.vencimiento
+                                    $store.state.pedidos.pedido
+                                    .pedido.vencimiento
                                     }}
                                 </p>
                                 <v-divider></v-divider>
@@ -142,7 +158,7 @@
                                             <tr
                                                 v-for="(detalle,
                                                 index) in $store.state
-                                                    .pedidos.presupuesto
+                                                    .pedidos.pedido
                                                     .detalles"
                                                 :key="index"
                                             >
@@ -163,8 +179,8 @@
                             <v-col cols="12" class="comprobantes-footer">
                                 <div
                                     v-if="
-                                        $store.state.pedidos.presupuesto
-                                            .presupuesto.observaciones
+                                        $store.state.pedidos.pedido
+                                            .pedido.observaciones
                                     "
                                 >
                                     <p>
@@ -173,7 +189,7 @@
                                     <p>
                                         {{
                                         $store.state.pedidos
-                                        .presupuesto.presupuesto
+                                        .pedido.pedido
                                         .observaciones
                                         }}
                                     </p>
@@ -187,7 +203,7 @@
                                         U$D
                                         {{
                                         $store.state.pedidos
-                                        .presupuesto.presupuesto
+                                        .pedido.pedido
                                         .subtotal
                                         }}
                                     </p>
@@ -195,7 +211,7 @@
                                         <b>Bonificación:</b>
                                         {{
                                         $store.state.pedidos
-                                        .presupuesto.presupuesto
+                                        .pedido.pedido
                                         .bonificacion
                                         }}%
                                     </p>
@@ -203,7 +219,7 @@
                                         <b>Recargo:</b>
                                         {{
                                         $store.state.pedidos
-                                        .presupuesto.presupuesto
+                                        .pedido.pedido
                                         .recargo
                                         }}%
                                     </p>
@@ -212,7 +228,7 @@
                                         U$D
                                         {{
                                         $store.state.pedidos
-                                        .presupuesto.presupuesto.total
+                                        .pedido.pedido.total
                                         }}
                                     </p>
                                 </div>
@@ -241,11 +257,11 @@ export default {
     props: ["id"],
 
     mounted() {
-        this.getPresupuesto();
+        this.getPedido();
     },
 
     methods: {
-        getPresupuesto: async function() {
+        getPedido: async function() {
             this.inProcess = true;
             await this.$store.dispatch("pedidos/show", {
                 id: this.id
@@ -254,8 +270,8 @@ export default {
         },
 
         print() {
-            let id = this.$store.state.pedidos.presupuesto.presupuesto.id;
-            this.$store.dispatch("PDF/printPresupuesto", { id: id });
+            let id = this.$store.state.pedidos.pedido.pedido.id;
+            this.$store.dispatch("PDF/printPedido", { id: id });
         }
     }
 };

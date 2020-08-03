@@ -29,7 +29,7 @@ const actions = {
         });
     },
 
-    printPresupuesto({ dispatch }, params) {
+    printPedido({ dispatch }, params) {
         return new Promise((resolve, reject) => {
             axios({
                 url: "/api/presupuestosPDF/" + params.id,
