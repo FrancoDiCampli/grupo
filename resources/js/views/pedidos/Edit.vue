@@ -55,11 +55,11 @@ export default {
     props: ["id"],
 
     data: () => ({
-        inProcess: true
+        inProcess: true,
     }),
 
     components: {
-        PedidosForm
+        PedidosForm,
     },
 
     async mounted() {
@@ -73,24 +73,22 @@ export default {
             this.$store.dispatch("pedidos/edit", { id: this.id });
         },
 
-        async savePedido() {
+        async editPedido() {
             if (this.$refs.EdidPedido.validate()) {
                 let checkData = await this.$refs.formPedidos.setData();
                 if (checkData) {
                     await this.$store.dispatch("pedidos/update");
-                    this.$refs.formPedidos.getPoint();
-                    this.$refs.formPedidos.getArticles();
-                    this.resetForm();
+                    // this.resetForm();
                 }
             }
         },
 
-        resetForm() {
+        resetForm(id) {
             this.$refs.EdidPedido.reset();
             this.$refs.formPedidos.resetData();
-            this.$router.go(-1);
-        }
-    }
+            this.$router.go(`/pedidos/show/${this.id}`);
+        },
+    },
 };
 </script>
 

@@ -334,7 +334,7 @@
                                             <thead>
                                                 <tr>
                                                     <th class="text-left">Articulo</th>
-                                                    <th class="text-left hidden-sm-and-down">Precio</th>
+                                                    <th class="text-left">Precio</th>
                                                     <th class="text-left">Unidades</th>
 
                                                     <th class="text-left">Subtotal</th>
@@ -634,7 +634,7 @@ export default {
     props: ["mode"],
 
     directives: {
-        clickOutside: ClickOutside.directive
+        clickOutside: ClickOutside.directive,
     },
 
     data: () => ({
@@ -644,13 +644,13 @@ export default {
         focus: null,
         searchInProcess: false,
         disabled: {
-            detalles: true
+            detalles: true,
         },
         rules: {
-            required: value => !!value || "Este campo es obligatorio",
-            cantidadMaxima: value =>
+            required: (value) => !!value || "Este campo es obligatorio",
+            cantidadMaxima: (value) =>
                 value <= Number(cantidadMaxima) ||
-                "La cantidad no puede superar el stock existente"
+                "La cantidad no puede superar el stock existente",
         },
         // HEADER
         PuntoVenta: null,
@@ -676,7 +676,7 @@ export default {
         // SUBTOTAL
         subtotal: null,
         // MODALS
-        detallesDialog: false
+        detallesDialog: false,
     }),
 
     computed: {
@@ -692,7 +692,7 @@ export default {
                 } else {
                     return null;
                 }
-            }
+            },
         },
 
         dolares: {
@@ -714,7 +714,7 @@ export default {
                 } else {
                     return null;
                 }
-            }
+            },
         },
 
         pesos: {
@@ -723,7 +723,7 @@ export default {
                 if (this.dolares && this.cotizacion) {
                     return Number(this.dolares * this.cotizacion).toFixed(2);
                 }
-            }
+            },
         },
 
         // TOTALES
@@ -755,8 +755,8 @@ export default {
                 } else {
                     return null;
                 }
-            }
-        }
+            },
+        },
     },
 
     async mounted() {
@@ -797,12 +797,12 @@ export default {
             return new Promise((resolve, reject) => {
                 axios
                     .get("/api/consultar")
-                    .then(response => {
+                    .then((response) => {
                         this.cotizacion = response.data.valor;
                         this.fechaCotizacion = response.data.fecha;
                         resolve(response.data);
                     })
-                    .catch(error => {
+                    .catch((error) => {
                         this.cotizacion = 1;
                         this.fechaCotizacion = moment().format("DD/MM/YYYY");
                         this.inProcess = false;
@@ -810,29 +810,29 @@ export default {
                     });
             });
         },
-        setCurrency: async function() {
+        setCurrency: async function () {
             await axios
                 .post("/api/setCotizacion", {
                     cotizacion: this.cotizacion,
-                    fechaCotizacion: this.fechaCotizacion
+                    fechaCotizacion: this.fechaCotizacion,
                 })
-                .then(response => {
+                .then((response) => {
                     console.log(response.data);
                 })
-                .catch(error => {
+                .catch((error) => {
                     console.log(error);
                 });
         },
 
         // HEADER
-        getPoint: async function() {
+        getPoint: async function () {
             let data;
             await axios
                 .get("/api/config")
-                .then(response => {
+                .then((response) => {
                     data = response.data;
                 })
-                .catch(error => {
+                .catch((error) => {
                     console.log(error);
                 });
 
@@ -853,7 +853,7 @@ export default {
             this.totalPesos = this.$store.state.pedidos.form.totalPesos;
             this.cotizacion = this.$store.state.pedidos.form.cotizacion;
             this.fechaCotizacion = this.$store.state.pedidos.form.fechaCotizacion;
-            this.NumComprobante = this.$store.state.pedidos.form.numpedido;
+            this.pedidoadherido = this.$store.state.pedidos.form.pedidoadherido;
             this.condicion = this.$store.state.pedidos.form.condicion;
 
             this.detalles = this.$store.state.pedidos.form.detalles;
@@ -886,15 +886,15 @@ export default {
             }
         },
 
-        findCliente: async function() {
+        findCliente: async function () {
             this.$store.state.pedidos.form.cliente_id = null;
             this.clientes = [];
             axios
                 .post("/api/buscando", {
                     buscar: this.searchCliente,
-                    nuevoComp: true
+                    nuevoComp: true,
                 })
-                .then(response => {
+                .then((response) => {
                     let responseClientes = response.data.clientes;
                     let responseDistribuidores = response.data.distribuidores;
                     for (let i = 0; i < responseClientes.length; i++) {
@@ -905,7 +905,7 @@ export default {
                     }
                     this.searchInProcess = false;
                 })
-                .catch(error => {
+                .catch((error) => {
                     console.log(error);
                     this.searchInProcess = false;
                 });
@@ -919,7 +919,7 @@ export default {
         },
 
         // ARTICULOS
-        getArticles: async function() {
+        getArticles: async function () {
             let response = await this.$store.dispatch("articulos/index");
             this.articulos = response.articulos;
         },
@@ -931,7 +931,7 @@ export default {
         },
 
         // DETALLES
-        addDetail: async function() {
+        addDetail: async function () {
             if (this.$refs.detailForm.validate()) {
                 await this.pushDetail();
 
@@ -947,7 +947,7 @@ export default {
                 cantidadLitros: this.cantidadLitros,
                 subtotalDolares: this.dolares,
                 cotizacion: this.cotizacion,
-                fechaCotizacion: this.fechaCotizacion
+                fechaCotizacion: this.fechaCotizacion,
             };
 
             let detail = Object.assign(this.articuloSelected, detailData);
@@ -987,7 +987,7 @@ export default {
 
         editDetail(id, field) {
             let index = this.detalles.indexOf(
-                this.detalles.find(element => element.id == id)
+                this.detalles.find((element) => element.id == id)
             );
 
             if (field == "precio") {
@@ -1023,7 +1023,7 @@ export default {
         },
 
         // FORM
-        setData: async function() {
+        setData: async function () {
             if (
                 this.$refs.pedidosClienteForm.validate() &&
                 this.$refs.pedidosTotalesForm.validate()
@@ -1045,7 +1045,7 @@ export default {
             }
         },
 
-        resetData: async function() {
+        resetData: async function () {
             await this.setCurrency();
             this.clientes = [];
             this.detalles = [];
@@ -1054,8 +1054,8 @@ export default {
             this.$refs.pedidosTotalesForm.reset();
             this.step = 1;
             this.checkCurrency();
-        }
-    }
+        },
+    },
 };
 </script>
 

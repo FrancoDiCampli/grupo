@@ -109,20 +109,20 @@ const actions = {
 
     update({ state, commit, dispatch }, params) {
         console.log(state.form);
-        // return new Promise((resolve, reject) => {
-        //     axios
-        //         .put("/api/pedidos/" + state.form.id, state.form)
-        //         .then(response => {
-        //             commit("resetForm");
-        //             resolve(response.data);
-        //         })
-        //         .catch(error => {
-        //             dispatch("errorHandle", error.response, {
-        //                 root: true
-        //             });
-        //             reject(error.response.data);
-        //         });
-        // });
+        return new Promise((resolve, reject) => {
+            axios
+                .put("/api/pedidos/" + state.form.id, state.form)
+                .then(response => {
+                    commit("resetForm");
+                    resolve(response.data);
+                })
+                .catch(error => {
+                    dispatch("errorHandle", error.response, {
+                        root: true
+                    });
+                    reject(error.response.data);
+                });
+        });
     },
 
     vender({ dispatch }, params) {
