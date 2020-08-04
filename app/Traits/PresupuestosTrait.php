@@ -150,10 +150,10 @@ trait PresupuestosTrait
     {
         $configuracion = ConfiguracionTrait::configuracion();
         $presupuesto = Presupuesto::find($id);
-        $fecha = new Carbon($presupuesto->fecha);
-        $presupuesto->fecha = $fecha->format('d-m-Y');
-        $vencimiento = new Carbon($presupuesto->vencimiento);
-        $presupuesto->vencimiento = $vencimiento->format('d-m-Y');
+        // $fecha = new Carbon($presupuesto->fecha);
+        // $presupuesto->fecha = $fecha->format('d-m-Y');
+        // $vencimiento = new Carbon($presupuesto->vencimiento);
+        // $presupuesto->vencimiento = $vencimiento->format('d-m-Y');
         $cliente = Cliente::withTrashed()->find($presupuesto->cliente_id);
         $detalles = DB::table('articulo_presupuesto')->where('presupuesto_id', $presupuesto->id)->get();
 
@@ -210,10 +210,36 @@ trait PresupuestosTrait
 
     public static function update($request, $id)
     {
-        $presupuesto = Presupuesto::find($id);
+        // $presupuesto = Presupuesto::find($id);
+        // return $presupuesto->articulos;
 
-        
+        // return $det[] = $presupuesto->articulos->each(function($item){
+        //     return $item['pivot'];
+        // });
 
-        $detalles = DB::table('articulo_presupuesto')->where('id', $id)->get();
+
+        $id = 0;
+        foreach ($request->detalles as $item) {
+            // return $item;
+            DB::table('articulo_presupuesto')->where('id', $item['id'])
+                ->update([
+                    'cantidad' => $item['cantidad'],
+                    // 'cantidadLitros' => $item['cantidadLitros'],
+                    'preciounitario' => $item['precio'],
+                    'subtotal' => $item['subtotalDolares'],
+                    // 'subtotalPesos' => $item['subtotalPesos'],
+                    // 'cotizacion' => $item['cotizacion'],
+                    // 'fechaCotizacion' => $item['fechaCotizacion'],
+                ]);
+    
+            // $id = $item['presupuesto_id'];
+        }
+
+        // $presupuesto = Presupuesto::find($id);
+
+        // unset($request->detalles);
+        // $presupuesto->update($request->toArray());
+
+        return 'actualizado';
     }
 }
