@@ -207,4 +207,13 @@ trait PresupuestosTrait
 
         return 'listo';
     }
+
+    public static function update($request, $id)
+    {
+        $presupuesto = Presupuesto::find($id);
+
+        
+
+        $detalles = DB::table('articulo_presupuesto')->where('id', $id)->get();
+    }
 }
