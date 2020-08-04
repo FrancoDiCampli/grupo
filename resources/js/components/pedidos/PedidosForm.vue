@@ -999,6 +999,8 @@ export default {
             this.detalles[index].subtotalDolares =
                 Number(this.detalles[index].precio) *
                 Number(this.detalles[index].cantidad);
+
+            this.subtotalControl();
         },
 
         resetEdit() {
