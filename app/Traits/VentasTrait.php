@@ -54,6 +54,15 @@ trait VentasTrait
             // $fac = collect($fac);
             // $fac->put('pagos', $pagos);
 
+            foreach ($fac->articulos as $det) {
+                $detsFact = DB::table('articulo_factura')->where('articulo_venta_id', $det['pivot']->id)->get();
+                $detsEntr = DB::table('articulo_entrega')->where('articulo_venta_id', $det['pivot']->id)->get();
+
+                $detsFact->sum('cantidad') < $det['pivot']->cantidad ? $fac['todofacturado'] = false : $fac['todofacturado'] = true;
+
+                $detsEntr->sum('cantidad') < $det['pivot']->cantidad ? $fac['todoentregado'] = false : $fac['todoentregado'] = true;
+            }
+
             $facturas->push($fac);
         }
         $eliminadas = Venta::onlyTrashed()->get();
@@ -87,15 +96,8 @@ trait VentasTrait
         $cliente = Cliente::find($atributos['cliente_id']);
         $atributos['cuit'] = $cliente->documentounico;
         $atributos['condicionventa'] = $atributos['condicionventa'];
-        // if ($atributos['condicionventa'] == 'CONTADO') {
         $atributos['subtotalPesos'] = ($atributos['subtotal'] * 1) * ($atributos['cotizacion'] * 1);
         $atributos['totalPesos'] = ($atributos['total'] * 1) * ($atributos['cotizacion'] * 1);
-        // } else {
-        //     $atributos['subtotalPesos'] = null;
-        //     $atributos['totalPesos'] = null;
-        //     $atributos['cotizacion'] = null;
-        //     $atributos['fechaCotizacion'] = null;
-        // }
 
         // ALMACENAMIENTO DE FACTURA
         $factura = static::crearVenta($atributos);
@@ -117,12 +119,9 @@ trait VentasTrait
 
         $factura->articulos()->attach($det);
         // CREACION DE CUENTA CORRIENTE
-        CuentasCorrientesTrait::crearCuenta($factura);
-
-        $aux = collect($det);
-
-        // DESCUENTA LOS INVENTARIOS
-        // static::actualizarInventarios($aux, $factura);
+        if ($cliente->documentounico != 0) {
+            CuentasCorrientesTrait::crearCuenta($factura);
+        }
 
         return $factura->id;
     }
@@ -257,22 +256,22 @@ trait VentasTrait
             foreach ($aux->articulos as $det) {
                 $details->push($det);
 
-                $detsFact = DB::table('articulo_factura')->where('articulo_venta_id', $det->pivot->id)->get();
+                // $detsFact = DB::table('articulo_factura')->where('articulo_venta_id', $det->pivot->id)->get();
 
-                $cant = 0;
-                $cantLitros = 0;
+                // $cant = 0;
+                // $cantLitros = 0;
 
-                if ($detsFact) {
-                    $cant = $detsFact->each(function ($item) {
-                        $item->cantidad++;
-                    });
-                    $cantLitros = $detsFact->each(function ($item) {
-                        $item->cantidadLitros++;
-                    });
-                }
+                // if ($detsFact) {
+                //     $cant = $detsFact->each(function ($item) {
+                //         $item->cantidad++;
+                //     });
+                //     $cantLitros = $detsFact->each(function ($item) {
+                //         $item->cantidadLitros++;
+                //     });
+                // }
 
-                $det->pivot['cantFac'] = $cant;
-                $det->pivot['cantLitrosFac'] = $cantLitros;
+                // $det->pivot['cantFac'] = $cant;
+                // $det->pivot['cantLitrosFac'] = $cantLitros;
             }
             $sub += $aux->subtotal;
             $tot += $aux->total;
