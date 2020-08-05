@@ -50,4 +50,9 @@ class PresupuestosController extends Controller
     {
         return PresupuestosTrait::vender($request);
     }
+
+    public function update(Request $request, $id)
+    {
+        return PresupuestosTrait::update($request, $id);
+    }
 }
