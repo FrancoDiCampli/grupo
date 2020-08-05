@@ -68,15 +68,7 @@ trait PresupuestosTrait
         $presupuesto = static::crearPresupuesto($atributos);
 
         if ($atributos->confirmacion) {
-            $atributos['comprobanteadherido'] = $request['remitoadherido'];
-            $atributos['tipoComprobante'] = 'REMITO X';
-            $atributos['condicionventa'] = 'CUENTA CORRIENTE';
-            $atributos['numventa'] = 1;
-            $venta_id = VentasTrait::store($atributos);
-            $factura = Venta::find($venta_id);
-            CuentasCorrientesTrait::crearCuenta($factura);
-            $presupuesto->numventa = $venta_id;
-            $presupuesto->update();
+            static::confirmarVenta($atributos, $request, $presupuesto);
         }
 
         // ALMACENAMIENTO DE DETALLES
@@ -85,6 +77,73 @@ trait PresupuestosTrait
         $presupuesto->articulos()->attach($det);
 
         return $presupuesto->id;
+    }
+
+    public static function confirmarVenta($atributos, $request, $presupuesto)
+    {
+        $atributos['comprobanteadherido'] = $request['remitoadherido'];
+        $atributos['tipoComprobante'] = 'REMITO X';
+        $atributos['condicionventa'] = 'CUENTA CORRIENTE';
+        $atributos['numventa'] = 1;
+
+        $venta = static::crearVenta($atributos);
+
+        $det = static::detallesVentas($request->get('detalles'), $venta);
+
+        $venta->articulos()->attach($det);
+
+        CuentasCorrientesTrait::crearCuenta($venta);
+        $presupuesto->numventa = $venta->id;
+        $presupuesto->update();
+    }
+
+    public static function detallesVentas($details, $factura)
+    {
+        foreach ($details as $detail) {
+            // return $detail;
+            $detalles = array(
+                'codarticulo' => $detail['codarticulo'],
+                'articulo' => $detail['articulo'],
+                'cantidad' => $detail['cantidad'],
+                'cantidadLitros' => $detail['cantidadLitros'],
+                'medida' => $detail['medida'],
+                'preciounitario' => $detail['precio'],
+                'subtotalPesos' => $detail['subtotalDolares'] * $detail['cotizacion'],
+                'subtotal' => $detail['subtotalDolares'],
+                'cotizacion' => $detail['cotizacion'],
+                'fechaCotizacion' => $detail['fechaCotizacion'],
+                'articulo_id' => $detail['articulo_id'] ?? $detail['id'],
+                'venta_id' => $factura->id,
+                'created_at' => now()->format('Ymd'),
+            );
+            $det[] = $detalles;
+        }
+
+        return $det;
+    }
+
+    public static function crearVenta($atributos)
+    {
+        return Venta::create([
+            "cuit" => $atributos['cuit'], //cliente
+            "tipocomprobante" => $atributos['tipoComprobante'],
+            "numventa" => $atributos['numventa'],
+            "comprobanteadherido" => $atributos['remitoadherido'],
+            'fecha' => $atributos['fecha'],
+            'observaciones' => $atributos['observaciones'],
+            "bonificacion" => $atributos['bonificacion'] * 1,
+            "recargo" => $atributos['recargo'] * 1,
+            // "referencia" => $referencia,
+            "condicionventa" => $atributos['condicionventa'],
+            "subtotal" => $atributos['subtotal'],
+            "total" => $atributos['total'],
+            "subtotalPesos" => $atributos['subtotalPesos'],
+            "totalPesos" => $atributos['totalPesos'],
+            'cotizacion' => $atributos['cotizacion'],
+            'fechaCotizacion' => $atributos['fechaCotizacion'],
+            "cliente_id" => $atributos['cliente_id'],
+            "user_id" => auth()->user()->id,
+        ]);
     }
 
     public static function detallesPresupuesto($details, $presupuesto)
@@ -175,7 +234,6 @@ trait PresupuestosTrait
         $presupuesto['tipoComprobante'] = 'REMITO X';
         $numventa = Venta::all()->last() ? Venta::all()->last()->id : 0;
         $presupuesto['numventa'] = $numventa + 1;
-        $presupuesto['pagada'] = false;
         $presupuesto['condicionventa'] = 'CUENTA CORRIENTE';
         $presupuesto['remitoadherido'] = $request->remitoadherido;
 
@@ -213,14 +271,12 @@ trait PresupuestosTrait
 
     public static function update($request, $id)
     {
-        // return $request;
-
-        $presupuesto = Presupuesto::find(12); // $id
+        $presupuesto = Presupuesto::find($id);
+        $cliente = Cliente::find($request['cliente_id']);
 
         $presupuesto->update([
             "comprobanteadherido" => $request['pedidoadherido'],
-            // "comprobanteadherido" => $request['comprobanteadherido'],
-            "cuit" => Cliente::find($request['cliente_id'])->documentounico,
+            "cuit" => $cliente->documentounico,
             "fecha" => $request['fecha'],
             "bonificacion" => $request['bonificacion'] * 1,
             "recargo" => $request['recargo'] * 1,
@@ -235,7 +291,7 @@ trait PresupuestosTrait
             "user_id" => auth()->user()->id
         ]);
 
-        $dets = collect($presupuesto->articulos->map(function($item){
+        $dets = collect($presupuesto->articulos->map(function ($item) {
             return $item['pivot'];
         }));
         $coleccion = collect();
@@ -255,7 +311,7 @@ trait PresupuestosTrait
                         'cotizacion' => $item['cotizacion'],
                         'fechaCotizacion' => $item['fechaCotizacion'],
                         'articulo_id' => $item['id'],
-                        'presupuesto_id' => 12, // $id
+                        'presupuesto_id' => $presupuesto->id,
                         'created_at' => now(),
                         'updated_at' => now()
                     ]);
@@ -280,9 +336,16 @@ trait PresupuestosTrait
 
         $eliminar = $dets->whereNotIn('id', $aux);
 
-        $eliminar->map(function($item){
+        $eliminar->map(function ($item) {
             DB::table('articulo_presupuesto')->where('id', $item['id'])->delete();
         });
+
+        $atributos = $request;
+        $atributos['cuit'] = $cliente->documentounico;
+
+        if ($atributos->confirmacion) {
+             static::confirmarVenta($atributos, $request, $presupuesto);
+        }
 
         return 'actualizado';
     }

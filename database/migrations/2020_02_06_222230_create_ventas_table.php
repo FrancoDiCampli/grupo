@@ -23,7 +23,6 @@ class CreateVentasTable extends Migration
             $table->text('observaciones')->nullable();
             $table->decimal('bonificacion', 12, 2);
             $table->decimal('recargo', 12, 2);
-            $table->boolean('pagada');
             // $table->json('referencia')->nullable();
             $table->string('condicionventa');
             $table->decimal('subtotal', 12, 2);
