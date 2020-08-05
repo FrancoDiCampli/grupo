@@ -92,7 +92,11 @@ trait PresupuestosTrait
 
         $venta->articulos()->attach($det);
 
-        CuentasCorrientesTrait::crearCuenta($venta);
+        // CREACION DE CUENTA CORRIENTE
+        if ($presupuesto->cuit != 0) {
+            CuentasCorrientesTrait::crearCuenta($venta);
+        }
+
         $presupuesto->numventa = $venta->id;
         $presupuesto->update();
     }
@@ -238,7 +242,11 @@ trait PresupuestosTrait
         $presupuesto['remitoadherido'] = $request->remitoadherido;
 
         $venta = VentasTrait::crearVenta($presupuesto);
-        CuentasCorrientesTrait::crearCuenta($venta);
+        
+        // CREACION DE CUENTA CORRIENTE
+        if ($presupuesto->cuit != 0) {
+            CuentasCorrientesTrait::crearCuenta($venta);
+        }
 
         foreach ($presupuesto->articulos as $item) {
             $detail = $item['pivot'];
