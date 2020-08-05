@@ -88,11 +88,9 @@ trait VentasTrait
         $atributos['cuit'] = $cliente->documentounico;
         $atributos['condicionventa'] = $atributos['condicionventa'];
         // if ($atributos['condicionventa'] == 'CONTADO') {
-        $atributos['pagada'] = false;
         $atributos['subtotalPesos'] = ($atributos['subtotal'] * 1) * ($atributos['cotizacion'] * 1);
         $atributos['totalPesos'] = ($atributos['total'] * 1) * ($atributos['cotizacion'] * 1);
         // } else {
-        //     $atributos['pagada'] = false;
         //     $atributos['subtotalPesos'] = null;
         //     $atributos['totalPesos'] = null;
         //     $atributos['cotizacion'] = null;
@@ -103,7 +101,7 @@ trait VentasTrait
         $factura = static::crearVenta($atributos);
 
         // Metodos de pago
-        // if ($atributos['pagada'] && $atributos['pagos']) {
+        // if ($atributos['pagos']) {
         //     foreach ($atributos['pagos'] as $pay) {
         //         $ref = FormasDePagoTrait::formaPago($pay, $cliente, $diferencia = null);
         //         $forma = Formapago::create([
@@ -119,9 +117,8 @@ trait VentasTrait
 
         $factura->articulos()->attach($det);
         // CREACION DE CUENTA CORRIENTE
-        if (($factura->pagada == false) && ($cliente->id != 1)) {
-            CuentasCorrientesTrait::crearCuenta($factura);
-        }
+        CuentasCorrientesTrait::crearCuenta($factura);
+
         $aux = collect($det);
 
         // DESCUENTA LOS INVENTARIOS
@@ -210,7 +207,6 @@ trait VentasTrait
             'observaciones' => $atributos['observaciones'],
             "bonificacion" => $atributos['bonificacion'] * 1,
             "recargo" => $atributos['recargo'] * 1,
-            "pagada" => $atributos['pagada'],
             // "referencia" => $referencia,
             "condicionventa" => $atributos['condicionventa'],
             "subtotal" => $atributos['subtotal'],
