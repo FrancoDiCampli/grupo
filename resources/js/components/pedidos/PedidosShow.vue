@@ -65,7 +65,9 @@
                                     $store.state.pedidos.pedido
                                     .configuracion.puntoventa
                                     }}
-                                    <b>Comprobante Nº:</b>
+                                </p>
+                                <p>
+                                    <b>Comprobante adherido</b>
                                     {{
                                     $store.state.pedidos.pedido
                                     .pedido.numpresupuesto
@@ -250,7 +252,7 @@
 export default {
     data() {
         return {
-            inProcess: false
+            inProcess: false,
         };
     },
 
@@ -261,10 +263,10 @@ export default {
     },
 
     methods: {
-        getPedido: async function() {
+        getPedido: async function () {
             this.inProcess = true;
             await this.$store.dispatch("pedidos/show", {
-                id: this.id
+                id: this.id,
             });
             this.inProcess = false;
         },
@@ -272,8 +274,8 @@ export default {
         print() {
             let id = this.$store.state.pedidos.pedido.pedido.id;
             this.$store.dispatch("PDF/printPedido", { id: id });
-        }
-    }
+        },
+    },
 };
 </script>
 

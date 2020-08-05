@@ -61,13 +61,15 @@
 
         <v-dialog v-model="preventDialog" persistent width="400px">
             <v-card v-if="inProcess">
-                <v-progress-circular
-                    :size="70"
-                    :width="7"
-                    color="primary"
-                    indeterminate
-                    style="margin: 32px 0 32px 0;"
-                ></v-progress-circular>
+                <v-row justify="center">
+                    <v-progress-circular
+                        :size="70"
+                        :width="7"
+                        color="primary"
+                        indeterminate
+                        style="margin: 32px 0 32px 0;"
+                    ></v-progress-circular>
+                </v-row>
             </v-card>
             <v-card v-else>
                 <v-card-title class="headline">¿Estas seguro?</v-card-title>
@@ -108,8 +110,8 @@ export default {
             { text: "Nombre/Apellido", sortable: false },
             { text: "Fecha", sortable: false, class: "hidden-xs-only" },
             { text: "Importe", sortable: false },
-            { text: "", sortable: false }
-        ]
+            { text: "", sortable: false },
+        ],
     }),
 
     props: ["limit"],
@@ -128,7 +130,7 @@ export default {
             this.inProcess = true;
             await this.$store.dispatch("pedidos/vender", {
                 id: this.ventaID,
-                remitoadherido: this.remitoadherido
+                remitoadherido: this.remitoadherido,
             });
             this.preventDialog = false;
             this.inProcess = false;
@@ -140,8 +142,8 @@ export default {
             this.preventDialog = false;
             this.ventaID = null;
             this.remitoadherido = null;
-        }
-    }
+        },
+    },
 };
 </script>
 

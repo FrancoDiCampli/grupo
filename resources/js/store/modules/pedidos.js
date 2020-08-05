@@ -87,6 +87,7 @@ const actions = {
     edit: async function({ commit, dispatch }, params) {
         let pedido = await dispatch("show", params);
         let newForm = {
+            id: pedido.presupuesto.id,
             bonificacion: pedido.presupuesto.bonificacion,
             cliente_id: pedido.presupuesto.cliente_id,
             cliente: pedido.cliente.razonsocial,
@@ -97,7 +98,7 @@ const actions = {
             detalles: pedido.detalles,
             fecha: pedido.presupuesto.fecha,
             fechaCotizacion: pedido.presupuesto.fechaCotizacion,
-            numpedido: pedido.presupuesto.numpresupuesto,
+            pedidoadherido: pedido.presupuesto.comprobanteadherido,
             observaciones: pedido.presupuesto.observaciones,
             recargo: pedido.presupuesto.recargo,
             subtotal: pedido.presupuesto.subtotal,
@@ -108,7 +109,6 @@ const actions = {
     },
 
     update({ state, commit, dispatch }, params) {
-        console.log(state.form);
         return new Promise((resolve, reject) => {
             axios
                 .put("/api/pedidos/" + state.form.id, state.form)
