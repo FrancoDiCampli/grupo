@@ -88,9 +88,9 @@ trait VentasTrait
         $atributos['cuit'] = $cliente->documentounico;
         $atributos['condicionventa'] = $atributos['condicionventa'];
         // if ($atributos['condicionventa'] == 'CONTADO') {
-            $atributos['pagada'] = false;
-            $atributos['subtotalPesos'] = ($atributos['subtotal'] * 1) * ($atributos['cotizacion'] * 1);
-            $atributos['totalPesos'] = ($atributos['total'] * 1) * ($atributos['cotizacion'] * 1);
+        $atributos['pagada'] = false;
+        $atributos['subtotalPesos'] = ($atributos['subtotal'] * 1) * ($atributos['cotizacion'] * 1);
+        $atributos['totalPesos'] = ($atributos['total'] * 1) * ($atributos['cotizacion'] * 1);
         // } else {
         //     $atributos['pagada'] = false;
         //     $atributos['subtotalPesos'] = null;

@@ -853,7 +853,6 @@ export default {
             this.totalPesos = this.$store.state.pedidos.form.totalPesos;
             this.cotizacion = this.$store.state.pedidos.form.cotizacion;
             this.fechaCotizacion = this.$store.state.pedidos.form.fechaCotizacion;
-            this.pedidoadherido = this.$store.state.pedidos.form.pedidoadherido;
             this.condicion = this.$store.state.pedidos.form.condicion;
 
             this.detalles = this.$store.state.pedidos.form.detalles;

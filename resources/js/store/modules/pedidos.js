@@ -97,7 +97,7 @@ const actions = {
             detalles: pedido.detalles,
             fecha: pedido.presupuesto.fecha,
             fechaCotizacion: pedido.presupuesto.fechaCotizacion,
-            numpedido: pedido.presupuesto.numpresupuesto,
+            pedidoadherido: pedido.presupuesto.comprobanteadherido,
             observaciones: pedido.presupuesto.observaciones,
             recargo: pedido.presupuesto.recargo,
             subtotal: pedido.presupuesto.subtotal,

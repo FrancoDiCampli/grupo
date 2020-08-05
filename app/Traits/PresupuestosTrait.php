@@ -73,6 +73,8 @@ trait PresupuestosTrait
             $atributos['condicionventa'] = 'CUENTA CORRIENTE';
             $atributos['numventa'] = 1;
             $venta_id = VentasTrait::store($atributos);
+            $factura = Venta::find($venta_id);
+            CuentasCorrientesTrait::crearCuenta($factura);
             $presupuesto->numventa = $venta_id;
             $presupuesto->update();
         }
@@ -178,6 +180,7 @@ trait PresupuestosTrait
         $presupuesto['remitoadherido'] = $request->remitoadherido;
 
         $venta = VentasTrait::crearVenta($presupuesto);
+        CuentasCorrientesTrait::crearCuenta($venta);
 
         foreach ($presupuesto->articulos as $item) {
             $detail = $item['pivot'];

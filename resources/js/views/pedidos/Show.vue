@@ -26,8 +26,8 @@ export default {
     props: ["id"],
 
     components: {
-        PedidosShow
-    }
+        PedidosShow,
+    },
 };
 </script>
 

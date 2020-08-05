@@ -205,7 +205,7 @@
             <div class="v-divider"></div>
             <div class="header-right">
                 <h2 class="center">NOTA DE PEDIDO</h2>
-                <p><b>Punto de Venta: </b>0000{{$configuracion['puntoventa']}}<b> Comprobante Nº: </b>{{$presupuesto->numpresupuesto}}</p>
+                <p><b>Punto de Venta: </b>0000{{$configuracion['puntoventa']}}<b> Comprobante adherido: </b>{{$presupuesto->numpresupuesto}}</p>
                 <p><b>Fecha de Emisión: </b>{{$presupuesto->fecha}}</p>
                 <p><b>Cuit: </b>{{$configuracion['cuit']}}</p>
                 <p><b>Ingresos Brutos: </b>{{$configuracion['cuit']}}</p>
@@ -280,7 +280,7 @@
             <div class="v-divider"></div>
             <div class="header-right">
                 <h2 class="center">NOTA DE PEDIDO</h2>
-                <p><b>Punto de Venta: </b>0000{{$configuracion['puntoventa']}}<b> Comprobante Nº: </b>{{$presupuesto->numfactura}}</p>
+                <p><b>Punto de Venta: </b>0000{{$configuracion['puntoventa']}}<b> Comprobante adherido: </b>{{$presupuesto->numfactura}}</p>
                 <p><b>Fecha de Emisión: </b>{{$presupuesto->fecha}}</p>
                 <p><b>Cuit: </b>{{$configuracion['cuit']}}</p>
                 <p><b>Ingresos Brutos: </b>{{$configuracion['cuit']}}</p>
