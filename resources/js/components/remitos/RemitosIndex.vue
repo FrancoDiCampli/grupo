@@ -88,23 +88,23 @@ export default {
             { text: "Importe", sortable: false },
             { text: "Fecha", sortable: false, class: "hidden-sm-and-down" },
             { text: "Condición", sortable: false, class: "hidden-sm-and-down" },
-            { text: "", sortable: false }
+            { text: "", sortable: false },
         ],
-        selected: []
+        selected: [],
     }),
 
     props: ["limit"],
 
     components: {
-        FacturasIndex
+        FacturasIndex,
     },
 
     methods: {
-        facturar: async function() {
+        facturar: async function () {
             if (this.selected.length > 0) {
                 this.$store
                     .dispatch("facturas/facturar", {
-                        selected: this.selected
+                        selected: this.selected,
                     })
                     .then(() => {
                         this.$router.push("/facturas/create");
@@ -115,28 +115,7 @@ export default {
         print(id) {
             this.$store.dispatch("PDF/printVenta", { id: id });
         },
-
-        canBeErased(item) {
-            if (!item.numfactura) {
-                if (item.cuenta) {
-                    if (item.cuenta.pagos.length > 0) {
-                        return true;
-                    } else {
-                        return false;
-                    }
-                } else {
-                    return false;
-                }
-            } else {
-                return true;
-            }
-        },
-
-        erase(id) {
-            this.$store.dispatch("remitos/destroy", { id: id });
-            this.$emit("erase", true);
-        }
-    }
+    },
 };
 </script>
 

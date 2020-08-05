@@ -1010,6 +1010,7 @@ export default {
         deleteDetail(detalle) {
             let index = this.detalles.indexOf(detalle);
             this.detalles.splice(index, 1);
+            this.subtotalControl();
         },
 
         // SUBTOTAL
@@ -1020,6 +1021,8 @@ export default {
                     sub += this.detalles[i].subtotalDolares;
                 }
                 this.subtotal = sub;
+            } else {
+                this.subtotal = 0;
             }
         },
 

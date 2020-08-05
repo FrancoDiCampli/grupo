@@ -26,11 +26,11 @@ import RemitosIndex from "../../components/remitos/RemitosIndex";
 
 export default {
     data: () => ({
-        limit: 10
+        limit: 10,
     }),
 
     components: {
-        RemitosIndex
+        RemitosIndex,
     },
 
     mounted() {
@@ -38,21 +38,21 @@ export default {
     },
 
     methods: {
-        getRemitos: async function() {
+        getRemitos: async function () {
             await this.$store.dispatch("remitos/index", {
-                limit: this.limit
+                limit: this.limit,
             });
         },
 
-        loadMore: async function() {
+        loadMore: async function () {
             this.limit += 10;
             await this.getRemitos();
         },
 
         restart() {
             this.getRemitos();
-        }
-    }
+        },
+    },
 };
 </script>
 
