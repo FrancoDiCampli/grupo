@@ -35,7 +35,7 @@ class Presupuesto extends Model
     public function articulos()
     {
         return $this->belongsToMany('App\Articulo')
-            ->withPivot('codarticulo', 'articulo', 'medida', 'cantidad', 'cantidadLitros', 'preciounitario', 'subtotal', 'subtotalPesos', 'cotizacion', 'fechaCotizacion', 'articulo_id', 'presupuesto_id')
+            ->withPivot('id', 'codarticulo', 'articulo', 'medida', 'cantidad', 'cantidadLitros', 'preciounitario', 'subtotal', 'subtotalPesos', 'cotizacion', 'fechaCotizacion', 'articulo_id', 'presupuesto_id')
             ->withTimestamps();
     }
 

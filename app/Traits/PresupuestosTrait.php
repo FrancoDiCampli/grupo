@@ -210,35 +210,76 @@ trait PresupuestosTrait
 
     public static function update($request, $id)
     {
-        // $presupuesto = Presupuesto::find($id);
-        // return $presupuesto->articulos;
+        // return $request;
 
-        // return $det[] = $presupuesto->articulos->each(function($item){
-        //     return $item['pivot'];
-        // });
+        $presupuesto = Presupuesto::find(12); // $id
 
+        $presupuesto->update([
+            "comprobanteadherido" => $request['pedidoadherido'],
+            // "comprobanteadherido" => $request['comprobanteadherido'],
+            "cuit" => Cliente::find($request['cliente_id'])->documentounico,
+            "fecha" => $request['fecha'],
+            "bonificacion" => $request['bonificacion'] * 1,
+            "recargo" => $request['recargo'] * 1,
+            "subtotal" => $request['subtotal'],
+            "total" => $request['total'],
+            "subtotalPesos" => $request['subtotal'] * $request['cotizacion'],
+            "totalPesos" => $request['totalPesos'],
+            'cotizacion' => $request['cotizacion'],
+            'fechaCotizacion' => $request['fechaCotizacion'],
+            "observaciones" => $request['observaciones'],
+            "cliente_id" => $request['cliente_id'],
+            "user_id" => auth()->user()->id
+        ]);
 
-        $id = 0;
+        $dets = collect($presupuesto->articulos->map(function($item){
+            return $item['pivot'];
+        }));
+        $coleccion = collect();
+
         foreach ($request->detalles as $item) {
-            // return $item;
-            DB::table('articulo_presupuesto')->where('id', $item['id'])
-                ->update([
-                    'cantidad' => $item['cantidad'],
-                    // 'cantidadLitros' => $item['cantidadLitros'],
-                    'preciounitario' => $item['precio'],
-                    'subtotal' => $item['subtotalDolares'],
-                    // 'subtotalPesos' => $item['subtotalPesos'],
-                    // 'cotizacion' => $item['cotizacion'],
-                    // 'fechaCotizacion' => $item['fechaCotizacion'],
-                ]);
-    
-            // $id = $item['presupuesto_id'];
+            if (array_key_exists('inventarios', $item)) {
+                DB::table('articulo_presupuesto')
+                    ->insert([
+                        'codarticulo' => $item['codarticulo'],
+                        'articulo' => $item['articulo'],
+                        'medida' => $item['medida'],
+                        'cantidad' => $item['cantidad'],
+                        'cantidadLitros' => $item['cantidadLitros'],
+                        'preciounitario' => $item['precio'],
+                        'subtotal' => $item['subtotalDolares'],
+                        'subtotalPesos' => $item['subtotalDolares'] * $item['cotizacion'],
+                        'cotizacion' => $item['cotizacion'],
+                        'fechaCotizacion' => $item['fechaCotizacion'],
+                        'articulo_id' => $item['id'],
+                        'presupuesto_id' => 12, // $id
+                        'created_at' => now(),
+                        'updated_at' => now()
+                    ]);
+            } else {
+                $coleccion->push($item);
+                DB::table('articulo_presupuesto')
+                    ->where('id', $item['id'])
+                    ->update([
+                        'cantidad' => $item['cantidad'],
+                        'preciounitario' => $item['precio'],
+                        'subtotal' => $item['subtotalDolares'],
+                        'subtotalPesos' => $item['subtotalDolares'] * $item['cotizacion'],
+                        'cotizacion' => $item['cotizacion'],
+                        'fechaCotizacion' => $item['fechaCotizacion'],
+                        'updated_at' => now()
+                    ]);
+            }
         }
 
-        // $presupuesto = Presupuesto::find($id);
+        $keys = $coleccion->keyBy('id');
+        $aux = $keys->keys();
 
-        // unset($request->detalles);
-        // $presupuesto->update($request->toArray());
+        $eliminar = $dets->whereNotIn('id', $aux);
+
+        $eliminar->map(function($item){
+            DB::table('articulo_presupuesto')->where('id', $item['id'])->delete();
+        });
 
         return 'actualizado';
     }
