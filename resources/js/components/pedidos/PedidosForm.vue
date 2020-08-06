@@ -800,6 +800,7 @@ export default {
                     .then((response) => {
                         this.cotizacion = response.data.valor;
                         this.fechaCotizacion = response.data.fecha;
+                        this.condicion = "CUENTA CORRIENTE";
                         resolve(response.data);
                     })
                     .catch((error) => {
@@ -811,17 +812,10 @@ export default {
             });
         },
         setCurrency: async function () {
-            await axios
-                .post("/api/setCotizacion", {
-                    cotizacion: this.cotizacion,
-                    fechaCotizacion: this.fechaCotizacion,
-                })
-                .then((response) => {
-                    console.log(response.data);
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
+            await axios.post("/api/setCotizacion", {
+                cotizacion: this.cotizacion,
+                fechaCotizacion: this.fechaCotizacion,
+            });
         },
 
         // HEADER

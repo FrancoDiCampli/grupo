@@ -1,5 +1,24 @@
 <template>
     <div>
+        <v-tooltip left v-if="selected.length > 0">
+            <template v-slot:activator="{ on }">
+                <v-btn
+                    color="secondary"
+                    dark
+                    fab
+                    fixed
+                    right
+                    bottom
+                    large
+                    v-on="on"
+                    @click="facturar"
+                >
+                    <v-icon>fas fa-file-invoice-dollar</v-icon>
+                </v-btn>
+            </template>
+            <span>Generar factura</span>
+        </v-tooltip>
+
         <v-card shaped outlined :loading="$store.state.inProcess">
             <v-card-title>Remitos</v-card-title>
             <v-divider></v-divider>
@@ -18,9 +37,7 @@
                                 <v-checkbox
                                     v-model="selected"
                                     :value="item.id"
-                                    :disabled="
-                                                item.numfactura
-                                            "
+                                    :disabled="isDisabled(item)"
                                 ></v-checkbox>
                             </td>
                             <td class="hidden-xs-only">{{ item.comprobanteadherido }}</td>
@@ -39,18 +56,14 @@
                                         </v-btn>
                                     </template>
                                     <v-list>
-                                        <v-list-item
-                                            :to="
-                                                        `/remitos/show/${item.id}`
-                                                    "
-                                        >
+                                        <v-list-item :to="`/remitos/show/${item.id}`">
                                             <v-list-item-title>Detalles</v-list-item-title>
                                         </v-list-item>
                                         <v-list-item @click="print(item.id)">
                                             <v-list-item-title>Imprimir</v-list-item-title>
                                         </v-list-item>
-                                        <v-list-item>
-                                            <v-list-item-title>Generar Entrega</v-list-item-title>
+                                        <v-list-item v-if="!item.todoentregado">
+                                            <v-list-item-title>Generar entrega</v-list-item-title>
                                         </v-list-item>
                                     </v-list>
                                 </v-menu>
@@ -58,19 +71,6 @@
                         </tr>
                     </template>
                 </v-data-table>
-                <br />
-                <v-row justify="center">
-                    <v-btn
-                        :loading="$store.state.inProcess"
-                        :disabled="selected.length <= 0"
-                        @click="facturar()"
-                        color="secondary"
-                        class="mr-3"
-                        outlined
-                        tile
-                    >Facturar</v-btn>
-                    <slot></slot>
-                </v-row>
             </v-card-text>
         </v-card>
     </div>
@@ -114,6 +114,17 @@ export default {
 
         print(id) {
             this.$store.dispatch("PDF/printVenta", { id: id });
+        },
+
+        isDisabled(i) {
+            if (this.selected.length > 0) {
+                let find = this.$store.state.remitos.remitos.remitos.find(
+                    (e) => e.id == this.selected[0]
+                );
+                return find.cliente.id == i.cliente.id ? i.todofacturado : true;
+            } else {
+                return i.todofacturado;
+            }
         },
     },
 };

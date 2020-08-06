@@ -42,7 +42,7 @@ import PedidosForm from "../../components/pedidos/PedidosForm";
 
 export default {
     components: {
-        PedidosForm
+        PedidosForm,
     },
 
     methods: {
@@ -62,8 +62,8 @@ export default {
             this.$refs.CreatePedido.reset();
             this.$refs.formPedidos.resetData();
             window.scrollTo(0, 0);
-        }
-    }
+        },
+    },
 };
 </script>
 
