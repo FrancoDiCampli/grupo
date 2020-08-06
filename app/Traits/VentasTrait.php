@@ -59,8 +59,10 @@ trait VentasTrait
                 $detsEntr = DB::table('articulo_entrega')->where('articulo_venta_id', $det['pivot']->id)->get();
 
                 $detsFact->sum('cantidad') < $det['pivot']->cantidad ? $fac['todofacturado'] = false : $fac['todofacturado'] = true;
+                $det['pivot']['cantidadfacturado'] = $detsFact->sum('cantidad');
 
                 $detsEntr->sum('cantidad') < $det['pivot']->cantidad ? $fac['todoentregado'] = false : $fac['todoentregado'] = true;
+                $det['pivot']['cantidadentregado'] = $detsEntr->sum('cantidad');
             }
 
             $facturas->push($fac);
