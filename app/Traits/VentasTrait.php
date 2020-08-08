@@ -317,36 +317,40 @@ trait VentasTrait
                 $venta->cuenta->delete();
             }
 
-            $detalles = collect($venta->articulos);
-            $pivot = collect();
-            $inventarios = collect();
-            foreach ($detalles as $art) {
-                $pivot = $pivot->push($art->pivot);
-            }
+            // $detalles = collect($venta->articulos);
+            // $pivot = collect();
+            // $inventarios = collect();
+            // foreach ($detalles as $art) {
+            //     $pivot = $pivot->push($art->pivot);
+            // }
 
-            foreach ($pivot as $piv) {
-                $art = Articulo::findOrFail($piv->articulo_id);
-                $aux = collect($art->inventarios);
-                foreach ($aux as $a) {
-                    $inventarios = $inventarios->push($a);
-                }
-            }
+            // foreach ($pivot as $piv) {
+            //     $art = Articulo::findOrFail($piv->articulo_id);
+            //     $aux = collect($art->inventarios);
+            //     foreach ($aux as $a) {
+            //         $inventarios = $inventarios->push($a);
+            //     }
+            // }
             // SE REESTABLECE LA CANTIDAD EN LOS INVENTARIOS
-            unset($aux);
-            foreach ($inventarios as $inv) {
-                $aux = collect($inv->movimientos);
-                $aux = $aux->where('numcomprobante', $venta->id);
-                foreach ($aux as $a) {
-                    $inventario = $a->inventario;
-                    $inventario->cantidad = $inventario->cantidad + $a->cantidad;
-                    $inventario->cantidadlitros = $inventario->cantidadlitros + $a->cantidadlitros;
-                    $inventario->save();
+            // unset($aux);
+            // foreach ($inventarios as $inv) {
+            //     $aux = collect($inv->movimientos);
+            //     $aux = $aux->where('numcomprobante', $venta->id);
+            //     foreach ($aux as $a) {
+            //         $inventario = $a->inventario;
+            //         $inventario->cantidad = $inventario->cantidad + $a->cantidad;
+            //         $inventario->cantidadlitros = $inventario->cantidadlitros + $a->cantidadlitros;
+            //         $inventario->save();
 
-                    MovimientosTrait::crearMovimiento('ANULACION', $a->cantidad, $a->cantidadlitros, $inventario, $venta);
-                }
-            }
+            //         MovimientosTrait::crearMovimiento('ANULACION', $a->cantidad, $a->cantidadlitros, $inventario, $venta);
+            //     }
+            // }
             $venta->articulos()->detach();
-            $venta->forceDelete();
+            // Probar
+            $venta->entregas->delete();
+            $venta->facturas->delete();
+
+            $venta->forceDelete(); //delete()
             return ['msg' => 'Venta Anulada'];
         } else {
             return ['msg' => 'No es posible anular la venta'];

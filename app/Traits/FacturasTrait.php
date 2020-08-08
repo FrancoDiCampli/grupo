@@ -2,6 +2,7 @@
 
 namespace App\Traits;
 
+use App\Articulo;
 use App\Venta;
 use App\Cliente;
 use App\Factura;
@@ -48,9 +49,10 @@ trait FacturasTrait
 
     public static function store($request)
     {
+        // return $request;
         $cliente = Cliente::findOrFail($request['cliente_id']);
 
-        $nueva = Factura::create([
+        $factura = Factura::create([
             "cuit" => $cliente->documentounico, //cliente
             "tipocomprobante" => $request['tipocomprobante'],
             "numfactura" => $request['numfactura'],
@@ -71,17 +73,46 @@ trait FacturasTrait
             "user_id" => auth()->user()->id,
         ]);
 
-        $nueva->ventas()->attach($request->ventas);
+        $det = static::detallesVentas($request->detalles, $factura);
 
-        foreach ($request['ventas'] as $ven) {
-            $venta = Venta::findOrFail($ven);
-            $venta->numfactura = $nueva->id;
-            $venta->save();
-        }
+        $factura->articulos()->attach($det);
 
-        CuentasCorrientesTrait::aplicarIVA($request->ventas, $request->valorAgregado);
+        // foreach ($request['ventas'] as $ven) {
+        //     $venta = Venta::findOrFail($ven);
+        //     $venta->numfactura = $nueva->id;
+        //     $venta->save();
+        // }
+
+        // CuentasCorrientesTrait::aplicarIVA($request->ventas, $request->valorAgregado);
 
         return ['msg' => 'factura creada'];
+    }
+
+    public static function detallesVentas($details, $factura)
+    {
+        foreach ($details as $detail) {
+            $article = Articulo::find($detail['articulo_id']);
+            $detalles = array(
+                'codarticulo' => $detail['codarticulo'],
+                'articulo' => $detail['articulo'],
+                'cantidad' => $detail['cantidadfacturado'],
+                'cantidadLitros' => $article->presentacion * $detail['cantidadfacturado'],
+                'medida' => $detail['medida'],
+                'preciounitario' => $detail['preciounitario'],
+                'subtotalPesos' => $detail['subtotalPesos'],
+                'subtotal' => $detail['subtotal'],
+                'cotizacion' => $detail['cotizacion'],
+                'fechaCotizacion' => $detail['fechaCotizacion'],
+                'articulo_id' => $detail['articulo_id'],
+                'factura_id' => $factura->id,
+                'created_at' => now(),
+                'updated_at' => now(),
+                'articulo_venta_id' => $detail['id']
+            );
+            $det[] = $detalles;
+        }
+
+        return $det;
     }
 
     public static function show($id)
@@ -106,5 +137,13 @@ trait FacturasTrait
             'detalles' => $detalles,
             'cliente' => $cliente
         ];
+    }
+
+    public static function anular($id)
+    {
+        $factura = Factura::findOrFail($id);
+        $factura->articulos()->detach();
+        $factura->forceDelete();
+        return ['msg' => 'Factura Anulada'];
     }
 }

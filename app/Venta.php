@@ -29,9 +29,14 @@ class Venta extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function factura()
+    public function facturas()
     {
         return $this->belongsToMany(Factura::class);
+    }
+
+    public function entregas()
+    {
+        return $this->belongsToMany(Entrega::class);
     }
 
     public function articulos()

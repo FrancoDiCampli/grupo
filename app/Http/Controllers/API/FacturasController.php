@@ -35,4 +35,9 @@ class FacturasController extends Controller
     {
         return FacturasTrait::show($id);
     }
+
+    public function destroy($id)
+    {
+        return FacturasTrait::anular($id);
+    }
 }
