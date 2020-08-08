@@ -100,11 +100,21 @@ export default {
     },
 
     methods: {
-        facturar: async function () {
+        facturar() {
             if (this.selected.length > 0) {
+                let details = [];
+                for (let i = 0; i < this.selected.length; i++) {
+                    let find = this.$store.state.remitos.remitos.remitos.find(
+                        (e) => e.id == this.selected[i]
+                    );
+                    for (let j = 0; j < find.articulos.length; j++) {
+                        details.push(find.articulos[j].pivot);
+                    }
+                }
+
                 this.$store
                     .dispatch("facturas/facturar", {
-                        selected: this.selected,
+                        details: details,
                     })
                     .then(() => {
                         this.$router.push("/facturas/create");

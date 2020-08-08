@@ -42,7 +42,7 @@ import FacturasForm from "../../components/facturas/FacturasForm";
 
 export default {
     components: {
-        FacturasForm
+        FacturasForm,
     },
 
     methods: {
@@ -58,9 +58,9 @@ export default {
         },
 
         resetForm() {
-            this.$router.push("/ventas");
-        }
-    }
+            // this.$router.push("/ventas");
+        },
+    },
 };
 </script>
 

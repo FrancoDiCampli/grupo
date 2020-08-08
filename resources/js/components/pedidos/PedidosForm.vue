@@ -1012,7 +1012,7 @@ export default {
             if (this.detalles.length > 0) {
                 let sub = 0;
                 for (let i = 0; i < this.detalles.length; i++) {
-                    sub += this.detalles[i].subtotalDolares;
+                    sub += Number(this.detalles[i].subtotalDolares);
                 }
                 this.subtotal = sub;
             } else {
