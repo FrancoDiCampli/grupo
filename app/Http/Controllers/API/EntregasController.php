@@ -17,4 +17,9 @@ class EntregasController extends Controller
     {
         return EntregasTrait::store($request);
     }
+
+    public function destroy($id)
+    {
+        return EntregasTrait::anular($id);
+    }
 }

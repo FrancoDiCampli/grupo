@@ -25,7 +25,7 @@ trait EntregasTrait
         $cliente = Cliente::find($atributos['cliente_id']);
         $atributos['cuit'] = $cliente->documentounico;
 
-        DB::transaction(function () use($atributos, $request) {
+        DB::transaction(function () use ($atributos, $request) {
             // ALMACENAMIENTO DE ENTREGA
             $entrega = static::crearEntrega($atributos);
 
@@ -119,5 +119,42 @@ trait EntregasTrait
 
             unset($article);
         }
+    }
+
+    public static function anular($id)
+    {
+        $entrega = Entrega::findOrFail($id);
+
+        $detalles = collect($entrega->articulos);
+        $pivot = collect();
+        $inventarios = collect();
+        foreach ($detalles as $art) {
+            $pivot = $pivot->push($art->pivot);
+        }
+
+        foreach ($pivot as $piv) {
+            $art = Articulo::findOrFail($piv->articulo_id);
+            $aux = collect($art->inventarios);
+            foreach ($aux as $a) {
+                $inventarios = $inventarios->push($a);
+            }
+        }
+        // SE REESTABLECE LA CANTIDAD EN LOS INVENTARIOS
+        unset($aux);
+        foreach ($inventarios as $inv) {
+            $aux = collect($inv->movimientos);
+            $aux = $aux->where('numcomprobante', $entrega->id);
+            foreach ($aux as $a) {
+                $inventario = $a->inventario;
+                $inventario->cantidad = $inventario->cantidad + $a->cantidad;
+                $inventario->cantidadlitros = $inventario->cantidadlitros + $a->cantidadlitros;
+                $inventario->save();
+
+                MovimientosTrait::crearMovimiento('ANULACION', $a->cantidad, $a->cantidadlitros, $inventario, $entrega);
+            }
+        }
+        $entrega->articulos()->detach();
+        $entrega->forceDelete();
+        return ['msg' => 'Entrega Anulada'];
     }
 }

@@ -107,4 +107,12 @@ trait FacturasTrait
             'cliente' => $cliente
         ];
     }
+
+    public static function anular($id)
+    {
+        $factura = Factura::findOrFail($id);
+        $factura->articulos()->detach();
+        $factura->forceDelete();
+        return ['msg' => 'Factura Anulada'];
+    }
 }
