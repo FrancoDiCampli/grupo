@@ -245,16 +245,37 @@
                                     label="Cotizacion"
                                     outlined
                                     type="number"
-                                    disabled
                                 ></v-text-field>
-
-                                <v-text-field
-                                    v-model="divisa.fechaCotizacion"
-                                    :rules="[rules.required]"
-                                    label="Fecha de la cotización"
-                                    outlined
-                                    disabled
-                                ></v-text-field>
+                                <v-dialog
+                                    ref="dialogFecha"
+                                    v-model="fechaDialog"
+                                    :return-value.sync="divisa.fechaCotizacion"
+                                    persistent
+                                    :width="$vuetify.breakpoint.xsOnly ? '100%' : '300px'"
+                                >
+                                    <template v-slot:activator="{ on }">
+                                        <v-text-field
+                                            v-model="divisa.fechaCotizacion"
+                                            label="Fecha de la cotizacion"
+                                            :rules="[rules.required]"
+                                            readonly
+                                            outlined
+                                            v-on="on"
+                                        ></v-text-field>
+                                    </template>
+                                    <v-date-picker
+                                        v-model="divisa.fechaCotizacion"
+                                        scrollable
+                                        locale="es"
+                                    >
+                                        <v-spacer></v-spacer>
+                                        <v-btn
+                                            text
+                                            color="primary"
+                                            @click="$refs.dialogFecha.save(divisa.fechaCotizacion)"
+                                        >Aceptar</v-btn>
+                                    </v-date-picker>
+                                </v-dialog>
                             </v-col>
                         </v-row>
                     </v-card-text>
@@ -314,22 +335,42 @@
                                 <v-text-field
                                     v-model="divisa.cotizacion"
                                     :rules="[rules.required]"
-                                    @focus="inputFocus = 'cotizacion'"
                                     label="Cotizacion"
                                     outlined
-                                    disabled
                                     type="number"
                                 ></v-text-field>
                             </v-col>
                             <v-col cols="12" sm="6" class="py-0">
-                                <v-text-field
-                                    v-model="pesos"
-                                    :rules="[rules.required]"
-                                    @focus="inputFocus = 'pesos'"
-                                    label="Monto en pesos"
-                                    outlined
-                                    type="number"
-                                ></v-text-field>
+                                <v-dialog
+                                    ref="dialogFecha"
+                                    v-model="fechaDialog"
+                                    :return-value.sync="divisa.fechaCotizacion"
+                                    persistent
+                                    :width="$vuetify.breakpoint.xsOnly ? '100%' : '300px'"
+                                >
+                                    <template v-slot:activator="{ on }">
+                                        <v-text-field
+                                            v-model="divisa.fechaCotizacion"
+                                            label="Fecha de la cotizacion"
+                                            :rules="[rules.required]"
+                                            readonly
+                                            outlined
+                                            v-on="on"
+                                        ></v-text-field>
+                                    </template>
+                                    <v-date-picker
+                                        v-model="divisa.fechaCotizacion"
+                                        scrollable
+                                        locale="es"
+                                    >
+                                        <v-spacer></v-spacer>
+                                        <v-btn
+                                            text
+                                            color="primary"
+                                            @click="$refs.dialogFecha.save(divisa.fechaCotizacion)"
+                                        >Aceptar</v-btn>
+                                    </v-date-picker>
+                                </v-dialog>
                             </v-col>
                             <v-col cols="12" sm="6" class="py-0">
                                 <v-text-field
@@ -529,10 +570,8 @@
                                 <v-text-field
                                     v-model="divisa.cotizacion"
                                     :rules="[rules.required]"
-                                    @focus="inputFocus = 'cotizacion'"
                                     label="Cotizacion"
                                     outlined
-                                    disabled
                                     type="number"
                                 ></v-text-field>
                             </v-col>
@@ -547,13 +586,36 @@
                                 ></v-text-field>
                             </v-col>
                             <v-col cols="12" sm="6" class="py-0">
-                                <v-text-field
-                                    v-model="divisa.fechaCotizacion"
-                                    :rules="[rules.required]"
-                                    label="Fecha de la cotización"
-                                    outlined
-                                    disabled
-                                ></v-text-field>
+                                <v-dialog
+                                    ref="dialogFecha"
+                                    v-model="fechaDialog"
+                                    :return-value.sync="divisa.fechaCotizacion"
+                                    persistent
+                                    :width="$vuetify.breakpoint.xsOnly ? '100%' : '300px'"
+                                >
+                                    <template v-slot:activator="{ on }">
+                                        <v-text-field
+                                            v-model="divisa.fechaCotizacion"
+                                            label="Fecha de la cotizacion"
+                                            :rules="[rules.required]"
+                                            readonly
+                                            outlined
+                                            v-on="on"
+                                        ></v-text-field>
+                                    </template>
+                                    <v-date-picker
+                                        v-model="divisa.fechaCotizacion"
+                                        scrollable
+                                        locale="es"
+                                    >
+                                        <v-spacer></v-spacer>
+                                        <v-btn
+                                            text
+                                            color="primary"
+                                            @click="$refs.dialogFecha.save(divisa.fechaCotizacion)"
+                                        >Aceptar</v-btn>
+                                    </v-date-picker>
+                                </v-dialog>
                             </v-col>
                             <v-col cols="12" sm="6" class="py-0">
                                 <v-text-field
@@ -702,10 +764,8 @@
                                 <v-text-field
                                     v-model="divisa.cotizacion"
                                     :rules="[rules.required]"
-                                    @focus="inputFocus = 'cotizacion'"
                                     label="Cotizacion"
                                     outlined
-                                    disabled
                                     type="number"
                                 ></v-text-field>
                             </v-col>
@@ -720,13 +780,36 @@
                                 ></v-text-field>
                             </v-col>
                             <v-col cols="12" sm="6" class="py-0">
-                                <v-text-field
-                                    v-model="divisa.fechaCotizacion"
-                                    :rules="[rules.required]"
-                                    label="Fecha de la cotización"
-                                    outlined
-                                    disabled
-                                ></v-text-field>
+                                <v-dialog
+                                    ref="dialogFecha"
+                                    v-model="fechaDialog"
+                                    :return-value.sync="divisa.fechaCotizacion"
+                                    persistent
+                                    :width="$vuetify.breakpoint.xsOnly ? '100%' : '300px'"
+                                >
+                                    <template v-slot:activator="{ on }">
+                                        <v-text-field
+                                            v-model="divisa.fechaCotizacion"
+                                            label="Fecha de la cotizacion"
+                                            :rules="[rules.required]"
+                                            readonly
+                                            outlined
+                                            v-on="on"
+                                        ></v-text-field>
+                                    </template>
+                                    <v-date-picker
+                                        v-model="divisa.fechaCotizacion"
+                                        scrollable
+                                        locale="es"
+                                    >
+                                        <v-spacer></v-spacer>
+                                        <v-btn
+                                            text
+                                            color="primary"
+                                            @click="$refs.dialogFecha.save(divisa.fechaCotizacion)"
+                                        >Aceptar</v-btn>
+                                    </v-date-picker>
+                                </v-dialog>
                             </v-col>
                         </v-row>
                     </v-card-text>
@@ -769,15 +852,18 @@ export default {
             { text: "Importe", value: "importe", sortable: false },
             { text: "Saldo", value: "saldo", sortable: false },
             { text: "Alta", value: "alta", sortable: false },
-            { text: "Ultimo pago", value: "ultimopago", sortable: false }
+            { text: "Ultimo pago", value: "ultimopago", sortable: false },
         ],
         // Headers para dispositivos mobiles
         headersMobile: [
             { text: "Venta N°", value: "factura.numventa", sortable: false },
             { text: "Saldo", value: "saldo", sortable: false },
-            { text: "Alta", value: "alta", sortable: false }
+            { text: "Alta", value: "alta", sortable: false },
         ],
         // Forularios_________________________________________________________
+        // Cotizacion
+        fechaDialog: false,
+        divisa: {},
         // Variable para indicar el inicio y finalizacion del proceso de añadir un pago
         adding: false,
         // Array con los pagos de cada cuenta
@@ -789,7 +875,7 @@ export default {
             efectivo: false,
             cheque: false,
             transferencia: false,
-            haber: false
+            haber: false,
         },
         pesos: null,
         dolares: null,
@@ -801,7 +887,7 @@ export default {
             banco: null,
             cuit: null,
             emisor: null,
-            estado: null
+            estado: null,
         },
         // Estados de los cheques
         estados: ["POR COBRAR", "COBRADO"],
@@ -811,7 +897,7 @@ export default {
             fecha: null,
             banco: null,
             cuit: null,
-            emisor: null
+            emisor: null,
         },
         observaciones: null,
         // Bancos
@@ -825,17 +911,15 @@ export default {
         inputFocus: null,
         // Reglas para los formularios
         rules: {
-            required: value => !!value || "Este campo es obligatorio",
-            haberMaximo: value =>
+            required: (value) => !!value || "Este campo es obligatorio",
+            haberMaximo: (value) =>
                 value <= Number(haberRule) ||
                 "El monto no puede ser mayor al haber de la cuenta",
-            du: value =>
+            du: (value) =>
                 (value && value.length < 12 && value.length > 10) ||
-                "Este campo debe contener 11 digitos"
-        }
+                "Este campo debe contener 11 digitos",
+        },
     }),
-
-    props: ["divisa"],
 
     computed: {
         // Array con las cuentas activas
@@ -876,7 +960,7 @@ export default {
             } else {
                 return true;
             }
-        }
+        },
 
         // Cotización
         // latinDate: {
@@ -927,17 +1011,37 @@ export default {
                     this.pesos = null;
                 }
             }
-        }
+        },
     },
 
-    mounted: async function() {
+    mounted: async function () {
         this.inProcess = true;
+        await this.consultarDivisa();
         await this.pagosControl();
         await this.setHaber();
         this.inProcess = false;
     },
 
     methods: {
+        // Consultar el intercabio de divizas de la API
+        consultarDivisa() {
+            return new Promise((resolve) => {
+                axios
+                    .get("/api/consultar")
+                    .then((response) => {
+                        this.divisa = {
+                            cotizacion: response.data.valor,
+                            fechaCotizacion: response.data.fecha,
+                        };
+                        resolve(response.data);
+                    })
+                    .catch((error) => {
+                        this.inProcess = false;
+                        throw new Error(error);
+                    });
+            });
+        },
+
         pagosControl() {
             let arrayPagos = [];
 
@@ -945,7 +1049,7 @@ export default {
                 for (let i = 0; i < this.cuentasActivas.length; i++) {
                     arrayPagos[this.cuentasActivas[i].id] = {
                         cuenta_id: this.cuentasActivas[i].id,
-                        pagos: []
+                        pagos: [],
                     };
                 }
             }
@@ -992,9 +1096,10 @@ export default {
         },
 
         // Añadir un pago a la cuenta seleccionada
-        addPay: async function(type) {
+        addPay: async function (type) {
             // Añadir pago en efectivo
             this.adding = true;
+            window.localStorage.setItem("divisa", JSON.stringify(this.divisa));
             if (type == "Efectivo") {
                 if (this.$refs.efectivoForm.validate()) {
                     let pago = {
@@ -1002,13 +1107,11 @@ export default {
                         cotizacion: this.divisa.cotizacion,
                         fecha_cotizacion: this.divisa.fechaCotizacion,
                         pesos: this.pesos,
-                        dolares: this.dolares
+                        dolares: this.dolares,
                     };
 
                     this.pagos[this.cuentaFocus].pagos.push(pago);
 
-                    this.$refs.efectivoForm.reset();
-                    this.$emit("eventCurrency");
                     this.dialogs.efectivo = false;
                 }
             } else if (type == "Cheque") {
@@ -1019,7 +1122,7 @@ export default {
                         fecha_cotizacion: this.divisa.fechaCotizacion,
                         pesos: this.pesos,
                         dolares: this.dolares,
-                        observaciones: this.observaciones
+                        observaciones: this.observaciones,
                     };
 
                     let bank = this.bancosForm.banco.nombre;
@@ -1030,7 +1133,6 @@ export default {
                     this.pagos[this.cuentaFocus].pagos.push(pagoCheque);
 
                     this.$refs.chequeForm.reset();
-                    this.$emit("eventCurrency");
                     this.dialogs.cheque = false;
                 }
             } else if (type == "Transferencia") {
@@ -1040,7 +1142,7 @@ export default {
                     fecha_cotizacion: this.divisa.fechaCotizacion,
                     pesos: this.pesos,
                     dolares: this.dolares,
-                    observaciones: this.observaciones
+                    observaciones: this.observaciones,
                 };
 
                 let bank = this.bancosForm.banco.nombre;
@@ -1051,7 +1153,6 @@ export default {
                 this.pagos[this.cuentaFocus].pagos.push(pagoTra);
 
                 this.$refs.transferenciaForm.reset();
-                this.$emit("eventCurrency");
                 this.dialogs.transferencia = false;
             } else if (type == "Haber") {
                 if (this.$refs.haberForm.validate()) {
@@ -1061,17 +1162,18 @@ export default {
                         fecha_cotizacion: this.divisa.fechaCotizacion,
                         pesos: this.pesos,
                         dolares: this.dolares,
-                        observaciones: this.observaciones
+                        observaciones: this.observaciones,
                     };
 
                     this.pagos[this.cuentaFocus].pagos.push(pago);
 
                     this.$refs.haberForm.reset();
-                    this.$emit("eventCurrency");
                     this.dialogs.haber = false;
                 }
             }
             this.observaciones = null;
+            this.divisa = JSON.parse(window.localStorage.getItem("divisa"));
+            window.localStorage.removeItem("divisa");
             this.adding = false;
             this.setHaber();
         },
@@ -1081,7 +1183,7 @@ export default {
             this.pagos[id].pagos.splice(index, 1);
         },
 
-        pagar: async function() {
+        pagar: async function () {
             this.inProcess = true;
 
             let formData = [];
@@ -1094,7 +1196,7 @@ export default {
             let response = await this.sendPay(formData);
 
             await this.$store.dispatch("clientes/show", {
-                id: this.$store.state.clientes.cliente.cliente.id
+                id: this.$store.state.clientes.cliente.cliente.id,
             });
             await this.pagosControl();
             this.selected = [];
@@ -1104,8 +1206,8 @@ export default {
 
         sendPay(formData) {
             this.$store.dispatch("clientes/pay", formData);
-        }
-    }
+        },
+    },
 };
 </script>
 

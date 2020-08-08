@@ -179,21 +179,21 @@ export default {
                 icon: "fas fa-receipt",
                 url: "/pedidos",
                 roles: ["superAdmin", "administrador", "vendedor"],
-                divider: false
+                divider: false,
             },
             {
                 name: "Remitos",
-                icon: "fas fa-dollar-sign",
+                icon: "fas fa-file-alt",
                 url: "/remitos",
                 roles: ["superAdmin", "administrador", "vendedor"],
-                divider: false
+                divider: false,
             },
             {
                 name: "Facturas",
                 icon: "fas fa-file-invoice-dollar",
                 url: "/facturas",
                 roles: ["superAdmin", "administrador"],
-                divider: true
+                divider: true,
             },
 
             {
@@ -204,9 +204,9 @@ export default {
                     "superAdmin",
                     "administrador",
                     "vendedor",
-                    "distribuidor"
+                    "distribuidor",
                 ],
-                divider: false
+                divider: false,
             },
 
             {
@@ -217,90 +217,90 @@ export default {
                     "superAdmin",
                     "administrador",
                     "vendedor",
-                    "distribuidor"
+                    "distribuidor",
                 ],
-                divider: true
+                divider: true,
             },
             {
                 name: "Proveedores",
                 icon: "fas fa-truck-moving",
                 url: "/proveedores",
                 roles: ["superAdmin", "administrador"],
-                divider: false
+                divider: false,
             },
             {
                 name: "Compras",
                 icon: "fas fa-shopping-cart",
                 url: "/compras",
                 roles: ["superAdmin", "administrador"],
-                divider: false
+                divider: false,
             },
             {
                 name: "Consignaciones",
                 icon: "fas fa-file-signature",
                 url: "/consignaciones",
                 roles: ["superAdmin", "administrador"],
-                divider: false
+                divider: false,
             },
             {
                 name: "Devoluciones",
                 icon: "fas fa-exchange-alt",
                 url: "/devoluciones",
                 roles: ["superAdmin", "administrador"],
-                divider: true
+                divider: true,
             },
             {
                 name: "Reportes",
                 icon: "fas fa-clipboard",
                 url: "/reportes",
                 roles: ["superAdmin", "administrador"],
-                divider: false
+                divider: false,
             },
             {
                 name: "Movimientos",
                 icon: "fas fa-chart-line",
                 url: "/movimientos",
                 roles: ["superAdmin", "administrador"],
-                divider: false
+                divider: false,
             },
             {
                 name: "Cartera",
                 icon: "fas fa-wallet",
                 url: "/cartera",
                 roles: ["superAdmin", "administrador"],
-                divider: true
+                divider: true,
             },
             {
                 name: "Usuarios",
                 icon: "fas fa-users",
                 url: "/users",
                 roles: ["superAdmin", "administrador"],
-                divider: false
+                divider: false,
             },
             {
                 name: "Roles",
                 icon: "fas fa-tag",
                 url: "/roles",
                 roles: ["superAdmin"],
-                divider: false
-            }
-        ]
+                divider: false,
+            },
+        ],
     }),
 
     components: {
-        Account
+        Account,
     },
 
     computed: {
         isMobile() {
             return this.$vuetify.breakpoint.xsOnly;
-        }
+        },
     },
 
     watch: {
         isMobile() {
             this.drawerControl();
-        }
+        },
     },
 
     mounted() {
@@ -335,8 +335,8 @@ export default {
         markRead(noti) {
             this.$store.dispatch("notificaciones/markRead", { id: noti.id });
             this.$router.push(noti.data.action);
-        }
-    }
+        },
+    },
 };
 </script>
 

@@ -202,7 +202,10 @@
                                                     <th class="text-left hidden-sm-and-down">Precio</th>
                                                     <th class="text-left">Unidades</th>
 
+                                                    <th class="text-left">Bonificacion</th>
+                                                    <th class="text-left">Recargo</th>
                                                     <th class="text-left">Subtotal</th>
+                                                    <th></th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -214,12 +217,95 @@
                                                     <td>{{ detalle.articulo }}</td>
                                                     <td
                                                         class="hidden-sm-and-down"
-                                                    >{{ detalle.precio }}</td>
-                                                    <td>{{ detalle.cantidad }}</td>
+                                                    >{{ detalle.preciounitario }}</td>
+                                                    <td class="btn-td">
+                                                        <v-menu
+                                                            offset-y
+                                                            :close-on-content-click="false"
+                                                        >
+                                                            <template v-slot:activator="{ on }">
+                                                                <div
+                                                                    v-on="on"
+                                                                >{{ detalle.cantidad - detalle.cantidadfacturado }}</div>
+                                                            </template>
+                                                            <v-card v-click-outside="resetEdit">
+                                                                <v-card-text>
+                                                                    <v-text-field
+                                                                        label="Unidades"
+                                                                        outlined
+                                                                        hide-details
+                                                                        v-on:input="editDetail(detalle.id, 'cantidad')"
+                                                                        v-model="editCantidad"
+                                                                        type="number"
+                                                                    ></v-text-field>
+                                                                </v-card-text>
+                                                            </v-card>
+                                                        </v-menu>
+                                                    </td>
+                                                    <td class="btn-td">
+                                                        <v-menu
+                                                            offset-y
+                                                            :close-on-content-click="false"
+                                                        >
+                                                            <template v-slot:activator="{ on }">
+                                                                <div
+                                                                    v-on="on"
+                                                                >{{ detalle.bonificacion || 0 }} %</div>
+                                                            </template>
+                                                            <v-card v-click-outside="resetEdit">
+                                                                <v-card-text>
+                                                                    <v-text-field
+                                                                        label="Bonificacion"
+                                                                        outlined
+                                                                        hide-details
+                                                                        v-on:input="editDetail(detalle.id, 'bonificacion')"
+                                                                        v-model="editBonificacion"
+                                                                        type="number"
+                                                                    ></v-text-field>
+                                                                </v-card-text>
+                                                            </v-card>
+                                                        </v-menu>
+                                                    </td>
+                                                    <td class="btn-td">
+                                                        <v-menu
+                                                            offset-y
+                                                            :close-on-content-click="false"
+                                                        >
+                                                            <template v-slot:activator="{ on }">
+                                                                <div
+                                                                    v-on="on"
+                                                                >{{ detalle.recargo || 0 }} %</div>
+                                                            </template>
+                                                            <v-card v-click-outside="resetEdit">
+                                                                <v-card-text>
+                                                                    <v-text-field
+                                                                        label="Recargo"
+                                                                        outlined
+                                                                        hide-details
+                                                                        v-on:input="editDetail(detalle.id, 'recargo')"
+                                                                        v-model="editRecargo"
+                                                                        type="number"
+                                                                    ></v-text-field>
+                                                                </v-card-text>
+                                                            </v-card>
+                                                        </v-menu>
+                                                    </td>
+                                                    <td>{{ detalle.subtotal }}</td>
                                                     <td>
-                                                        {{
-                                                        detalle.subtotalDolares
-                                                        }}
+                                                        <v-btn
+                                                            icon
+                                                            color="secondary"
+                                                            @click="
+                                                                deleteDetail(
+                                                                    detalle
+                                                                )
+                                                            "
+                                                        >
+                                                            <v-icon size="medium">
+                                                                fas
+                                                                fa-times
+                                                            </v-icon>
+                                                        </v-btn>
                                                     </td>
                                                 </tr>
                                             </tbody>
@@ -282,6 +368,18 @@
                                             outlined
                                         ></v-text-field>
                                     </v-col>
+                                    <v-col cols="12" class="py-0">
+                                        <v-select
+                                            v-model="$store.state.facturas.form.tipoiva"
+                                            @change="valorAgregadoControl()"
+                                            :items="[21, 10.5]"
+                                            :rules="[rules.required]"
+                                            label="Condición frente al IVA"
+                                            required
+                                            outlined
+                                        ></v-select>
+                                    </v-col>
+
                                     <!-- TIPO DE COMPROBANTE -->
                                     <v-col cols="12" class="py-0">
                                         <v-text-field
@@ -346,7 +444,7 @@
                                     <v-col cols="12" class="py-0">
                                         <v-text-field
                                             v-model="valorAgregado"
-                                            label="IVA 21%"
+                                            :label="`IVA ${tipoiva}%`"
                                             outlined
                                             disabled
                                         ></v-text-field>
@@ -414,22 +512,27 @@
 
 <script>
 import moment from "moment";
+import ClickOutside from "v-click-outside";
 var cantidadMaxima = 999999999;
 
 export default {
+    directives: {
+        clickOutside: ClickOutside.directive,
+    },
+
     data: () => ({
         step: 1,
         // GENERAL
         inProcess: false,
         searchInProcess: false,
         disabled: {
-            detalles: true
+            detalles: true,
         },
         rules: {
-            required: value => !!value || "Este campo es obligatorio",
-            cantidadMaxima: value =>
+            required: (value) => !!value || "Este campo es obligatorio",
+            cantidadMaxima: (value) =>
                 value <= Number(cantidadMaxima) ||
-                "La cantidad no puede superar el stock existente"
+                "La cantidad no puede superar el stock existente",
         },
         // HEADER
         PuntoVenta: null,
@@ -440,13 +543,17 @@ export default {
         clientes: [],
         // DETALLES
         detalles: [],
+        editCantidad: null,
+        editBonificacion: null,
+        editRecargo: null,
         // COTIZACION
+        valorAgregado: null,
         cotizacion: 1,
         fechaCotizacion: "",
         dialogCotizacion: false,
         // SUBTOTAL
         subtotal: null,
-        fechaDialog: false
+        fechaDialog: false,
     }),
 
     computed: {
@@ -475,12 +582,11 @@ export default {
                             ) / 100;
                     }
 
-                    // total = Number(total) + Number(this.valorAgregado);
                     return Number(total - bonificacion + recargo).toFixed(2);
                 } else {
                     return null;
                 }
-            }
+            },
         },
 
         totalPesos: {
@@ -489,30 +595,19 @@ export default {
                 if (this.total && this.cotizacion) {
                     return Number(this.total * this.cotizacion).toFixed(2);
                 }
-            }
+            },
         },
-
-        valorAgregado: {
-            set() {},
-            get() {
-                if (this.subtotal) {
-                    return Number((this.subtotal * 21) / 100).toFixed(2);
-                } else {
-                    return null;
-                }
-            }
-        }
     },
 
     created() {
         if (this.$store.state.facturas.form.detalles) {
             this.detalles = this.$store.state.facturas.form.detalles;
         } else {
-            this.$router.push("/ventas");
+            this.$router.push("/remitos");
         }
     },
 
-    mounted: async function() {
+    mounted: async function () {
         this.inProcess = true;
         await this.checkCurrency();
         await this.getPoint();
@@ -526,6 +621,8 @@ export default {
         initState() {
             this.$store.state.facturas.form.tipocomprobante = "FACTURA";
             this.$store.state.facturas.form.condicionventa = "CONTADO";
+            this.$store.state.facturas.form.tipoiva = 21;
+            this.valorAgregadoControl();
         },
 
         validateStep(n, form) {
@@ -543,12 +640,12 @@ export default {
             return new Promise((resolve, reject) => {
                 axios
                     .get("/api/consultar")
-                    .then(response => {
+                    .then((response) => {
                         this.cotizacion = response.data.valor;
                         this.fechaCotizacion = response.data.fecha;
                         resolve(response.data);
                     })
-                    .catch(error => {
+                    .catch((error) => {
                         this.cotizacion = 1;
                         this.fechaCotizacion = moment().format("DD/MM/YYYY");
                         this.inProcess = false;
@@ -556,24 +653,24 @@ export default {
                     });
             });
         },
-        setCurrency: async function() {
+        setCurrency: async function () {
             await axios
                 .post("/api/setCotizacion", {
                     cotizacion: this.cotizacion,
-                    fechaCotizacion: this.fechaCotizacion
+                    fechaCotizacion: this.fechaCotizacion,
                 })
-                .then(response => {
+                .then((response) => {
                     console.log(response.data);
                 })
-                .catch(error => {
+                .catch((error) => {
                     console.log(error);
                 });
         },
 
         // HEADER
-        getPoint: async function() {
+        getPoint: async function () {
             let data;
-            await axios.get("/api/config").then(response => {
+            await axios.get("/api/config").then((response) => {
                 data = response.data;
             });
             this.PuntoVenta = data.puntoventa;
@@ -608,12 +705,12 @@ export default {
             }
         },
 
-        findCliente: async function() {
+        findCliente: async function () {
             this.$store.state.facturas.form.cliente_id = null;
             this.clientes = [];
             axios
                 .post("/api/buscando", { buscar: this.searchCliente })
-                .then(response => {
+                .then((response) => {
                     let responseClientes = response.data.clientes;
                     let responseDistribuidores = response.data.distribuidores;
                     for (let i = 0; i < responseClientes.length; i++) {
@@ -624,7 +721,7 @@ export default {
                     }
                     this.searchInProcess = false;
                 })
-                .catch(error => {
+                .catch((error) => {
                     console.log(error);
                     this.searchInProcess = false;
                 });
@@ -637,19 +734,76 @@ export default {
             this.searchClienteTable = false;
         },
 
+        // DETALLES
+        editDetail(id, field) {
+            let index = this.detalles.indexOf(
+                this.detalles.find((element) => element.id == id)
+            );
+
+            if (field == "cantidad") {
+                this.detalles[index].cantidad = this.editCantidad;
+            } else if (field == "bonificacion") {
+                this.detalles[index].bonificacion = Number(
+                    this.editBonificacion
+                );
+            } else if (field == "recargo") {
+                this.detalles[index].recargo = Number(this.editRecargo);
+            }
+
+            let sub =
+                Number(this.detalles[index].preciounitario) *
+                Number(this.detalles[index].cantidad);
+
+            let bonificacion = this.detalles[index].bonificacion
+                ? Number(this.detalles[index].bonificacion * sub) / 100
+                : 0;
+
+            let recargo = this.detalles[index].recargo
+                ? Number(this.detalles[index].recargo * sub) / 100
+                : 0;
+
+            this.detalles[index].subtotal = Number(
+                sub - bonificacion + recargo
+            ).toFixed(2);
+
+            this.subtotalControl();
+        },
+
+        resetEdit() {
+            this.editPrecio = null;
+            this.editCantidad = null;
+        },
+
+        deleteDetail(detalle) {
+            let index = this.detalles.indexOf(detalle);
+            this.detalles.splice(index, 1);
+            this.subtotalControl();
+        },
+
         // SUBTOTAL
+        valorAgregadoControl() {
+            if (this.subtotal) {
+                let sub = Number(this.subtotal);
+                let iva = Number(this.$store.state.facturas.form.tipoiva);
+
+                this.valorAgregado = (sub * iva) / 100;
+            } else {
+                this.valorAgregado = null;
+            }
+        },
+
         subtotalControl() {
             if (this.detalles.length > 0) {
                 let sub = 0;
                 for (let i = 0; i < this.detalles.length; i++) {
-                    sub += this.detalles[i].subtotalDolares * 1;
+                    sub += this.detalles[i].subtotal * 1;
                 }
                 this.subtotal = Number(sub).toFixed(2);
             }
         },
 
         // FORM
-        setData: async function() {
+        setData: async function () {
             await this.setCurrency();
             if (this.$refs.facturasClienteForm.validate()) {
                 this.$store.state.facturas.form.subtotal = this.subtotal;
@@ -662,9 +816,14 @@ export default {
                 this.$store.state.facturas.form.numfactura = this.NumComprobante;
                 return true;
             }
-        }
-    }
+        },
+    },
 };
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+.btn-td {
+    cursor: pointer;
+}
+</style>
+

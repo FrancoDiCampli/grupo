@@ -14,10 +14,16 @@
                                 <v-list-item @click="print()">
                                     <v-list-item-title>Imprimir</v-list-item-title>
                                 </v-list-item>
-                                <v-list-item>
+                                <v-list-item
+                                    v-if="$store.state.pedidos.pedido.pedido.numventa == null"
+                                    :to="`/pedidos/editar/${id}`"
+                                >
                                     <v-list-item-title>Editar</v-list-item-title>
                                 </v-list-item>
-                                <v-list-item>
+                                <v-list-item
+                                    v-if="$store.state.pedidos.pedido.pedido.numventa == null"
+                                    @click="preventDialog = true"
+                                >
                                     <v-list-item-title>Generar Venta</v-list-item-title>
                                 </v-list-item>
                             </v-list>
@@ -69,15 +75,14 @@
                                 <p>
                                     <b>Comprobante adherido</b>
                                     {{
-                                    $store.state.pedidos.pedido
-                                    .pedido.numpresupuesto
+                                    $store.state.pedidos.pedido.pedido
+                                    .numpresupuesto
                                     }}
                                 </p>
                                 <p>
                                     <b>Fecha de Emisión:</b>
                                     {{
-                                    $store.state.pedidos.pedido
-                                    .pedido.fecha
+                                    $store.state.pedidos.pedido.pedido.fecha
                                     }}
                                 </p>
                                 <p>
@@ -108,36 +113,36 @@
                                 <p>
                                     <b>CUIT:</b>
                                     {{
-                                    $store.state.pedidos.pedido
-                                    .cliente.documentounico
+                                    $store.state.pedidos.pedido.cliente
+                                    .documentounico
                                     }}
                                 </p>
                                 <p>
                                     <b>Razón Social:</b>
                                     {{
-                                    $store.state.pedidos.pedido
-                                    .cliente.razonsocial
+                                    $store.state.pedidos.pedido.cliente
+                                    .razonsocial
                                     }}
                                 </p>
                                 <p>
                                     <b>Condición Frente al IVA:</b>
                                     {{
-                                    $store.state.pedidos.pedido
-                                    .cliente.condicioniva
+                                    $store.state.pedidos.pedido.cliente
+                                    .condicioniva
                                     }}
                                 </p>
                                 <p>
                                     <b>Domicilio:</b>
                                     {{
-                                    $store.state.pedidos.pedido
-                                    .cliente.direccion
+                                    $store.state.pedidos.pedido.cliente
+                                    .direccion
                                     }}
                                 </p>
                                 <p>
                                     <b>Vencimiento:</b>
                                     {{
-                                    $store.state.pedidos.pedido
-                                    .pedido.vencimiento
+                                    $store.state.pedidos.pedido.pedido
+                                    .vencimiento
                                     }}
                                 </p>
                                 <v-divider></v-divider>
@@ -159,9 +164,8 @@
                                         <tbody>
                                             <tr
                                                 v-for="(detalle,
-                                                index) in $store.state
-                                                    .pedidos.pedido
-                                                    .detalles"
+                                                index) in $store.state.pedidos
+                                                    .pedido.detalles"
                                                 :key="index"
                                             >
                                                 <th
@@ -181,8 +185,8 @@
                             <v-col cols="12" class="comprobantes-footer">
                                 <div
                                     v-if="
-                                        $store.state.pedidos.pedido
-                                            .pedido.observaciones
+                                        $store.state.pedidos.pedido.pedido
+                                            .observaciones
                                     "
                                 >
                                     <p>
@@ -190,8 +194,7 @@
                                     </p>
                                     <p>
                                         {{
-                                        $store.state.pedidos
-                                        .pedido.pedido
+                                        $store.state.pedidos.pedido.pedido
                                         .observaciones
                                         }}
                                     </p>
@@ -204,24 +207,21 @@
                                         <b>Subtotal:</b>
                                         U$D
                                         {{
-                                        $store.state.pedidos
-                                        .pedido.pedido
+                                        $store.state.pedidos.pedido.pedido
                                         .subtotal
                                         }}
                                     </p>
                                     <p>
                                         <b>Bonificación:</b>
                                         {{
-                                        $store.state.pedidos
-                                        .pedido.pedido
+                                        $store.state.pedidos.pedido.pedido
                                         .bonificacion
                                         }}%
                                     </p>
                                     <p>
                                         <b>Recargo:</b>
                                         {{
-                                        $store.state.pedidos
-                                        .pedido.pedido
+                                        $store.state.pedidos.pedido.pedido
                                         .recargo
                                         }}%
                                     </p>
@@ -229,8 +229,8 @@
                                         <b>Total:</b>
                                         U$D
                                         {{
-                                        $store.state.pedidos
-                                        .pedido.pedido.total
+                                        $store.state.pedidos.pedido.pedido
+                                        .total
                                         }}
                                     </p>
                                 </div>
@@ -245,6 +245,49 @@
                 <v-progress-circular :size="70" :width="7" color="primary" indeterminate></v-progress-circular>
             </v-row>
         </div>
+
+        <v-dialog v-model="preventDialog" persistent width="400px">
+            <v-card v-if="inProcess">
+                <v-row justify="center">
+                    <v-progress-circular
+                        :size="70"
+                        :width="7"
+                        color="primary"
+                        indeterminate
+                        style="margin: 32px 0 32px 0;"
+                    ></v-progress-circular>
+                </v-row>
+            </v-card>
+            <v-card v-else>
+                <v-card-title class="headline">¿Estas seguro?</v-card-title>
+                <v-card-text>
+                    <v-row>
+                        <v-col cols="12">
+                            Se generará un remito a partir de la nota de pedido
+                            seleccionada
+                        </v-col>
+                        <v-col cols="12">
+                            <v-text-field
+                                outlined
+                                label="Remito adherido N°"
+                                v-model="remitoadherido"
+                            ></v-text-field>
+                        </v-col>
+                    </v-row>
+                </v-card-text>
+                <v-divider></v-divider>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn
+                        color="error"
+                        text
+                        @click="preventDialog = false"
+                        :disabled="inProcess"
+                    >Cancelar</v-btn>
+                    <v-btn color="success" text @click="sold()" :disabled="inProcess">Aceptar</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
     </div>
 </template>
 
@@ -252,6 +295,8 @@
 export default {
     data() {
         return {
+            preventDialog: false,
+            remitoadherido: null,
             inProcess: false,
         };
     },
@@ -274,6 +319,18 @@ export default {
         print() {
             let id = this.$store.state.pedidos.pedido.pedido.id;
             this.$store.dispatch("PDF/printPedido", { id: id });
+        },
+
+        async sold() {
+            this.inProcess = true;
+            await this.$store.dispatch("pedidos/vender", {
+                id: this.id,
+                remitoadherido: this.remitoadherido,
+            });
+            await this.getPedido();
+            this.preventDialog = false;
+            this.inProcess = false;
+            this.remitoadherido = null;
         },
     },
 };

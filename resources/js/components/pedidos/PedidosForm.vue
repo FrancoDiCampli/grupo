@@ -800,6 +800,7 @@ export default {
                     .then((response) => {
                         this.cotizacion = response.data.valor;
                         this.fechaCotizacion = response.data.fecha;
+                        this.condicion = "CUENTA CORRIENTE";
                         resolve(response.data);
                     })
                     .catch((error) => {
@@ -811,17 +812,10 @@ export default {
             });
         },
         setCurrency: async function () {
-            await axios
-                .post("/api/setCotizacion", {
-                    cotizacion: this.cotizacion,
-                    fechaCotizacion: this.fechaCotizacion,
-                })
-                .then((response) => {
-                    console.log(response.data);
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
+            await axios.post("/api/setCotizacion", {
+                cotizacion: this.cotizacion,
+                fechaCotizacion: this.fechaCotizacion,
+            });
         },
 
         // HEADER
@@ -1010,6 +1004,7 @@ export default {
         deleteDetail(detalle) {
             let index = this.detalles.indexOf(detalle);
             this.detalles.splice(index, 1);
+            this.subtotalControl();
         },
 
         // SUBTOTAL
@@ -1017,9 +1012,11 @@ export default {
             if (this.detalles.length > 0) {
                 let sub = 0;
                 for (let i = 0; i < this.detalles.length; i++) {
-                    sub += this.detalles[i].subtotalDolares;
+                    sub += Number(this.detalles[i].subtotalDolares);
                 }
                 this.subtotal = sub;
+            } else {
+                this.subtotal = 0;
             }
         },
 
