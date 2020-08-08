@@ -352,8 +352,8 @@ trait VentasTrait
 
             $venta->forceDelete(); //delete()
             return ['msg' => 'Venta Anulada'];
-        // } else {
-        //     return ['msg' => 'No es posible anular la venta'];
-        // }
+        } else {
+            return ['msg' => 'No es posible anular la venta'];
+        }
     }
 }
