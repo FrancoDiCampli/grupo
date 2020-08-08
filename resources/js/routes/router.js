@@ -6,7 +6,7 @@ import NotFound from "../views/NotFound";
 import AccessDenied from "../views/AccessDenied";
 
 // Pedidos
-import Pedidos from "../views/pedidos/pedidos";
+import Pedidos from "../views/pedidos/Pedidos";
 import PedidosCreate from "../views/pedidos/Create";
 import PedidosEdit from "../views/pedidos/Edit";
 import PedidosShow from "../views/pedidos/Show";
@@ -16,8 +16,14 @@ import Remitos from "../views/remitos/Remitos";
 import RemitosShow from "../views/remitos/Show";
 
 // Facturas
+import Facturas from "../views/facturas/Facturas";
 import FacturasCreate from "../views/facturas/Create";
 import FacturasShow from "../views/facturas/Show";
+
+// Entregas
+import Entregas from "../views/entregas/Entregas";
+import EntregasCreate from "../views/entregas/Create";
+import EntregasShow from "../views/entregas/Show";
 
 // Clientes
 import Clientes from "../views/clientes/Clientes";
@@ -141,6 +147,11 @@ export default new Router({
 
         // Facturas
         {
+            path: "/facturas",
+            name: "facturas",
+            component: Facturas
+        },
+        {
             path: "/facturas/create",
             name: "facturasCreate",
             component: FacturasCreate
@@ -149,6 +160,24 @@ export default new Router({
             path: "/facturas/show/:id",
             name: "facturas_show",
             component: FacturasShow,
+            props: true
+        },
+
+        // Entregas
+        {
+            path: "/entregas",
+            name: "entregas",
+            component: Entregas
+        },
+        {
+            path: "/entregas/create",
+            name: "entregasCreate",
+            component: EntregasCreate
+        },
+        {
+            path: "/entregas/show/:id",
+            name: "entregas_show",
+            component: EntregasShow,
             props: true
         },
 

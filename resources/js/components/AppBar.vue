@@ -193,6 +193,13 @@ export default {
                 icon: "fas fa-file-invoice-dollar",
                 url: "/facturas",
                 roles: ["superAdmin", "administrador"],
+                divider: false,
+            },
+            {
+                name: "Entregas",
+                icon: "fas fa-luggage-cart",
+                url: "/entregas",
+                roles: ["superAdmin", "administrador"],
                 divider: true,
             },
 
@@ -277,13 +284,13 @@ export default {
                 roles: ["superAdmin", "administrador"],
                 divider: false,
             },
-            {
-                name: "Roles",
-                icon: "fas fa-tag",
-                url: "/roles",
-                roles: ["superAdmin"],
-                divider: false,
-            },
+            // {
+            //     name: "Roles",
+            //     icon: "fas fa-tag",
+            //     url: "/roles",
+            //     roles: ["superAdmin"],
+            //     divider: false,
+            // },
         ],
     }),
 

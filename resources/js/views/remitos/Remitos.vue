@@ -5,14 +5,18 @@
                 <v-col cols="12" md="10" lg="8">
                     <RemitosIndex @erase="restart()">
                         <div v-if="$store.state.remitos.remitos">
-                            <v-btn
-                                :loading="$store.state.inProcess"
-                                :disabled="limit >= $store.state.remitos.remitos.total"
-                                @click="loadMore()"
-                                color="secondary"
-                                outlined
-                                tile
-                            >Cargar Más</v-btn>
+                            <br />
+                            <v-row justify="center" v-if="$store.state.pedidos.pedidos">
+                                <br />
+                                <v-btn
+                                    :loading="$store.state.inProcess"
+                                    :disabled="limit >= $store.state.remitos.remitos.total"
+                                    @click="loadMore()"
+                                    color="secondary"
+                                    outlined
+                                    tile
+                                >Cargar Más</v-btn>
+                            </v-row>
                         </div>
                     </RemitosIndex>
                 </v-col>
@@ -49,6 +53,7 @@ export default {
             await this.getRemitos();
         },
 
+        // TODO: Añadir en pedidos y facturas
         restart() {
             this.getRemitos();
         },

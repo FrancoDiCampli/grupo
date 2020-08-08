@@ -50,11 +50,11 @@ import PedidosIndex from "../../components/pedidos/PedidosIndex";
 
 export default {
     data: () => ({
-        limit: 10
+        limit: 10,
     }),
 
     components: {
-        PedidosIndex
+        PedidosIndex,
     },
 
     mounted() {
@@ -62,17 +62,17 @@ export default {
     },
 
     methods: {
-        getPedidos: async function() {
+        getPedidos: async function () {
             await this.$store.dispatch("pedidos/index", {
-                limit: this.limit
+                limit: this.limit,
             });
         },
 
-        loadMore: async function() {
+        loadMore: async function () {
             this.limit += this.limit;
             await this.getPedidos();
-        }
-    }
+        },
+    },
 };
 </script>
 
