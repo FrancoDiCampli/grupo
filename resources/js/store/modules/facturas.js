@@ -75,20 +75,20 @@ const actions = {
         console.log(state.form);
 
         // DESCOMENTAR LO SIGUIENTE
-        // return new Promise((resolve, reject) => {
-        //     axios
-        //         .post("/api/facturas", state.form)
-        //         .then((response, reject) => {
-        //             commit("resetForm");
-        //             resolve(response.data);
-        //         })
-        //         .catch(error => {
-        //             dispatch("errorHandle", error.response, {
-        //                 root: true
-        //             });
-        //             reject(error.response.data);
-        //         });
-        // });
+        return new Promise((resolve, reject) => {
+            axios
+                .post("/api/facturas", state.form)
+                .then((response, reject) => {
+                    commit("resetForm");
+                    resolve(response.data);
+                })
+                .catch(error => {
+                    dispatch("errorHandle", error.response, {
+                        root: true
+                    });
+                    reject(error.response.data);
+                });
+        });
     }
 };
 
