@@ -131,15 +131,15 @@ trait CuentasCorrientesTrait
         ]);
     }
 
-    public static function aplicarIVA($ventas, $iva)
-    {
-        $cuentas = Cuentacorriente::whereIn('venta_id', $ventas)->get();
+    // public static function aplicarIVA($ventas, $iva)
+    // {
+    //     $cuentas = Cuentacorriente::whereIn('venta_id', $ventas)->get();
 
-        $cuentas->map(function($cuenta) use($iva){
-            $cuenta->saldo += $iva;
-            $cuenta->update();
+    //     $cuentas->map(function($cuenta) use($iva){
+    //         $cuenta->saldo += $iva;
+    //         $cuenta->update();
 
-            static::crearMovimiento($cuenta, 'IVA', $iva);
-        });
-    }
+    //         static::crearMovimiento($cuenta, 'IVA', $iva);
+    //     });
+    // }
 }
