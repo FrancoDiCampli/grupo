@@ -33,6 +33,7 @@ const actions = {
             axios
                 .get("/api/facturas", { params: params })
                 .then(response => {
+                    console.log(response.data);
                     commit("fillFacturas", response.data);
                     resolve(response.data);
                 })
@@ -72,9 +73,6 @@ const actions = {
     },
 
     save({ state, commit, dispatch }) {
-        console.log(state.form);
-
-        // DESCOMENTAR LO SIGUIENTE
         return new Promise((resolve, reject) => {
             axios
                 .post("/api/facturas", state.form)

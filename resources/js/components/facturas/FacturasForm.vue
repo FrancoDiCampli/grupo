@@ -511,6 +511,8 @@
 
 
 <script>
+// TODO: Añadir presentacion en la tabla de detalles
+
 import moment from "moment";
 import ClickOutside from "v-click-outside";
 var cantidadMaxima = 999999999;
@@ -752,11 +754,12 @@ export default {
 
             let sub =
                 Number(this.detalles[index].preciounitario) *
-                Number(this.detalles[index].cantidad);
+                Number(this.detalles[index].cantidadLitros);
 
             let bonificacion = this.detalles[index].bonificacion
                 ? Number(this.detalles[index].bonificacion * sub) / 100
                 : 0;
+            console.log(bonificacion);
 
             let recargo = this.detalles[index].recargo
                 ? Number(this.detalles[index].recargo * sub) / 100

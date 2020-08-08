@@ -40,11 +40,12 @@
                                     :disabled="isDisabled(item)"
                                 ></v-checkbox>
                             </td>
-                            <td class="hidden-xs-only">{{ item.comprobanteadherido }}</td>
+                            <td
+                                class="hidden-xs-only"
+                            >{{ item.comprobanteadherido || item.numventa }}</td>
                             <td>{{ item.cliente.razonsocial }}</td>
                             <td>{{ item.total }}</td>
                             <td class="hidden-sm-and-down">{{ item.fecha }}</td>
-                            <td class="hidden-sm-and-down">{{ item.condicionventa }}</td>
                             <td>
                                 <v-menu offset-y>
                                     <template v-slot:activator="{ on }">
@@ -62,7 +63,10 @@
                                         <v-list-item @click="print(item.id)">
                                             <v-list-item-title>Imprimir</v-list-item-title>
                                         </v-list-item>
-                                        <v-list-item v-if="!item.todoentregado">
+                                        <v-list-item
+                                            v-if="!item.todoentregado"
+                                            @click="delivery(item)"
+                                        >
                                             <v-list-item-title>Generar entrega</v-list-item-title>
                                         </v-list-item>
                                     </v-list>
@@ -88,7 +92,6 @@ export default {
             { text: "Cliente", sortable: false },
             { text: "Importe", sortable: false },
             { text: "Fecha", sortable: false, class: "hidden-sm-and-down" },
-            { text: "Condición", sortable: false, class: "hidden-sm-and-down" },
             { text: "", sortable: false },
         ],
         selected: [],
@@ -121,6 +124,10 @@ export default {
                         this.$router.push("/facturas/create");
                     });
             }
+        },
+
+        delivery(item) {
+            console.log(item);
         },
 
         print(id) {

@@ -13,7 +13,7 @@
                 >
                     <template v-slot:item="{ item }">
                         <tr>
-                            <td>{{ item.numpresupuesto }}</td>
+                            <td>{{ item.comprobanteadherido || item.numpresupuesto }}</td>
                             <td>{{ item.cliente.razonsocial }}</td>
                             <td class="hidden-xs-only">{{ item.fecha }}</td>
                             <td>{{ item.total }}</td>

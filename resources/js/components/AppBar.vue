@@ -64,33 +64,40 @@
 
         <!-- Drawer Notificaciones -->
         <v-navigation-drawer v-model="notificationDrawer" absolute temporary right>
-            <v-list dense>
-                <v-list-item
-                    v-for="noti in $store.state.notificaciones.unread"
-                    :key="noti.id"
-                    @click="markRead(noti)"
-                >
-                    <v-list-item-icon>
-                        <v-icon color="amber">fas fa-box-open</v-icon>
-                    </v-list-item-icon>
+            <div v-if="$store.state.notificaciones.unread.length > 0">
+                <v-list dense>
+                    <v-subheader>No leidas</v-subheader>
+                    <v-list-item
+                        v-for="noti in $store.state.notificaciones.unread"
+                        :key="noti.id"
+                        @click="markRead(noti)"
+                    >
+                        <v-list-item-icon>
+                            <v-icon color="amber">fas fa-box-open</v-icon>
+                        </v-list-item-icon>
 
-                    <v-list-item-content>
-                        <v-list-item-title>{{ noti.data.message }}</v-list-item-title>
-                    </v-list-item-content>
-                </v-list-item>
-            </v-list>
+                        <v-list-item-content>
+                            <v-list-item-title>{{ noti.data.message }}</v-list-item-title>
+                        </v-list-item-content>
+                    </v-list-item>
+                </v-list>
+            </div>
+
             <v-divider></v-divider>
-            <v-list dense disabled>
-                <v-list-item v-for="noti in $store.state.notificaciones.read" :key="noti.id">
-                    <v-list-item-icon>
-                        <v-icon>fas fa-box-open</v-icon>
-                    </v-list-item-icon>
+            <div v-if="$store.state.notificaciones.read.length > 0">
+                <v-list dense disabled>
+                    <v-subheader>Leidas</v-subheader>
+                    <v-list-item v-for="noti in $store.state.notificaciones.read" :key="noti.id">
+                        <v-list-item-icon>
+                            <v-icon>fas fa-box-open</v-icon>
+                        </v-list-item-icon>
 
-                    <v-list-item-content>
-                        <v-list-item-title>{{ noti.data.message }}</v-list-item-title>
-                    </v-list-item-content>
-                </v-list-item>
-            </v-list>
+                        <v-list-item-content>
+                            <v-list-item-title>{{ noti.data.message }}</v-list-item-title>
+                        </v-list-item-content>
+                    </v-list-item>
+                </v-list>
+            </div>
         </v-navigation-drawer>
 
         <!-- Navbar superior -->
