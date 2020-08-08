@@ -49,7 +49,6 @@ trait FacturasTrait
 
     public static function store($request)
     {
-        // return $request;
         $cliente = Cliente::findOrFail($request['cliente_id']);
 
         $factura = Factura::create([
@@ -73,7 +72,7 @@ trait FacturasTrait
             "user_id" => auth()->user()->id,
         ]);
 
-        $det = static::detallesVentas($request->detalles, $factura);
+        $det = static::detallesFactura($request->detalles, $factura);
 
         $factura->articulos()->attach($det);
 
@@ -88,17 +87,18 @@ trait FacturasTrait
         return ['msg' => 'factura creada'];
     }
 
-    public static function detallesVentas($details, $factura)
+    public static function detallesFactura($details, $factura)
     {
         foreach ($details as $detail) {
-            $article = Articulo::find($detail['articulo_id']);
             $detalles = array(
                 'codarticulo' => $detail['codarticulo'],
                 'articulo' => $detail['articulo'],
-                'cantidad' => $detail['cantidadfacturado'],
-                'cantidadLitros' => $article->presentacion * $detail['cantidadfacturado'],
+                'cantidad' => $detail['cantidad'],
+                'cantidadLitros' => $detail['cantidadLitros'],
                 'medida' => $detail['medida'],
                 'preciounitario' => $detail['preciounitario'],
+                'bonificacion' => $detail['bonificacion'] ?? null,
+                'recargo' => $detail['recargo'] ?? null,
                 'subtotalPesos' => $detail['subtotalPesos'],
                 'subtotal' => $detail['subtotal'],
                 'cotizacion' => $detail['cotizacion'],
