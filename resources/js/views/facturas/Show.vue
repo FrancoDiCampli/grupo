@@ -2,7 +2,7 @@
     <div>
         <v-tooltip left>
             <template v-slot:activator="{ on }">
-                <v-btn color="secondary" dark fab fixed right bottom large v-on="on" to="/ventas">
+                <v-btn color="secondary" dark fab fixed right bottom large v-on="on" to="/facturas">
                     <v-icon>fas fa-chevron-left</v-icon>
                 </v-btn>
             </template>
@@ -26,8 +26,8 @@ export default {
     props: ["id"],
 
     components: {
-        FacturasShow
-    }
+        FacturasShow,
+    },
 };
 </script>
 

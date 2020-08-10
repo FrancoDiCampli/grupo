@@ -6,7 +6,7 @@
                     <FacturasIndex @erase="restart()">
                         <div v-if="$store.state.facturas.facturas">
                             <br />
-                            <v-row justify="center" v-if="$store.state.pedidos.pedidos">
+                            <v-row justify="center" v-if="$store.state.facturas.facturas">
                                 <br />
                                 <v-btn
                                     :loading="$store.state.inProcess"

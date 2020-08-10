@@ -88,7 +88,7 @@ export default {
     data: () => ({
         headers: [
             { text: "", sortable: false },
-            { text: "N° Adhe.", sortable: false, class: "hidden-xs-only" },
+            { text: "N°", sortable: false, class: "hidden-xs-only" },
             { text: "Cliente", sortable: false },
             { text: "Importe", sortable: false },
             { text: "Fecha", sortable: false, class: "hidden-sm-and-down" },

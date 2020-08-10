@@ -49,7 +49,7 @@
 export default {
     data: () => ({
         headers: [
-            { text: "Número", sortable: false },
+            { text: "N°", sortable: false },
             { text: "Nombre/Apellido", sortable: false },
             { text: "Fecha", sortable: false, class: "hidden-xs-only" },
             { text: "Importe", sortable: false },

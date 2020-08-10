@@ -6,7 +6,7 @@
                     <RemitosIndex @erase="restart()">
                         <div v-if="$store.state.remitos.remitos">
                             <br />
-                            <v-row justify="center" v-if="$store.state.pedidos.pedidos">
+                            <v-row justify="center" v-if="$store.state.remitos.remitos">
                                 <br />
                                 <v-btn
                                     :loading="$store.state.inProcess"
