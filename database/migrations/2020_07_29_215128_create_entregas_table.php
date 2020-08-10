@@ -16,6 +16,7 @@ class CreateEntregasTable extends Migration
         Schema::create('entregas', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->bigInteger('numentrega');
+            $table->string('comprobanteadherido')->nullable();
             $table->bigInteger('cuit'); //cliente
             $table->string('fecha');
             $table->text('observaciones')->nullable();
