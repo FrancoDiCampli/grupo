@@ -163,7 +163,7 @@ trait EntregasTrait
                 $factura->forceDelete();
             }
 
-            if ($article[0]['cantidad'] == 0) {
+            if ($article[0]['cantidad'] == 0 || $article[0]['cantidad'] <= $article[0]->articulo->stockminimo) { // REVISAR NOTIFICACIONES
                 $arti = Articulo::find($article[0]->articulo_id);
                 ArticulosTrait::crearNotificacion($arti);
             }

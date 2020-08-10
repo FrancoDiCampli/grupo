@@ -70,7 +70,7 @@ trait VentasTrait
                         ->first();
                 }
 
-                $det['pivot']['disponible'] = $article->cantidad;
+                $article ? $det['pivot']['disponible'] = $article->cantidad : $det['pivot']['disponible'] = 0;
 
                 $detsFact = DB::table('articulo_factura')->where('articulo_venta_id', $det['pivot']->id)->get();
                 $detsEntr = DB::table('articulo_entrega')->where('articulo_venta_id', $det['pivot']->id)->get();
