@@ -50,7 +50,7 @@ class VentasController extends Controller
 
     public function destroy($id)
     {
-        return VentasTrait::anular($id);
+        return VentasTrait::delete($id);
     }
 
     public function restaurar($id)

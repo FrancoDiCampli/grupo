@@ -4,6 +4,7 @@ namespace App\Traits;
 
 use App\Venta;
 use App\Cliente;
+use App\Factura;
 use App\Articulo;
 use App\Formapago;
 use Carbon\Carbon;
@@ -117,7 +118,7 @@ trait VentasTrait
         // }
 
         // ALMACENAMIENTO DE DETALLES
-        $det = static::detallesVentas($request->get('detalles'), $atributos, $factura);
+        $det = static::detallesVentas($request->get('detalles'), $factura);
 
         $factura->articulos()->attach($det);
         // CREACION DE CUENTA CORRIENTE
@@ -133,48 +134,9 @@ trait VentasTrait
         return static::verVenta($id);
     }
 
-    public static function actualizarInventarios($aux, $factura)
-    {
-        for ($i = 0; $i < count($aux); $i++) {
-            if (auth()->user()->role->role == 'superAdmin' || auth()->user()->role->role == 'administrador') {
-                $article = Inventario::where('dependencia', null)
-                    ->where('cantidad', '>', 0)
-                    ->where('articulo_id', $aux[$i]['articulo_id'])->get();
-            } else {
-                $article = Inventario::where('dependencia', auth()->user()->id)
-                    ->where('cantidad', '>', 0)
-                    ->where('articulo_id', $aux[$i]['articulo_id'])->get();
-            }
-
-            if ($aux[$i]['cantidad'] <= $article[0]['cantidad']) {
-                $art = Articulo::find($aux[$i]['articulo_id']);
-                $article[0]['cantidad'] -= $aux[$i]['cantidad'];
-                $article[0]['cantidadLitros'] = $article[0]['cantidad'] * $art->litros;
-                $article[0]->save();
-
-                MovimientosTrait::crearMovimiento('VENTA', $aux[$i]['cantidad'], ($aux[$i]['cantidad'] * $art->litros), $article[0], $factura);
-            } else {
-                $factura->articulos()->detach();
-                $factura->forceDelete();
-            }
-
-            if ($article[0]['cantidad'] == 0) {
-                $arti = Articulo::find($article[0]->articulo_id);
-                ArticulosTrait::crearNotificacion($arti);
-            }
-
-            unset($article);
-        }
-    }
-
-    public static function detallesVentas($details, $atributos, $factura)
+    public static function detallesVentas($details, $factura)
     {
         foreach ($details as $detail) {
-            // if ($atributos['condicionventa'] == 'CUENTA CORRIENTE') {
-            //     $detail['subtotalPesos'] = null;
-            //     $detail['cotizacion'] = null;
-            //     $detail['fechaCotizacion'] = null;
-            // }
             $detalles = array(
                 'codarticulo' => $detail['codarticulo'],
                 'articulo' => $detail['articulo'],
@@ -203,7 +165,6 @@ trait VentasTrait
             "tipocomprobante" => $atributos['tipoComprobante'],
             "numventa" => $atributos['numventa'],
             "comprobanteadherido" => $atributos['remitoadherido'],
-            // "fecha" => now()->format('Ymd'),
             'fecha' => $atributos['fecha'],
             'observaciones' => $atributos['observaciones'],
             "bonificacion" => $atributos['bonificacion'] * 1,
@@ -257,23 +218,6 @@ trait VentasTrait
             array_push($arregloIds, $ids[$i]);
             foreach ($aux->articulos as $det) {
                 $details->push($det);
-
-                // $detsFact = DB::table('articulo_factura')->where('articulo_venta_id', $det->pivot->id)->get();
-
-                // $cant = 0;
-                // $cantLitros = 0;
-
-                // if ($detsFact) {
-                //     $cant = $detsFact->each(function ($item) {
-                //         $item->cantidad++;
-                //     });
-                //     $cantLitros = $detsFact->each(function ($item) {
-                //         $item->cantidadLitros++;
-                //     });
-                // }
-
-                // $det->pivot['cantFac'] = $cant;
-                // $det->pivot['cantLitrosFac'] = $cantLitros;
             }
             $sub += $aux->subtotal;
             $tot += $aux->total;
@@ -292,18 +236,19 @@ trait VentasTrait
         return $factura;
     }
 
-    public static function anular($id)
+    public static function delete($id)
     {
         $venta = Venta::findOrFail($id);
         $sePuede = true;
 
         if (!$venta->numfactura) {
             if ($venta->cuenta) {
-                if (count($venta->cuenta->pagos) == 0) {
-                    $sePuede = true;
-                } else {
-                    $sePuede = false;
-                }
+                // if (count($venta->cuenta->pagos) == 0) {
+                //     $sePuede = true;
+                // } else {
+                //     $sePuede = false;
+                // }
+                count($venta->cuenta->pagos) == 0 ? $sePuede = true : $sePuede = false;
             } else {
                 $sePuede = true;
             }
@@ -316,41 +261,12 @@ trait VentasTrait
                 $venta->cuenta->movimientos->each->delete();
                 $venta->cuenta->delete();
             }
-
-            // $detalles = collect($venta->articulos);
-            // $pivot = collect();
-            // $inventarios = collect();
-            // foreach ($detalles as $art) {
-            //     $pivot = $pivot->push($art->pivot);
-            // }
-
-            // foreach ($pivot as $piv) {
-            //     $art = Articulo::findOrFail($piv->articulo_id);
-            //     $aux = collect($art->inventarios);
-            //     foreach ($aux as $a) {
-            //         $inventarios = $inventarios->push($a);
-            //     }
-            // }
-            // SE REESTABLECE LA CANTIDAD EN LOS INVENTARIOS
-            // unset($aux);
-            // foreach ($inventarios as $inv) {
-            //     $aux = collect($inv->movimientos);
-            //     $aux = $aux->where('numcomprobante', $venta->id);
-            //     foreach ($aux as $a) {
-            //         $inventario = $a->inventario;
-            //         $inventario->cantidad = $inventario->cantidad + $a->cantidad;
-            //         $inventario->cantidadlitros = $inventario->cantidadlitros + $a->cantidadlitros;
-            //         $inventario->save();
-
-            //         MovimientosTrait::crearMovimiento('ANULACION', $a->cantidad, $a->cantidadlitros, $inventario, $venta);
-            //     }
-            // }
             $venta->articulos()->detach();
             // Probar
-            $venta->entregas->delete();
+            $venta->entregas->delete(); // Restaurar Inventarios
             $venta->facturas->delete();
 
-            $venta->forceDelete(); //delete()
+            $venta->delete();
             return ['msg' => 'Venta Anulada'];
         } else {
             return ['msg' => 'No es posible anular la venta'];

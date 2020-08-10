@@ -36,6 +36,8 @@ trait PresupuestosTrait
         $presupuestos = collect();
 
         foreach ($pres as $pre) {
+            $venta = Venta::find($pre->numventa);
+            $venta ? $pre['venta'] = true : $pre['venta'] = false;
             $fecha = new Carbon($pre->fecha);
             $pre->fecha = $fecha->format('d-m-Y');
             $pre->cliente = Cliente::withTrashed()->find($pre->cliente_id);;
@@ -84,7 +86,8 @@ trait PresupuestosTrait
         $atributos['comprobanteadherido'] = $request['remitoadherido'];
         $atributos['tipoComprobante'] = 'REMITO X';
         $atributos['condicionventa'] = 'CUENTA CORRIENTE';
-        $atributos['numventa'] = 1;
+        $numventa = Venta::all()->last() ? Venta::all()->last()->id : 0;
+        $atributos['numventa'] = $numventa + 1;
 
         $venta = static::crearVenta($atributos);
 
@@ -215,10 +218,6 @@ trait PresupuestosTrait
     {
         $configuracion = ConfiguracionTrait::configuracion();
         $presupuesto = Presupuesto::find($id);
-        // $fecha = new Carbon($presupuesto->fecha);
-        // $presupuesto->fecha = $fecha->format('d-m-Y');
-        // $vencimiento = new Carbon($presupuesto->vencimiento);
-        // $presupuesto->vencimiento = $vencimiento->format('d-m-Y');
         $cliente = Cliente::withTrashed()->find($presupuesto->cliente_id);
         $detalles = DB::table('articulo_presupuesto')->where('presupuesto_id', $presupuesto->id)->get();
 
@@ -356,5 +355,16 @@ trait PresupuestosTrait
         }
 
         return 'actualizado';
+    }
+
+    public static function delete($id)
+    {
+        $pedido = Presupuesto::find($id);
+
+        if ($pedido->numventa == null) {
+            $pedido->articulos()->detach();
+            $pedido->delete();
+            return ['Pedido Eliminado'];
+        } else return ['No es posible eliminar el pedido'];
     }
 }
