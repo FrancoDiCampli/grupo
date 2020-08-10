@@ -103,6 +103,7 @@ trait EntregasTrait
             "ptoventa" => $configuracion['puntoventa'],
             // "numentrega" => $atributos['numentrega'],
             "numentrega" => $numentrega + 1,
+            "comprobanteadherido" => $atributos['comprobanteadherido'],
             "cuit" => $atributos['cuit'],
             "fecha" => now()->format('Ymd'),
             // "bonificacion" => $atributos['bonificacion'] * 1,
