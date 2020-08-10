@@ -25,9 +25,9 @@
                                 <v-progress-linear absolute height="0"></v-progress-linear>
                             </template>
                         </v-text-field>
-                        <div class="px-2 py-1" @click="searchItemsAfter()" style="cursor: pointer;">
+                        <!-- <div class="px-2 py-1" @click="searchItemsAfter()" style="cursor: pointer;">
                             <v-icon size="large">fas fa-search</v-icon>
-                        </div>
+                        </div>-->
                     </v-row>
                 </div>
             </template>
@@ -233,17 +233,17 @@ export default {
             clientes: [],
             proveedores: [],
             articulos: [],
-            distribuidores: []
-        }
+            distribuidores: [],
+        },
     }),
 
     components: {
         AppBar,
-        Errors
+        Errors,
     },
 
     directives: {
-        clickOutside: ClickOutside.directive
+        clickOutside: ClickOutside.directive,
     },
 
     computed: {
@@ -284,7 +284,7 @@ export default {
                     return false;
                 }
             }
-        }
+        },
     },
 
     mounted() {
@@ -298,15 +298,15 @@ export default {
             this.process = true;
             this.$store
                 .dispatch("auth/user")
-                .then(response => {
+                .then((response) => {
                     response.permissions.push("authenticated");
                     this.$user.set({
                         rol: response.rol,
-                        permissions: response.permissions
+                        permissions: response.permissions,
                     });
                     this.process = false;
                 })
-                .catch(error => {
+                .catch((error) => {
                     this.process = false;
                 });
         },
@@ -326,19 +326,19 @@ export default {
             }
         },
 
-        findItems: async function() {
+        findItems: async function () {
             axios
                 .post("/api/buscando", { buscar: this.searchItems })
-                .then(response => {
+                .then((response) => {
                     this.items = {
                         proveedores: response.data.proveedores || [],
                         clientes: response.data.clientes || [],
                         distribuidores: response.data.distribuidores || [],
-                        articulos: response.data.articulos || []
+                        articulos: response.data.articulos || [],
                     };
                     this.searchInProcess = false;
                 })
-                .catch(error => {
+                .catch((error) => {
                     console.log(error);
                     this.searchInProcess = false;
                 });
@@ -353,7 +353,7 @@ export default {
             this.items = {
                 clientes: [],
                 proveedores: [],
-                articulos: []
+                articulos: [],
             };
         },
 
@@ -362,13 +362,13 @@ export default {
             this.closeSearch();
         },
 
-        exit: async function() {
+        exit: async function () {
             this.process = true;
             await this.$store.dispatch("auth/logout");
             this.$router.push("/"); // BORRAR CUANDO SE DEFINAN LOS PERMISOS Y ROLES EN LAS RUTAS
             this.process = false;
-        }
-    }
+        },
+    },
 };
 </script>
 

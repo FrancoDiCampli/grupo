@@ -63,7 +63,7 @@
         </v-navigation-drawer>
 
         <!-- Drawer Notificaciones -->
-        <v-navigation-drawer v-model="notificationDrawer" absolute temporary right>
+        <!-- <v-navigation-drawer v-model="notificationDrawer" absolute temporary right>
             <div v-if="$store.state.notificaciones.unread.length > 0">
                 <v-list dense>
                     <v-subheader>No leidas</v-subheader>
@@ -98,7 +98,7 @@
                     </v-list-item>
                 </v-list>
             </div>
-        </v-navigation-drawer>
+        </v-navigation-drawer>-->
 
         <!-- Navbar superior -->
         <v-app-bar color="primary" dark flat app fixed>
@@ -110,6 +110,7 @@
             ></v-app-bar-nav-icon>
 
             <slot name="searchBar"></slot>
+
             <v-spacer></v-spacer>
             <!-- Notificaciones -->
             <v-btn icon @click="notificationDrawer = true" class="mx-2">

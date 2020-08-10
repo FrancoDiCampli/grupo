@@ -82,7 +82,7 @@
                             v-model="
                                 $store.state.entregas.form.comprobanteadherido
                             "
-                            label="Factura Adherida Nº"
+                            label="Entrega adherida Nº"
                             outlined
                         ></v-text-field>
                     </v-col>

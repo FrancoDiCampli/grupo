@@ -33,7 +33,6 @@ const actions = {
             axios
                 .get("/api/facturas", { params: params })
                 .then(response => {
-                    console.log(response.data);
                     commit("fillFacturas", response.data);
                     resolve(response.data);
                 })
