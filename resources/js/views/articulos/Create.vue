@@ -55,11 +55,11 @@ import ArticulosForm from "../../components/articulos/ArticulosForm";
 
 export default {
     data: () => ({
-        inProcess: false
+        inProcess: false,
     }),
 
     components: {
-        ArticulosForm
+        ArticulosForm,
     },
 
     mounted() {
@@ -67,14 +67,26 @@ export default {
     },
 
     methods: {
-        saveArticulo: async function() {
+        saveArticulo: async function () {
             if (this.$refs.CreateArticulos.validate()) {
+                let categoriaForm = this.$store.state.articulos.form.categoria;
+                let marcaForm = this.$store.state.articulos.form.marca;
                 this.$store.state.articulos.form.foto = this.$refs.ArticuloForm.getFoto();
+
+                if (typeof categoriaForm == "object") {
+                    this.$store.state.articulos.form.categoria =
+                        categoriaForm.categoria;
+                }
+
+                if (typeof marcaForm == "object") {
+                    this.$store.state.articulos.form.marca = marcaForm.marca;
+                }
+
                 await this.$store.dispatch("articulos/save");
                 this.$router.push("/articulos");
             }
-        }
-    }
+        },
+    },
 };
 </script>
 

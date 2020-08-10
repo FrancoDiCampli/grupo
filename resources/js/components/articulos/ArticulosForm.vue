@@ -30,28 +30,13 @@
 
                     <v-col cols="12">
                         <v-row justify="center">
-                            <v-btn
-                                text
-                                icon
-                                color="secondary"
-                                @click="foto.zoomIn()"
-                            >
+                            <v-btn text icon color="secondary" @click="foto.zoomIn()">
                                 <v-icon>fas fa-search-plus</v-icon>
                             </v-btn>
-                            <v-btn
-                                text
-                                icon
-                                color="secondary"
-                                @click="foto.zoomOut()"
-                            >
+                            <v-btn text icon color="secondary" @click="foto.zoomOut()">
                                 <v-icon>fas fa-search-minus</v-icon>
                             </v-btn>
-                            <v-btn
-                                text
-                                icon
-                                color="secondary"
-                                @click="foto.rotate()"
-                            >
+                            <v-btn text icon color="secondary" @click="foto.rotate()">
                                 <v-icon>fas fa-redo-alt</v-icon>
                             </v-btn>
                             <div v-if="foto != null">
@@ -158,8 +143,8 @@
                             <v-list-item-content>
                                 <v-list-item-title>
                                     No hay resultados que coincidan con "
-                                    <strong>{{ searchCategoria }}</strong
-                                    >". Presione <kbd>enter</kbd> enter para
+                                    <strong>{{ searchCategoria }}</strong>". Presione
+                                    <kbd>enter</kbd> enter para
                                     crear uno nuevo
                                 </v-list-item-title>
                             </v-list-item-content>
@@ -183,8 +168,8 @@
                             <v-list-item-content>
                                 <v-list-item-title>
                                     No hay resultados que coincidan con "
-                                    <strong>{{ searchCategoria }}</strong
-                                    >". Presione <kbd>enter</kbd> enter para
+                                    <strong>{{ searchCategoria }}</strong>". Presione
+                                    <kbd>enter</kbd> enter para
                                     crear uno nuevo
                                 </v-list-item-title>
                             </v-list-item-content>
@@ -193,20 +178,10 @@
                 </v-combobox>
             </v-col>
             <v-col cols="12" sm="6" class="py-0">
-                <v-text-field
-                    label="Medida"
-                    placeholder="Litros"
-                    disabled
-                    outlined
-                ></v-text-field>
+                <v-text-field label="Medida" placeholder="Litros" disabled outlined></v-text-field>
             </v-col>
             <v-col cols="12" sm="6" class="py-0">
-                <v-text-field
-                    label="Codigo"
-                    v-model="codigo"
-                    outlined
-                    disabled
-                ></v-text-field>
+                <v-text-field label="Codigo" v-model="codigo" outlined disabled></v-text-field>
             </v-col>
         </v-row>
     </div>
@@ -225,19 +200,19 @@ export default {
                 { name: "5 Litros", value: 5 },
                 { name: "10 Litros", value: 10 },
                 { name: "20 Litros", value: 20 },
-                { name: "1000 Litros", value: 1000 }
+                { name: "1000 Litros", value: 1000 },
             ],
             foto: null,
             articulosLastID: null,
             rules: {
-                required: value => !!value || "Este campo es obligatorio",
-                cod: value =>
+                required: (value) => !!value || "Este campo es obligatorio",
+                cod: (value) =>
                     (value && value.length == 13) ||
                     "Este campo debe contener si o si 13 digitos",
-                max: value =>
+                max: (value) =>
                     (value && value.length <= 190) ||
-                    "Este campo no puede contener mas de 190 digitos"
-            }
+                    "Este campo no puede contener mas de 190 digitos",
+            },
         };
     },
 
@@ -282,8 +257,8 @@ export default {
                 } else {
                     return this.$store.state.articulos.form.codarticulo;
                 }
-            }
-        }
+            },
+        },
     },
 
     mounted() {
@@ -301,7 +276,7 @@ export default {
                     this.articulosLastID = this.$store.state.articulos.articulos.ultimo.id;
                 }
             } else {
-                this.$store.dispatch("articulos/index").then(response => {
+                this.$store.dispatch("articulos/index").then((response) => {
                     if (response.ultimo) {
                         this.articulosLastID = response.ultimo.id;
                     } else {
@@ -312,7 +287,7 @@ export default {
         },
 
         getCategorias() {
-            this.$store.dispatch("categorias/index").then(response => {
+            this.$store.dispatch("categorias/index").then((response) => {
                 this.categorias = response.categorias;
                 this.$store.state.articulos.form.categoria =
                     response.categorias[0].categoria;
@@ -320,7 +295,7 @@ export default {
         },
 
         getMarcas() {
-            this.$store.dispatch("marcas/index").then(response => {
+            this.$store.dispatch("marcas/index").then((response) => {
                 this.marcas = response.marcas;
                 this.$store.state.articulos.form.marca =
                     response.marcas[0].marca;
@@ -331,8 +306,8 @@ export default {
             if (this.foto) {
                 return this.foto.generateDataUrl();
             }
-        }
-    }
+        },
+    },
 };
 </script>
 

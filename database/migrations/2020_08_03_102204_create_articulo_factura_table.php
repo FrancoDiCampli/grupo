@@ -27,8 +27,6 @@ class CreateArticuloFacturaTable extends Migration
             $table->decimal('subtotalPesos', 12, 2)->nullable();
             $table->decimal('cotizacion', 12, 2)->nullable();
             $table->string('fechaCotizacion')->nullable();
-            $table->decimal('bonificacion')->nullable();
-            $table->decimal('recargo')->nullable();
             $table->unsignedBigInteger('articulo_id');
             $table->unsignedBigInteger('factura_id');
             $table->unsignedBigInteger('articulo_venta_id');
