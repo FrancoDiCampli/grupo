@@ -18,6 +18,11 @@ class EntregasController extends Controller
         return EntregasTrait::store($request);
     }
 
+    public function show($id)
+    {
+        return EntregasTrait::show($id);
+    }
+
     public function destroy($id)
     {
         return EntregasTrait::delete($id);
