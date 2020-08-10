@@ -129,7 +129,7 @@ export default {
         delivery(item) {
             let details = [];
             for (let i = 0; i < item.articulos.length; i++) {
-                Object.assign(item.articulos[i].pivot, item.articulos[i]);
+                item.articulos[i].pivot.litros = item.articulos[i].litros;
                 details.push(item.articulos[i].pivot);
             }
 

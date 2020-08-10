@@ -71,22 +71,21 @@ const actions = {
     },
 
     save({ state, commit, dispatch }) {
-        // console.log(state.form);
+        console.log(state.form);
         return new Promise((resolve, reject) => {
-            axios.post("/api/entregas", state.form);
-            resolve();
-            // axios
-            //     .post("/api/entregas", state.form)
-            //     .then(response => {
-            //         commit("resetForm");
-            //         resolve(response.data);
-            //     })
-            //     .catch(error => {
-            //         dispatch("errorHandle", error.response, {
-            //             root: true
-            //         });
-            //         reject(error.response.data);
-            //     });
+            axios
+                .post("/api/entregas", state.form)
+                .then(response => {
+                    commit("resetForm");
+                    console.log(response.data);
+                    resolve(response.data);
+                })
+                .catch(error => {
+                    dispatch("errorHandle", error.response, {
+                        root: true
+                    });
+                    reject(error.response.data);
+                });
         });
     }
 };

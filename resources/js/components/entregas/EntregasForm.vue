@@ -40,9 +40,13 @@
                         <v-dialog
                             ref="dialogFecha"
                             v-model="fechaDialog"
-                            :return-value.sync="$store.state.entregas.form.fecha"
+                            :return-value.sync="
+                                $store.state.entregas.form.fecha
+                            "
                             persistent
-                            :width="$vuetify.breakpoint.xsOnly ? '100%' : '300px'"
+                            :width="
+                                $vuetify.breakpoint.xsOnly ? '100%' : '300px'
+                            "
                         >
                             <template v-slot:activator="{ on }">
                                 <v-text-field
@@ -63,7 +67,11 @@
                                 <v-btn
                                     text
                                     color="primary"
-                                    @click="$refs.dialogFecha.save($store.state.entregas.form.fecha)"
+                                    @click="
+                                        $refs.dialogFecha.save(
+                                            $store.state.entregas.form.fecha
+                                        )
+                                    "
                                 >Aceptar</v-btn>
                             </v-date-picker>
                         </v-dialog>
@@ -71,7 +79,9 @@
                     <!-- COMPROBANTE ADHERIDO -->
                     <v-col cols="12" sm="6" class="py-0">
                         <v-text-field
-                            v-model="$store.state.entregas.form.comprobanteadherido"
+                            v-model="
+                                $store.state.entregas.form.comprobanteadherido
+                            "
                             label="Factura Adherida Nº"
                             outlined
                         ></v-text-field>
@@ -98,8 +108,17 @@
                                             <td>{{ detalle.articulo }}</td>
                                             <td>{{ detalle.litros }} L.</td>
                                             <td class="btn-td">
-                                                <v-menu offset-y :close-on-content-click="false">
-                                                    <template v-slot:activator="{on}">
+                                                <v-menu
+                                                    offset-y
+                                                    :close-on-content-click="
+                                                        false
+                                                    "
+                                                >
+                                                    <template
+                                                        v-slot:activator="{
+                                                            on
+                                                        }"
+                                                    >
                                                         <div v-on="on">
                                                             {{
                                                             detalle.cantidad -
@@ -107,14 +126,25 @@
                                                             }}
                                                         </div>
                                                     </template>
-                                                    <v-card v-click-outside="resetEdit">
+                                                    <v-card
+                                                        v-click-outside="
+                                                            resetEdit
+                                                        "
+                                                    >
                                                         <v-card-text>
                                                             <v-text-field
                                                                 label="Unidades"
                                                                 outlined
                                                                 hide-details
-                                                                v-on:input="editDetail(detalle.id, 'cantidad')"
-                                                                v-model="editCantidad"
+                                                                v-on:input="
+                                                                    editDetail(
+                                                                        detalle.id,
+                                                                        'cantidad'
+                                                                    )
+                                                                "
+                                                                v-model="
+                                                                    editCantidad
+                                                                "
                                                                 type="number"
                                                             ></v-text-field>
                                                         </v-card-text>
@@ -125,7 +155,9 @@
                                                 <v-btn
                                                     icon
                                                     color="secondary"
-                                                    @click="deleteDetail(detalle)"
+                                                    @click="
+                                                        deleteDetail(detalle)
+                                                    "
                                                 >
                                                     <v-icon size="medium">fas fa-times</v-icon>
                                                 </v-btn>
@@ -229,7 +261,6 @@ export default {
         deleteDetail(detalle) {
             let index = this.detalles.indexOf(detalle);
             this.detalles.splice(index, 1);
-            this.subtotalControl();
         },
 
         // FORM

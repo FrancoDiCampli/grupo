@@ -51,7 +51,6 @@ trait EntregasTrait
     public static function store($request)
     {
         // return $request;
-
         $atributos = $request;
         $cliente = Cliente::find($atributos['cliente_id']);
         $atributos['cuit'] = $cliente->documentounico;
