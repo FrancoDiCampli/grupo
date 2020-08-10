@@ -121,7 +121,21 @@ trait EntregasTrait
 
     public static function show($id)
     {
-        return $entrega = Entrega::find($id);
+        $configuracion = ConfiguracionTrait::configuracion();
+        $entrega = Entrega::find($id);
+        $detalles = collect();
+        foreach ($entrega->articulos as $det) {
+            $detalles->push($det['pivot']);
+        }
+        $fecha = new Carbon($entrega->fecha);
+        $entrega->fecha = $fecha->format('d-m-Y');
+        $cliente = Cliente::withTrashed()->find($entrega->cliente_id);
+        return [
+            'configuracion' => $configuracion,
+            'entrega' => $entrega,
+            'detalles' => $detalles,
+            'cliente' => $cliente
+        ];
     }
 
     public static function actualizarInventarios($aux, $factura)
@@ -177,7 +191,16 @@ trait EntregasTrait
             }
         }
         // SE REESTABLECE LA CANTIDAD EN LOS INVENTARIOS
-        unset($aux);
+        // unset($aux);
+        static::reestablecerInventarios($inventarios, $entrega);
+        
+        $entrega->articulos()->detach();
+        $entrega->forceDelete();
+        return ['msg' => 'Entrega Anulada'];
+    }
+
+    public static function reestablecerInventarios($inventarios, $entrega)
+    {
         foreach ($inventarios as $inv) {
             $aux = collect($inv->movimientos);
             $aux = $aux->where('numcomprobante', $entrega->id);
@@ -190,8 +213,5 @@ trait EntregasTrait
                 MovimientosTrait::crearMovimiento('ANULACION', $a->cantidad, $a->cantidadlitros, $inventario, $entrega);
             }
         }
-        $entrega->articulos()->detach();
-        $entrega->forceDelete();
-        return ['msg' => 'Entrega Anulada'];
     }
 }
