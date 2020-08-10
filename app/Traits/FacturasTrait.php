@@ -25,9 +25,21 @@ trait FacturasTrait
         $facturas = collect();
 
         foreach ($facs as $fac) {
+            $ventas = $fac->ventas->each->cuenta;
+            $pagos = false;
+            foreach ($ventas as $item) {
+                if ($item->cuenta) {
+                    $payments = $item->cuenta->pagos;
+                    if (count($payments) > 0) {
+                        $pagos = true;
+                    }
+                }
+            }
+
             $fecha = new Carbon($fac->fecha);
             $fac->fecha = $fecha->format('d-m-Y');
             $fac->cliente = Cliente::withTrashed()->find($fac->cliente_id);
+            $fac['pagos'] = $pagos;
             $fac = collect($fac);
             $facturas->push($fac);
         }
@@ -74,7 +86,13 @@ trait FacturasTrait
 
         $det = static::detallesFactura($request->detalles, $factura);
 
+        foreach ($request->detalles as $item) {
+            $ventas[] = $item['venta_id'];
+        }
+
         $factura->articulos()->attach($det);
+
+        $factura->ventas()->attach($ventas);
 
         // foreach ($request['ventas'] as $ven) {
         //     $venta = Venta::findOrFail($ven);
@@ -82,7 +100,8 @@ trait FacturasTrait
         //     $venta->save();
         // }
 
-        // CuentasCorrientesTrait::aplicarIVA($request->ventas, $request->valorAgregado);
+        // OJO ACA
+        CuentasCorrientesTrait::aplicarIVA($ventas, $request->valorAgregado);
 
         return ['msg' => 'factura creada'];
     }
@@ -120,10 +139,8 @@ trait FacturasTrait
         $configuracion = ConfiguracionTrait::configuracion();
         $factura = Factura::find($id);
         $detalles = collect();
-        foreach ($factura->ventas as $venta) {
-            foreach ($venta->articulos as $det) {
-                $detalles->push($det['pivot']);
-            }
+        foreach ($factura->articulos as $det) {
+            $detalles->push($det['pivot']);
         }
         $fecha = new Carbon($factura->fecha);
         $factura->fecha = $fecha->format('d-m-Y');
@@ -139,11 +156,21 @@ trait FacturasTrait
         ];
     }
 
-    public static function anular($id)
+    public static function delete($id)
     {
-        $factura = Factura::findOrFail($id);
-        $factura->articulos()->detach();
-        $factura->forceDelete();
-        return ['msg' => 'Factura Anulada'];
+        $factura = Factura::find($id);
+
+        foreach ($factura->ventas as $item) {
+            if ($item->cuenta) {
+                $pagos = $item->cuenta->pagos;
+                count($pagos) > 0 ? $auxiliar = false : $auxiliar = true;
+            }
+        }
+
+        if ($auxiliar) {
+            $factura->articulos()->detach();
+            $factura->delete();
+            return ['msg' => 'Factura eliminada'];
+        } else return ['msg' => 'No se pudo elimnar la factura'];
     }
 }

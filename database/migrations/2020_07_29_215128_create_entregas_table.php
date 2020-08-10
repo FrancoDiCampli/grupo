@@ -19,15 +19,15 @@ class CreateEntregasTable extends Migration
             $table->bigInteger('cuit'); //cliente
             $table->string('fecha');
             $table->text('observaciones')->nullable();
-            $table->decimal('bonificacion', 12, 2);
-            $table->decimal('recargo', 12, 2);
-            $table->string('condicionventa');
-            $table->decimal('subtotal', 12, 2);
-            $table->decimal('total', 12, 2);
-            $table->decimal('subtotalPesos', 12, 2)->nullable();
-            $table->decimal('totalPesos', 12, 2)->nullable();
-            $table->decimal('cotizacion', 12, 2)->nullable();
-            $table->string('fechaCotizacion')->nullable();
+            // $table->decimal('bonificacion', 12, 2);
+            // $table->decimal('recargo', 12, 2);
+            // $table->string('condicionventa');
+            // $table->decimal('subtotal', 12, 2);
+            // $table->decimal('total', 12, 2);
+            // $table->decimal('subtotalPesos', 12, 2)->nullable();
+            // $table->decimal('totalPesos', 12, 2)->nullable();
+            // $table->decimal('cotizacion', 12, 2)->nullable();
+            // $table->string('fechaCotizacion')->nullable();
             $table->bigInteger('cliente_id');
             $table->bigInteger('user_id');
             $table->timestamps();

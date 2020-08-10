@@ -38,6 +38,6 @@ class FacturasController extends Controller
 
     public function destroy($id)
     {
-        return FacturasTrait::anular($id);
+        return FacturasTrait::delete($id);
     }
 }

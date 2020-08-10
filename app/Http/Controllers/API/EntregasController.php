@@ -20,6 +20,6 @@ class EntregasController extends Controller
 
     public function destroy($id)
     {
-        return EntregasTrait::anular($id);
+        return EntregasTrait::delete($id);
     }
 }

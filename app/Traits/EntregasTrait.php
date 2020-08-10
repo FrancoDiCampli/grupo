@@ -5,6 +5,7 @@ namespace App\Traits;
 use App\Cliente;
 use App\Entrega;
 use App\Articulo;
+use Carbon\Carbon;
 use App\Inventario;
 use App\Traits\ArticulosTrait;
 use App\Traits\MovimientosTrait;
@@ -14,7 +15,37 @@ trait EntregasTrait
 {
     public static function index($request)
     {
-        return $request;
+        if (auth()->user()->role->role != 'vendedor') {
+            $ents = Entrega::orderBy('id', 'DESC')->get();
+        } else {
+            $ents = Entrega::orderBy('id', 'DESC')
+                ->where('user_id', auth()->user()->id)
+                ->get();
+        }
+
+        $entregas = collect();
+
+        foreach ($ents as $ent) {
+            $fecha = new Carbon($ent->fecha);
+            $ent->fecha = $fecha->format('d-m-Y');
+            $ent->cliente = Cliente::withTrashed()->find($ent->cliente_id);;
+            $ent = collect($ent);
+            $entregas->push($ent);
+        }
+
+        if ($entregas->count() <= $request->get('limit')) {
+            return [
+                'entregas' => $entregas,
+                'ultimo' => $entregas->first(),
+                'total' => $entregas->count(),
+            ];
+        } else {
+            return [
+                'entregas' => $entregas->take($request->get('limit', null)),
+                'ultimo' => $entregas->first(),
+                'total' => $entregas->count(),
+            ];
+        }
     }
 
     public static function store($request)
@@ -49,11 +80,11 @@ trait EntregasTrait
                 'cantidad' => $detail['cantidad'],
                 'cantidadLitros' => $detail['cantidadLitros'],
                 'medida' => $detail['medida'],
-                'preciounitario' => $detail['precio'],
-                'subtotalPesos' => null,
-                'subtotal' => $detail['subtotalDolares'],
-                'cotizacion' => null,
-                'fechaCotizacion' => null,
+                // 'preciounitario' => $detail['precio'],
+                // 'subtotalPesos' => null,
+                // 'subtotal' => $detail['subtotalDolares'],
+                // 'cotizacion' => null,
+                // 'fechaCotizacion' => null,
                 'articulo_id' => $detail['id'],
                 'entrega_id' => $entrega->id,
                 'articulo_venta_id' => $detail['articulo_venta_id']
@@ -66,25 +97,31 @@ trait EntregasTrait
     public static function crearEntrega($atributos)
     {
         $configuracion = ConfiguracionTrait::configuracion();
+        $numentrega = Entrega::all()->last() ? Entrega::all()->last()->id : 0;
 
         return Entrega::create([
             "ptoventa" => $configuracion['puntoventa'],
             // "numentrega" => $atributos['numentrega'],
-            "numentrega" => 1,
+            "numentrega" => $numentrega + 1,
             "cuit" => $atributos['cuit'],
             "fecha" => now()->format('Ymd'),
-            "bonificacion" => $atributos['bonificacion'] * 1,
-            "recargo" => $atributos['recargo'] * 1,
-            "subtotal" => $atributos['subtotal'],
-            "total" => $atributos['total'],
-            "subtotalPesos" => $atributos['subtotalPesos'],
-            "totalPesos" => $atributos['totalPesos'],
-            'cotizacion' => $atributos['cotizacion'],
-            'fechaCotizacion' => $atributos['fechaCotizacion'],
+            // "bonificacion" => $atributos['bonificacion'] * 1,
+            // "recargo" => $atributos['recargo'] * 1,
+            // "subtotal" => $atributos['subtotal'],
+            // "total" => $atributos['total'],
+            // "subtotalPesos" => $atributos['subtotalPesos'],
+            // "totalPesos" => $atributos['totalPesos'],
+            // 'cotizacion' => $atributos['cotizacion'],
+            // 'fechaCotizacion' => $atributos['fechaCotizacion'],
             "observaciones" => $atributos['observaciones'],
             "cliente_id" => $atributos['cliente_id'],
             "user_id" => auth()->user()->id
         ]);
+    }
+
+    public static function show($id)
+    {
+        return $entrega = Entrega::find($id);
     }
 
     public static function actualizarInventarios($aux, $factura)
@@ -121,7 +158,7 @@ trait EntregasTrait
         }
     }
 
-    public static function anular($id)
+    public static function delete($id)
     {
         $entrega = Entrega::findOrFail($id);
 
