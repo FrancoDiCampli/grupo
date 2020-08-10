@@ -62,10 +62,13 @@ trait FacturasTrait
     public static function store($request)
     {
         $cliente = Cliente::findOrFail($request['cliente_id']);
+        $configuracion = ConfiguracionTrait::configuracion();
+        // $numfactura = Factura::all()->last() ? Factura::all()->last()->id : 0;
 
         $factura = Factura::create([
             "cuit" => $cliente->documentounico, //cliente
             "tipocomprobante" => $request['tipocomprobante'],
+            "ptoventa" => $configuracion['puntoventa'],
             "numfactura" => $request['numfactura'],
             "comprobanteadherido" => $request['comprobanteadherido'],
             "fecha" => $request['fecha'],
@@ -84,15 +87,15 @@ trait FacturasTrait
             "user_id" => auth()->user()->id,
         ]);
 
-        // $det = static::detallesFactura($request->detalles, $factura);
+        $det = static::detallesFactura($request->detalles, $factura);
 
         foreach ($request->detalles as $item) {
             $ventas[] = $item['venta_id'];
         }
 
-        // $factura->articulos()->attach($det);
+        $factura->articulos()->attach($det);
 
-        // $factura->ventas()->attach($ventas);
+        $factura->ventas()->attach($ventas);
 
         // foreach ($request['ventas'] as $ven) {
         //     $venta = Venta::findOrFail($ven);
@@ -101,7 +104,7 @@ trait FacturasTrait
         // }
 
         // OJO ACA
-        return CuentasCorrientesTrait::aplicarIVA($cliente, $request->valorAgregado);
+        CuentasCorrientesTrait::aplicarIVA($cliente, $request->valorAgregado);
 
         return ['msg' => 'factura creada'];
     }
