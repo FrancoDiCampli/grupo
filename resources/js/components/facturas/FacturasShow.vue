@@ -267,7 +267,7 @@
 export default {
     data() {
         return {
-            inProcess: false
+            inProcess: false,
         };
     },
 
@@ -278,14 +278,14 @@ export default {
     },
 
     methods: {
-        getFactura: async function() {
+        getFactura: async function () {
             this.inProcess = true;
             await this.$store.dispatch("facturas/show", {
-                id: this.id
+                id: this.id,
             });
             this.inProcess = false;
-        }
-    }
+        },
+    },
 };
 </script>
 
