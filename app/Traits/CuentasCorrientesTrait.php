@@ -42,7 +42,7 @@ trait CuentasCorrientesTrait
                         $cuenta->ultimopago = now()->format('Ymd');
                         $cuenta->estado = 'CANCELADA';
                         $cuenta->update();
-                        $factura->pagada = true;
+                        // $factura->pagada = true;
                         $factura->update();
                         $total = $total + $pay['dolares'];
 
@@ -60,7 +60,7 @@ trait CuentasCorrientesTrait
                         $cuenta->ultimopago = now()->format('Ymd');
                         $cuenta->estado = 'CANCELADA';
                         $cuenta->update();
-                        $factura->pagada = true;
+                        // $factura->pagada = true;
                         $factura->update();
 
                         $referencia = FormasDePagoTrait::formaPago($pay, $cliente, $diferencia);
@@ -131,15 +131,20 @@ trait CuentasCorrientesTrait
         ]);
     }
 
-    // public static function aplicarIVA($ventas, $iva)
-    // {
-    //     $cuentas = Cuentacorriente::whereIn('venta_id', $ventas)->get();
+    public static function aplicarIVA($ventas, $iva)
+    {
+        $cuenta = Cuentacorriente::whereIn('venta_id', $ventas)->where('estado', 'ACTIVA')->first();
+        $cuenta->saldo += $iva;
+        $cuenta->update();
+        static::crearMovimiento($cuenta, 'IVA', $iva);
 
-    //     $cuentas->map(function($cuenta) use($iva){
-    //         $cuenta->saldo += $iva;
-    //         $cuenta->update();
+        // $cuentas = Cuentacorriente::whereIn('venta_id', $ventas)->get();
 
-    //         static::crearMovimiento($cuenta, 'IVA', $iva);
-    //     });
-    // }
+        // $cuentas->map(function($cuenta) use($iva){
+        //     $cuenta->saldo += $iva;
+        //     $cuenta->update();
+
+        //     static::crearMovimiento($cuenta, 'IVA', $iva);
+        // });
+    }
 }

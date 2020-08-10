@@ -20,11 +20,11 @@ class CreateArticuloEntregaTable extends Migration
             $table->string('medida');
             $table->integer('cantidad');
             $table->integer('cantidadLitros');
-            $table->decimal('preciounitario', 12, 2);
-            $table->decimal('subtotal', 12, 2);
-            $table->decimal('subtotalPesos', 12, 2)->nullable();
-            $table->decimal('cotizacion', 12, 2)->nullable();
-            $table->string('fechaCotizacion')->nullable();
+            // $table->decimal('preciounitario', 12, 2);
+            // $table->decimal('subtotal', 12, 2);
+            // $table->decimal('subtotalPesos', 12, 2)->nullable();
+            // $table->decimal('cotizacion', 12, 2)->nullable();
+            // $table->string('fechaCotizacion')->nullable();
             $table->unsignedBigInteger('articulo_id');
             $table->unsignedBigInteger('entrega_id');
             $table->unsignedBigInteger('articulo_venta_id');

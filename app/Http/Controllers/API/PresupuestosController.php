@@ -36,8 +36,7 @@ class PresupuestosController extends Controller
 
     public function destroy($id)
     {
-        $presupuesto = Presupuesto::find($id);
-        $presupuesto->delete();
+        return PresupuestosTrait::delete($id);
     }
 
     public function restaurar($id)
