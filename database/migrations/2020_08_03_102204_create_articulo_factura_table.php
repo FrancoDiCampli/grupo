@@ -22,7 +22,7 @@ class CreateArticuloFacturaTable extends Migration
             $table->integer('cantidadLitros');
             $table->decimal('preciounitario', 12, 2)->nullable();
             $table->decimal('bonificacion', 12, 2)->nullable();
-            $table->decimal('recargo', 12, 2);
+            $table->decimal('recargo', 12, 2)->nullable();
             $table->decimal('subtotal', 12, 2);
             $table->decimal('subtotalPesos', 12, 2)->nullable();
             $table->decimal('cotizacion', 12, 2)->nullable();

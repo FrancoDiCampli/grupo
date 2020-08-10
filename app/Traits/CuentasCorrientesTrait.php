@@ -135,8 +135,19 @@ trait CuentasCorrientesTrait
     {
         $cuentas = $cliente->ctacte;
         if (count($cuentas) > 0) {
-            return 'tiene';
-        } else return 'no tiene';
+            $cuenta = $cliente->ctacte->where('estado','ACTIVA')->first();
+            $cuenta->saldo += $iva;
+            $cuenta->update();
+            static::crearMovimiento($cuenta, 'IVA', $iva);
+        } else {
+            Cuentacorriente::create([
+                'venta_id' => 0,
+                'importe' => $iva,
+                'estado' => 'ACTIVA',
+                'saldo' => $iva,
+                'alta' => now()
+            ]);
+        }
 
         // $cuenta = Cuentacorriente::whereIn('venta_id', $ventas)->where('estado', 'ACTIVA')->first();
         // $cuenta->saldo += $iva;
