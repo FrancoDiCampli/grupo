@@ -56,6 +56,22 @@ trait VentasTrait
             // $fac->put('pagos', $pagos);
 
             foreach ($fac->articulos as $det) {
+                // return $det;
+
+                if (auth()->user()->role->role == 'superAdmin' || auth()->user()->role->role == 'administrador') {
+                    $article = Inventario::where('dependencia', null)
+                        ->where('cantidad', '>', 0)
+                        ->where('articulo_id', $det['id'])
+                        ->first();
+                } else {
+                    $article = Inventario::where('dependencia', auth()->user()->id)
+                        ->where('cantidad', '>', 0)
+                        ->where('articulo_id', $det['id'])
+                        ->first();
+                }
+
+                $det['pivot']['disponible'] = $article->cantidad;
+
                 $detsFact = DB::table('articulo_factura')->where('articulo_venta_id', $det['pivot']->id)->get();
                 $detsEntr = DB::table('articulo_entrega')->where('articulo_venta_id', $det['pivot']->id)->get();
 

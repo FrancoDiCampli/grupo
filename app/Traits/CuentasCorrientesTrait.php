@@ -131,12 +131,17 @@ trait CuentasCorrientesTrait
         ]);
     }
 
-    public static function aplicarIVA($ventas, $iva)
+    public static function aplicarIVA($cliente, $iva)
     {
-        $cuenta = Cuentacorriente::whereIn('venta_id', $ventas)->where('estado', 'ACTIVA')->first();
-        $cuenta->saldo += $iva;
-        $cuenta->update();
-        static::crearMovimiento($cuenta, 'IVA', $iva);
+        $cuentas = $cliente->ctacte;
+        if (count($cuentas) > 0) {
+            return 'tiene';
+        } else return 'no tiene';
+
+        // $cuenta = Cuentacorriente::whereIn('venta_id', $ventas)->where('estado', 'ACTIVA')->first();
+        // $cuenta->saldo += $iva;
+        // $cuenta->update();
+        // static::crearMovimiento($cuenta, 'IVA', $iva);
 
         // $cuentas = Cuentacorriente::whereIn('venta_id', $ventas)->get();
 

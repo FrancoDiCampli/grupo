@@ -84,15 +84,15 @@ trait FacturasTrait
             "user_id" => auth()->user()->id,
         ]);
 
-        $det = static::detallesFactura($request->detalles, $factura);
+        // $det = static::detallesFactura($request->detalles, $factura);
 
         foreach ($request->detalles as $item) {
             $ventas[] = $item['venta_id'];
         }
 
-        $factura->articulos()->attach($det);
+        // $factura->articulos()->attach($det);
 
-        $factura->ventas()->attach($ventas);
+        // $factura->ventas()->attach($ventas);
 
         // foreach ($request['ventas'] as $ven) {
         //     $venta = Venta::findOrFail($ven);
@@ -101,7 +101,7 @@ trait FacturasTrait
         // }
 
         // OJO ACA
-        CuentasCorrientesTrait::aplicarIVA($ventas, $request->valorAgregado);
+        return CuentasCorrientesTrait::aplicarIVA($cliente, $request->valorAgregado);
 
         return ['msg' => 'factura creada'];
     }
