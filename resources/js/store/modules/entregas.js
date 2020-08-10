@@ -65,27 +65,28 @@ const actions = {
 
     entregar({ commit }, params) {
         return new Promise(resolve => {
-            commit("fillForm", {
-                detalles: params.details
-            });
+            commit("fillForm", params);
             resolve();
         });
     },
 
     save({ state, commit, dispatch }) {
+        // console.log(state.form);
         return new Promise((resolve, reject) => {
-            axios
-                .post("/api/entregas", state.form)
-                .then((response, reject) => {
-                    commit("resetForm");
-                    resolve(response.data);
-                })
-                .catch(error => {
-                    dispatch("errorHandle", error.response, {
-                        root: true
-                    });
-                    reject(error.response.data);
-                });
+            axios.post("/api/entregas", state.form);
+            resolve();
+            // axios
+            //     .post("/api/entregas", state.form)
+            //     .then(response => {
+            //         commit("resetForm");
+            //         resolve(response.data);
+            //     })
+            //     .catch(error => {
+            //         dispatch("errorHandle", error.response, {
+            //             root: true
+            //         });
+            //         reject(error.response.data);
+            //     });
         });
     }
 };

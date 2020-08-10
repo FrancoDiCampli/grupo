@@ -50,7 +50,7 @@ trait EntregasTrait
 
     public static function store($request)
     {
-        return $request;
+        // return $request;
 
         $atributos = $request;
         $cliente = Cliente::find($atributos['cliente_id']);
@@ -193,7 +193,7 @@ trait EntregasTrait
         // SE REESTABLECE LA CANTIDAD EN LOS INVENTARIOS
         // unset($aux);
         static::reestablecerInventarios($inventarios, $entrega);
-        
+
         $entrega->articulos()->detach();
         $entrega->forceDelete();
         return ['msg' => 'Entrega Anulada'];

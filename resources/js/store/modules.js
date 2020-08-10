@@ -10,6 +10,7 @@ import inventarios from "./modules/inventarios";
 import marcas from "./modules/marcas";
 import movimientos from "./modules/movimientos";
 import pedidos from "./modules/pedidos";
+import entregas from "./modules/entregas";
 import proveedores from "./modules/proveedores";
 import reportes from "./modules/reportes";
 import roles from "./modules/roles";
@@ -32,6 +33,7 @@ export default {
     marcas,
     movimientos,
     pedidos,
+    entregas,
     proveedores,
     reportes,
     roles,

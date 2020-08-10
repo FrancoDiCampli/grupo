@@ -76,7 +76,7 @@ const actions = {
         return new Promise((resolve, reject) => {
             axios
                 .post("/api/facturas", state.form)
-                .then((response, reject) => {
+                .then(response => {
                     commit("resetForm");
                     resolve(response.data);
                 })

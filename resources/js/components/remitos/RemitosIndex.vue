@@ -127,7 +127,21 @@ export default {
         },
 
         delivery(item) {
-            console.log(item);
+            let details = [];
+            for (let i = 0; i < item.articulos.length; i++) {
+                Object.assign(item.articulos[i].pivot, item.articulos[i]);
+                details.push(item.articulos[i].pivot);
+            }
+
+            this.$store
+                .dispatch("entregas/entregar", {
+                    detalles: details,
+                    cliente: item.cliente.razonsocial,
+                    cliente_id: item.cliente.id,
+                })
+                .then(() => {
+                    this.$router.push("/entregas/create");
+                });
         },
 
         print(id) {
