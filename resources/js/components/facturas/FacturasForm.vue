@@ -1,5 +1,4 @@
-
-    <template>
+<template>
     <div>
         <v-card shaped outlined :loading="inProcess" class="pb-4">
             <v-card-title class="py-0 px-2">
@@ -100,7 +99,9 @@
                                                         </td>
                                                         <td>
                                                             <div
-                                                                v-if="cliente.distribuidor"
+                                                                v-if="
+                                                                    cliente.distribuidor
+                                                                "
                                                             >Distribuidor</div>
                                                             <div v-else>Cliente</div>
                                                         </td>
@@ -121,13 +122,22 @@
                                     <v-dialog
                                         ref="dialogFecha"
                                         v-model="fechaDialog"
-                                        :return-value.sync="$store.state.facturas.form.fecha"
+                                        :return-value.sync="
+                                            $store.state.facturas.form.fecha
+                                        "
                                         persistent
-                                        :width="$vuetify.breakpoint.xsOnly ? '100%' : '300px'"
+                                        :width="
+                                            $vuetify.breakpoint.xsOnly
+                                                ? '100%'
+                                                : '300px'
+                                        "
                                     >
                                         <template v-slot:activator="{ on }">
                                             <v-text-field
-                                                v-model="$store.state.facturas.form.fecha"
+                                                v-model="
+                                                    $store.state.facturas.form
+                                                        .fecha
+                                                "
                                                 label="Fecha"
                                                 :rules="[rules.required]"
                                                 readonly
@@ -136,7 +146,9 @@
                                             ></v-text-field>
                                         </template>
                                         <v-date-picker
-                                            v-model="$store.state.facturas.form.fecha"
+                                            v-model="
+                                                $store.state.facturas.form.fecha
+                                            "
                                             scrollable
                                             locale="es"
                                         >
@@ -144,7 +156,12 @@
                                             <v-btn
                                                 text
                                                 color="primary"
-                                                @click="$refs.dialogFecha.save($store.state.facturas.form.fecha)"
+                                                @click="
+                                                    $refs.dialogFecha.save(
+                                                        $store.state.facturas
+                                                            .form.fecha
+                                                    )
+                                                "
                                             >Aceptar</v-btn>
                                         </v-date-picker>
                                     </v-dialog>
@@ -153,7 +170,10 @@
                                 <!-- CONDICION VENTA -->
                                 <v-col cols="12" sm="6" class="py-0">
                                     <v-text-field
-                                        v-model="$store.state.facturas.form.condicionventa"
+                                        v-model="
+                                            $store.state.facturas.form
+                                                .condicionventa
+                                        "
                                         :rules="[rules.required]"
                                         label="Condición"
                                         required
@@ -164,9 +184,12 @@
                                 <!-- COMPROBANTE ADHERIDO -->
                                 <v-col cols="12" sm="6" class="py-0">
                                     <v-text-field
-                                        v-model="$store.state.facturas.form.comprobanteadherido"
+                                        v-model="
+                                            $store.state.facturas.form
+                                                .comprobanteadherido
+                                        "
                                         :rules="[rules.required]"
-                                        label="Comprobante Adherido Nº"
+                                        label="Factura Adherida Nº"
                                         outlined
                                     ></v-text-field>
                                 </v-col>
@@ -215,27 +238,49 @@
                                                     :key="index"
                                                 >
                                                     <td>{{ detalle.articulo }}</td>
-                                                    <td
-                                                        class="hidden-sm-and-down"
-                                                    >{{ detalle.preciounitario }}</td>
+                                                    <td class="hidden-sm-and-down">
+                                                        {{
+                                                        detalle.preciounitario
+                                                        }}
+                                                    </td>
                                                     <td class="btn-td">
                                                         <v-menu
                                                             offset-y
-                                                            :close-on-content-click="false"
+                                                            :close-on-content-click="
+                                                                false
+                                                            "
                                                         >
-                                                            <template v-slot:activator="{ on }">
-                                                                <div
-                                                                    v-on="on"
-                                                                >{{ detalle.cantidad - detalle.cantidadfacturado }}</div>
+                                                            <template
+                                                                v-slot:activator="{
+                                                                    on
+                                                                }"
+                                                            >
+                                                                <div v-on="on">
+                                                                    {{
+                                                                    detalle.cantidad -
+                                                                    detalle.cantidadfacturado
+                                                                    }}
+                                                                </div>
                                                             </template>
-                                                            <v-card v-click-outside="resetEdit">
+                                                            <v-card
+                                                                v-click-outside="
+                                                                    resetEdit
+                                                                "
+                                                            >
                                                                 <v-card-text>
                                                                     <v-text-field
                                                                         label="Unidades"
                                                                         outlined
                                                                         hide-details
-                                                                        v-on:input="editDetail(detalle.id, 'cantidad')"
-                                                                        v-model="editCantidad"
+                                                                        v-on:input="
+                                                                            editDetail(
+                                                                                detalle.id,
+                                                                                'cantidad'
+                                                                            )
+                                                                        "
+                                                                        v-model="
+                                                                            editCantidad
+                                                                        "
                                                                         type="number"
                                                                     ></v-text-field>
                                                                 </v-card-text>
@@ -245,21 +290,42 @@
                                                     <td class="btn-td">
                                                         <v-menu
                                                             offset-y
-                                                            :close-on-content-click="false"
+                                                            :close-on-content-click="
+                                                                false
+                                                            "
                                                         >
-                                                            <template v-slot:activator="{ on }">
-                                                                <div
-                                                                    v-on="on"
-                                                                >{{ detalle.bonificacion || 0 }} %</div>
+                                                            <template
+                                                                v-slot:activator="{
+                                                                    on
+                                                                }"
+                                                            >
+                                                                <div v-on="on">
+                                                                    {{
+                                                                    detalle.bonificacion ||
+                                                                    0
+                                                                    }}
+                                                                    %
+                                                                </div>
                                                             </template>
-                                                            <v-card v-click-outside="resetEdit">
+                                                            <v-card
+                                                                v-click-outside="
+                                                                    resetEdit
+                                                                "
+                                                            >
                                                                 <v-card-text>
                                                                     <v-text-field
                                                                         label="Bonificacion"
                                                                         outlined
                                                                         hide-details
-                                                                        v-on:input="editDetail(detalle.id, 'bonificacion')"
-                                                                        v-model="editBonificacion"
+                                                                        v-on:input="
+                                                                            editDetail(
+                                                                                detalle.id,
+                                                                                'bonificacion'
+                                                                            )
+                                                                        "
+                                                                        v-model="
+                                                                            editBonificacion
+                                                                        "
                                                                         type="number"
                                                                     ></v-text-field>
                                                                 </v-card-text>
@@ -269,21 +335,42 @@
                                                     <td class="btn-td">
                                                         <v-menu
                                                             offset-y
-                                                            :close-on-content-click="false"
+                                                            :close-on-content-click="
+                                                                false
+                                                            "
                                                         >
-                                                            <template v-slot:activator="{ on }">
-                                                                <div
-                                                                    v-on="on"
-                                                                >{{ detalle.recargo || 0 }} %</div>
+                                                            <template
+                                                                v-slot:activator="{
+                                                                    on
+                                                                }"
+                                                            >
+                                                                <div v-on="on">
+                                                                    {{
+                                                                    detalle.recargo ||
+                                                                    0
+                                                                    }}
+                                                                    %
+                                                                </div>
                                                             </template>
-                                                            <v-card v-click-outside="resetEdit">
+                                                            <v-card
+                                                                v-click-outside="
+                                                                    resetEdit
+                                                                "
+                                                            >
                                                                 <v-card-text>
                                                                     <v-text-field
                                                                         label="Recargo"
                                                                         outlined
                                                                         hide-details
-                                                                        v-on:input="editDetail(detalle.id, 'recargo')"
-                                                                        v-model="editRecargo"
+                                                                        v-on:input="
+                                                                            editDetail(
+                                                                                detalle.id,
+                                                                                'recargo'
+                                                                            )
+                                                                        "
+                                                                        v-model="
+                                                                            editRecargo
+                                                                        "
                                                                         type="number"
                                                                     ></v-text-field>
                                                                 </v-card-text>
@@ -301,10 +388,7 @@
                                                                 )
                                                             "
                                                         >
-                                                            <v-icon size="medium">
-                                                                fas
-                                                                fa-times
-                                                            </v-icon>
+                                                            <v-icon size="medium">fas fa-times</v-icon>
                                                         </v-btn>
                                                     </td>
                                                 </tr>
@@ -361,7 +445,8 @@
                                     <v-col cols="12" class="py-0">
                                         <v-text-field
                                             v-model="
-                                                $store.state.facturas.form.recargo
+                                                $store.state.facturas.form
+                                                    .recargo
                                             "
                                             type="number"
                                             label="Recargo %"
@@ -370,7 +455,10 @@
                                     </v-col>
                                     <v-col cols="12" class="py-0">
                                         <v-select
-                                            v-model="$store.state.facturas.form.tipoiva"
+                                            v-model="
+                                                $store.state.facturas.form
+                                                    .tipoiva
+                                            "
                                             @change="valorAgregadoControl()"
                                             :items="[21, 10.5]"
                                             :rules="[rules.required]"
@@ -383,7 +471,10 @@
                                     <!-- TIPO DE COMPROBANTE -->
                                     <v-col cols="12" class="py-0">
                                         <v-text-field
-                                            v-model="$store.state.facturas.form.tipocomprobante"
+                                            v-model="
+                                                $store.state.facturas.form
+                                                    .tipocomprobante
+                                            "
                                             label="Tipo de comprobante"
                                             outlined
                                             disabled
@@ -398,10 +489,10 @@
                                             :return-value.sync="fechaCotizacion"
                                             persistent
                                             :width="
-                                            $vuetify.breakpoint.xsOnly
-                                                ? '100%'
-                                                : '300px'
-                                        "
+                                                $vuetify.breakpoint.xsOnly
+                                                    ? '100%'
+                                                    : '300px'
+                                            "
                                         >
                                             <template v-slot:activator="{ on }">
                                                 <v-text-field
@@ -422,10 +513,10 @@
                                                     text
                                                     color="primary"
                                                     @click="
-                                                    $refs.dialogCotizacion.save(
-                                                        fechaCotizacion
-                                                    )
-                                                "
+                                                        $refs.dialogCotizacion.save(
+                                                            fechaCotizacion
+                                                        )
+                                                    "
                                                 >Aceptar</v-btn>
                                             </v-date-picker>
                                         </v-dialog>
@@ -508,7 +599,6 @@
         </v-card>
     </div>
 </template>
-
 
 <script>
 // TODO: Añadir presentacion en la tabla de detalles
@@ -829,4 +919,3 @@ export default {
     cursor: pointer;
 }
 </style>
-
