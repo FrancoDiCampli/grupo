@@ -84,9 +84,9 @@ trait EntregasTrait
                 // 'subtotal' => $detail['subtotalDolares'],
                 // 'cotizacion' => null,
                 // 'fechaCotizacion' => null,
-                'articulo_id' => $detail['id'],
+                'articulo_id' => $detail['articulo_id'],
                 'entrega_id' => $entrega->id,
-                'articulo_venta_id' => $detail['articulo_venta_id']
+                'articulo_venta_id' => $detail['id']
             );
             $det[] = $detalles;
         }
