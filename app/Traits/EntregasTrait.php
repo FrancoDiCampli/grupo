@@ -79,11 +79,6 @@ trait EntregasTrait
                 'cantidad' => $detail['cantidad'],
                 'cantidadLitros' => $detail['cantidadLitros'],
                 'medida' => $detail['medida'],
-                // 'preciounitario' => $detail['precio'],
-                // 'subtotalPesos' => null,
-                // 'subtotal' => $detail['subtotalDolares'],
-                // 'cotizacion' => null,
-                // 'fechaCotizacion' => null,
                 'articulo_id' => $detail['articulo_id'],
                 'entrega_id' => $entrega->id,
                 'articulo_venta_id' => $detail['id']
@@ -100,19 +95,10 @@ trait EntregasTrait
 
         return Entrega::create([
             "ptoventa" => $configuracion['puntoventa'],
-            // "numentrega" => $atributos['numentrega'],
             "numentrega" => $numentrega + 1,
             "comprobanteadherido" => $atributos['comprobanteadherido'],
             "cuit" => $atributos['cuit'],
             "fecha" => now()->format('Ymd'),
-            // "bonificacion" => $atributos['bonificacion'] * 1,
-            // "recargo" => $atributos['recargo'] * 1,
-            // "subtotal" => $atributos['subtotal'],
-            // "total" => $atributos['total'],
-            // "subtotalPesos" => $atributos['subtotalPesos'],
-            // "totalPesos" => $atributos['totalPesos'],
-            // 'cotizacion' => $atributos['cotizacion'],
-            // 'fechaCotizacion' => $atributos['fechaCotizacion'],
             "observaciones" => $atributos['observaciones'],
             "cliente_id" => $atributos['cliente_id'],
             "user_id" => auth()->user()->id

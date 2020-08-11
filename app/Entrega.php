@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Entrega extends Model
 {
     protected $guarded = [];
-    
+
     protected $casts = [
         'bonificacion' => 'decimal:2',
         'recargo' => 'decimal:2',
@@ -25,7 +25,9 @@ class Entrega extends Model
 
     public function articulos()
     {
-        return $this->belongsToMany('App\Articulo')->withTimestamps();
+        return $this->belongsToMany('App\Articulo')
+            ->withPivot('codarticulo', 'articulo', 'medida', 'cantidad', 'cantidadLitros', 'articulo_id', 'articulo_venta_id')
+            ->withTimestamps();
     }
 
     public function cliente()
