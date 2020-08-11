@@ -63,7 +63,7 @@ trait FacturasTrait
     {
         $cliente = Cliente::findOrFail($request['cliente_id']);
         $configuracion = ConfiguracionTrait::configuracion();
-        $numfactura = Factura::all()->last() ? Factura::all()->last()->id : 0;
+        // $numfactura = Factura::all()->last() ? Factura::all()->last()->id : 0;
 
         $factura = Factura::create([
             "cuit" => $cliente->documentounico, //cliente
@@ -96,12 +96,6 @@ trait FacturasTrait
         $factura->articulos()->attach($det);
 
         $factura->ventas()->attach($ventas);
-
-        // foreach ($request['ventas'] as $ven) {
-        //     $venta = Venta::findOrFail($ven);
-        //     $venta->numfactura = $nueva->id;
-        //     $venta->save();
-        // }
 
         // OJO ACA
         CuentasCorrientesTrait::aplicarIVA($cliente, $request->valorAgregado);

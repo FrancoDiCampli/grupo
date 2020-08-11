@@ -7,8 +7,9 @@ use App\Cliente;
 use App\Factura;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\Traits\FacturasTrait;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
 
 class FacturasController extends Controller
 {
@@ -28,7 +29,13 @@ class FacturasController extends Controller
 
     public function store(Request $request)
     {
-        return FacturasTrait::store($request);
+        try {
+            DB::transaction(function () use($request) {
+                return FacturasTrait::store($request);
+            });
+        } catch (\Throwable $th) {
+            throw $th;
+        }
     }
 
     public function show($id)

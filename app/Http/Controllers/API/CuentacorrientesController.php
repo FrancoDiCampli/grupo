@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Cuentacorriente;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Traits\CuentasCorrientesTrait;
 
@@ -18,7 +19,13 @@ class CuentacorrientesController extends Controller
     // PAGOS PARCIALES O TOTALES 
     public function pagar(Request $request)
     {
-        return CuentasCorrientesTrait::pagar($request);
+        try {
+            DB::transaction(function() use($request){
+                return CuentasCorrientesTrait::pagar($request);
+            });
+        } catch (\Throwable $th) {
+            throw $th;
+        }
     }
 
     public function recargar(Request $request)

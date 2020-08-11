@@ -3,9 +3,10 @@
 namespace App\Http\Controllers\API;
 
 use App\Venta;
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\Traits\VentasTrait;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
 
 class VentasController extends Controller
 {
@@ -26,16 +27,23 @@ class VentasController extends Controller
 
     public function store(Request $request)
     {
-        return VentasTrait::store($request);
+        try {
+            DB::transaction(function () use($request) {
+                return VentasTrait::store($request);
+            });
+        } catch (\Throwable $th) {
+            throw $th;
+        }
     }
 
     public function update(Request $request, $id)
     {
-        $factura = Venta::find($id);
-        if ($request->get('pagada')) {
-            $factura->pagada = $request->get('pagada');
-        }
-        return $factura->id;
+        return $request;
+        // $factura = Venta::find($id);
+        // if ($request->get('pagada')) {
+        //     $factura->pagada = $request->get('pagada');
+        // }
+        // return $factura->id;
     }
 
     public function facturar(Request $request)

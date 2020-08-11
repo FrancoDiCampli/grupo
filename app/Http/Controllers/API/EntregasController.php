@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Http\Controllers\Controller;
-use App\Traits\EntregasTrait;
 use Illuminate\Http\Request;
+use App\Traits\EntregasTrait;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
 
 class EntregasController extends Controller
 {
@@ -15,7 +16,13 @@ class EntregasController extends Controller
 
     public function store(Request $request)
     {
-        return EntregasTrait::store($request);
+        try {
+            DB::transaction(function() use($request){
+                return EntregasTrait::store($request);
+            });
+        } catch (\Throwable $th) {
+            throw $th;
+        }
     }
 
     public function show($id)

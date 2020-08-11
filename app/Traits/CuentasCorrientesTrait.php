@@ -43,7 +43,7 @@ trait CuentasCorrientesTrait
                         $cuenta->estado = 'CANCELADA';
                         $cuenta->update();
                         // $factura->pagada = true;
-                        $factura->update();
+                        // $factura->update();
                         $total = $total + $pay['dolares'];
 
                         $referencia = FormasDePagoTrait::formaPago($pay, $cliente, $diferencia = null);
@@ -61,7 +61,7 @@ trait CuentasCorrientesTrait
                         $cuenta->estado = 'CANCELADA';
                         $cuenta->update();
                         // $factura->pagada = true;
-                        $factura->update();
+                        // $factura->update();
 
                         $referencia = FormasDePagoTrait::formaPago($pay, $cliente, $diferencia);
                         $nuevoPago = static::crearPago($cuenta, $pay['dolares'], $referencia);
@@ -134,19 +134,35 @@ trait CuentasCorrientesTrait
     public static function aplicarIVA($cliente, $iva)
     {
         $cuentas = $cliente->ctacte;
-        if (count($cuentas) > 0) {
-            $cuenta = $cliente->ctacte->where('estado','ACTIVA')->first();
+        count($cuentas) > 0 ? $aux = true : $aux = false;
+        $aux ? $cuenta = $cliente->ctacte->where('estado', 'ACTIVA')->first() : $cuenta = null;
+        if ($cuenta != null) {
             $cuenta->saldo += $iva;
             $cuenta->update();
             static::crearMovimiento($cuenta, 'IVA', $iva);
         } else {
-            Cuentacorriente::create([
-                'venta_id' => 0,
+            $venta = Venta::create([
+                'tipocomprobante' => 'IVA',
+                'numventa' => 0,
+                'cuit' => $cliente->documentounico,
+                'fecha' => now()->format('Y-m-d'),
+                'bonificacion' => 0,
+                'recargo' => 0,
+                'condicionventa' => 'CONTADO',
+                'subtotal' => $iva,
+                'total' => $iva,
+                'cliente_id' => $cliente->id,
+                'user_id' => auth()->user()->id,
+                'deleted_at' => now()
+            ]);
+            $cuentaX = Cuentacorriente::create([
+                'venta_id' => $venta->id,
                 'importe' => $iva,
                 'estado' => 'ACTIVA',
                 'saldo' => $iva,
                 'alta' => now()
             ]);
+            static::crearMovimiento($cuentaX, 'IVA', $iva);
         }
 
         // $cuenta = Cuentacorriente::whereIn('venta_id', $ventas)->where('estado', 'ACTIVA')->first();

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Traits\ConsignacionesTrait;
 use App\Http\Controllers\Controller;
 
@@ -20,7 +21,13 @@ class ConsignmentsController extends Controller
 
     public function store(Request $request)
     {
-        return ConsignacionesTrait::store($request);
+        try {
+            DB::transaction(function() use($request){
+                return ConsignacionesTrait::store($request);
+            });
+        } catch (\Throwable $th) {
+            throw $th;
+        }
     }
 
     public function show($id)
