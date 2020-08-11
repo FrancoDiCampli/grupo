@@ -63,7 +63,7 @@ trait FacturasTrait
     {
         $cliente = Cliente::findOrFail($request['cliente_id']);
         $configuracion = ConfiguracionTrait::configuracion();
-        // $numfactura = Factura::all()->last() ? Factura::all()->last()->id : 0;
+        $numfactura = Factura::all()->last() ? Factura::all()->last()->id : 0;
 
         $factura = Factura::create([
             "cuit" => $cliente->documentounico, //cliente

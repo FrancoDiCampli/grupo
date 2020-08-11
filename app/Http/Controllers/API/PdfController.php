@@ -47,4 +47,14 @@ class PdfController extends Controller
     {
         return PdfTrait::resumenCuenta($request);
     }
+
+    public function entregasPDF($id)
+    {
+        return PdfTrait::entregas($id);
+    }
+
+    public function facturasPDF($id)
+    {
+        return PdfTrait::facturas($id);
+    }
 }

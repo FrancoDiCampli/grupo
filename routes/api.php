@@ -84,6 +84,8 @@ Route::middleware('auth:airlock')->group(function () {
     Route::get('consignacionesPDF/{id}', 'API\PdfController@consignacionesPDF');
     Route::get('devolucionesPDF/{id}', 'API\PdfController@devolucionesPDF');
     Route::post('/resumenCuentaPDF', 'API\PdfController@resumenCuentaPDF');
+    Route::get('entregasPDF/{id}', 'API\PdfController@entregasPDF');
+    Route::get('facturasPDF/{id}', 'API\PdfController@facturasPDF');
 
     /*Busqueda*/
     Route::post('/buscando', 'API\BuscadorController@buscando');

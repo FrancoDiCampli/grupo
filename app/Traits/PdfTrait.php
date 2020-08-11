@@ -3,11 +3,14 @@
 namespace App\Traits;
 
 use App\Cliente;
+use App\Entrega;
+use App\Factura;
 use App\Traits\VentasTrait;
 use App\Traits\ComprasTrait;
 use App\Traits\RecibosTrait;
 use App\Traits\DevolucionesTrait;
 use App\Traits\PresupuestosTrait;
+use Illuminate\Support\Facades\DB;
 use App\Traits\ConsignacionesTrait;
 
 trait PdfTrait
@@ -92,6 +95,28 @@ trait PdfTrait
         $saldoAnterior = $resumen['saldoAnterior'];
         $saldo = $resumen['saldo'];
         $pdf = app('dompdf.wrapper')->loadView('resumenCuentaPDF', compact('configuracion', 'cliente', 'desde', 'hasta', 'cuentas', 'pagos', 'debe', 'haber', 'saldoAnterior', 'saldo'))->setPaper('A4');
+        return $pdf->download();
+    }
+
+    public static function entregas($id)
+    {
+        $configuracion = ConfiguracionTrait::configuracion();
+        $entrega = Entrega::find($id);
+        $cliente = Cliente::withTrashed()->find($entrega->cliente_id);
+        $detalles = DB::table('articulo_entrega')->where('entrega_id', $entrega->id)->get();
+
+        $pdf = app('dompdf.wrapper')->loadView('entregasPDF', compact('configuracion', 'entrega', 'detalles', 'cliente'))->setPaper('A4');
+        return $pdf->download();
+    }
+
+    public static function facturas($id)
+    {
+        $configuracion = ConfiguracionTrait::configuracion();
+        $factura = Factura::find($id);
+        $cliente = Cliente::withTrashed()->find($factura->cliente_id);
+        $detalles = DB::table('articulo_factura')->where('factura_id', $factura->id)->get();
+
+        $pdf = app('dompdf.wrapper')->loadView('facturasPDF', compact('configuracion', 'factura', 'detalles', 'cliente'))->setPaper('A4');
         return $pdf->download();
     }
 }
