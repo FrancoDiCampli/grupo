@@ -4,8 +4,9 @@ namespace App\Http\Controllers\API;
 
 use App\Presupuesto;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\Traits\PresupuestosTrait;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
 
 class PresupuestosController extends Controller
 {
@@ -26,7 +27,13 @@ class PresupuestosController extends Controller
 
     public function store(Request $request)
     {
-        return PresupuestosTrait::store($request);
+        try {
+            DB::transaction(function () use($request) {
+                return PresupuestosTrait::store($request);
+            });
+        } catch (\Throwable $th) {
+            throw $th;
+        }
     }
 
     public function show($id)
@@ -52,6 +59,12 @@ class PresupuestosController extends Controller
 
     public function update(Request $request, $id)
     {
-        return PresupuestosTrait::update($request, $id);
+        try {
+            DB::transaction(function () use($request, $id) {
+                return PresupuestosTrait::update($request, $id);
+            });
+        } catch (\Throwable $th) {
+            throw $th;
+        }
     }
 }

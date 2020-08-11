@@ -262,6 +262,15 @@ trait ClientesTrait
 
         $billing = $ordenando->values()->all();
 
+        $invoices = collect();
+        foreach ($facturas as $item) {
+            if ($item->tipocomprobante != 'IVA') {
+                $invoices->push($item);
+            }
+        }
+
+        $facturas = $invoices;
+
         return compact('cliente', 'contactos', 'user', 'facturas', 'cuentas', 'recibos', 'billing', 'haber');
     }
 

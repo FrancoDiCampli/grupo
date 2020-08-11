@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
 use App\Traits\DevolucionesTrait;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 
 class GiveBacksController extends Controller
@@ -20,7 +21,13 @@ class GiveBacksController extends Controller
 
     public function store(Request $request)
     {
-        return DevolucionesTrait::store($request);
+        try {
+            DB::transaction(function() use($request){
+                return DevolucionesTrait::store($request);
+            });
+        } catch (\Throwable $th) {
+            throw $th;
+        }
     }
 
     public function show($id)

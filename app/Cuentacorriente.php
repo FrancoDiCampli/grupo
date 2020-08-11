@@ -16,7 +16,7 @@ class Cuentacorriente extends Model
 
     public function factura()
     {
-        return $this->hasOne(Venta::class, 'id', 'venta_id');
+        return $this->hasOne(Venta::class, 'id', 'venta_id')->withTrashed();
     }
 
     public function pagos()

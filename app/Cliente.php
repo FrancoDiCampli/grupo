@@ -41,7 +41,7 @@ class Cliente extends Model
 
     public function facturas()
     {
-        return $this->hasMany(Venta::class);
+        return $this->hasMany(Venta::class)->withTrashed();
     }
 
     public function invoices()
