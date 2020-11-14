@@ -30,7 +30,7 @@ class FacturasController extends Controller
     public function store(Request $request)
     {
         try {
-            DB::transaction(function () use($request) {
+            DB::transaction(function () use ($request) {
                 return FacturasTrait::store($request);
             });
         } catch (\Throwable $th) {
@@ -45,6 +45,12 @@ class FacturasController extends Controller
 
     public function destroy($id)
     {
-        return FacturasTrait::delete($id);
+        try {
+            DB::transaction(function () use ($id) {
+                return FacturasTrait::delete($id);
+            });
+        } catch (\Throwable $th) {
+            throw $th;
+        }
     }
 }

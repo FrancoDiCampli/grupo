@@ -28,7 +28,7 @@ class VentasController extends Controller
     public function store(Request $request)
     {
         try {
-            DB::transaction(function () use($request) {
+            DB::transaction(function () use ($request) {
                 return VentasTrait::store($request);
             });
         } catch (\Throwable $th) {
@@ -58,7 +58,13 @@ class VentasController extends Controller
 
     public function destroy($id)
     {
-        return VentasTrait::delete($id);
+        try {
+            DB::transaction(function () use ($id) {
+                return VentasTrait::delete($id);
+            });
+        } catch (\Throwable $th) {
+            throw $th;
+        }
     }
 
     public function restaurar($id)

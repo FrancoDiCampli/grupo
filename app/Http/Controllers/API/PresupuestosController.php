@@ -28,7 +28,7 @@ class PresupuestosController extends Controller
     public function store(Request $request)
     {
         try {
-            DB::transaction(function () use($request) {
+            DB::transaction(function () use ($request) {
                 return PresupuestosTrait::store($request);
             });
         } catch (\Throwable $th) {
@@ -43,7 +43,13 @@ class PresupuestosController extends Controller
 
     public function destroy($id)
     {
-        return PresupuestosTrait::delete($id);
+        try {
+            DB::transaction(function () use ($id) {
+                return PresupuestosTrait::delete($id);
+            });
+        } catch (\Throwable $th) {
+            throw $th;
+        }
     }
 
     public function restaurar($id)
@@ -60,7 +66,7 @@ class PresupuestosController extends Controller
     public function update(Request $request, $id)
     {
         try {
-            DB::transaction(function () use($request, $id) {
+            DB::transaction(function () use ($request, $id) {
                 return PresupuestosTrait::update($request, $id);
             });
         } catch (\Throwable $th) {

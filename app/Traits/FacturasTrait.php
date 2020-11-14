@@ -153,6 +153,8 @@ trait FacturasTrait
         ];
     }
 
+    // Al eliminar facturas reestablecer el saldo de la cuenta corriente
+
     public static function delete($id)
     {
         $factura = Factura::find($id);
@@ -166,6 +168,7 @@ trait FacturasTrait
 
         if ($auxiliar) {
             $factura->articulos()->detach();
+            CuentasCorrientesTrait::descontarIVA($factura->cliente, $factura->iva);
             $factura->delete();
             return ['msg' => 'Factura eliminada'];
         } else return ['msg' => 'No se pudo elimnar la factura'];
