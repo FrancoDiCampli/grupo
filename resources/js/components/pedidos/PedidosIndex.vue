@@ -46,6 +46,9 @@
                                                 Venta
                                             </v-list-item-title>
                                         </v-list-item>
+                                        <v-list-item @click="deletePedido()">
+                                            <v-list-item-title>Eliminar</v-list-item-title>
+                                        </v-list-item>
                                     </v-list>
                                 </v-menu>
                             </td>
@@ -141,6 +144,12 @@ export default {
             this.ventaID = null;
             this.remitoadherido = null;
         },
+
+        async deletePedido() {
+            this.inProcess = true;
+            await this.$store.dispatch("pedidos/destroy");
+            this.inProcess = false;
+        }
     },
 };
 </script>

@@ -140,24 +140,23 @@ const actions = {
                     reject(error.response.data);
                 });
         });
-    }
+    },
 
-    // TODO: Preguntar si se van a eliminar o no.
-    // destroy({ dispatch }, params) {
-    //     return new Promise((resolve, reject) => {
-    //         axios
-    //             .delete("/api/pedidos/" + params.id)
-    //             .then(response => {
-    //                 resolve(response.data);
-    //             })
-    //             .catch(error => {
-    //                 dispatch("errorHandle", error.response, {
-    //                     root: true
-    //                 });
-    //                 reject(error.response.data);
-    //             });
-    //     });
-    // }
+    destroy({ dispatch }, params) {
+        return new Promise((resolve, reject) => {
+            axios
+                .delete("/api/pedidos/" + params.id)
+                .then(response => {
+                    resolve(response.data);
+                })
+                .catch(error => {
+                    dispatch("errorHandle", error.response, {
+                        root: true
+                    });
+                    reject(error.response.data);
+                });
+        });
+    }
 };
 
 export default {

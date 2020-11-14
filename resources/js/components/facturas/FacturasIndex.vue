@@ -28,9 +28,7 @@
                                         <v-list-item :to="`/facturas/show/${item.id}`">
                                             <v-list-item-title>Detalles</v-list-item-title>
                                         </v-list-item>
-                                    </v-list>
-                                    <v-list>
-                                        <v-list-item>
+                                        <v-list-item @click="deleteEntrega()">
                                             <v-list-item-title>Eliminar</v-list-item-title>
                                         </v-list-item>
                                     </v-list>
@@ -58,6 +56,14 @@ export default {
     }),
 
     props: ["limit"],
+
+    methods: {
+        async deleteFactura() {
+            this.inProcess = true;
+            await this.$store.dispatch("pedidos/destroy");
+            this.inProcess = false;
+        }
+    }
 };
 </script>
 

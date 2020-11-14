@@ -15,13 +15,14 @@ Route::middleware('auth:airlock')->group(function () {
 
     /*remitos*/
     Route::apiResource('remitos', 'API\VentasController', ['except' => ['create', 'edit']]);
+    Route::post('facturar', 'API\VentasController@facturar');
 
     // Entregas
     Route::apiResource('entregas', 'API\EntregasController', ['except' => ['create', 'edit']]);
 
     /*Facturas*/
     Route::apiResource('facturas', 'API\FacturasController', ['only' => ['index', 'store', 'show']]);
-    Route::post('facturar', 'API\VentasController@facturar');
+
 
     /*Clientes*/
     Route::apiResource('clientes', 'API\ClientesController', ['except' => ['create', 'edit']]);

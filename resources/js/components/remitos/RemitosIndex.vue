@@ -69,6 +69,9 @@
                                         >
                                             <v-list-item-title>Generar entrega</v-list-item-title>
                                         </v-list-item>
+                                        <v-list-item @click="deleteRemito()">
+                                            <v-list-item-title>Eliminar</v-list-item-title>
+                                        </v-list-item>
                                     </v-list>
                                 </v-menu>
                             </td>
@@ -112,7 +115,9 @@ export default {
                         (e) => e.id == this.selected[i]
                     );
                     for (let j = 0; j < find.articulos.length; j++) {
-                        details.push(find.articulos[j].pivot);
+                        if(find.articulos[j].pivot.cantidad - find.articulos[j].pivot.cantidadfacturado > 0) {
+                            details.push(find.articulos[j].pivot);
+                        }
                     }
                 }
 
@@ -158,6 +163,12 @@ export default {
                 return i.todofacturado;
             }
         },
+
+        async deleteRemito() {
+            this.inProcess = true;
+            await this.$store.dispatch("remitos/destroy");
+            this.inProcess = false;
+        }
     },
 };
 </script>

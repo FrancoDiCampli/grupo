@@ -64,6 +64,10 @@ const actions = {
 
     facturar({ commit }, params) {
         return new Promise(resolve => {
+            console.log({
+                name: 'facturas facturar',
+                log: params.details
+            });
             commit("fillForm", {
                 detalles: params.details
             });
@@ -77,6 +81,22 @@ const actions = {
                 .post("/api/facturas", state.form)
                 .then(response => {
                     commit("resetForm");
+                    resolve(response.data);
+                })
+                .catch(error => {
+                    dispatch("errorHandle", error.response, {
+                        root: true
+                    });
+                    reject(error.response.data);
+                });
+        });
+    },
+
+    destroy({ dispatch }, params) {
+        return new Promise((resolve, reject) => {
+            axios
+                .delete("/api/remitos/" + params.id)
+                .then(response => {
                     resolve(response.data);
                 })
                 .catch(error => {
