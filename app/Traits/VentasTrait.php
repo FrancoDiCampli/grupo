@@ -83,6 +83,9 @@ trait VentasTrait
                 $det['pivot']['cantidadentregado'] = $detsEntr->sum('cantidad');
 
                 $det['pivot']['litros'] = $det->litros;
+
+                count($fac->cuenta->pagos) > 0 ? $fac['hasPagos'] = true : $fac['hasPagos'] = false;
+                count($fac->entregas) > 0 ? $fac['hasEntregas'] = true : $fac['hasEntregas'] = false;
             }
 
             $facturas->push($fac);
