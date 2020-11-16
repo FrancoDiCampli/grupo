@@ -236,9 +236,9 @@ export default {
             this.PuntoVenta = data.puntoventa;
             let response = await this.$store.dispatch("entregas/index");
             if (response.ultima) {
-                this.NumComprobante = Number(response.ultima.numfactura) + 1;
+                this.NumComprobante = Number(response.ultima.numentrega) + 1;
             } else {
-                this.NumComprobante = data.numfactura;
+                this.NumComprobante = data.numentrega;
             }
         },
 

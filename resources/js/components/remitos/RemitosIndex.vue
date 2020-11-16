@@ -229,7 +229,11 @@ export default {
 
         checkOptions(item) {
             console.log(item);
-            return true;
+            if(!item.hasFacturas && !item.hasEntregas && !item.hasPagos) {
+                return true;
+            } else {
+                return false;
+            }
         },
 
         openDeleteDialog(id) {
