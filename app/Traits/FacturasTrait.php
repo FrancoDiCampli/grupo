@@ -40,7 +40,7 @@ trait FacturasTrait
             $fecha = new Carbon($fac->fecha);
             $fac->fecha = $fecha->format('d-m-Y');
             $fac->cliente = Cliente::withTrashed()->find($fac->cliente_id);
-            $fac['pagos'] = $pagos;
+            $fac['hasPagos'] = $pagos;
             $fac = collect($fac);
             $facturas->push($fac);
         }
