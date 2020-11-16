@@ -86,6 +86,7 @@ trait VentasTrait
 
                 count($fac->cuenta->pagos) > 0 ? $fac['hasPagos'] = true : $fac['hasPagos'] = false;
                 count($fac->entregas) > 0 ? $fac['hasEntregas'] = true : $fac['hasEntregas'] = false;
+                count($fac->facturas) > 0 ? $fac['hasFacturas'] = true : $fac['hasFacturas'] = false;
             }
 
             $facturas->push($fac);
