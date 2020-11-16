@@ -33,7 +33,6 @@ const actions = {
             axios
                 .get("/api/remitos", { params: params })
                 .then(response => {
-                    console.log(response.data);
                     commit("fillRemitos", response.data);
                     resolve(response.data);
                 })

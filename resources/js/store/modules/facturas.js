@@ -64,10 +64,6 @@ const actions = {
 
     facturar({ commit }, params) {
         return new Promise(resolve => {
-            console.log({
-                name: "facturas facturar",
-                log: params.details
-            });
             commit("fillForm", {
                 detalles: params.details
             });

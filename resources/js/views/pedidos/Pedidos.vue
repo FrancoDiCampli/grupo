@@ -22,7 +22,7 @@
         <v-container>
             <v-row justify="center">
                 <v-col cols="12" md="10" lg="8">
-                    <PedidosIndex>
+                    <PedidosIndex @erase="getPedidos()">
                         <br />
                         <v-row justify="center" v-if="$store.state.pedidos.pedidos">
                             <br />

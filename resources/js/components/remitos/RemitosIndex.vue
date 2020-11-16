@@ -83,7 +83,8 @@
                                             >
                                         </v-list-item>
                                         <v-list-item
-                                            @click="deleteRemito(item.id)"
+                                            v-if="checkOptions(item)"
+                                            @click="openDeleteDialog(item.id)"
                                         >
                                             <v-list-item-title
                                                 >Eliminar</v-list-item-title
@@ -98,6 +99,44 @@
                 <slot></slot>
             </v-card-text>
         </v-card>
+
+        <v-dialog v-model="deleteDialog" persistent width="450px">
+            <v-card v-if="inProcess">
+                <v-row justify="center">
+                    <v-progress-circular
+                        :size="70"
+                        :width="7"
+                        color="primary"
+                        indeterminate
+                        style="margin: 32px 0 32px 0;"
+                    ></v-progress-circular>
+                </v-row>
+            </v-card>
+            <v-card v-else>
+                <v-card-title class="headline">¿Estas seguro?</v-card-title>
+                <v-card-text>
+                    Se eliminará el remito seleccionado, esta acción es irreversible.
+                </v-card-text>
+                <v-divider></v-divider>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn
+                        color="error"
+                        text
+                        @click="cancelDelete()"
+                        :disabled="inProcess"
+                        >Cancelar</v-btn
+                    >
+                    <v-btn
+                        color="success"
+                        text
+                        @click="deleteRemito()"
+                        :disabled="inProcess"
+                        >Aceptar</v-btn
+                    >
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
     </div>
 </template>
 
@@ -106,6 +145,8 @@ import FacturasIndex from "../facturas/FacturasIndex";
 
 export default {
     data: () => ({
+        deleteDialog: false,
+        deleteId: null,
         headers: [
             { text: "", sortable: false },
             { text: "N°", sortable: false, class: "hidden-xs-only" },
@@ -186,10 +227,27 @@ export default {
             }
         },
 
-        async deleteRemito(id) {
+        checkOptions(item) {
+            console.log(item);
+            return true;
+        },
+
+        openDeleteDialog(id) {
+            this.deleteId = id;
+            this.deleteDialog = true;
+        },
+
+        cancelDelete() {
+            this.deleteId = null;
+            this.deleteDialog = false;
+        },
+
+        async deleteRemito() {
             this.inProcess = true;
-            await this.$store.dispatch("remitos/destroy", { id: id });
+            await this.$store.dispatch("remitos/destroy", { id: this.deleteId });
             this.inProcess = false;
+            this.$emit('erase');
+            this.deleteDialog = false;
         }
     }
 };

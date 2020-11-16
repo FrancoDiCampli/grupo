@@ -481,7 +481,8 @@
         <v-dialog v-model="editDetailDialog" width="500">
         <v-card>
             <v-card-title>Editar detalle</v-card-title>
-
+            <v-divider></v-divider>
+            <br>
             <v-card-text>
                 <v-form @submit.prevent="editDetail">
                     <v-row justify="center">
@@ -530,9 +531,9 @@
                     <v-divider></v-divider>
                     <br>
                     <v-row justify="end">
-                        <v-btn tile outlined color="error" @click="editDetailDialog = false">Cancelar</v-btn>
+                        <v-btn text color="error" @click="editDetailDialog = false">Cancelar</v-btn>
                         <div class="mx-2"></div>
-                        <v-btn tile class="elevation-0" type="submit" color="secondary">Guardar</v-btn>
+                        <v-btn text class="elevation-0" type="submit" color="secondary">Guardar</v-btn>
                         <div class="mx-2"></div>
                     </v-row>
                 </v-form>
@@ -544,8 +545,6 @@
 </template>
 
 <script>
-// TODO: Añadir presentacion en la tabla de detalles
-
 import moment from "moment";
 import ClickOutside from "v-click-outside";
 var facturacionMaxima = 999999999;
@@ -640,10 +639,6 @@ export default {
     created() {
         if (this.$store.state.facturas.form.detalles) {
             this.detalles = this.$store.state.facturas.form.detalles;
-            console.log({
-                name: 'facturas forms',
-                log: this.detalles
-            })
         } else {
             this.$router.push("/remitos");
         }

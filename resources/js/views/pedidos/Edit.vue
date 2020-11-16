@@ -78,6 +78,7 @@ export default {
                 let checkData = await this.$refs.formPedidos.setData();
                 if (checkData) {
                     await this.$store.dispatch("pedidos/update");
+                    this.$router.push('/pedidos');
                     // this.resetForm();
                 }
             }
