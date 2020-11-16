@@ -65,7 +65,7 @@ const actions = {
     facturar({ commit }, params) {
         return new Promise(resolve => {
             console.log({
-                name: 'facturas facturar',
+                name: "facturas facturar",
                 log: params.details
             });
             commit("fillForm", {
@@ -95,7 +95,7 @@ const actions = {
     destroy({ dispatch }, params) {
         return new Promise((resolve, reject) => {
             axios
-                .delete("/api/remitos/" + params.id)
+                .delete("/api/facturas/" + params.id)
                 .then(response => {
                     resolve(response.data);
                 })

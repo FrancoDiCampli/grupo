@@ -29,6 +29,11 @@ class Venta extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
+    public function pedido()
+    {
+        return $this->hasOne('App\Presupuesto', 'numventa');
+    }
+
     public function facturas()
     {
         return $this->belongsToMany(Factura::class);
@@ -36,7 +41,7 @@ class Venta extends Model
 
     public function entregas()
     {
-        return $this->belongsToMany(Entrega::class);
+        return $this->hasMany(Entrega::class);
     }
 
     public function articulos()

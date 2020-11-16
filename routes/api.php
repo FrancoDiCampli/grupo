@@ -21,7 +21,7 @@ Route::middleware('auth:airlock')->group(function () {
     Route::apiResource('entregas', 'API\EntregasController', ['except' => ['create', 'edit']]);
 
     /*Facturas*/
-    Route::apiResource('facturas', 'API\FacturasController', ['only' => ['index', 'store', 'show']]);
+    Route::apiResource('facturas', 'API\FacturasController', ['only' => ['index', 'store', 'show', 'destroy']]);
 
 
     /*Clientes*/

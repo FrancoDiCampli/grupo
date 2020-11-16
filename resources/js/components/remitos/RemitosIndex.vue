@@ -40,37 +40,54 @@
                                     :disabled="isDisabled(item)"
                                 ></v-checkbox>
                             </td>
-                            <td
-                                class="hidden-xs-only"
-                            >{{ item.comprobanteadherido || item.numventa }}</td>
+                            <td class="hidden-xs-only">
+                                {{ item.comprobanteadherido || item.numventa }}
+                            </td>
                             <td>{{ item.cliente.razonsocial }}</td>
                             <td>{{ item.total }}</td>
                             <td class="hidden-sm-and-down">{{ item.fecha }}</td>
                             <td>
                                 <v-menu offset-y>
                                     <template v-slot:activator="{ on }">
-                                        <v-btn color="secondary" text icon v-on="on">
+                                        <v-btn
+                                            color="secondary"
+                                            text
+                                            icon
+                                            v-on="on"
+                                        >
                                             <v-icon size="medium">
-                                                fas
-                                                fa-ellipsis-v
+                                                fas fa-ellipsis-v
                                             </v-icon>
                                         </v-btn>
                                     </template>
                                     <v-list>
-                                        <v-list-item :to="`/remitos/show/${item.id}`">
-                                            <v-list-item-title>Detalles</v-list-item-title>
+                                        <v-list-item
+                                            :to="`/remitos/show/${item.id}`"
+                                        >
+                                            <v-list-item-title
+                                                >Detalles</v-list-item-title
+                                            >
                                         </v-list-item>
                                         <v-list-item @click="print(item.id)">
-                                            <v-list-item-title>Imprimir</v-list-item-title>
+                                            <v-list-item-title
+                                                >Imprimir</v-list-item-title
+                                            >
                                         </v-list-item>
                                         <v-list-item
                                             v-if="!item.todoentregado"
                                             @click="delivery(item)"
                                         >
-                                            <v-list-item-title>Generar entrega</v-list-item-title>
+                                            <v-list-item-title
+                                                >Generar
+                                                entrega</v-list-item-title
+                                            >
                                         </v-list-item>
-                                        <v-list-item @click="deleteRemito()">
-                                            <v-list-item-title>Eliminar</v-list-item-title>
+                                        <v-list-item
+                                            @click="deleteRemito(item.id)"
+                                        >
+                                            <v-list-item-title
+                                                >Eliminar</v-list-item-title
+                                            >
                                         </v-list-item>
                                     </v-list>
                                 </v-menu>
@@ -95,15 +112,15 @@ export default {
             { text: "Cliente", sortable: false },
             { text: "Importe", sortable: false },
             { text: "Fecha", sortable: false, class: "hidden-sm-and-down" },
-            { text: "", sortable: false },
+            { text: "", sortable: false }
         ],
-        selected: [],
+        selected: []
     }),
 
     props: ["limit"],
 
     components: {
-        FacturasIndex,
+        FacturasIndex
     },
 
     methods: {
@@ -112,10 +129,14 @@ export default {
                 let details = [];
                 for (let i = 0; i < this.selected.length; i++) {
                     let find = this.$store.state.remitos.remitos.remitos.find(
-                        (e) => e.id == this.selected[i]
+                        e => e.id == this.selected[i]
                     );
                     for (let j = 0; j < find.articulos.length; j++) {
-                        if(find.articulos[j].pivot.cantidad - find.articulos[j].pivot.cantidadfacturado > 0) {
+                        if (
+                            find.articulos[j].pivot.cantidad -
+                                find.articulos[j].pivot.cantidadfacturado >
+                            0
+                        ) {
                             details.push(find.articulos[j].pivot);
                         }
                     }
@@ -123,7 +144,7 @@ export default {
 
                 this.$store
                     .dispatch("facturas/facturar", {
-                        details: details,
+                        details: details
                     })
                     .then(() => {
                         this.$router.push("/facturas/create");
@@ -143,6 +164,7 @@ export default {
                     detalles: details,
                     cliente: item.cliente.razonsocial,
                     cliente_id: item.cliente.id,
+                    venta_id: item.id
                 })
                 .then(() => {
                     this.$router.push("/entregas/create");
@@ -156,7 +178,7 @@ export default {
         isDisabled(i) {
             if (this.selected.length > 0) {
                 let find = this.$store.state.remitos.remitos.remitos.find(
-                    (e) => e.id == this.selected[0]
+                    e => e.id == this.selected[0]
                 );
                 return find.cliente.id == i.cliente.id ? i.todofacturado : true;
             } else {
@@ -164,12 +186,12 @@ export default {
             }
         },
 
-        async deleteRemito() {
+        async deleteRemito(id) {
             this.inProcess = true;
-            await this.$store.dispatch("remitos/destroy");
+            await this.$store.dispatch("remitos/destroy", { id: id });
             this.inProcess = false;
         }
-    },
+    }
 };
 </script>
 

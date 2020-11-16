@@ -34,4 +34,9 @@ class Entrega extends Model
     {
         return $this->belongsTo('App\Cliente');
     }
+
+    public function venta()
+    {
+        return $this->belongsTo(Venta::class);
+    }
 }

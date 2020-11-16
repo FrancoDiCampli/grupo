@@ -8,6 +8,7 @@ use App\Cliente;
 use App\Factura;
 use Carbon\Carbon;
 use App\Traits\CuentasCorrientesTrait;
+use Illuminate\Support\Facades\DB;
 
 trait FacturasTrait
 {
@@ -153,6 +154,8 @@ trait FacturasTrait
         ];
     }
 
+    // Al eliminar facturas reestablecer el saldo de la cuenta corriente
+
     public static function delete($id)
     {
         $factura = Factura::find($id);
@@ -165,9 +168,13 @@ trait FacturasTrait
         }
 
         if ($auxiliar) {
-            $factura->articulos()->detach();
-            $factura->delete();
-            return ['msg' => 'Factura eliminada'];
-        } else return ['msg' => 'No se pudo elimnar la factura'];
+            DB::transaction(function () use ($factura) {
+                CuentasCorrientesTrait::descontarIVA($factura->cliente, $factura->iva);
+                $factura->articulos()->detach();
+                $factura->ventas()->detach();
+                $factura->delete();
+            });
+            return response()->json('Factura eliminada');
+        } else return response()->json('No se pudo elimnar la factura');
     }
 }

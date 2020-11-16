@@ -6,6 +6,7 @@ use App\Pago;
 use App\Venta;
 use App\Cuentacorriente;
 use App\Movimientocuenta;
+use App\Saldo;
 use App\Traits\FormasDePagoTrait;
 use App\Traits\ConfiguracionTrait;
 
@@ -178,5 +179,23 @@ trait CuentasCorrientesTrait
 
         //     static::crearMovimiento($cuenta, 'IVA', $iva);
         // });
+    }
+
+    public static function descontarIVA($cliente, $iva)
+    {
+        $cuentas = $cliente->ctacte;
+        count($cuentas) > 0 ? $aux = true : $aux = false;
+        $aux ? $cuenta = $cliente->ctacte->where('estado', 'ACTIVA')->where('saldo', '>=', $iva)->first() : $cuenta = null;
+        if ($cuenta != null) {
+            $cuenta->saldo -= $iva;
+            $cuenta->update();
+            static::crearMovimiento($cuenta, 'descuento IVA', $iva);
+        } else {
+            Saldo::create([
+                'cliente_id' => $cliente->id,
+                'haber' => $iva
+            ]);
+            // static::crearMovimiento($cuenta, 'HABER', $iva);
+        }
     }
 }

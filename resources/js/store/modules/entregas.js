@@ -91,7 +91,7 @@ const actions = {
     destroy({ dispatch }, params) {
         return new Promise((resolve, reject) => {
             axios
-                .delete("/api/remitos/" + params.id)
+                .delete("/api/entregas/" + params.id)
                 .then(response => {
                     resolve(response.data);
                 })

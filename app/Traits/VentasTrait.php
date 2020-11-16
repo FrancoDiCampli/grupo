@@ -4,6 +4,7 @@ namespace App\Traits;
 
 use App\Venta;
 use App\Cliente;
+use App\Entrega;
 use App\Factura;
 use App\Articulo;
 use App\Formapago;
@@ -80,6 +81,8 @@ trait VentasTrait
 
                 $detsEntr->sum('cantidad') < $det['pivot']->cantidad ? $fac['todoentregado'] = false : $fac['todoentregado'] = true;
                 $det['pivot']['cantidadentregado'] = $detsEntr->sum('cantidad');
+
+                $det['pivot']['litros'] = $det->litros;
             }
 
             $facturas->push($fac);
@@ -252,6 +255,8 @@ trait VentasTrait
         return $factura;
     }
 
+    // Reestablecer inventarios e iva de cuentas corrientes
+
     public static function delete($id)
     {
         $venta = Venta::findOrFail($id);
@@ -259,11 +264,6 @@ trait VentasTrait
 
         if (!$venta->numfactura) {
             if ($venta->cuenta) {
-                // if (count($venta->cuenta->pagos) == 0) {
-                //     $sePuede = true;
-                // } else {
-                //     $sePuede = false;
-                // }
                 count($venta->cuenta->pagos) == 0 ? $sePuede = true : $sePuede = false;
             } else {
                 $sePuede = true;
@@ -273,19 +273,67 @@ trait VentasTrait
         }
 
         if ($sePuede) {
-            if ($venta->cuenta) {
-                $venta->cuenta->movimientos->each->delete();
-                $venta->cuenta->delete();
-            }
-            $venta->articulos()->detach();
-            // Probar
-            $venta->entregas->delete(); // Restaurar Inventarios
-            $venta->facturas->delete();
+            DB::transaction(function () use ($venta) {
+                if ($venta->cuenta) {
+                    $venta->cuenta->movimientos->each->delete();
+                    $venta->cuenta->delete();
+                }
 
-            $venta->delete();
-            return ['msg' => 'Venta Anulada'];
+                // Eliminar entregas
+                if ($venta->entregas) {
+                    static::reestablecerInventarios($venta->entregas);
+                }
+
+                // Eliminar facturas
+                if ($venta->facturas) {
+                    static::descontarIVA($venta->facturas);
+                }
+
+                $venta->pedido->numventa = null;
+                $venta->pedido->touch();
+                $venta->articulos()->detach();
+                $venta->delete();
+            });
+            return response()->json('Venta Anulada');
         } else {
-            return ['msg' => 'No es posible anular la venta'];
+            return response()->json('No es posible anular la venta');
+        }
+    }
+
+    public static function reestablecerInventarios($entregas)
+    {
+        foreach ($entregas as $item) {
+            $entrega = Entrega::findOrFail($item->id);
+
+            $detalles = collect($entrega->articulos);
+            $pivot = collect();
+            $inventarios = collect();
+            foreach ($detalles as $art) {
+                $pivot = $pivot->push($art->pivot);
+            }
+
+            foreach ($pivot as $piv) {
+                $art = Articulo::findOrFail($piv->articulo_id);
+                $aux = collect($art->inventarios);
+                foreach ($aux as $a) {
+                    $inventarios = $inventarios->push($a);
+                }
+            }
+
+            EntregasTrait::reestablecerInventarios($inventarios, $entrega);
+
+            $entrega->articulos()->detach();
+            $entrega->delete();
+        }
+    }
+
+    public static function descontarIVA($facturas)
+    {
+        foreach ($facturas as $factura) {
+            CuentasCorrientesTrait::descontarIVA($factura->cliente, $factura->iva);
+            $factura->articulos()->detach();
+            $factura->ventas()->detach();
+            $factura->delete();
         }
     }
 }
