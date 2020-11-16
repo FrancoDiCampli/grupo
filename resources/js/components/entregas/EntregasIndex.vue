@@ -11,26 +11,43 @@
                     :items-per-page="-1"
                     :mobile-breakpoint="0"
                 >
-                    <template v-slot:item="{item}">
+                    <template v-slot:item="{ item }">
                         <tr>
-                            <td>{{item.comprobanteadherido || item.numentrega}}</td>
-                            <td>{{item.cliente.razonsocial}}</td>
-                            <td>{{item.fecha}}</td>
+                            <td>
+                                {{
+                                    item.comprobanteadherido || item.numentrega
+                                }}
+                            </td>
+                            <td>{{ item.cliente.razonsocial }}</td>
+                            <td>{{ item.fecha }}</td>
                             <td>
                                 <v-menu offset-y>
                                     <template v-slot:activator="{ on }">
-                                        <v-btn color="secondary" text icon v-on="on">
-                                            <v-icon size="medium">fas fa-ellipsis-v</v-icon>
+                                        <v-btn
+                                            color="secondary"
+                                            text
+                                            icon
+                                            v-on="on"
+                                        >
+                                            <v-icon size="medium"
+                                                >fas fa-ellipsis-v</v-icon
+                                            >
                                         </v-btn>
                                     </template>
                                     <v-list>
-                                        <v-list-item :to="`/entregas/show/${item.id}`">
-                                            <v-list-item-title>Detalles</v-list-item-title>
+                                        <v-list-item
+                                            :to="`/entregas/show/${item.id}`"
+                                        >
+                                            <v-list-item-title
+                                                >Detalles</v-list-item-title
+                                            >
                                         </v-list-item>
-                                    </v-list>
-                                    <v-list>
-                                        <v-list-item>
-                                            <v-list-item-title>Eliminar</v-list-item-title>
+                                        <v-list-item
+                                            @click="deleteEntrega(item.id)"
+                                        >
+                                            <v-list-item-title
+                                                >Eliminar</v-list-item-title
+                                            >
                                         </v-list-item>
                                     </v-list>
                                 </v-menu>
@@ -51,13 +68,20 @@ export default {
             { text: "N°", sortable: false },
             { text: "Nombre/Apellido", sortable: false },
             { text: "Fecha", sortable: false },
-            { text: "", sortable: false },
-        ],
+            { text: "", sortable: false }
+        ]
     }),
 
     props: ["limit"],
+
+    methods: {
+        async deleteEntrega(id) {
+            this.inProcess = true;
+            await this.$store.dispatch("entregas/destroy", { id: id });
+            this.inProcess = false;
+        }
+    }
 };
 </script>
 
-<style>
-</style>
+<style></style>

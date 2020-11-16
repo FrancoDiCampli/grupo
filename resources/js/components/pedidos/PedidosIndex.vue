@@ -13,38 +13,64 @@
                 >
                     <template v-slot:item="{ item }">
                         <tr>
-                            <td>{{ item.comprobanteadherido || item.numpresupuesto }}</td>
+                            <td>
+                                {{
+                                    item.comprobanteadherido ||
+                                        item.numpresupuesto
+                                }}
+                            </td>
                             <td>{{ item.cliente.razonsocial }}</td>
                             <td class="hidden-xs-only">{{ item.fecha }}</td>
                             <td>{{ item.total }}</td>
                             <td>
                                 <v-menu offset-y>
                                     <template v-slot:activator="{ on }">
-                                        <v-btn color="secondary" text icon v-on="on">
-                                            <v-icon size="medium">fas fa-ellipsis-v</v-icon>
+                                        <v-btn
+                                            color="secondary"
+                                            text
+                                            icon
+                                            v-on="on"
+                                        >
+                                            <v-icon size="medium"
+                                                >fas fa-ellipsis-v</v-icon
+                                            >
                                         </v-btn>
                                     </template>
                                     <v-list>
-                                        <v-list-item :to="`/pedidos/show/${item.id}`">
-                                            <v-list-item-title>Detalles</v-list-item-title>
+                                        <v-list-item
+                                            :to="`/pedidos/show/${item.id}`"
+                                        >
+                                            <v-list-item-title
+                                                >Detalles</v-list-item-title
+                                            >
                                         </v-list-item>
                                         <v-list-item @click="print(item.id)">
-                                            <v-list-item-title>Imprimir</v-list-item-title>
+                                            <v-list-item-title
+                                                >Imprimir</v-list-item-title
+                                            >
                                         </v-list-item>
                                         <v-list-item
                                             v-if="item.numventa == null"
                                             :to="`/pedidos/editar/${item.id}`"
                                         >
-                                            <v-list-item-title>Editar</v-list-item-title>
+                                            <v-list-item-title
+                                                >Editar</v-list-item-title
+                                            >
                                         </v-list-item>
                                         <v-list-item
                                             v-if="item.numventa == null"
                                             @click="preventSold(item.id)"
                                         >
                                             <v-list-item-title>
-                                                Generar
-                                                Venta
+                                                Generar Venta
                                             </v-list-item-title>
+                                        </v-list-item>
+                                        <v-list-item
+                                            @click="deletePedido(item.id)"
+                                        >
+                                            <v-list-item-title
+                                                >Eliminar</v-list-item-title
+                                            >
                                         </v-list-item>
                                     </v-list>
                                 </v-menu>
@@ -88,8 +114,20 @@
                 <v-divider></v-divider>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="error" text @click="cancelSold()" :disabled="inProcess">Cancelar</v-btn>
-                    <v-btn color="success" text @click="sold()" :disabled="inProcess">Aceptar</v-btn>
+                    <v-btn
+                        color="error"
+                        text
+                        @click="cancelSold()"
+                        :disabled="inProcess"
+                        >Cancelar</v-btn
+                    >
+                    <v-btn
+                        color="success"
+                        text
+                        @click="sold()"
+                        :disabled="inProcess"
+                        >Aceptar</v-btn
+                    >
                 </v-card-actions>
             </v-card>
         </v-dialog>
@@ -108,8 +146,8 @@ export default {
             { text: "Nombre/Apellido", sortable: false },
             { text: "Fecha", sortable: false, class: "hidden-xs-only" },
             { text: "Importe", sortable: false },
-            { text: "", sortable: false },
-        ],
+            { text: "", sortable: false }
+        ]
     }),
 
     props: ["limit"],
@@ -128,7 +166,7 @@ export default {
             this.inProcess = true;
             await this.$store.dispatch("pedidos/vender", {
                 id: this.ventaID,
-                remitoadherido: this.remitoadherido,
+                remitoadherido: this.remitoadherido
             });
             this.preventDialog = false;
             this.inProcess = false;
@@ -141,7 +179,13 @@ export default {
             this.ventaID = null;
             this.remitoadherido = null;
         },
-    },
+
+        async deletePedido(id) {
+            this.inProcess = true;
+            await this.$store.dispatch("pedidos/destroy", { id: id });
+            this.inProcess = false;
+        }
+    }
 };
 </script>
 

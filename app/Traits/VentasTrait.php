@@ -273,28 +273,30 @@ trait VentasTrait
         }
 
         if ($sePuede) {
-            if ($venta->cuenta) {
-                $venta->cuenta->movimientos->each->delete();
-                $venta->cuenta->delete();
-            }
-            $venta->articulos()->detach();
+            DB::transaction(function () use ($venta) {
+                if ($venta->cuenta) {
+                    $venta->cuenta->movimientos->each->delete();
+                    $venta->cuenta->delete();
+                }
 
-            // Eliminar entregas
-            if ($venta->entregas) {
-                static::reestablecerInventarios($venta->entregas);
-                $venta->entregas->delete();
-            }
+                // Eliminar entregas
+                if ($venta->entregas) {
+                    static::reestablecerInventarios($venta->entregas);
+                }
 
-            // Eliminar facturas
-            if ($venta->facturas) {
-                static::descontarIVA($venta->facturas);
-                $venta->facturas->delete();
-            }
+                // Eliminar facturas
+                if ($venta->facturas) {
+                    static::descontarIVA($venta->facturas);
+                }
 
-            $venta->delete();
-            return ['msg' => 'Venta Anulada'];
+                $venta->pedido->numventa = null;
+                $venta->pedido->touch();
+                $venta->articulos()->detach();
+                $venta->delete();
+            });
+            return response()->json('Venta Anulada');
         } else {
-            return ['msg' => 'No es posible anular la venta'];
+            return response()->json('No es posible anular la venta');
         }
     }
 
@@ -321,7 +323,7 @@ trait VentasTrait
             EntregasTrait::reestablecerInventarios($inventarios, $entrega);
 
             $entrega->articulos()->detach();
-            $entrega->forceDelete();
+            $entrega->delete();
         }
     }
 
@@ -329,6 +331,9 @@ trait VentasTrait
     {
         foreach ($facturas as $factura) {
             CuentasCorrientesTrait::descontarIVA($factura->cliente, $factura->iva);
+            $factura->articulos()->detach();
+            $factura->ventas()->detach();
+            $factura->delete();
         }
     }
 }

@@ -16,13 +16,7 @@ class EntregasController extends Controller
 
     public function store(Request $request)
     {
-        try {
-            DB::transaction(function() use($request){
-                return EntregasTrait::store($request);
-            });
-        } catch (\Throwable $th) {
-            throw $th;
-        }
+        return EntregasTrait::store($request);
     }
 
     public function show($id)

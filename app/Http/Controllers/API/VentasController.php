@@ -58,13 +58,7 @@ class VentasController extends Controller
 
     public function destroy($id)
     {
-        try {
-            DB::transaction(function () use ($id) {
-                return VentasTrait::delete($id);
-            });
-        } catch (\Throwable $th) {
-            throw $th;
-        }
+        return VentasTrait::delete($id);
     }
 
     public function restaurar($id)

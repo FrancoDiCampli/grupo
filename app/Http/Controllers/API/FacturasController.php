@@ -45,12 +45,6 @@ class FacturasController extends Controller
 
     public function destroy($id)
     {
-        try {
-            DB::transaction(function () use ($id) {
-                return FacturasTrait::delete($id);
-            });
-        } catch (\Throwable $th) {
-            throw $th;
-        }
+        return FacturasTrait::delete($id);
     }
 }

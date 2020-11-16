@@ -86,6 +86,22 @@ const actions = {
                     reject(error.response.data);
                 });
         });
+    },
+
+    destroy({ dispatch }, params) {
+        return new Promise((resolve, reject) => {
+            axios
+                .delete("/api/entregas/" + params.id)
+                .then(response => {
+                    resolve(response.data);
+                })
+                .catch(error => {
+                    dispatch("errorHandle", error.response, {
+                        root: true
+                    });
+                    reject(error.response.data);
+                });
+        });
     }
 };
 

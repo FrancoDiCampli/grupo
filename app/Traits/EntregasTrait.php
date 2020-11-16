@@ -77,7 +77,7 @@ trait EntregasTrait
                 'codarticulo' => $detail['codarticulo'],
                 'articulo' => $detail['articulo'],
                 'cantidad' => $detail['cantidad'],
-                'cantidadLitros' => $detail['cantidadLitros'],
+                'cantidadLitros' => $detail['litros'] * $detail['cantidad'],
                 'medida' => $detail['medida'],
                 'articulo_id' => $detail['articulo_id'],
                 'entrega_id' => $entrega->id,
@@ -101,7 +101,8 @@ trait EntregasTrait
             "fecha" => now()->format('Ymd'),
             "observaciones" => $atributos['observaciones'],
             "cliente_id" => $atributos['cliente_id'],
-            "user_id" => auth()->user()->id
+            "user_id" => auth()->user()->id,
+            "venta_id" => $atributos['venta_id'],
         ]);
     }
 
@@ -146,7 +147,7 @@ trait EntregasTrait
                 MovimientosTrait::crearMovimiento('ENTREGA', $aux[$i]['cantidad'], ($aux[$i]['cantidad'] * $art->litros), $article[0], $factura);
             } else {
                 $factura->articulos()->detach();
-                $factura->forceDelete();
+                $factura->delete();
             }
 
             if ($article[0]['cantidad'] == 0 || $article[0]['cantidad'] <= $article[0]->articulo->stockminimo) { // REVISAR NOTIFICACIONES
@@ -181,8 +182,8 @@ trait EntregasTrait
         static::reestablecerInventarios($inventarios, $entrega);
 
         $entrega->articulos()->detach();
-        $entrega->forceDelete();
-        return ['msg' => 'Entrega Anulada'];
+        $entrega->delete();
+        return response()->json('Entrega Anulada');
     }
 
     public static function reestablecerInventarios($inventarios, $entrega)

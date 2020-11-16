@@ -217,17 +217,18 @@
                             <!-- TABLA DETALLES -->
                             <v-col cols="12" class="py-0 mb-5">
                                 <v-card outlined>
-                                    <v-simple-table>
+                                    <v-simple-table :key="detailTableKey">
                                         <template v-slot:default>
                                             <thead>
                                                 <tr>
                                                     <th class="text-left">Articulo</th>
                                                     <th class="text-left hidden-sm-and-down">Precio</th>
                                                     <th class="text-left">Unidades</th>
-
-                                                    <th class="text-left">Bonificacion</th>
-                                                    <th class="text-left">Recargo</th>
+                                                    <th class="text-left hidden-sm-and-down">Presentación</th>
+                                                    <th class="text-left hidden-sm-and-down">Bonificacion</th>
+                                                    <th class="text-left hidden-sm-and-down">Recargo</th>
                                                     <th class="text-left">Subtotal</th>
+                                                    <th></th>
                                                     <th></th>
                                                 </tr>
                                             </thead>
@@ -239,154 +240,33 @@
                                                 >
                                                     <td>{{ detalle.articulo }}</td>
                                                     <td class="hidden-sm-and-down">
-                                                        {{
-                                                        detalle.preciounitario
-                                                        }}
+                                                        {{ detalle.articulo }}
                                                     </td>
-                                                    <td class="btn-td">
-                                                        <v-menu
-                                                            offset-y
-                                                            :close-on-content-click="
-                                                                false
-                                                            "
-                                                        >
-                                                            <template
-                                                                v-slot:activator="{
-                                                                    on
-                                                                }"
-                                                            >
-                                                                <div v-on="on">
-                                                                    {{
-                                                                    detalle.cantidad -
-                                                                    detalle.cantidadfacturado
-                                                                    }}
-                                                                </div>
-                                                            </template>
-                                                            <v-card
-                                                                v-click-outside="
-                                                                    resetEdit
-                                                                "
-                                                            >
-                                                                <v-card-text>
-                                                                    <v-text-field
-                                                                        label="Unidades"
-                                                                        outlined
-                                                                        hide-details
-                                                                        v-on:input="
-                                                                            editDetail(
-                                                                                detalle.id,
-                                                                                'cantidad'
-                                                                            )
-                                                                        "
-                                                                        v-model="
-                                                                            editCantidad
-                                                                        "
-                                                                        type="number"
-                                                                    ></v-text-field>
-                                                                </v-card-text>
-                                                            </v-card>
-                                                        </v-menu>
+                                                    <td>
+                                                        {{ detalle.facturando || detalle.cantidad - detalle.cantidadfacturado }}
                                                     </td>
-                                                    <td class="btn-td">
-                                                        <v-menu
-                                                            offset-y
-                                                            :close-on-content-click="
-                                                                false
-                                                            "
-                                                        >
-                                                            <template
-                                                                v-slot:activator="{
-                                                                    on
-                                                                }"
-                                                            >
-                                                                <div v-on="on">
-                                                                    {{
-                                                                    detalle.bonificacion ||
-                                                                    0
-                                                                    }}
-                                                                    %
-                                                                </div>
-                                                            </template>
-                                                            <v-card
-                                                                v-click-outside="
-                                                                    resetEdit
-                                                                "
-                                                            >
-                                                                <v-card-text>
-                                                                    <v-text-field
-                                                                        label="Bonificacion"
-                                                                        outlined
-                                                                        hide-details
-                                                                        v-on:input="
-                                                                            editDetail(
-                                                                                detalle.id,
-                                                                                'bonificacion'
-                                                                            )
-                                                                        "
-                                                                        v-model="
-                                                                            editBonificacion
-                                                                        "
-                                                                        type="number"
-                                                                    ></v-text-field>
-                                                                </v-card-text>
-                                                            </v-card>
-                                                        </v-menu>
+                                                    <td class="hidden-sm-and-down">{{ detalle.cantidadLitros / detalle.cantidad }}</td>
+                                                    <td class="hidden-sm-and-down">
+                                                        {{ detalle.bonificacion || 0 }}
                                                     </td>
-                                                    <td class="btn-td">
-                                                        <v-menu
-                                                            offset-y
-                                                            :close-on-content-click="
-                                                                false
-                                                            "
-                                                        >
-                                                            <template
-                                                                v-slot:activator="{
-                                                                    on
-                                                                }"
-                                                            >
-                                                                <div v-on="on">
-                                                                    {{
-                                                                    detalle.recargo ||
-                                                                    0
-                                                                    }}
-                                                                    %
-                                                                </div>
-                                                            </template>
-                                                            <v-card
-                                                                v-click-outside="
-                                                                    resetEdit
-                                                                "
-                                                            >
-                                                                <v-card-text>
-                                                                    <v-text-field
-                                                                        label="Recargo"
-                                                                        outlined
-                                                                        hide-details
-                                                                        v-on:input="
-                                                                            editDetail(
-                                                                                detalle.id,
-                                                                                'recargo'
-                                                                            )
-                                                                        "
-                                                                        v-model="
-                                                                            editRecargo
-                                                                        "
-                                                                        type="number"
-                                                                    ></v-text-field>
-                                                                </v-card-text>
-                                                            </v-card>
-                                                        </v-menu>
+                                                    <td class="hidden-sm-and-down">
+                                                        {{ detalle.recargo || 0 }}
                                                     </td>
                                                     <td>{{ detalle.subtotal }}</td>
-                                                    <td>
+                                                    <td class="px-0">
                                                         <v-btn
                                                             icon
                                                             color="secondary"
-                                                            @click="
-                                                                deleteDetail(
-                                                                    detalle
-                                                                )
-                                                            "
+                                                            @click="openEditDetailDialog(detalle)"
+                                                        >
+                                                            <v-icon size="medium">fas fa-pen</v-icon>
+                                                        </v-btn>
+                                                    </td>
+                                                    <td class="px-0">
+                                                        <v-btn
+                                                            icon
+                                                            color="secondary"
+                                                            @click="deleteDetail(detalle)"
                                                         >
                                                             <v-icon size="medium">fas fa-times</v-icon>
                                                         </v-btn>
@@ -597,6 +477,69 @@
                 </v-stepper>
             </v-card-text>
         </v-card>
+
+        <v-dialog v-model="editDetailDialog" width="500">
+        <v-card>
+            <v-card-title>Editar detalle</v-card-title>
+
+            <v-card-text>
+                <v-form @submit.prevent="editDetail">
+                    <v-row justify="center">
+                        <v-col cols="12" class="py-0">
+                            <v-text-field
+                                v-model="selectedDetail.articulo"
+                                label="Articulo"
+                                outlined
+                                disabled
+                            ></v-text-field>
+                        </v-col>
+                        <v-col cols="6" class="py-0">
+                            <v-text-field
+                                v-model="selectedDetail.cantidad"
+                                label="Unidades"
+                                outlined
+                                :rules="[rules.required, rules.facturacionMaxima]"
+                                @keyup="editDetailControl()"
+                            ></v-text-field>
+                        </v-col>
+                        <v-col cols="6" class="py-0">
+                            <v-text-field
+                                v-model="selectedDetail.bonificacion"
+                                label="Bonificación"
+                                outlined
+                                @keyup="editDetailControl()"
+                            ></v-text-field>
+                        </v-col>
+                        <v-col cols="6" class="py-0">
+                            <v-text-field
+                                v-model="selectedDetail.recargo"
+                                label="Recargo"
+                                outlined
+                                @keyup="editDetailControl()"
+                            ></v-text-field>
+                        </v-col>
+                        <v-col cols="6" class="py-0">
+                            <v-text-field
+                                v-model="selectedDetail.subtotal"
+                                label="Subtotal"
+                                outlined
+                                disabled
+                            ></v-text-field>
+                        </v-col>
+                    </v-row>
+                    <v-divider></v-divider>
+                    <br>
+                    <v-row justify="end">
+                        <v-btn tile outlined color="error" @click="editDetailDialog = false">Cancelar</v-btn>
+                        <div class="mx-2"></div>
+                        <v-btn tile class="elevation-0" type="submit" color="secondary">Guardar</v-btn>
+                        <div class="mx-2"></div>
+                    </v-row>
+                </v-form>
+                
+            </v-card-text>
+        </v-card>
+        </v-dialog>
     </div>
 </template>
 
@@ -605,7 +548,7 @@
 
 import moment from "moment";
 import ClickOutside from "v-click-outside";
-var cantidadMaxima = 999999999;
+var facturacionMaxima = 999999999;
 
 export default {
     directives: {
@@ -622,9 +565,9 @@ export default {
         },
         rules: {
             required: (value) => !!value || "Este campo es obligatorio",
-            cantidadMaxima: (value) =>
-                value <= Number(cantidadMaxima) ||
-                "La cantidad no puede superar el stock existente",
+            facturacionMaxima: (value) =>
+                value <= Number(facturacionMaxima) ||
+                "No se puede facturar más unidades",
         },
         // HEADER
         PuntoVenta: null,
@@ -635,6 +578,9 @@ export default {
         clientes: [],
         // DETALLES
         detalles: [],
+        detailTableKey: 1,
+        selectedDetail: {},
+        editDetailDialog: false,
         editCantidad: null,
         editBonificacion: null,
         editRecargo: null,
@@ -694,6 +640,10 @@ export default {
     created() {
         if (this.$store.state.facturas.form.detalles) {
             this.detalles = this.$store.state.facturas.form.detalles;
+            console.log({
+                name: 'facturas forms',
+                log: this.detalles
+            })
         } else {
             this.$router.push("/remitos");
         }
@@ -827,44 +777,47 @@ export default {
         },
 
         // DETALLES
-        editDetail(id, field) {
-            let index = this.detalles.indexOf(
-                this.detalles.find((element) => element.id == id)
-            );
-
-            if (field == "cantidad") {
-                this.detalles[index].cantidad = this.editCantidad;
-            } else if (field == "bonificacion") {
-                this.detalles[index].bonificacion = Number(
-                    this.editBonificacion
-                );
-            } else if (field == "recargo") {
-                this.detalles[index].recargo = Number(this.editRecargo);
-            }
-
-            let sub =
-                Number(this.detalles[index].preciounitario) *
-                Number(this.detalles[index].cantidadLitros);
-
-            let bonificacion = this.detalles[index].bonificacion
-                ? Number(this.detalles[index].bonificacion * sub) / 100
-                : 0;
-            console.log(bonificacion);
-
-            let recargo = this.detalles[index].recargo
-                ? Number(this.detalles[index].recargo * sub) / 100
-                : 0;
-
-            this.detalles[index].subtotal = Number(
-                sub - bonificacion + recargo
-            ).toFixed(2);
-
-            this.subtotalControl();
+        openEditDetailDialog(detail) {
+            facturacionMaxima = detail.cantidad - detail.cantidadfacturado;
+            let presentacion = detail.cantidadLitros / detail.cantidad;
+            this.selectedDetail = Object.assign({}, detail);
+            this.selectedDetail.presentacion = presentacion;
+            this.editDetailDialog = true;      
         },
 
-        resetEdit() {
-            this.editPrecio = null;
-            this.editCantidad = null;
+        editDetailControl() {
+            this.selectedDetail.cantidadLitros = this.selectedDetail.cantidad * this.selectedDetail.presentacion;
+
+            let sub =
+                Number(this.selectedDetail.preciounitario) *
+                Number(this.selectedDetail.cantidadLitros);
+
+            let bonificacion = this.selectedDetail.bonificacion
+                ? Number(this.selectedDetail.bonificacion * sub) / 100
+                : 0;
+
+            let recargo = this.selectedDetail.recargo
+                ? Number(this.selectedDetail.recargo * sub) / 100
+                : 0;
+            
+            let subTotal = Number(sub - bonificacion + recargo).toFixed(2)
+            
+            this.selectedDetail.subtotal = subTotal;
+
+            this.selectedDetail.subtotalPesos = Number(subTotal * Number(this.selectedDetail.cotizacion)).toFixed(2);
+        },
+
+        editDetail() {
+            let index = this.detalles.indexOf(
+                this.detalles.find((element) => element.id == this.selectedDetail.id)
+            );
+
+            this.detalles[index] = this.selectedDetail;
+            this.detalles[index].fancturando = this.selectedDetail.cantidad;
+            this.selectedDetail = {};
+            this.editDetailDialog = false;
+            this.detailTableKey += 1;
+            this.subtotalControl();
         },
 
         deleteDetail(detalle) {

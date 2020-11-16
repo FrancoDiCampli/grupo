@@ -30,6 +30,7 @@ class CreateEntregasTable extends Migration
             // $table->decimal('totalPesos', 12, 2)->nullable();
             // $table->decimal('cotizacion', 12, 2)->nullable();
             // $table->string('fechaCotizacion')->nullable();
+            $table->bigInteger('venta_id');
             $table->bigInteger('cliente_id');
             $table->bigInteger('user_id');
             $table->timestamps();

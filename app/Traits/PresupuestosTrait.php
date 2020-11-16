@@ -46,17 +46,17 @@ trait PresupuestosTrait
         }
 
         if ($presupuestos->count() <= $request->get('limit')) {
-            return [
+            return response()->json([
                 'presupuestos' => $presupuestos,
                 'ultimo' => $presupuestos->first(),
                 'total' => $presupuestos->count(),
-            ];
+            ]);
         } else {
-            return [
+            return response()->json([
                 'presupuestos' => $presupuestos->take($request->get('limit', null)),
                 'ultimo' => $presupuestos->first(),
                 'total' => $presupuestos->count(),
-            ];
+            ]);
         }
     }
 
@@ -66,19 +66,22 @@ trait PresupuestosTrait
         $cliente = Cliente::find($atributos['cliente_id']);
         $atributos['cuit'] = $cliente->documentounico;
 
-        // ALMACENAMIENTO DE PRESUPUESTO
-        $presupuesto = static::crearPresupuesto($atributos);
+        $presupuesto = DB::transaction(function () use ($atributos, $request) {
+            // ALMACENAMIENTO DE PRESUPUESTO
+            $presupuesto = static::crearPresupuesto($atributos);
 
-        if ($atributos->confirmacion) {
-            static::confirmarVenta($atributos, $request, $presupuesto);
-        }
+            if ($atributos->confirmacion) {
+                static::confirmarVenta($atributos, $request, $presupuesto);
+            }
 
-        // ALMACENAMIENTO DE DETALLES
-        $det = static::detallesPresupuesto($request->get('detalles'), $presupuesto);
+            // ALMACENAMIENTO DE DETALLES
+            $det = static::detallesPresupuesto($request->get('detalles'), $presupuesto);
 
-        $presupuesto->articulos()->attach($det);
+            $presupuesto->articulos()->attach($det);
 
-        return $presupuesto->id;
+            return $presupuesto;
+        });
+        return response()->json($presupuesto->id);
     }
 
     public static function confirmarVenta($atributos, $request, $presupuesto)
@@ -89,15 +92,21 @@ trait PresupuestosTrait
         $numventa = Venta::all()->last() ? Venta::all()->last()->id : 0;
         $atributos['numventa'] = $numventa + 1;
 
-        $venta = static::crearVenta($atributos);
+        $venta = DB::transaction(function () use ($atributos, $request) {
+            $venta = static::crearVenta($atributos);
 
-        $det = static::detallesVentas($request->get('detalles'), $venta);
+            $det = static::detallesVentas($request->get('detalles'), $venta);
 
-        $venta->articulos()->attach($det);
+            $venta->articulos()->attach($det);
+
+            return $venta;
+        });
 
         // CREACION DE CUENTA CORRIENTE
         if ($presupuesto->cuit != 0) {
-            CuentasCorrientesTrait::crearCuenta($venta);
+            DB::transaction(function () use ($venta) {
+                CuentasCorrientesTrait::crearCuenta($venta);
+            });
         }
 
         $presupuesto->numventa = $venta->id;
@@ -211,7 +220,8 @@ trait PresupuestosTrait
             }
         }
         $res['detallesVenta'] = $detallesVenta;
-        return $res;
+
+        return response()->json($res);
     }
 
     public static function verPresupuesto($id)
@@ -241,7 +251,7 @@ trait PresupuestosTrait
         $presupuesto['remitoadherido'] = $request->remitoadherido;
 
         $venta = VentasTrait::crearVenta($presupuesto);
-        
+
         // CREACION DE CUENTA CORRIENTE
         if ($presupuesto->cuit != 0) {
             CuentasCorrientesTrait::crearCuenta($venta);
@@ -273,7 +283,7 @@ trait PresupuestosTrait
         $pre->numventa = $venta->id;
         $pre->save();
 
-        return 'listo';
+        return response()->json('Listo');
     }
 
     public static function update($request, $id)
@@ -351,10 +361,10 @@ trait PresupuestosTrait
         $atributos['cuit'] = $cliente->documentounico;
 
         if ($atributos->confirmacion) {
-             static::confirmarVenta($atributos, $request, $presupuesto);
+            static::confirmarVenta($atributos, $request, $presupuesto);
         }
 
-        return 'actualizado';
+        return response()->json('Actualizado');;
     }
 
     public static function delete($id)
@@ -362,9 +372,11 @@ trait PresupuestosTrait
         $pedido = Presupuesto::find($id);
 
         if ($pedido->numventa == null) {
-            $pedido->articulos()->detach();
-            $pedido->delete();
-            return ['Pedido Eliminado'];
-        } else return ['No es posible eliminar el pedido'];
+            DB::transaction(function () use ($pedido) {
+                $pedido->articulos()->detach();
+                $pedido->delete();
+            });
+            return  response()->json('Pedido Eliminado');
+        } else return  response()->json('No es posible eliminar el pedido');
     }
 }

@@ -33,6 +33,7 @@ const actions = {
             axios
                 .get("/api/remitos", { params: params })
                 .then(response => {
+                    console.log(response.data);
                     commit("fillRemitos", response.data);
                     resolve(response.data);
                 })
@@ -102,7 +103,6 @@ const actions = {
 
     destroy({ dispatch }, params) {
         return new Promise((resolve, reject) => {
-            // MODIFICA LA RUTA DE ESTE AXIOS PARA ANULAR LA FACTURA
             axios
                 .delete("/api/remitos/" + params.id)
                 .then(response => {
