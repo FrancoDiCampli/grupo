@@ -228,7 +228,6 @@ export default {
         },
 
         checkOptions(item) {
-            console.log(item);
             if(!item.hasFacturas && !item.hasEntregas && !item.hasPagos) {
                 return true;
             } else {
