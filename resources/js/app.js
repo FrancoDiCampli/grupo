@@ -2,6 +2,7 @@ import Vue from "vue";
 import App from "./App.vue";
 import router from "./routes/router";
 import store from "./store/store";
+import moment from "moment";
 
 // Axios
 window.axios = require("axios");
@@ -25,6 +26,13 @@ Vue.use(VueAuth, { router });
 Vue.prototype.$user.set({
     rol: "not_authorized",
     permissions: []
+});
+
+// DATE FILTER
+Vue.filter('formatDate', function(value) {
+    if (value) {
+          return moment(String(value)).format('DD-MM-YYYY')
+    }
 });
 
 // ELIMINAR ADVERTENCIA AL USAR V-CALENDAR

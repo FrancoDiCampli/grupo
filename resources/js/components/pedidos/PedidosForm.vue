@@ -162,10 +162,8 @@
                                     >
                                         <template v-slot:activator="{ on }">
                                             <v-text-field
-                                                v-model="
-                                                    $store.state.pedidos.form
-                                                        .fecha
-                                                "
+                                                :value="$store.state.pedidos.form.fecha | formatDate" 
+                                                @input="value => store.state.pedidos.form.fecha = value"
                                                 label="Fecha"
                                                 :rules="[rules.required]"
                                                 readonly
