@@ -105,7 +105,7 @@
 <script>
 export default {
     data: () => ({
-        deleteDialog: true,
+        deleteDialog: false,
         deleteId: null,
         headers: [
             { text: "N°", sortable: false },
@@ -136,7 +136,6 @@ export default {
             this.$emit('erase');
             this.deleteDialog = false;
         }
-
     }
 };
 </script>
