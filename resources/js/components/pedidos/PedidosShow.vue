@@ -24,7 +24,7 @@
                                     v-if="$store.state.pedidos.pedido.pedido.numventa == null"
                                     @click="preventDialog = true"
                                 >
-                                    <v-list-item-title>Generar Venta</v-list-item-title>
+                                    <v-list-item-title>Generar venta</v-list-item-title>
                                 </v-list-item>
                             </v-list>
                         </v-menu>
@@ -42,21 +42,21 @@
                                     }}
                                 </h2>
                                 <p>
-                                    <b>Razón Social:</b>
+                                    <b>Razón social:</b>
                                     {{
                                     $store.state.pedidos.pedido
                                     .configuracion.razonsocial
                                     }}
                                 </p>
                                 <p>
-                                    <b>Domicilio Comercial:</b>
+                                    <b>Domicilio comercial:</b>
                                     {{
                                     $store.state.pedidos.pedido
                                     .configuracion.domiciliocomercial
                                     }}
                                 </p>
                                 <p>
-                                    <b>Condición Frente al IVA:</b>
+                                    <b>Condición frente al IVA:</b>
                                     {{
                                     $store.state.pedidos.pedido
                                     .configuracion.condicioniva
@@ -80,7 +80,7 @@
                                     }}
                                 </p>
                                 <p>
-                                    <b>Fecha de Emisión:</b>
+                                    <b>Fecha de emisión:</b>
                                     {{
                                     $store.state.pedidos.pedido.pedido.fecha
                                     }}
@@ -93,14 +93,14 @@
                                     }}
                                 </p>
                                 <p>
-                                    <b>Ingresos Brutos:</b>
+                                    <b>Ingresos brutos:</b>
                                     {{
                                     $store.state.pedidos.pedido
                                     .configuracion.cuit
                                     }}
                                 </p>
                                 <p>
-                                    <b>Inicio de Actividades:</b>
+                                    <b>Inicio de actividades:</b>
                                     {{
                                     $store.state.pedidos.pedido
                                     .configuracion.inicioactividades
@@ -118,14 +118,14 @@
                                     }}
                                 </p>
                                 <p>
-                                    <b>Razón Social:</b>
+                                    <b>Razón social:</b>
                                     {{
                                     $store.state.pedidos.pedido.cliente
                                     .razonsocial
                                     }}
                                 </p>
                                 <p>
-                                    <b>Condición Frente al IVA:</b>
+                                    <b>Condición frente al IVA:</b>
                                     {{
                                     $store.state.pedidos.pedido.cliente
                                     .condicioniva
@@ -155,9 +155,9 @@
                                                 <th class="hidden-sm-and-down">Cod. Producto</th>
                                                 <th>Producto</th>
                                                 <th>Cantidad</th>
-                                                <th>Cantidad Litros</th>
-                                                <th class="hidden-sm-and-down">U. Medida</th>
-                                                <th>Precio Unit.</th>
+                                                <th>Cantidad litros</th>
+                                                <th class="hidden-sm-and-down">U. medida</th>
+                                                <th>Precio unit.</th>
                                                 <th>Subtotal</th>
                                             </tr>
                                         </thead>

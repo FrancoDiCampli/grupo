@@ -1,34 +1,4 @@
 const actions = {
-    printVenta({ dispatch }, params) {
-        return new Promise((resolve, reject) => {
-            axios({
-                url: "/api/ventasPDF/" + params.id,
-                method: "GET",
-                responseType: "blob"
-            })
-                .then(response => {
-                    const url = window.URL.createObjectURL(
-                        new Blob([response.data])
-                    );
-                    const link = document.createElement("a");
-                    link.href = url;
-                    link.setAttribute(
-                        "download",
-                        "venta_" + params.id + ".pdf"
-                    );
-                    document.body.appendChild(link);
-                    link.click();
-                    resolve();
-                })
-                .catch(error => {
-                    dispatch("errorHandle", error.response, {
-                        root: true
-                    });
-                    reject(error.response.data);
-                });
-        });
-    },
-
     printPedido({ dispatch }, params) {
         return new Promise((resolve, reject) => {
             axios({
@@ -44,7 +14,67 @@ const actions = {
                     link.href = url;
                     link.setAttribute(
                         "download",
-                        "presupuesto_" + params.id + ".pdf"
+                        "pedido_" + params.id + ".pdf"
+                    );
+                    document.body.appendChild(link);
+                    link.click();
+                    resolve();
+                })
+                .catch(error => {
+                    dispatch("errorHandle", error.response, {
+                        root: true
+                    });
+                    reject(error.response.data);
+                });
+        });
+    },
+
+    printVenta({ dispatch }, params) {
+        return new Promise((resolve, reject) => {
+            axios({
+                url: "/api/ventasPDF/" + params.id,
+                method: "GET",
+                responseType: "blob"
+            })
+                .then(response => {
+                    const url = window.URL.createObjectURL(
+                        new Blob([response.data])
+                    );
+                    const link = document.createElement("a");
+                    link.href = url;
+                    link.setAttribute(
+                        "download",
+                        "remito_" + params.id + ".pdf"
+                    );
+                    document.body.appendChild(link);
+                    link.click();
+                    resolve();
+                })
+                .catch(error => {
+                    dispatch("errorHandle", error.response, {
+                        root: true
+                    });
+                    reject(error.response.data);
+                });
+        });
+    },
+
+    printEntrega({ dispatch }, params) {
+        return new Promise((resolve, reject) => {
+            axios({
+                url: "/api/entregasPDF/" + params.id,
+                method: "GET",
+                responseType: "blob"
+            })
+                .then(response => {
+                    const url = window.URL.createObjectURL(
+                        new Blob([response.data])
+                    );
+                    const link = document.createElement("a");
+                    link.href = url;
+                    link.setAttribute(
+                        "download",
+                        "entrega_" + params.id + ".pdf"
                     );
                     document.body.appendChild(link);
                     link.click();

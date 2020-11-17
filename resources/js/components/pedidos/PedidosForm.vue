@@ -706,7 +706,7 @@
                                     v-model="
                                         $store.state.pedidos.form.confirmacion
                                     "
-                                    label="¿Confirmar Venta?"
+                                    label="¿Confirmar venta?"
                                 ></v-switch>
                             </v-col>
                             <v-col cols="12" sm="6" class="py-0">

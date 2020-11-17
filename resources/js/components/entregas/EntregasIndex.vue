@@ -42,6 +42,11 @@
                                                 >Detalles</v-list-item-title
                                             >
                                         </v-list-item>
+                                        <v-list-item @click="print(item.id)">
+                                            <v-list-item-title
+                                                >Imprimir</v-list-item-title
+                                            >
+                                        </v-list-item>
                                         <v-list-item
                                             @click="openDeleteDialog(item.id)"
                                         >
@@ -102,7 +107,7 @@
 <script>
 export default {
     data: () => ({
-        deleteDialog: true,
+        deleteDialog: false,
         deleteId: null,
         headers: [
             { text: "N°", sortable: false },
@@ -115,6 +120,10 @@ export default {
     props: ["limit"],
 
     methods: {
+        print(id) {
+            this.$store.dispatch("PDF/printEntrega", { id: id });
+        },
+
         openDeleteDialog(id) {
             this.deleteId = id;
             this.deleteDialog = true;

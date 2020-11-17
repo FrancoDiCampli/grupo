@@ -4,6 +4,9 @@
             <v-row justify="center">
                 <v-card shaped outlined width="794" height="1123">
                     <v-card-text class="pa-0 black--text">
+                        <div class="print-button" @click="print()">
+                            <v-icon>fas fa-print</v-icon>
+                        </div>
                         <v-row>
                             <v-col cols="12">
                                 <h2 class="text-center mb-3">Entrega</h2>
@@ -211,6 +214,10 @@ export default {
                 id: this.id,
             });
             this.inProcess = false;
+        },
+
+        print() {
+            this.$store.dispatch("PDF/printEntrega", { id: this.$store.state.entregas.entrega.entrega.id });
         },
     },
 };
