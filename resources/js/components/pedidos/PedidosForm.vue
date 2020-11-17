@@ -215,7 +215,7 @@
                                                         <th class="text-xs-left">Codigo</th>
                                                         <th class="text-xs-left">Articulo</th>
                                                         <th class="text-xs-left">Precio</th>
-                                                        <th class="text-xs-left">Total Litros</th>
+                                                        <th class="text-xs-left">Stock en litros</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>

@@ -3,7 +3,7 @@
         <v-container>
             <v-row justify="center">
                 <v-col cols="12" md="10" lg="8">
-                    <EntregasIndex @erase="restart()">
+                    <EntregasIndex @erase="getEntregas()">
                         <div v-if="$store.state.entregas.entregas">
                             <br />
                             <v-row justify="center" v-if="$store.state.entregas.entregas">
@@ -51,11 +51,6 @@ export default {
         loadMore: async function () {
             this.limit += 10;
             await this.getEntregas();
-        },
-
-        // TODO: Añadir en pedidos y facturas
-        restart() {
-            this.getFacturas();
         },
     },
 };
