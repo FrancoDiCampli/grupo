@@ -232,13 +232,13 @@
             <table>
                 <tr>
                     <th>Fecha</th>
-                    <th>Descripción</th>
+                    <th>Movimiento</th>
                     <th>Debe (-)</th>
                 </tr>
                 @foreach($cuentas as $cuenta)
                 <tr class="body">
-                    <th>{{$cuenta->alta}}</th>
-                    <th>{{$cuenta->factura->tipocomprobante}}</th>
+                    <th>{{$cuenta->fecha}}</th>
+                    <th>{{$cuenta->tipo}}</th>
                     <th>{{$cuenta->importe}}</th>
                 </tr>
                 @endforeach
@@ -254,13 +254,13 @@
             <table>
                 <tr>
                     <th>Fecha</th>
-                    <th>Descripción</th>
+                    <th>Movimiento</th>
                     <th>HABER (+)</th>
                 </tr>
                 @foreach($pagos as $pago)
                 <tr class="body">
                     <th>{{$pago->fecha}}</th>
-                    <th>PAGO RECIBO Nº {{$pago->recibo[0]->numrecibo}}</th>
+                    <th>{{$pago->tipo}}</th>
                     <th>{{$pago->importe}}</th>
                 </tr>
                 @endforeach

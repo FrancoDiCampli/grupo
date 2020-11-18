@@ -70,7 +70,7 @@
                                         <tr>
                                             <th class="text-xs-left">Fecha</th>
                                             <th class="text-xs-left">
-                                                Descripción
+                                                Movimiento
                                             </th>
                                             <th class="text-xs-left">
                                                 Debe (-)
@@ -105,7 +105,7 @@
                                         <tr>
                                             <th class="text-xs-left">Fecha</th>
                                             <th class="text-xs-left">
-                                                Descripción
+                                                Movimiento
                                             </th>
                                             <th class="text-xs-left">
                                                 Haber (+)
