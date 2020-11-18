@@ -3,7 +3,7 @@
         <v-card shaped outlined :loading="inProcess" class="pb-4">
             <v-card-title class="py-0 px-2">
                 <v-row class="pa-0 ma-0">
-                    <v-col cols="auto" align-self="center">Nueva Devolución</v-col>
+                    <v-col cols="auto" align-self="center">Nueva de devolución</v-col>
                     <v-spacer></v-spacer>
                     <v-col cols="auto">
                         <v-list-item two-line class="text-right">
@@ -66,7 +66,7 @@
                                             <v-simple-table v-if="vendedores.length > 0">
                                                 <thead>
                                                     <tr>
-                                                        <th class="text-xs-left">Apellido Nombre</th>
+                                                        <th class="text-xs-left">Apellido y nombre</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -191,7 +191,7 @@
                                                             <th class="text-xs-left">Codigo</th>
                                                             <th class="text-xs-left">Articulo</th>
                                                             <th class="text-xs-left">Precio</th>
-                                                            <th class="text-xs-left">Total Litros</th>
+                                                            <th class="text-xs-left">Total litros</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -245,8 +245,8 @@
                                     </v-expansion-panel>
                                 </v-expansion-panels>
                             </v-col>
-                            <v-form ref="detailForm">
-                                <v-row justify="center" class="px-3">
+                            <v-col cols="12" class="py-0"><v-form ref="detailForm">
+                                <v-row justify="center">
                                     <!-- DETALLES -->
                                     <v-col cols="12" sm="6" class="py-0" hidden>
                                         <v-text-field
@@ -294,8 +294,10 @@
                                     </v-col>
                                 </v-row>
                             </v-form>
-                            <v-row justify="center" class="px-3">
-                                <v-col cols="12">
+                            </v-col>
+                            <v-col cols="12">
+                                <v-row justify="center">
+
                                     <v-row justify="center" class="mb-5">
                                         <v-btn
                                             @click="addDetail()"
@@ -305,8 +307,11 @@
                                             :disabled="disabled.detalles"
                                         >Añadir detalle</v-btn>
                                     </v-row>
-                                </v-col>
+
                             </v-row>
+                            </v-col>
+                            
+                            
 
                             <!-- TABLA DETALLES -->
                             <v-col cols="12" class="py-0 mb-5">

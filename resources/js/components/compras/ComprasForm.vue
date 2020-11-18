@@ -4,7 +4,7 @@
             <!-- HEADER -->
             <v-card-title class="py-0 px-2">
                 <v-row class="pa-0 ma-0">
-                    <v-col cols="auto" align-self="center">Nueva Compra</v-col>
+                    <v-col cols="auto" align-self="center">Nueva compra</v-col>
                     <v-spacer></v-spacer>
                     <v-col cols="auto">
                         <v-list-item two-line class="text-right">
@@ -64,7 +64,7 @@
                                             <v-simple-table v-if="proveedores.length > 0">
                                                 <thead>
                                                     <tr>
-                                                        <th class="text-xs-left">Apellido Nombre</th>
+                                                        <th class="text-xs-left">Apellido y nombre</th>
                                                         <th class="text-xs-left">CUIT</th>
                                                     </tr>
                                                 </thead>
@@ -83,7 +83,7 @@
                                             <div v-else class="py-5">
                                                 <h3 class="text-center">
                                                     Ningun dato coincide con
-                                                    lel criterio de busqueda
+                                                    el criterio de busqueda
                                                 </h3>
                                             </div>
                                         </div>
@@ -94,7 +94,7 @@
                                     <v-text-field
                                         v-model="$store.state.compras.form.numcompra"
                                         :rules="[rules.required]"
-                                        label="N° Remito"
+                                        label="N° remito"
                                         type="number"
                                         required
                                         outlined

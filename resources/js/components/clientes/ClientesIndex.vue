@@ -106,7 +106,7 @@ export default {
                 align: "left",
                 sortable: false
             },
-            { text: "Apellido y Nombre", sortable: false },
+            { text: "Apellido y nombre", sortable: false },
             { text: "Condicion IVA", sortable: false, class: "hidden-xs-only" },
             { text: "", sortable: false }
         ]

@@ -159,16 +159,16 @@
                         <div v-else-if="mode == 'delete'">
                             <div class="show-delete">
                                 <h2 class="text-center white--text">
-                                    ¿Estas Seguro?
+                                    ¿Estas seguro?
                                 </h2>
                                 <br />
                                 <v-divider dark></v-divider>
                                 <br />
                                 <p class="text-center white--text">
-                                    ¿Realmente deseas eliminar este Proveedor?
+                                    ¿Realmente deseas eliminar este proveedor?
                                 </p>
                                 <p class="text-center white--text">
-                                    Este Cambio es Irreversible
+                                    Este cambio es irreversible
                                 </p>
                                 <br />
                                 <v-row justify="center">

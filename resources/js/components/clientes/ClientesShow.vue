@@ -9,7 +9,7 @@
                     :loading="$store.state.inProcess"
                 >
                     <div v-if="mode == 'edit'">
-                        <v-card-title>Editar Cliente</v-card-title>
+                        <v-card-title>Editar cliente</v-card-title>
                         <v-divider></v-divider>
                         <v-card-text>
                             <v-row justify="center">
@@ -140,7 +140,7 @@
                                         <v-tab>Ventas</v-tab>
                                         <v-tab>
                                             <span class="hidden-sm-and-up">Cuenta</span>
-                                            <span class="hidden-xs-only">Resumen Corriente</span>
+                                            <span class="hidden-xs-only">Resumen corriente</span>
                                         </v-tab>
                                         <v-tab-item style="background: white !important;">
                                             <div

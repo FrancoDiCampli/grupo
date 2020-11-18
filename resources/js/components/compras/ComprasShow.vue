@@ -27,21 +27,21 @@
                                     }}
                                 </h2>
                                 <p>
-                                    <b>Razón Social:</b>
+                                    <b>Razón social:</b>
                                     {{
                                         $store.state.compras.compra
                                             .configuracion.razonsocial
                                     }}
                                 </p>
                                 <p>
-                                    <b>Domicilio Comercial:</b>
+                                    <b>Domicilio comercial:</b>
                                     {{
                                         $store.state.compras.compra
                                             .configuracion.domiciliocomercial
                                     }}
                                 </p>
                                 <p>
-                                    <b>Condición Frente al IVA:</b>
+                                    <b>Condición frente al IVA:</b>
                                     {{
                                         $store.state.compras.compra
                                             .configuracion.condicioniva
@@ -51,7 +51,7 @@
                             <v-col cols="12" sm="6" class="header-right">
                                 <h2 class="text-center">REMITO</h2>
                                 <p>
-                                    <b>Punto de Venta:</b>
+                                    <b>Punto de venta:</b>
                                     0000{{
                                         $store.state.compras.compra
                                             .configuracion.puntoventa
@@ -63,7 +63,7 @@
                                     }}
                                 </p>
                                 <p>
-                                    <b>Fecha de Emisión:</b>
+                                    <b>Fecha de emisión:</b>
                                     {{
                                         $store.state.compras.compra.remito.fecha
                                     }}
@@ -76,14 +76,14 @@
                                     }}
                                 </p>
                                 <p>
-                                    <b>Ingresos Brutos:</b>
+                                    <b>Ingresos brutos:</b>
                                     {{
                                         $store.state.compras.compra
                                             .configuracion.cuit
                                     }}
                                 </p>
                                 <p>
-                                    <b>Inicio de Actividades:</b>
+                                    <b>Inicio de actividades:</b>
                                     {{
                                         $store.state.compras.compra
                                             .configuracion.inicioactividades
@@ -101,7 +101,7 @@
                                     }}
                                 </p>
                                 <p>
-                                    <b>Razón Social:</b>
+                                    <b>Razón social:</b>
                                     {{
                                         $store.state.compras.compra.proveedor
                                             .razonsocial

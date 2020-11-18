@@ -113,7 +113,7 @@
                 <v-text-field
                     v-model="$store.state.articulos.form.stockminimo"
                     :rules="[rules.required]"
-                    label="Stock Minimo"
+                    label="Stock minimo"
                     outlined
                     type="number"
                 ></v-text-field>
@@ -122,7 +122,7 @@
             <v-col cols="12" sm="6" class="py-0" v-if="mode == 'create'">
                 <v-text-field
                     v-model="$store.state.articulos.form.stockInicial"
-                    label="Stock Inicial"
+                    label="Stock inicial"
                     outlined
                     type="number"
                 ></v-text-field>
@@ -144,7 +144,7 @@
                                 <v-list-item-title>
                                     No hay resultados que coincidan con "
                                     <strong>{{ searchCategoria }}</strong>". Presione
-                                    <kbd>enter</kbd> enter para
+                                    <kbd>↵ Enter</kbd> para
                                     crear uno nuevo
                                 </v-list-item-title>
                             </v-list-item-content>
@@ -169,7 +169,7 @@
                                 <v-list-item-title>
                                     No hay resultados que coincidan con "
                                     <strong>{{ searchCategoria }}</strong>". Presione
-                                    <kbd>enter</kbd> enter para
+                                    <kbd>↵ Enter</kbd> para
                                     crear uno nuevo
                                 </v-list-item-title>
                             </v-list-item-content>
@@ -181,7 +181,7 @@
                 <v-text-field label="Medida" placeholder="Litros" disabled outlined></v-text-field>
             </v-col>
             <v-col cols="12" sm="6" class="py-0">
-                <v-text-field label="Codigo" v-model="codigo" outlined disabled></v-text-field>
+                <v-text-field label="Código" v-model="codigo" outlined disabled></v-text-field>
             </v-col>
         </v-row>
     </div>

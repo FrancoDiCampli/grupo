@@ -108,7 +108,7 @@
                                                 <v-simple-table v-if="suppliers.length > 0">
                                                     <thead>
                                                         <tr>
-                                                            <th class="text-xs-left">Apellido Nombre</th>
+                                                            <th class="text-xs-left">Apellido / Nombre</th>
                                                             <th class="text-xs-left">Cuit</th>
                                                         </tr>
                                                     </thead>
@@ -153,7 +153,7 @@
                                                             "
                                                         >
                                                             Añadir
-                                                            Proveedor
+                                                            proveedor
                                                         </v-btn>
                                                     </v-row>
                                                 </div>
@@ -189,7 +189,7 @@
                 <ArticulosInventarios></ArticulosInventarios>
             </div>
             <div v-else key="proveedores">
-                <v-card-title>Nuevo Proveedor</v-card-title>
+                <v-card-title>Nuevo proveedor</v-card-title>
                 <v-divider></v-divider>
                 <v-card-text>
                     <v-form ref="ProveedoresCreate" @submit.prevent="saveProveedores">
@@ -220,7 +220,7 @@
 
         <v-dialog v-model="preventSaveDialog" width="750" persistent>
             <v-card>
-                <v-card-title>¿Estás Seguro?</v-card-title>
+                <v-card-title>¿Estás seguro?</v-card-title>
                 <v-divider></v-divider>
                 <v-card-text>
                     <br />

@@ -119,7 +119,7 @@
                     <v-btn
                         color="error"
                         text
-                        @click="cancelDelete()"
+                        @click="cancelSold()"
                         :disabled="inProcess"
                         >Cancelar</v-btn
                     >

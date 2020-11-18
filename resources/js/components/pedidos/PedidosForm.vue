@@ -4,10 +4,10 @@
             <v-card-title class="py-0 px-2">
                 <v-row class="pa-0 ma-0">
                     <v-col cols="auto" align-self="center" v-if="mode == 'edit'"
-                        >Nueva nota de pedido</v-col
+                        >Editar nota de pedido</v-col
                     >
                     <v-col cols="auto" align-self="center" v-else
-                        >Editar nota de pedido</v-col
+                        >Nueva nota de pedido</v-col
                     >
                     <v-spacer></v-spacer>
                     <v-col cols="auto">

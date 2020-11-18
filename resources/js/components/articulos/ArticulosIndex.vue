@@ -19,7 +19,9 @@
                             :mobile-breakpoint="0"
                             :items-per-page="-1"
                         >
-                            <v-progress-linear v-slot:progress color="primary" indeterminate></v-progress-linear>
+                            <template v-slot:progress>
+                                <v-progress-linear color="primary" indeterminate></v-progress-linear>
+                            </template>
                             <template v-slot:item="item">
                                 <tr>
                                     <td class="hidden-sm-and-down">{{ item.item.codarticulo }}</td>
@@ -111,7 +113,7 @@
                                                         </v-icon>
                                                     </div>
                                                 </template>
-                                                <span>Necesita Reposición</span>
+                                                <span>Necesita reposición</span>
                                             </v-tooltip>
                                         </div>
                                         <div
@@ -130,7 +132,7 @@
                                                         </v-icon>
                                                     </div>
                                                 </template>
-                                                <span>Sin Stock</span>
+                                                <span>Sin stock</span>
                                             </v-tooltip>
                                         </div>
                                         <div
@@ -148,7 +150,7 @@
                                                         </v-icon>
                                                     </div>
                                                 </template>
-                                                <span>Stock Suficiente</span>
+                                                <span>Stock suficiente</span>
                                             </v-tooltip>
                                         </div>
                                     </div>
@@ -158,7 +160,7 @@
                                     <h3 class="headline">{{ articulo.articulo }}</h3>
                                     <div>
                                         <p>{{ articulo.litros }} Litros</p>
-                                        <p>Total Litros: {{ articulo.stock }}</p>
+                                        <p>Total litros: {{ articulo.stock }}</p>
                                         <p>$ {{ articulo.precio }}</p>
                                     </div>
                                 </v-card-text>
@@ -185,7 +187,7 @@ export default {
             { text: "Articulo", sortable: false },
             { text: "Precio", sortable: false },
             {
-                text: "Total Litros",
+                text: "Total litros",
                 sortable: false,
                 class: "hidden-sm-and-down"
             },

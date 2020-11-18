@@ -3,7 +3,7 @@
         <v-card shaped outlined :loading="inProcess" class="pb-4">
             <v-card-title class="py-0 px-2">
                 <v-row class="pa-0 ma-0">
-                    <v-col cols="auto" align-self="center">Nueva Consignacion</v-col>
+                    <v-col cols="auto" align-self="center">Nueva consignacion</v-col>
                     <v-spacer></v-spacer>
                     <v-col cols="auto">
                         <v-list-item two-line class="text-right">
@@ -64,7 +64,7 @@
                                             <v-simple-table v-if="vendedores.length > 0">
                                                 <thead>
                                                     <tr>
-                                                        <th class="text-xs-left">Apellido Nombre</th>
+                                                        <th class="text-xs-left">Apellido y nombre</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -169,7 +169,7 @@
                                                             <th class="text-xs-left">Codigo</th>
                                                             <th class="text-xs-left">Articulo</th>
                                                             <th class="text-xs-left">Precio</th>
-                                                            <th class="text-xs-left">Total Litros</th>
+                                                            <th class="text-xs-left">Total litros</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>

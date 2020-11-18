@@ -20,21 +20,21 @@
                                     }}
                                 </h2>
                                 <p>
-                                    <b>Razón Social:</b>
+                                    <b>Razón social:</b>
                                     {{
                                     $store.state.entregas.entrega
                                     .configuracion.razonsocial
                                     }}
                                 </p>
                                 <p>
-                                    <b>Domicilio Comercial:</b>
+                                    <b>Domicilio comercial:</b>
                                     {{
                                     $store.state.entregas.entrega
                                     .configuracion.domiciliocomercial
                                     }}
                                 </p>
                                 <p>
-                                    <b>Condición Frente al IVA:</b>
+                                    <b>Condición frente al IVA:</b>
                                     {{
                                     $store.state.entregas.entrega
                                     .configuracion.condicioniva
@@ -44,7 +44,7 @@
                             <v-col cols="12" sm="6" class="header-right">
                                 <h2 class="text-center">Entrega</h2>
                                 <p>
-                                    <b>Punto de Venta:</b>
+                                    <b>Punto de venta:</b>
                                     0000{{
                                     $store.state.entregas.entrega
                                     .configuracion.puntoventa
@@ -56,7 +56,7 @@
                                     }}
                                 </p>
                                 <p>
-                                    <b>Fecha de Emisión:</b>
+                                    <b>Fecha de emisión:</b>
                                     {{
                                     $store.state.entregas.entrega.entrega
                                     .fecha
@@ -70,21 +70,21 @@
                                     }}
                                 </p>
                                 <p>
-                                    <b>Ingresos Brutos:</b>
+                                    <b>Ingresos brutos:</b>
                                     {{
                                     $store.state.entregas.entrega
                                     .configuracion.cuit
                                     }}
                                 </p>
                                 <p>
-                                    <b>Inicio de Actividades:</b>
+                                    <b>Inicio de actividades:</b>
                                     {{
                                     $store.state.entregas.entrega
                                     .configuracion.inicioactividades
                                     }}
                                 </p>
                                 <p>
-                                    <b>Comprobante Adherido:</b>
+                                    <b>Comprobante adherido:</b>
                                     {{
                                     $store.state.entregas.entrega.entrega
                                     .comprobanteadherido
@@ -102,14 +102,14 @@
                                     }}
                                 </p>
                                 <p>
-                                    <b>Razón Social:</b>
+                                    <b>Razón social:</b>
                                     {{
                                     $store.state.entregas.entrega.cliente
                                     .razonsocial
                                     }}
                                 </p>
                                 <p>
-                                    <b>Condición Frente al IVA:</b>
+                                    <b>Condición frente al IVA:</b>
                                     {{
                                     $store.state.entregas.entrega.cliente
                                     .condicioniva
@@ -123,7 +123,7 @@
                                     }}
                                 </p>
                                 <p>
-                                    <b>Condición de Venta:</b>
+                                    <b>Condición de venta:</b>
                                     {{
                                     $store.state.entregas.entrega.entrega
                                     .condicionventa
@@ -139,7 +139,7 @@
                                                 <th class="hidden-sm-and-down">Cod. Producto</th>
                                                 <th>Producto</th>
                                                 <th>Cantidad</th>
-                                                <th>Cantidad Litros</th>
+                                                <th>Cantidad litros</th>
                                                 <th class="hidden-sm-and-down">U. Medida</th>
                                             </tr>
                                         </thead>

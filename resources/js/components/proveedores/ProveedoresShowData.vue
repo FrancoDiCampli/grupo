@@ -22,7 +22,7 @@
                             <v-list-item style="margin: 10px 0px;">
                                 <v-list-item-content>
                                     <v-list-item-title>
-                                        <b>Apellido y Nombre:</b>
+                                        <b>Apellido y nombre:</b>
                                     </v-list-item-title>
                                     <v-list-item-subtitle
                                         class="black--text"
@@ -93,7 +93,7 @@
                             <v-list-item style="margin: 10px 0px;">
                                 <v-list-item-content>
                                     <v-list-item-title>
-                                        <b>Codigo Postal:</b>
+                                        <b>Codigo postal:</b>
                                     </v-list-item-title>
                                     <v-list-item-subtitle
                                         class="black--text"

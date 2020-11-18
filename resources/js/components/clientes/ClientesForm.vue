@@ -261,7 +261,6 @@
                     </v-card-text>
                 </v-card>
             </v-col>
-            <!-- _________ -->
             <v-col cols="12" sm="4" class="py-0">
                 <v-combobox
                     v-model="$store.state.clientes.form.provincia"
@@ -299,7 +298,7 @@
                             ? [rules.required, rules.postal]
                             : [rules.required]
                     "
-                    label="Código Postal"
+                    label="Código postal"
                     required
                     outlined
                     type="number"

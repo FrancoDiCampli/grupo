@@ -9,7 +9,7 @@
                     :loading="$store.state.inProcess"
                 >
                     <div v-if="mode == 'edit'">
-                        <v-card-title>Editar Articulo</v-card-title>
+                        <v-card-title>Editar articulo</v-card-title>
                         <v-divider></v-divider>
                         <v-card-text>
                             <v-form
@@ -161,16 +161,16 @@
                         <div v-else-if="mode == 'delete'">
                             <div class="show-delete">
                                 <h2 class="text-center white--text">
-                                    ¿Estas Seguro?
+                                    ¿Estas seguro?
                                 </h2>
                                 <br />
                                 <v-divider dark></v-divider>
                                 <br />
                                 <p class="text-center white--text">
-                                    ¿Realmente deseas eliminar este Producto?
+                                    ¿Realmente deseas eliminar este producto?
                                 </p>
                                 <p class="text-center white--text">
-                                    Este Cambio es Irreversible
+                                    Este cambio es irreversible
                                 </p>
                                 <br />
                                 <v-row justify="center">

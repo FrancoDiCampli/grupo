@@ -3,7 +3,7 @@
         <v-card shaped outlined :loading="inProcess" class="pb-4">
             <v-card-title class="py-0 px-2">
                 <v-row class="pa-0 ma-0">
-                    <v-col cols="auto" align-self="center">Nueva Factura</v-col>
+                    <v-col cols="auto" align-self="center">Nueva factura</v-col>
                     <v-spacer></v-spacer>
                     <v-col cols="auto">
                         <v-list-item two-line class="text-right">
@@ -511,7 +511,7 @@
                                     <v-col cols="12" class="py-0">
                                         <v-text-field
                                             v-model="valorAgregado"
-                                            :label="`IVA ${tipoiva}%`"
+                                            :label="`IVA ${$store.state.facturas.form.tipoiva || 21}%`"
                                             outlined
                                             disabled
                                         ></v-text-field>

@@ -17,21 +17,21 @@
                                     }}
                                 </h2>
                                 <p>
-                                    <b>Razón Social:</b>
+                                    <b>Razón social:</b>
                                     {{
                                     $store.state.facturas.factura
                                     .configuracion.razonsocial
                                     }}
                                 </p>
                                 <p>
-                                    <b>Domicilio Comercial:</b>
+                                    <b>Domicilio comercial:</b>
                                     {{
                                     $store.state.facturas.factura
                                     .configuracion.domiciliocomercial
                                     }}
                                 </p>
                                 <p>
-                                    <b>Condición Frente al IVA:</b>
+                                    <b>Condición frente al IVA:</b>
                                     {{
                                     $store.state.facturas.factura
                                     .configuracion.condicioniva
@@ -41,7 +41,7 @@
                             <v-col cols="12" sm="6" class="header-right">
                                 <h2 class="text-center">FACTURA</h2>
                                 <p>
-                                    <b>Punto de Venta:</b>
+                                    <b>Punto de venta:</b>
                                     0000{{
                                     $store.state.facturas.factura
                                     .configuracion.puntoventa
@@ -53,7 +53,7 @@
                                     }}
                                 </p>
                                 <p>
-                                    <b>Fecha de Emisión:</b>
+                                    <b>Fecha de emisión:</b>
                                     {{
                                     $store.state.facturas.factura.factura
                                     .fecha
@@ -67,21 +67,21 @@
                                     }}
                                 </p>
                                 <p>
-                                    <b>Ingresos Brutos:</b>
+                                    <b>Ingresos brutos:</b>
                                     {{
                                     $store.state.facturas.factura
                                     .configuracion.cuit
                                     }}
                                 </p>
                                 <p>
-                                    <b>Inicio de Actividades:</b>
+                                    <b>Inicio de actividades:</b>
                                     {{
                                     $store.state.facturas.factura
                                     .configuracion.inicioactividades
                                     }}
                                 </p>
                                 <p>
-                                    <b>Comprobante Adherido:</b>
+                                    <b>Comprobante adherido:</b>
                                     {{
                                     $store.state.facturas.factura.factura
                                     .comprobanteadherido
@@ -99,14 +99,14 @@
                                     }}
                                 </p>
                                 <p>
-                                    <b>Razón Social:</b>
+                                    <b>Razón social:</b>
                                     {{
                                     $store.state.facturas.factura.cliente
                                     .razonsocial
                                     }}
                                 </p>
                                 <p>
-                                    <b>Condición Frente al IVA:</b>
+                                    <b>Condición frente al IVA:</b>
                                     {{
                                     $store.state.facturas.factura.cliente
                                     .condicioniva
@@ -120,7 +120,7 @@
                                     }}
                                 </p>
                                 <p>
-                                    <b>Condición de Venta:</b>
+                                    <b>Condición de venta:</b>
                                     {{
                                     $store.state.facturas.factura.factura
                                     .condicionventa
@@ -136,9 +136,9 @@
                                                 <th class="hidden-sm-and-down">Cod. Producto</th>
                                                 <th>Producto</th>
                                                 <th>Cantidad</th>
-                                                <th>Cantidad Litros</th>
+                                                <th>Cantidad litros</th>
                                                 <th class="hidden-sm-and-down">U. Medida</th>
-                                                <th>Precio Unit.</th>
+                                                <th>Precio unit.</th>
                                                 <th>Subtotal</th>
                                             </tr>
                                         </thead>
@@ -198,7 +198,7 @@
                                         }}
                                     </p>
                                     <p>
-                                        <b>Total en Pesos:</b>
+                                        <b>Total en pesos:</b>
                                         $
                                         {{
                                         $store.state.facturas.factura.factura

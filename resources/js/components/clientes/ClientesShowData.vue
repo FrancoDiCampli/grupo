@@ -5,7 +5,7 @@
                 <v-col cols="12" sm="5">
                     <v-card class="elevation-0">
                         <v-card-title>
-                            <h5>Datos Personales:</h5>
+                            <h5>Datos personales:</h5>
                         </v-card-title>
                         <v-divider></v-divider>
                         <v-list dense>
@@ -22,7 +22,7 @@
                             <v-list-item style="margin: 10px 0px;">
                                 <v-list-item-content>
                                     <v-list-item-title>
-                                        <b>Apellido y Nombre:</b>
+                                        <b>Apellido y nombre:</b>
                                     </v-list-item-title>
                                     <v-list-item-subtitle
                                         class="black--text"
@@ -103,7 +103,7 @@
                             <v-list-item style="margin: 10px 0px;">
                                 <v-list-item-content>
                                     <v-list-item-title>
-                                        <b>Codigo Postal:</b>
+                                        <b>Codigo postal:</b>
                                     </v-list-item-title>
                                     <v-list-item-subtitle
                                         class="black--text"

@@ -113,7 +113,7 @@
                         </v-col>
                         <v-col cols="12" sm="6" class="py-0">
                             <p>
-                                <b>cotización:</b>
+                                <b>Cotización:</b>
                             </p>
                             <p>{{ cheque.cotizacion }}</p>
                         </v-col>

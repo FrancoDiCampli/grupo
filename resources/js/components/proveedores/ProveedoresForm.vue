@@ -15,7 +15,7 @@
                 <v-text-field
                     v-model="$store.state.proveedores.form.razonsocial"
                     :rules="[rules.required, rules.max]"
-                    label="Apellido y Nombre"
+                    label="Apellido y nombre"
                     required
                     outlined
                 ></v-text-field>
@@ -87,7 +87,7 @@
                                                 <v-text-field
                                                     v-model="contactForm.nombre"
                                                     :rules="[rules.required]"
-                                                    label="Apellido / Nombre"
+                                                    label="Apellido y nombre"
                                                     required
                                                     outlined
                                                 ></v-text-field>
@@ -194,7 +194,7 @@
                 <v-text-field
                     v-model="$store.state.proveedores.form.codigopostal"
                     :rules="mode != 'edit' ? [rules.required, rules.postal] : [rules.required]"
-                    label="Código Postal"
+                    label="Código postal"
                     required
                     outlined
                     type="number"

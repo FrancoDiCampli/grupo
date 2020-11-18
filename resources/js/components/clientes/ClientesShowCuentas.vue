@@ -1,7 +1,6 @@
 <template>
     <div>
         <v-container>
-            <v-btn tile color="secondary" :to="`/clientes/resumenCuenta`">Resumen de Cuenta</v-btn>
             <v-tabs right slider-color="secondary" active-class="secondary--text">
                 <v-tab v-if="$store.state.auth.user.rol != 'cliente'">Activas</v-tab>
                 <v-tab>
@@ -9,6 +8,7 @@
                     <span v-else>Cuentas</span>
                 </v-tab>
                 <v-tab>Recibos</v-tab>
+                <v-tab>Resumen</v-tab>
                 <!-- Cuentas Activas -->
                 <v-tab-item
                     style="background: white !important;"
@@ -24,6 +24,9 @@
                 <v-tab-item style="background: white !important;">
                     <ClientesRecibos></ClientesRecibos>
                 </v-tab-item>
+                <v-tab-item style="background: white !important;">
+                    <ClientesResumenCuenta></ClientesResumenCuenta>
+                </v-tab-item>
             </v-tabs>
         </v-container>
     </div>
@@ -33,6 +36,7 @@
 import ClientesPagos from "./ClientesPagos";
 import ClientesCuentas from "./ClientesCuentas";
 import ClientesRecibos from "./ClientesRecibos";
+import ClientesResumenCuenta from "./ClientesResumenCuenta";
 
 export default {
     data() {
@@ -47,6 +51,7 @@ export default {
         ClientesPagos,
         ClientesCuentas,
         ClientesRecibos,
+        ClientesResumenCuenta
     },
 };
 </script>
