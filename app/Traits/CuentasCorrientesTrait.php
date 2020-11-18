@@ -189,7 +189,7 @@ trait CuentasCorrientesTrait
         if ($cuenta != null) {
             $cuenta->saldo -= $iva;
             $cuenta->update();
-            static::crearMovimiento($cuenta, 'descuento IVA', $iva);
+            static::crearMovimiento($cuenta, 'DESCUENTO IVA', $iva);
         } else {
             Saldo::create([
                 'cliente_id' => $cliente->id,
