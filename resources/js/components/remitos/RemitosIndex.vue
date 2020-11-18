@@ -116,6 +116,7 @@
                 <v-card-title class="headline">¿Estas seguro?</v-card-title>
                 <v-card-text>
                     Se eliminará el remito seleccionado, esta acción es irreversible.
+                    La cuenta corriente del cliente sera restaurada.
                 </v-card-text>
                 <v-divider></v-divider>
                 <v-card-actions>

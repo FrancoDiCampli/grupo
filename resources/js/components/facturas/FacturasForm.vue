@@ -9,12 +9,16 @@
                         <v-list-item two-line class="text-right">
                             <v-list-item-content>
                                 <v-list-item-title>
-                                    <b v-if="$vuetify.breakpoint.xsOnly">N°:&nbsp;</b>
+                                    <b v-if="$vuetify.breakpoint.xsOnly"
+                                        >N°:&nbsp;</b
+                                    >
                                     <b v-else>Comprobante N°:&nbsp;</b>
                                     {{ NumComprobante }}
                                 </v-list-item-title>
                                 <v-list-item-subtitle>
-                                    <b v-if="$vuetify.breakpoint.xsOnly">P:&nbsp;</b>
+                                    <b v-if="$vuetify.breakpoint.xsOnly"
+                                        >P:&nbsp;</b
+                                    >
                                     <b v-else>Punto de venta:&nbsp;</b>
                                     {{ PuntoVenta }}
                                 </v-list-item-subtitle>
@@ -33,7 +37,8 @@
                         :editable="true"
                         edit-icon="fas fa-pen"
                         :rules="[() => validateStep(1, 'facturasClienteForm')]"
-                    >Cliente y condición de compra.</v-stepper-step>
+                        >Cliente y condición de compra.</v-stepper-step
+                    >
                     <v-stepper-content step="1">
                         <v-form ref="facturasClienteForm">
                             <v-row justify="space-around" class="my-1">
@@ -53,7 +58,11 @@
                                         class="search-client-table mb-5"
                                         v-if="searchClienteTable"
                                     >
-                                        <v-row justify="center" v-if="searchInProcess" class="py-5">
+                                        <v-row
+                                            justify="center"
+                                            v-if="searchInProcess"
+                                            class="py-5"
+                                        >
                                             <v-progress-circular
                                                 :size="70"
                                                 :width="7"
@@ -61,17 +70,22 @@
                                                 indeterminate
                                             ></v-progress-circular>
                                         </v-row>
-                                        <div
-                                            v-else-if="
-                                                searchCliente != null &&
-                                                    searchCliente != ''
-                                            "
-                                        >
-                                            <v-simple-table v-if="clientes.length > 0">
+                                        <div v-else-if="searchCliente != null && searchCliente != ''">
+                                            <v-simple-table
+                                                v-if="clientes.length > 0"
+                                            >
                                                 <thead>
                                                     <tr>
-                                                        <th class="text-xs-left">Apellido Nombre</th>
-                                                        <th class="text-xs-left">Documento</th>
+                                                        <th
+                                                            class="text-xs-left"
+                                                        >
+                                                            Apellido Nombre
+                                                        </th>
+                                                        <th
+                                                            class="text-xs-left"
+                                                        >
+                                                            Documento
+                                                        </th>
                                                         <th>Tipo</th>
                                                     </tr>
                                                 </thead>
@@ -89,12 +103,12 @@
                                                     >
                                                         <td>
                                                             {{
-                                                            cliente.razonsocial
+                                                                cliente.razonsocial
                                                             }}
                                                         </td>
                                                         <td>
                                                             {{
-                                                            cliente.documentounico
+                                                                cliente.documentounico
                                                             }}
                                                         </td>
                                                         <td>
@@ -102,8 +116,12 @@
                                                                 v-if="
                                                                     cliente.distribuidor
                                                                 "
-                                                            >Distribuidor</div>
-                                                            <div v-else>Cliente</div>
+                                                            >
+                                                                Distribuidor
+                                                            </div>
+                                                            <div v-else>
+                                                                Cliente
+                                                            </div>
                                                         </td>
                                                     </tr>
                                                 </tbody>
@@ -162,7 +180,8 @@
                                                             .form.fecha
                                                     )
                                                 "
-                                            >Aceptar</v-btn>
+                                                >Aceptar</v-btn
+                                            >
                                         </v-date-picker>
                                     </v-dialog>
                                 </v-col>
@@ -201,7 +220,8 @@
                                 @click="step = 2"
                                 color="secondary"
                                 class="elevation-0 mb-2"
-                            >Continuar</v-btn>
+                                >Continuar</v-btn
+                            >
                         </v-row>
                     </v-stepper-content>
 
@@ -211,7 +231,8 @@
                         step="2"
                         :editable="true"
                         edit-icon="fas fa-pen"
-                    >Detalles.</v-stepper-step>
+                        >Detalles.</v-stepper-step
+                    >
                     <v-stepper-content step="2">
                         <v-row justify="space-around" class="my-1">
                             <!-- TABLA DETALLES -->
@@ -221,13 +242,38 @@
                                         <template v-slot:default>
                                             <thead>
                                                 <tr>
-                                                    <th class="text-left">Articulo</th>
-                                                    <th class="text-left hidden-sm-and-down">Precio</th>
-                                                    <th class="text-left">Unidades</th>
-                                                    <th class="text-left hidden-sm-and-down">Presentación</th>
-                                                    <th class="text-left hidden-sm-and-down">Bonificacion</th>
-                                                    <th class="text-left hidden-sm-and-down">Recargo</th>
-                                                    <th class="text-left">Subtotal</th>
+                                                    <th class="text-left">
+                                                        Articulo
+                                                    </th>
+                                                    <th
+                                                        class="text-left hidden-sm-and-down"
+                                                    >
+                                                        Precio
+                                                    </th>
+                                                    <th class="text-left">
+                                                        Unidades
+                                                    </th>
+                                                    <th class="text-left hidden-sm-and-down">
+                                                        Cantidad en litros
+                                                    </th>
+                                                    <th
+                                                        class="text-left hidden-sm-and-down"
+                                                    >
+                                                        Presentación
+                                                    </th>
+                                                    <th
+                                                        class="text-left hidden-sm-and-down"
+                                                    >
+                                                        Bonificacion
+                                                    </th>
+                                                    <th
+                                                        class="text-left hidden-sm-and-down"
+                                                    >
+                                                        Recargo
+                                                    </th>
+                                                    <th class="text-left">
+                                                        Subtotal
+                                                    </th>
                                                     <th></th>
                                                     <th></th>
                                                 </tr>
@@ -238,37 +284,84 @@
                                                     index) in detalles"
                                                     :key="index"
                                                 >
-                                                    <td>{{ detalle.articulo }}</td>
-                                                    <td class="hidden-sm-and-down">
+                                                    <td>
+                                                        {{ detalle.articulo }}
+                                                    </td>
+                                                    <td
+                                                        class="hidden-sm-and-down"
+                                                    >
                                                         {{ detalle.articulo }}
                                                     </td>
                                                     <td>
-                                                        {{ detalle.facturando || detalle.cantidad - detalle.cantidadfacturado }}
+                                                        {{
+                                                            detalle.facturando ||
+                                                                detalle.cantidad -
+                                                                    detalle.cantidadfacturado
+                                                        }}
                                                     </td>
-                                                    <td class="hidden-sm-and-down">{{ detalle.cantidadLitros / detalle.cantidad }}</td>
                                                     <td class="hidden-sm-and-down">
-                                                        {{ detalle.bonificacion || 0 }}
+                                                        {{
+                                                            detalle.cantidadLitros
+                                                        }}
                                                     </td>
-                                                    <td class="hidden-sm-and-down">
-                                                        {{ detalle.recargo || 0 }}
+                                                    <td
+                                                        class="hidden-sm-and-down"
+                                                    >
+                                                        {{
+                                                            detalle.cantidadLitros /
+                                                                detalle.cantidad
+                                                        }}
                                                     </td>
-                                                    <td>{{ detalle.subtotal }}</td>
+                                                    <td
+                                                        class="hidden-sm-and-down"
+                                                    >
+                                                        {{
+                                                            detalle.bonificacion ||
+                                                                0
+                                                        }}
+                                                    </td>
+                                                    <td
+                                                        class="hidden-sm-and-down"
+                                                    >
+                                                        {{
+                                                            detalle.recargo || 0
+                                                        }}
+                                                    </td>
+                                                    <td>
+                                                        {{ detalle.subtotal }}
+                                                    </td>
                                                     <td class="px-0">
                                                         <v-btn
                                                             icon
                                                             color="secondary"
-                                                            @click="openEditDetailDialog(detalle)"
+                                                            @click="
+                                                                openEditDetailDialog(
+                                                                    detalle
+                                                                )
+                                                            "
                                                         >
-                                                            <v-icon size="medium">fas fa-pen</v-icon>
+                                                            <v-icon
+                                                                size="medium"
+                                                                >fas
+                                                                fa-pen</v-icon
+                                                            >
                                                         </v-btn>
                                                     </td>
                                                     <td class="px-0">
                                                         <v-btn
                                                             icon
                                                             color="secondary"
-                                                            @click="deleteDetail(detalle)"
+                                                            @click="
+                                                                deleteDetail(
+                                                                    detalle
+                                                                )
+                                                            "
                                                         >
-                                                            <v-icon size="medium">fas fa-times</v-icon>
+                                                            <v-icon
+                                                                size="medium"
+                                                                >fas
+                                                                fa-times</v-icon
+                                                            >
                                                         </v-btn>
                                                     </td>
                                                 </tr>
@@ -284,7 +377,8 @@
                                 tile
                                 class="elevation-0 mb-2"
                                 @click="step = 3"
-                            >Continuar</v-btn>
+                                >Continuar</v-btn
+                            >
                         </v-row>
                     </v-stepper-content>
 
@@ -295,7 +389,8 @@
                         :editable="true"
                         edit-icon="fas fa-pen"
                         :rules="[() => validateStep(3, 'facturasTotalesForm')]"
-                    >Bonificación y recargo.</v-stepper-step>
+                        >Bonificación y recargo.</v-stepper-step
+                    >
                     <v-stepper-content step="3">
                         <v-form ref="facturasTotalesForm">
                             <v-row justify="space-around" class="my-1">
@@ -397,7 +492,8 @@
                                                             fechaCotizacion
                                                         )
                                                     "
-                                                >Aceptar</v-btn>
+                                                    >Aceptar</v-btn
+                                                >
                                             </v-date-picker>
                                         </v-dialog>
                                     </v-col>
@@ -448,7 +544,8 @@
                                 tile
                                 class="elevation-0 mb-2"
                                 @click="step = 4"
-                            >Continuar</v-btn>
+                                >Continuar</v-btn
+                            >
                         </v-row>
                     </v-stepper-content>
 
@@ -458,7 +555,8 @@
                         step="4"
                         :editable="true"
                         edit-icon="fas fa-pen"
-                    >Observaciones</v-stepper-step>
+                        >Observaciones</v-stepper-step
+                    >
                     <v-stepper-content step="4">
                         <v-row justify="center" class="my-1">
                             <v-col cols="12" class="py-0">
@@ -479,67 +577,80 @@
         </v-card>
 
         <v-dialog v-model="editDetailDialog" width="500">
-        <v-card>
-            <v-card-title>Editar detalle</v-card-title>
-            <v-divider></v-divider>
-            <br>
-            <v-card-text>
-                <v-form @submit.prevent="editDetail">
-                    <v-row justify="center">
-                        <v-col cols="12" class="py-0">
-                            <v-text-field
-                                v-model="selectedDetail.articulo"
-                                label="Articulo"
-                                outlined
-                                disabled
-                            ></v-text-field>
-                        </v-col>
-                        <v-col cols="6" class="py-0">
-                            <v-text-field
-                                v-model="selectedDetail.cantidad"
-                                label="Unidades"
-                                outlined
-                                :rules="[rules.required, rules.facturacionMaxima]"
-                                @keyup="editDetailControl()"
-                            ></v-text-field>
-                        </v-col>
-                        <v-col cols="6" class="py-0">
-                            <v-text-field
-                                v-model="selectedDetail.bonificacion"
-                                label="Bonificación"
-                                outlined
-                                @keyup="editDetailControl()"
-                            ></v-text-field>
-                        </v-col>
-                        <v-col cols="6" class="py-0">
-                            <v-text-field
-                                v-model="selectedDetail.recargo"
-                                label="Recargo"
-                                outlined
-                                @keyup="editDetailControl()"
-                            ></v-text-field>
-                        </v-col>
-                        <v-col cols="6" class="py-0">
-                            <v-text-field
-                                v-model="selectedDetail.subtotal"
-                                label="Subtotal"
-                                outlined
-                                disabled
-                            ></v-text-field>
-                        </v-col>
-                    </v-row>
-                    <v-divider></v-divider>
-                    <br>
-                    <v-row justify="end">
-                        <v-btn text color="error" @click="editDetailDialog = false">Cancelar</v-btn>
-                        <div class="mx-2"></div>
-                        <v-btn text class="elevation-0" type="submit" color="secondary">Guardar</v-btn>
-                        <div class="mx-2"></div>
-                    </v-row>
-                </v-form>
-                
-            </v-card-text>
-        </v-card>
+            <v-card>
+                <v-card-title>Editar detalle</v-card-title>
+                <v-divider></v-divider>
+                <br />
+                <v-card-text>
+                    <v-form @submit.prevent="editDetail">
+                        <v-row justify="center">
+                            <v-col cols="12" class="py-0">
+                                <v-text-field
+                                    v-model="selectedDetail.articulo"
+                                    label="Articulo"
+                                    outlined
+                                    disabled
+                                ></v-text-field>
+                            </v-col>
+                            <v-col cols="6" class="py-0">
+                                <v-text-field
+                                    v-model="selectedDetail.cantidad"
+                                    label="Unidades"
+                                    outlined
+                                    :rules="[
+                                        rules.required,
+                                        rules.facturacionMaxima
+                                    ]"
+                                    @keyup="editDetailControl()"
+                                ></v-text-field>
+                            </v-col>
+                            <v-col cols="6" class="py-0">
+                                <v-text-field
+                                    v-model="selectedDetail.bonificacion"
+                                    label="Bonificación"
+                                    outlined
+                                    @keyup="editDetailControl()"
+                                ></v-text-field>
+                            </v-col>
+                            <v-col cols="6" class="py-0">
+                                <v-text-field
+                                    v-model="selectedDetail.recargo"
+                                    label="Recargo"
+                                    outlined
+                                    @keyup="editDetailControl()"
+                                ></v-text-field>
+                            </v-col>
+                            <v-col cols="6" class="py-0">
+                                <v-text-field
+                                    v-model="selectedDetail.subtotal"
+                                    label="Subtotal"
+                                    outlined
+                                    disabled
+                                ></v-text-field>
+                            </v-col>
+                        </v-row>
+                        <v-divider></v-divider>
+                        <br />
+                        <v-row justify="end">
+                            <v-btn
+                                text
+                                color="error"
+                                @click="editDetailDialog = false"
+                                >Cancelar</v-btn
+                            >
+                            <div class="mx-2"></div>
+                            <v-btn
+                                text
+                                class="elevation-0"
+                                type="submit"
+                                color="secondary"
+                                >Guardar</v-btn
+                            >
+                            <div class="mx-2"></div>
+                        </v-row>
+                    </v-form>
+                </v-card-text>
+            </v-card>
         </v-dialog>
     </div>
 </template>
@@ -551,7 +662,7 @@ var facturacionMaxima = 999999999;
 
 export default {
     directives: {
-        clickOutside: ClickOutside.directive,
+        clickOutside: ClickOutside.directive
     },
 
     data: () => ({
@@ -560,13 +671,13 @@ export default {
         inProcess: false,
         searchInProcess: false,
         disabled: {
-            detalles: true,
+            detalles: true
         },
         rules: {
-            required: (value) => !!value || "Este campo es obligatorio",
-            facturacionMaxima: (value) =>
+            required: value => !!value || "Este campo es obligatorio",
+            facturacionMaxima: value =>
                 value <= Number(facturacionMaxima) ||
-                "No se puede facturar más unidades",
+                "No se puede facturar más unidades"
         },
         // HEADER
         PuntoVenta: null,
@@ -580,9 +691,6 @@ export default {
         detailTableKey: 1,
         selectedDetail: {},
         editDetailDialog: false,
-        editCantidad: null,
-        editBonificacion: null,
-        editRecargo: null,
         // COTIZACION
         valorAgregado: null,
         cotizacion: 1,
@@ -590,7 +698,7 @@ export default {
         dialogCotizacion: false,
         // SUBTOTAL
         subtotal: null,
-        fechaDialog: false,
+        fechaDialog: false
     }),
 
     computed: {
@@ -623,7 +731,7 @@ export default {
                 } else {
                     return null;
                 }
-            },
+            }
         },
 
         totalPesos: {
@@ -632,8 +740,8 @@ export default {
                 if (this.total && this.cotizacion) {
                     return Number(this.total * this.cotizacion).toFixed(2);
                 }
-            },
-        },
+            }
+        }
     },
 
     created() {
@@ -644,7 +752,7 @@ export default {
         }
     },
 
-    mounted: async function () {
+    mounted: async function() {
         this.inProcess = true;
         await this.checkCurrency();
         await this.getPoint();
@@ -677,12 +785,12 @@ export default {
             return new Promise((resolve, reject) => {
                 axios
                     .get("/api/consultar")
-                    .then((response) => {
+                    .then(response => {
                         this.cotizacion = response.data.valor;
                         this.fechaCotizacion = response.data.fecha;
                         resolve(response.data);
                     })
-                    .catch((error) => {
+                    .catch(error => {
                         this.cotizacion = 1;
                         this.fechaCotizacion = moment().format("DD/MM/YYYY");
                         this.inProcess = false;
@@ -690,24 +798,24 @@ export default {
                     });
             });
         },
-        setCurrency: async function () {
+        setCurrency: async function() {
             await axios
                 .post("/api/setCotizacion", {
                     cotizacion: this.cotizacion,
-                    fechaCotizacion: this.fechaCotizacion,
+                    fechaCotizacion: this.fechaCotizacion
                 })
-                .then((response) => {
+                .then(response => {
                     console.log(response.data);
                 })
-                .catch((error) => {
+                .catch(error => {
                     console.log(error);
                 });
         },
 
         // HEADER
-        getPoint: async function () {
+        getPoint: async function() {
             let data;
-            await axios.get("/api/config").then((response) => {
+            await axios.get("/api/config").then(response => {
                 data = response.data;
             });
             this.PuntoVenta = data.puntoventa;
@@ -742,12 +850,12 @@ export default {
             }
         },
 
-        findCliente: async function () {
+        findCliente: async function() {
             this.$store.state.facturas.form.cliente_id = null;
             this.clientes = [];
             axios
                 .post("/api/buscando", { buscar: this.searchCliente })
-                .then((response) => {
+                .then(response => {
                     let responseClientes = response.data.clientes;
                     let responseDistribuidores = response.data.distribuidores;
                     for (let i = 0; i < responseClientes.length; i++) {
@@ -758,7 +866,7 @@ export default {
                     }
                     this.searchInProcess = false;
                 })
-                .catch((error) => {
+                .catch(error => {
                     console.log(error);
                     this.searchInProcess = false;
                 });
@@ -777,11 +885,12 @@ export default {
             let presentacion = detail.cantidadLitros / detail.cantidad;
             this.selectedDetail = Object.assign({}, detail);
             this.selectedDetail.presentacion = presentacion;
-            this.editDetailDialog = true;      
+            this.editDetailDialog = true;
         },
 
         editDetailControl() {
-            this.selectedDetail.cantidadLitros = this.selectedDetail.cantidad * this.selectedDetail.presentacion;
+            this.selectedDetail.cantidadLitros =
+                this.selectedDetail.cantidad * this.selectedDetail.presentacion;
 
             let sub =
                 Number(this.selectedDetail.preciounitario) *
@@ -794,17 +903,21 @@ export default {
             let recargo = this.selectedDetail.recargo
                 ? Number(this.selectedDetail.recargo * sub) / 100
                 : 0;
-            
-            let subTotal = Number(sub - bonificacion + recargo).toFixed(2)
-            
+
+            let subTotal = Number(sub - bonificacion + recargo).toFixed(2);
+
             this.selectedDetail.subtotal = subTotal;
 
-            this.selectedDetail.subtotalPesos = Number(subTotal * Number(this.selectedDetail.cotizacion)).toFixed(2);
+            this.selectedDetail.subtotalPesos = Number(
+                subTotal * Number(this.selectedDetail.cotizacion)
+            ).toFixed(2);
         },
 
-        editDetail() {
+        async editDetail() {
             let index = this.detalles.indexOf(
-                this.detalles.find((element) => element.id == this.selectedDetail.id)
+                this.detalles.find(
+                    element => element.id == this.selectedDetail.id
+                )
             );
 
             this.detalles[index] = this.selectedDetail;
@@ -812,13 +925,15 @@ export default {
             this.selectedDetail = {};
             this.editDetailDialog = false;
             this.detailTableKey += 1;
-            this.subtotalControl();
+            await this.subtotalControl();
+            await this.valorAgregadoControl();
         },
 
-        deleteDetail(detalle) {
+        async deleteDetail(detalle) {
             let index = this.detalles.indexOf(detalle);
             this.detalles.splice(index, 1);
-            this.subtotalControl();
+            await this.subtotalControl();
+            await this.valorAgregadoControl();
         },
 
         // SUBTOTAL
@@ -844,7 +959,7 @@ export default {
         },
 
         // FORM
-        setData: async function () {
+        setData: async function() {
             await this.setCurrency();
             if (this.$refs.facturasClienteForm.validate()) {
                 this.$store.state.facturas.form.subtotal = this.subtotal;
@@ -857,8 +972,8 @@ export default {
                 this.$store.state.facturas.form.numfactura = this.NumComprobante;
                 return true;
             }
-        },
-    },
+        }
+    }
 };
 </script>
 

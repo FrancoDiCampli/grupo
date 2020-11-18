@@ -270,7 +270,11 @@ trait ClientesTrait
 
         $facturas = $invoices;
 
-        return compact('cliente', 'contactos', 'user', 'facturas', 'cuentas', 'recibos', 'billing', 'haber');
+        $invoices = $cliente->invoices;
+
+        $entregas = $cliente->entregas;
+
+        return compact('cliente', 'contactos', 'user', 'facturas', 'invoices', 'entregas', 'cuentas', 'recibos', 'billing', 'haber');
     }
 
     public static function resumenCuenta($request)
@@ -284,7 +288,8 @@ trait ClientesTrait
         $pagos = collect();
         $pagosAnterior = collect();
 
-        $movimientos = collect();
+        $auxDebe = collect();
+        $auxHaber = collect();
 
         // return DB::table('movimientocuentas')->where('created_at', '>=', $desde->format('Y-m-d'))->where('created_at', '<=', $hasta->addDay()->format('Y-m-d'))->get();
 
@@ -292,19 +297,21 @@ trait ClientesTrait
 
         foreach ($cliente->ctacte as $cuenta) {
 
-            $auxDebe = $cuenta->movimientos->whereIn('tipo', ['IVA', 'ALTA']);
+            $auxD = $cuenta->movimientos->whereIn('tipo', ['IVA', 'ALTA']);
+            $auxDebe->push($auxD->flatten());
 
-            $auxHaber = $cuenta->movimientos->whereIn('tipo', ['PAGO PARCIAL', 'PAGO TOTAL', 'DESCUENTO IVA']);
+            $auxH = $cuenta->movimientos->whereIn('tipo', ['PAGO PARCIAL', 'PAGO TOTAL', 'DESCUENTO IVA']);
+            $auxHaber->push($auxH->flatten());
 
 
-            // if ($cuenta->created_at >= $desde->format('Y-m-d') && $cuenta->created_at <= $hasta->format('Y-m-d')) {
-            //     $cuenta->factura;
-            //     $fecha = new Carbon($cuenta->alta);
-            //     $cuenta->alta = $fecha->format('d-m-Y');
-            //     $cuentas->push($cuenta);
-            // } else if ($cuenta->created_at < $desde->format('Y-m-d')) {
-            //     $cuentasAnterior->push($cuenta);
-            // }
+            /* if ($cuenta->created_at >= $desde->format('Y-m-d') && $cuenta->created_at <= $hasta->format('Y-m-d')) {
+                $cuenta->factura;
+                $fecha = new Carbon($cuenta->alta);
+                $cuenta->alta = $fecha->format('d-m-Y');
+                $cuentas->push($cuenta);
+            } else if ($cuenta->created_at < $desde->format('Y-m-d')) {
+                $cuentasAnterior->push($cuenta);
+            }
 
             foreach ($cuenta->pagos as $pago) {
                 if ($pago->fecha >= $desde->format('Ymd') && $pago->fecha <= $hasta->format('Ymd')) {
@@ -315,11 +322,16 @@ trait ClientesTrait
                 } else if ($pago->fecha < $desde->format('Ymd')) {
                     $pagosAnterior->push($pago);
                 }
-            }
+            } */
         }
 
-        $debe = $cuentas->sum('importe');
-        $haber = $pagos->sum('importe');
+        $flattenD = $auxDebe->flatten();
+        $flattenH = $auxHaber->flatten();
+
+        $debe = $flattenD->sum('importe');
+        $haber = $flattenH->sum('importe');
+        // $debe = $cuentas->sum('importe');
+        // $haber = $pagos->sum('importe');
         $saldo = $haber - $debe;
 
         $debeAnterior = $cuentasAnterior->sum('importe');
@@ -330,8 +342,10 @@ trait ClientesTrait
             'cliente' => $cliente,
             'desde' => $desde->format('d-m-Y'),
             'hasta' => $hasta->format('d-m-Y'),
-            'cuentas' => $cuentas,
-            'pagos' => $pagos,
+            'cuentas' => $flattenD->all(),
+            'pagos' => $flattenH->all(),
+            /* 'cuentas' => $cuentas,
+            'pagos' => $pagos, */
             'debe' => number_format($debe, 2, ',', '.'),
             'haber' => number_format($haber, 2, ',', '.'),
             'saldoAnterior' => number_format($saldoAnterior, 2, ',', '.'),

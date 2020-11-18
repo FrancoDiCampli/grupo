@@ -46,12 +46,12 @@ class Cliente extends Model
 
     public function invoices()
     {
-        return $this->hasMany(Factura::class);
+        return $this->hasMany(Factura::class)->orderBy('id', 'DESC');
     }
 
     public function entregas()
     {
-        return $this->hasMany(Entrega::class);
+        return $this->hasMany(Entrega::class)->orderBy('id', 'DESC');
     }
 
     public function ctacte()

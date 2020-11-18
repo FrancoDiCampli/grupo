@@ -92,14 +92,14 @@
                     <!-- TABLA DETALLES -->
                     <v-col cols="12" class="py-0 mb-5">
                         <v-card outlined>
-                            <v-simple-table>
+                            <v-simple-table :key="detailTableKey">
                                 <template v-slot:default>
                                     <thead>
                                         <tr>
                                             <th class="text-left">Articulo</th>
                                             <th class="text-left">Presentación</th>
                                             <th class="text-left">Unidades</th>
-
+                                            <th></th>
                                             <th></th>
                                         </tr>
                                     </thead>
@@ -107,57 +107,21 @@
                                         <tr v-for="(detalle, index) in detalles" :key="index">
                                             <td>{{ detalle.articulo }}</td>
                                             <td>{{ detalle.litros }} L.</td>
-                                            <td class="btn-td">
-                                                <v-menu
-                                                    offset-y
-                                                    :close-on-content-click="
-                                                        false
-                                                    "
+                                            <td>{{ detalle.entregando || detalle.cantidad - detalle.cantidadentregado }}</td>
+                                            <td class="px-0">
+                                                <v-btn
+                                                    icon
+                                                    color="secondary"
+                                                    @click="openEditDetailDialog(detalle)"
                                                 >
-                                                    <template
-                                                        v-slot:activator="{
-                                                            on
-                                                        }"
-                                                    >
-                                                        <div v-on="on">
-                                                            {{
-                                                            detalle.cantidad -
-                                                            detalle.cantidadentregado
-                                                            }}
-                                                        </div>
-                                                    </template>
-                                                    <v-card
-                                                        v-click-outside="
-                                                            resetEdit
-                                                        "
-                                                    >
-                                                        <v-card-text>
-                                                            <v-text-field
-                                                                label="Unidades"
-                                                                outlined
-                                                                hide-details
-                                                                v-on:input="
-                                                                    editDetail(
-                                                                        detalle.id,
-                                                                        'cantidad'
-                                                                    )
-                                                                "
-                                                                v-model="
-                                                                    editCantidad
-                                                                "
-                                                                type="number"
-                                                            ></v-text-field>
-                                                        </v-card-text>
-                                                    </v-card>
-                                                </v-menu>
+                                                    <v-icon size="medium">fas fa-pen</v-icon>
+                                                </v-btn>
                                             </td>
                                             <td>
                                                 <v-btn
                                                     icon
                                                     color="secondary"
-                                                    @click="
-                                                        deleteDetail(detalle)
-                                                    "
+                                                    @click="deleteDetail(detalle)"
                                                 >
                                                     <v-icon size="medium">fas fa-times</v-icon>
                                                 </v-btn>
@@ -183,12 +147,68 @@
                 </v-row>
             </v-card-text>
         </v-card>
+
+        <v-dialog v-model="editDetailDialog" width="500">
+            <v-card>
+                <v-card-title>Editar detalle</v-card-title>
+                <v-divider></v-divider>
+                <br />
+                <v-card-text>
+                    <v-form @submit.prevent="editDetail">
+                        <v-row justify="center">
+                            <v-col cols="6" class="py-0">
+                                <v-text-field
+                                    v-model="selectedDetail.articulo"
+                                    label="Articulo"
+                                    outlined
+                                    disabled
+                                ></v-text-field>
+                            </v-col>
+                            <v-col cols="6" class="py-0">
+                                <v-text-field
+                                    v-model="selectedDetail.cantidad"
+                                    label="Unidades"
+                                    outlined
+                                    :rules="[
+                                        rules.required,
+                                        rules.entregaMaxima,
+                                        rules.stockDisponible
+                                    ]"
+                                    @keyup="editDetailControl()"
+                                ></v-text-field>
+                            </v-col>
+                        </v-row>
+                        <v-divider></v-divider>
+                        <br />
+                        <v-row justify="end">
+                            <v-btn
+                                text
+                                color="error"
+                                @click="editDetailDialog = false"
+                                >Cancelar</v-btn
+                            >
+                            <div class="mx-2"></div>
+                            <v-btn
+                                text
+                                class="elevation-0"
+                                type="submit"
+                                color="secondary"
+                                >Guardar</v-btn
+                            >
+                            <div class="mx-2"></div>
+                        </v-row>
+                    </v-form>
+                </v-card-text>
+            </v-card>
+        </v-dialog>
     </div>
 </template>
 
 <script>
 import moment from "moment";
 import ClickOutside from "v-click-outside";
+var entregaMaxima = 999999999;
+var stockDisponible = 999999999;
 
 export default {
     directives: {
@@ -201,13 +221,21 @@ export default {
         inProcess: false,
         rules: {
             required: (value) => !!value || "Este campo es obligatorio",
+            entregaMaxima: value =>
+                value <= Number(entregaMaxima) ||
+                "No se puede entregar más unidades",
+            stockDisponible: value =>
+                value <= Number(stockDisponible) ||
+                "No hay suficiente stock"
         },
         // HEADER
         PuntoVenta: null,
         NumComprobante: null,
         // DETALLES
         detalles: [],
-        editCantidad: null,
+        detailTableKey: 1,
+        selectedDetail: {},
+        editDetailDialog: false,
         // SUBTOTAL
         fechaDialog: false,
     }),
@@ -243,19 +271,32 @@ export default {
         },
 
         // DETALLES
-        editDetail(id, field) {
-            let index = this.detalles.indexOf(
-                this.detalles.find((element) => element.id == id)
-            );
-
-            if (field == "cantidad") {
-                this.detalles[index].cantidad = this.editCantidad;
-            }
+        openEditDetailDialog(detail) {
+            entregaMaxima = detail.cantidad - detail.cantidadentregado;
+            stockDisponible = detail.disponible;
+            let presentacion = detail.cantidadLitros / detail.cantidad;
+            this.selectedDetail = Object.assign({}, detail);
+            this.selectedDetail.presentacion = presentacion;
+            this.editDetailDialog = true;
         },
 
-        resetEdit() {
-            this.editPrecio = null;
-            this.editCantidad = null;
+        editDetailControl() {
+            this.selectedDetail.cantidadLitros =
+                this.selectedDetail.cantidad * this.selectedDetail.presentacion;
+        },
+
+        editDetail() {
+            let index = this.detalles.indexOf(
+                this.detalles.find(
+                    element => element.id == this.selectedDetail.id
+                )
+            );
+
+            this.detalles[index] = this.selectedDetail;
+            this.detalles[index].entregando = this.selectedDetail.cantidad;
+            this.selectedDetail = {};
+            this.editDetailDialog = false;
+            this.detailTableKey += 1;
         },
 
         deleteDetail(detalle) {

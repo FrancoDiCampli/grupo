@@ -3,19 +3,27 @@
         <v-card shaped outlined :loading="inProcess" class="pb-4">
             <v-card-title class="py-0 px-2">
                 <v-row class="pa-0 ma-0">
-                    <v-col cols="auto" align-self="center" v-if="mode=='edit'">Nueva nota de pedido</v-col>
-                    <v-col cols="auto" align-self="center" v-else>Editar nota de pedido</v-col>
+                    <v-col cols="auto" align-self="center" v-if="mode == 'edit'"
+                        >Nueva nota de pedido</v-col
+                    >
+                    <v-col cols="auto" align-self="center" v-else
+                        >Editar nota de pedido</v-col
+                    >
                     <v-spacer></v-spacer>
                     <v-col cols="auto">
                         <v-list-item two-line class="text-right">
                             <v-list-item-content>
                                 <v-list-item-title>
-                                    <b v-if="$vuetify.breakpoint.xsOnly">N°:&nbsp;</b>
+                                    <b v-if="$vuetify.breakpoint.xsOnly"
+                                        >N°:&nbsp;</b
+                                    >
                                     <b v-else>Comprobante N°:&nbsp;</b>
                                     {{ NumComprobante }}
                                 </v-list-item-title>
                                 <v-list-item-subtitle>
-                                    <b v-if="$vuetify.breakpoint.xsOnly">P:&nbsp;</b>
+                                    <b v-if="$vuetify.breakpoint.xsOnly"
+                                        >P:&nbsp;</b
+                                    >
                                     <b v-else>Punto de venta:&nbsp;</b>
                                     {{ PuntoVenta }}
                                 </v-list-item-subtitle>
@@ -33,10 +41,9 @@
                         step="1"
                         :editable="true"
                         edit-icon="fas fa-pen"
-                        :rules="[
-                            () => validateStep(1, 'pedidosClienteForm')
-                        ]"
-                    >Cliente</v-stepper-step>
+                        :rules="[() => validateStep(1, 'pedidosClienteForm')]"
+                        >Cliente</v-stepper-step
+                    >
                     <v-stepper-content step="1">
                         <v-form ref="pedidosClienteForm">
                             <v-row justify="space-around" class="my-1">
@@ -56,7 +63,11 @@
                                         class="search-client-table mb-5"
                                         v-if="searchClienteTable"
                                     >
-                                        <v-row justify="center" v-if="searchInProcess" class="py-5">
+                                        <v-row
+                                            justify="center"
+                                            v-if="searchInProcess"
+                                            class="py-5"
+                                        >
                                             <v-progress-circular
                                                 :size="70"
                                                 :width="7"
@@ -70,11 +81,21 @@
                                                     searchCliente != ''
                                             "
                                         >
-                                            <v-simple-table v-if="clientes.length > 0">
+                                            <v-simple-table
+                                                v-if="clientes.length > 0"
+                                            >
                                                 <thead>
                                                     <tr>
-                                                        <th class="text-xs-left">Apellido Nombre</th>
-                                                        <th class="text-xs-left">Documento</th>
+                                                        <th
+                                                            class="text-xs-left"
+                                                        >
+                                                            Apellido Nombre
+                                                        </th>
+                                                        <th
+                                                            class="text-xs-left"
+                                                        >
+                                                            Documento
+                                                        </th>
                                                         <th>Tipo</th>
                                                     </tr>
                                                 </thead>
@@ -92,19 +113,25 @@
                                                     >
                                                         <td>
                                                             {{
-                                                            cliente.razonsocial
+                                                                cliente.razonsocial
                                                             }}
                                                         </td>
                                                         <td>
                                                             {{
-                                                            cliente.documentounico
+                                                                cliente.documentounico
                                                             }}
                                                         </td>
                                                         <td>
                                                             <div
-                                                                v-if="cliente.distribuidor"
-                                                            >Distribuidor</div>
-                                                            <div v-else>Cliente</div>
+                                                                v-if="
+                                                                    cliente.distribuidor
+                                                                "
+                                                            >
+                                                                Distribuidor
+                                                            </div>
+                                                            <div v-else>
+                                                                Cliente
+                                                            </div>
                                                         </td>
                                                     </tr>
                                                 </tbody>
@@ -123,13 +150,20 @@
                                     <v-dialog
                                         ref="dialogFecha"
                                         v-model="fechaDialog"
-                                        :return-value.sync="$store.state.pedidos.form.fecha"
+                                        :return-value.sync="
+                                            $store.state.pedidos.form.fecha
+                                        "
                                         persistent
-                                        :width="$vuetify.breakpoint.xsOnly ? '100%' : '300px'"
+                                        :width="
+                                            $vuetify.breakpoint.xsOnly
+                                                ? '100%'
+                                                : '300px'
+                                        "
                                     >
                                         <template v-slot:activator="{ on }">
                                             <v-text-field
-                                                v-model="$store.state.pedidos.form.fecha"
+                                                :value="$store.state.pedidos.form.fecha | formatDate" 
+                                                @input="value => store.state.pedidos.form.fecha = value"
                                                 label="Fecha"
                                                 :rules="[rules.required]"
                                                 readonly
@@ -138,7 +172,9 @@
                                             ></v-text-field>
                                         </template>
                                         <v-date-picker
-                                            v-model="$store.state.pedidos.form.fecha"
+                                            v-model="
+                                                $store.state.pedidos.form.fecha
+                                            "
                                             scrollable
                                             locale="es"
                                         >
@@ -146,8 +182,14 @@
                                             <v-btn
                                                 text
                                                 color="primary"
-                                                @click="$refs.dialogFecha.save($store.state.pedidos.form.fecha)"
-                                            >Aceptar</v-btn>
+                                                @click="
+                                                    $refs.dialogFecha.save(
+                                                        $store.state.pedidos
+                                                            .form.fecha
+                                                    )
+                                                "
+                                                >Aceptar</v-btn
+                                            >
                                         </v-date-picker>
                                     </v-dialog>
                                 </v-col>
@@ -181,7 +223,8 @@
                                 @click="step = 2"
                                 color="secondary"
                                 class="elevation-0 mb-2"
-                            >Continuar</v-btn>
+                                >Continuar</v-btn
+                            >
                         </v-row>
                     </v-stepper-content>
 
@@ -194,7 +237,9 @@
                         :rules="[() => validateDetail(2)]"
                     >
                         Detalles.
-                        <small v-if="!validateDetail(2)">Debe ingresar al menos un detalle.</small>
+                        <small v-if="!validateDetail(2)"
+                            >Debe ingresar al menos un detalle.</small
+                        >
                     </v-stepper-step>
                     <v-stepper-content step="2">
                         <v-row justify="space-around" class="my-1">
@@ -202,20 +247,42 @@
                             <v-col cols="12" class="py-0 articulos-panel">
                                 <v-expansion-panels v-model="articulosPanel">
                                     <v-expansion-panel>
-                                        <v-expansion-panel-header expand-icon="fas fa-caret-down">
+                                        <v-expansion-panel-header
+                                            expand-icon="fas fa-caret-down"
+                                        >
                                             <div
                                                 v-if="articuloSelected.articulo"
-                                            >{{ articuloSelected.articulo }}</div>
+                                            >
+                                                {{ articuloSelected.articulo }}
+                                            </div>
                                             <div v-else>Articulos</div>
                                         </v-expansion-panel-header>
                                         <v-expansion-panel-content>
-                                            <v-simple-table v-if="articulos.length > 0">
+                                            <v-simple-table
+                                                v-if="articulos.length > 0"
+                                            >
                                                 <thead>
                                                     <tr>
-                                                        <th class="text-xs-left">Codigo</th>
-                                                        <th class="text-xs-left">Articulo</th>
-                                                        <th class="text-xs-left">Precio</th>
-                                                        <th class="text-xs-left">Total Litros</th>
+                                                        <th
+                                                            class="text-xs-left"
+                                                        >
+                                                            Codigo
+                                                        </th>
+                                                        <th
+                                                            class="text-xs-left"
+                                                        >
+                                                            Articulo
+                                                        </th>
+                                                        <th
+                                                            class="text-xs-left"
+                                                        >
+                                                            Precio
+                                                        </th>
+                                                        <th
+                                                            class="text-xs-left"
+                                                        >
+                                                            Stock en litros
+                                                        </th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -236,20 +303,22 @@
                                                     >
                                                         <td>
                                                             {{
-                                                            articulo.codarticulo
+                                                                articulo.codarticulo
                                                             }}
                                                         </td>
                                                         <td>
                                                             {{
-                                                            articulo.articulo
+                                                                articulo.articulo
                                                             }}
                                                         </td>
                                                         <td>
                                                             {{
-                                                            articulo.precio
+                                                                articulo.precio
                                                             }}
                                                         </td>
-                                                        <td>{{ articulo.stock }}</td>
+                                                        <td>
+                                                            {{ articulo.stock }}
+                                                        </td>
                                                     </tr>
                                                 </tbody>
                                             </v-simple-table>
@@ -321,7 +390,8 @@
                                             tile
                                             color="secondary"
                                             :disabled="disabled.detalles"
-                                        >Añadir detalle</v-btn>
+                                            >Añadir detalle</v-btn
+                                        >
                                     </v-row>
                                 </v-col>
                             </v-row>
@@ -333,11 +403,19 @@
                                         <template v-slot:default>
                                             <thead>
                                                 <tr>
-                                                    <th class="text-left">Articulo</th>
-                                                    <th class="text-left">Precio</th>
-                                                    <th class="text-left">Unidades</th>
+                                                    <th class="text-left">
+                                                        Articulo
+                                                    </th>
+                                                    <th class="text-left">
+                                                        Precio
+                                                    </th>
+                                                    <th class="text-left">
+                                                        Unidades
+                                                    </th>
 
-                                                    <th class="text-left">Subtotal</th>
+                                                    <th class="text-left">
+                                                        Subtotal
+                                                    </th>
 
                                                     <th></th>
                                                 </tr>
@@ -348,23 +426,46 @@
                                                     index) in detalles"
                                                     :key="index"
                                                 >
-                                                    <td>{{ detalle.articulo }}</td>
+                                                    <td>
+                                                        {{ detalle.articulo }}
+                                                    </td>
                                                     <td class="btn-td">
                                                         <v-menu
                                                             offset-y
-                                                            :close-on-content-click="false"
+                                                            :close-on-content-click="
+                                                                false
+                                                            "
                                                         >
-                                                            <template v-slot:activator="{ on }">
-                                                                <div v-on="on">{{ detalle.precio }}</div>
+                                                            <template
+                                                                v-slot:activator="{
+                                                                    on
+                                                                }"
+                                                            >
+                                                                <div v-on="on">
+                                                                    {{
+                                                                        detalle.precio
+                                                                    }}
+                                                                </div>
                                                             </template>
-                                                            <v-card v-click-outside="resetEdit">
+                                                            <v-card
+                                                                v-click-outside="
+                                                                    resetEdit
+                                                                "
+                                                            >
                                                                 <v-card-text>
                                                                     <v-text-field
                                                                         label="Precio"
                                                                         outlined
                                                                         hide-details
-                                                                        v-on:input="editDetail(detalle.id, 'precio')"
-                                                                        v-model="editPrecio"
+                                                                        v-on:input="
+                                                                            editDetail(
+                                                                                detalle.id,
+                                                                                'precio'
+                                                                            )
+                                                                        "
+                                                                        v-model="
+                                                                            editPrecio
+                                                                        "
                                                                         type="number"
                                                                     ></v-text-field>
                                                                 </v-card-text>
@@ -374,21 +475,40 @@
                                                     <td class="btn-td">
                                                         <v-menu
                                                             offset-y
-                                                            :close-on-content-click="false"
+                                                            :close-on-content-click="
+                                                                false
+                                                            "
                                                         >
-                                                            <template v-slot:activator="{ on }">
-                                                                <div
-                                                                    v-on="on"
-                                                                >{{ detalle.cantidad }}</div>
+                                                            <template
+                                                                v-slot:activator="{
+                                                                    on
+                                                                }"
+                                                            >
+                                                                <div v-on="on">
+                                                                    {{
+                                                                        detalle.cantidad
+                                                                    }}
+                                                                </div>
                                                             </template>
-                                                            <v-card v-click-outside="resetEdit">
+                                                            <v-card
+                                                                v-click-outside="
+                                                                    resetEdit
+                                                                "
+                                                            >
                                                                 <v-card-text>
                                                                     <v-text-field
                                                                         label="Cantidad"
                                                                         outlined
                                                                         hide-details
-                                                                        v-on:input="editDetail(detalle.id, 'cantidad')"
-                                                                        v-model="editCantidad"
+                                                                        v-on:input="
+                                                                            editDetail(
+                                                                                detalle.id,
+                                                                                'cantidad'
+                                                                            )
+                                                                        "
+                                                                        v-model="
+                                                                            editCantidad
+                                                                        "
                                                                         type="number"
                                                                     ></v-text-field>
                                                                 </v-card-text>
@@ -398,7 +518,7 @@
 
                                                     <td>
                                                         {{
-                                                        detalle.subtotalDolares
+                                                            detalle.subtotalDolares
                                                         }}
                                                     </td>
 
@@ -412,9 +532,10 @@
                                                                 )
                                                             "
                                                         >
-                                                            <v-icon size="medium">
-                                                                fas
-                                                                fa-times
+                                                            <v-icon
+                                                                size="medium"
+                                                            >
+                                                                fas fa-times
                                                             </v-icon>
                                                         </v-btn>
                                                     </td>
@@ -431,7 +552,8 @@
                                 tile
                                 class="elevation-0 mb-2"
                                 @click="step = 3"
-                            >Continuar</v-btn>
+                                >Continuar</v-btn
+                            >
                         </v-row>
                     </v-stepper-content>
 
@@ -441,10 +563,9 @@
                         step="3"
                         :editable="true"
                         edit-icon="fas fa-pen"
-                        :rules="[
-                            () => validateStep(3, 'pedidosTotalesForm')
-                        ]"
-                    >Bonificación y recargo.</v-stepper-step>
+                        :rules="[() => validateStep(3, 'pedidosTotalesForm')]"
+                        >Bonificación y recargo.</v-stepper-step
+                    >
                     <v-stepper-content step="3">
                         <v-form ref="pedidosTotalesForm">
                             <v-row justify="space-around" class="my-1">
@@ -492,7 +613,8 @@
                                                         fechaCotizacion
                                                     )
                                                 "
-                                            >Aceptar</v-btn>
+                                                >Aceptar</v-btn
+                                            >
                                         </v-date-picker>
                                     </v-dialog>
                                 </v-col>
@@ -552,7 +674,8 @@
                                 tile
                                 class="elevation-0 mb-2"
                                 @click="step = 4"
-                            >Continuar</v-btn>
+                                >Continuar</v-btn
+                            >
                         </v-row>
                     </v-stepper-content>
 
@@ -562,14 +685,14 @@
                         step="4"
                         :editable="true"
                         edit-icon="fas fa-pen"
-                    >Observaciones</v-stepper-step>
+                        >Observaciones</v-stepper-step
+                    >
                     <v-stepper-content step="4">
                         <v-row justify="center" class="my-1">
                             <v-col cols="12" class="py-0">
                                 <v-textarea
                                     v-model="
-                                        $store.state.pedidos.form
-                                            .observaciones
+                                        $store.state.pedidos.form.observaciones
                                     "
                                     outlined
                                     label="Observaciones"
@@ -578,19 +701,22 @@
                             </v-col>
                             <v-col cols="12" sm="6" class="px-6 py-0">
                                 <v-switch
-                                    v-model="$store.state.pedidos.form.confirmacion"
-                                    label="¿Confirmar Venta?"
+                                    v-model="
+                                        $store.state.pedidos.form.confirmacion
+                                    "
+                                    label="¿Confirmar venta?"
                                 ></v-switch>
                             </v-col>
                             <v-col cols="12" sm="6" class="py-0">
                                 <v-text-field
                                     v-model="
-                                            $store.state.pedidos.form
-                                                .remitoadherido
-                                        "
+                                        $store.state.pedidos.form.remitoadherido
+                                    "
                                     label="Remito adherido Nº"
                                     outlined
-                                    v-if="$store.state.pedidos.form.confirmacion"
+                                    v-if="
+                                        $store.state.pedidos.form.confirmacion
+                                    "
                                 ></v-text-field>
                             </v-col>
                             <slot></slot>
@@ -602,7 +728,9 @@
 
         <v-dialog v-model="detallesDialog" width="500" persistent>
             <v-card>
-                <v-card-title primary-title>¡Ha ocurrido un error!</v-card-title>
+                <v-card-title primary-title
+                    >¡Ha ocurrido un error!</v-card-title
+                >
                 <v-divider></v-divider>
                 <v-card-text>
                     <br />Debe ingresar al menos un detalle.
@@ -617,7 +745,8 @@
                             :disabled="$store.state.inProcess"
                             color="error"
                             class="mx-2 elevation-0"
-                        >Cerrar</v-btn>
+                            >Cerrar</v-btn
+                        >
                     </v-row>
                 </v-card-text>
             </v-card>
@@ -634,23 +763,22 @@ export default {
     props: ["mode"],
 
     directives: {
-        clickOutside: ClickOutside.directive,
+        clickOutside: ClickOutside.directive
     },
 
     data: () => ({
         step: 1,
         // GENERAL
         inProcess: false,
-        focus: null,
         searchInProcess: false,
         disabled: {
-            detalles: true,
+            detalles: true
         },
         rules: {
-            required: (value) => !!value || "Este campo es obligatorio",
-            cantidadMaxima: (value) =>
+            required: value => !!value || "Este campo es obligatorio",
+            cantidadMaxima: value =>
                 value <= Number(cantidadMaxima) ||
-                "La cantidad no puede superar el stock existente",
+                "La cantidad no puede superar el stock existente"
         },
         // HEADER
         PuntoVenta: null,
@@ -676,7 +804,7 @@ export default {
         // SUBTOTAL
         subtotal: null,
         // MODALS
-        detallesDialog: false,
+        detallesDialog: false
     }),
 
     computed: {
@@ -692,7 +820,7 @@ export default {
                 } else {
                     return null;
                 }
-            },
+            }
         },
 
         dolares: {
@@ -714,7 +842,7 @@ export default {
                 } else {
                     return null;
                 }
-            },
+            }
         },
 
         pesos: {
@@ -723,7 +851,7 @@ export default {
                 if (this.dolares && this.cotizacion) {
                     return Number(this.dolares * this.cotizacion).toFixed(2);
                 }
-            },
+            }
         },
 
         // TOTALES
@@ -755,8 +883,8 @@ export default {
                 } else {
                     return null;
                 }
-            },
-        },
+            }
+        }
     },
 
     async mounted() {
@@ -797,13 +925,13 @@ export default {
             return new Promise((resolve, reject) => {
                 axios
                     .get("/api/consultar")
-                    .then((response) => {
+                    .then(response => {
                         this.cotizacion = response.data.valor;
                         this.fechaCotizacion = response.data.fecha;
                         this.condicion = "CUENTA CORRIENTE";
                         resolve(response.data);
                     })
-                    .catch((error) => {
+                    .catch(error => {
                         this.cotizacion = 1;
                         this.fechaCotizacion = moment().format("DD/MM/YYYY");
                         this.inProcess = false;
@@ -811,22 +939,22 @@ export default {
                     });
             });
         },
-        setCurrency: async function () {
+        setCurrency: async function() {
             await axios.post("/api/setCotizacion", {
                 cotizacion: this.cotizacion,
-                fechaCotizacion: this.fechaCotizacion,
+                fechaCotizacion: this.fechaCotizacion
             });
         },
 
         // HEADER
-        getPoint: async function () {
+        getPoint: async function() {
             let data;
             await axios
                 .get("/api/config")
-                .then((response) => {
+                .then(response => {
                     data = response.data;
                 })
-                .catch((error) => {
+                .catch(error => {
                     console.log(error);
                 });
 
@@ -879,15 +1007,15 @@ export default {
             }
         },
 
-        findCliente: async function () {
+        findCliente: async function() {
             this.$store.state.pedidos.form.cliente_id = null;
             this.clientes = [];
             axios
                 .post("/api/buscando", {
                     buscar: this.searchCliente,
-                    nuevoComp: true,
+                    nuevoComp: true
                 })
-                .then((response) => {
+                .then(response => {
                     let responseClientes = response.data.clientes;
                     let responseDistribuidores = response.data.distribuidores;
                     for (let i = 0; i < responseClientes.length; i++) {
@@ -898,7 +1026,7 @@ export default {
                     }
                     this.searchInProcess = false;
                 })
-                .catch((error) => {
+                .catch(error => {
                     console.log(error);
                     this.searchInProcess = false;
                 });
@@ -912,7 +1040,7 @@ export default {
         },
 
         // ARTICULOS
-        getArticles: async function () {
+        getArticles: async function() {
             let response = await this.$store.dispatch("articulos/index");
             this.articulos = response.articulos;
         },
@@ -924,7 +1052,7 @@ export default {
         },
 
         // DETALLES
-        addDetail: async function () {
+        addDetail: async function() {
             if (this.$refs.detailForm.validate()) {
                 await this.pushDetail();
 
@@ -940,7 +1068,7 @@ export default {
                 cantidadLitros: this.cantidadLitros,
                 subtotalDolares: this.dolares,
                 cotizacion: this.cotizacion,
-                fechaCotizacion: this.fechaCotizacion,
+                fechaCotizacion: this.fechaCotizacion
             };
 
             let detail = Object.assign(this.articuloSelected, detailData);
@@ -980,7 +1108,7 @@ export default {
 
         editDetail(id, field) {
             let index = this.detalles.indexOf(
-                this.detalles.find((element) => element.id == id)
+                this.detalles.find(element => element.id == id)
             );
 
             if (field == "precio") {
@@ -1021,7 +1149,7 @@ export default {
         },
 
         // FORM
-        setData: async function () {
+        setData: async function() {
             if (
                 this.$refs.pedidosClienteForm.validate() &&
                 this.$refs.pedidosTotalesForm.validate()
@@ -1043,7 +1171,7 @@ export default {
             }
         },
 
-        resetData: async function () {
+        resetData: async function() {
             await this.setCurrency();
             this.clientes = [];
             this.detalles = [];
@@ -1052,8 +1180,8 @@ export default {
             this.$refs.pedidosTotalesForm.reset();
             this.step = 1;
             this.checkCurrency();
-        },
-    },
+        }
+    }
 };
 </script>
 

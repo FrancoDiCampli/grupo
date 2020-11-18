@@ -77,6 +77,7 @@
                 <v-card-title class="headline">¿Estas seguro?</v-card-title>
                 <v-card-text>
                     Se eliminará la factura seleccionada, esta acción es irreversible.
+                    El IVA asignado sera restaurado.
                 </v-card-text>
                 <v-divider></v-divider>
                 <v-card-actions>
@@ -104,6 +105,8 @@
 <script>
 export default {
     data: () => ({
+        deleteDialog: false,
+        deleteId: null,
         headers: [
             { text: "N°", sortable: false },
             { text: "Nombre/Apellido", sortable: false },
@@ -133,7 +136,6 @@ export default {
             this.$emit('erase');
             this.deleteDialog = false;
         }
-
     }
 };
 </script>
