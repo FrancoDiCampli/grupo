@@ -14,6 +14,7 @@ use App\Traits\RecibosTrait;
 use App\Traits\ContactosTrait;
 use App\Notifications\Verificar;
 use App\Traits\FormasDePagoTrait;
+use Illuminate\Support\Facades\DB;
 
 trait ClientesTrait
 {
@@ -23,8 +24,7 @@ trait ClientesTrait
         if (auth()->user()->role->role != 'vendedor') {
             $clientes = Cliente::orderBy('razonsocial', 'asc')
                 ->where('documentounico', '<>', 0)
-                ->where('distribuidor', false)
-                ;
+                ->where('distribuidor', false);
 
             $distribuidores = Cliente::orderBy('razonsocial', 'asc')
                 ->where('documentounico', '<>', 0)
@@ -33,8 +33,7 @@ trait ClientesTrait
         } else {
             $clientes = Cliente::orderBy('razonsocial', 'asc')
                 ->where('documentounico', '<>', 0)
-                ->where('user_id', auth()->user()->id)
-                ;
+                ->where('user_id', auth()->user()->id);
         }
 
         if ($clientes->count() <= $request->get('limit')) {
@@ -285,15 +284,27 @@ trait ClientesTrait
         $pagos = collect();
         $pagosAnterior = collect();
 
+        $movimientos = collect();
+
+        // return DB::table('movimientocuentas')->where('created_at', '>=', $desde->format('Y-m-d'))->where('created_at', '<=', $hasta->addDay()->format('Y-m-d'))->get();
+
+        // return $cliente->ctacte->whereBetween('created_at', [$desde->format('Y-m-d'), $hasta->addDay()->format('Y-m-d')]);
+
         foreach ($cliente->ctacte as $cuenta) {
-            if ($cuenta->created_at >= $desde->format('Y-m-d') && $cuenta->created_at <= $hasta->format('Y-m-d')) {
-                $cuenta->factura;
-                $fecha = new Carbon($cuenta->alta);
-                $cuenta->alta = $fecha->format('d-m-Y');
-                $cuentas->push($cuenta);
-            } else if ($cuenta->created_at < $desde->format('Y-m-d')) {
-                $cuentasAnterior->push($cuenta);
-            }
+
+            $auxDebe = $cuenta->movimientos->whereIn('tipo', ['IVA', 'ALTA']);
+
+            $auxHaber = $cuenta->movimientos->whereIn('tipo', ['PAGO PARCIAL', 'PAGO TOTAL', 'DESCUENTO IVA']);
+
+
+            // if ($cuenta->created_at >= $desde->format('Y-m-d') && $cuenta->created_at <= $hasta->format('Y-m-d')) {
+            //     $cuenta->factura;
+            //     $fecha = new Carbon($cuenta->alta);
+            //     $cuenta->alta = $fecha->format('d-m-Y');
+            //     $cuentas->push($cuenta);
+            // } else if ($cuenta->created_at < $desde->format('Y-m-d')) {
+            //     $cuentasAnterior->push($cuenta);
+            // }
 
             foreach ($cuenta->pagos as $pago) {
                 if ($pago->fecha >= $desde->format('Ymd') && $pago->fecha <= $hasta->format('Ymd')) {
