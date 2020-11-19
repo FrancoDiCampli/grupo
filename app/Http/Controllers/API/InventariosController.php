@@ -5,8 +5,9 @@ namespace App\Http\Controllers\API;
 use App\Supplier;
 use App\Inventario;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\Traits\InventariosAdmin;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
 
 class InventariosController extends Controller
 {
@@ -36,34 +37,40 @@ class InventariosController extends Controller
     {
         $data = $request;
 
-        if (!array_key_exists('dependencia', $request->toArray())) {
-            $actualizar = Inventario::where('articulo_id', $data['articulo_id'])->get()->first();
+        try {
+            DB::transaction(function () use ($request, $data) {
+                if (!array_key_exists('dependencia', $request->toArray())) {
+                    $actualizar = Inventario::where('articulo_id', $data['articulo_id'])->get()->first();
 
-            if ($actualizar) {
-                return InventariosAdmin::actualizarCasaCentral($actualizar, $data);
-            } else {
-                $inventario = InventariosAdmin::altaInventario($data);
-                InventariosAdmin::movimientoAlta($inventario, $data);
-            }
-        } else {
-            $actualizar = Inventario::where('dependencia', $data['dependencia'])->where('articulo_id', $data['articulo_id'])->get()->first();
-            // return $actualizar;
-            if ($actualizar) {
+                    if ($actualizar) {
+                        return InventariosAdmin::actualizarCasaCentral($actualizar, $data);
+                    } else {
+                        $inventario = InventariosAdmin::altaInventario($data);
+                        InventariosAdmin::movimientoAlta($inventario, $data);
+                    }
+                } else {
+                    $actualizar = Inventario::where('dependencia', $data['dependencia'])->where('articulo_id', $data['articulo_id'])->get()->first();
+                    // return $actualizar;
+                    if ($actualizar) {
 
-                InventariosAdmin::actualizarInventario($data, $actualizar);
-                InventariosAdmin::decrementarInventario($data);
+                        InventariosAdmin::actualizarInventario($data, $actualizar);
+                        InventariosAdmin::decrementarInventario($data);
 
-                InventariosAdmin::movimientoIncrementoConsignacion($data);
-                InventariosAdmin::movimientoBajaConsignacion($data);
-            } else {
-                $inventario = InventariosAdmin::altaConsignacion($data);
-                InventariosAdmin::movimientoAltaConsignacion($inventario, $data);
+                        InventariosAdmin::movimientoIncrementoConsignacion($data);
+                        InventariosAdmin::movimientoBajaConsignacion($data);
+                    } else {
+                        $inventario = InventariosAdmin::altaConsignacion($data);
+                        InventariosAdmin::movimientoAltaConsignacion($inventario, $data);
 
-                InventariosAdmin::decrementarInventario($data);
-                InventariosAdmin::movimientoBajaConsignacion($data);
-            };
+                        InventariosAdmin::decrementarInventario($data);
+                        InventariosAdmin::movimientoBajaConsignacion($data);
+                    };
 
-            return (['message' => 'guardado']);
+                    return (['message' => 'guardado']);
+                }
+            });
+        } catch (\Throwable $th) {
+            throw $th;
         }
     }
 }

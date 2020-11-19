@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\UpdateCliente;
 use App\Traits\ClientesTrait;
 use App\Traits\ContactosTrait;
+use Illuminate\Support\Facades\DB;
 
 class ClientesController extends Controller
 {
@@ -51,19 +52,23 @@ class ClientesController extends Controller
         $atributos['observaciones'] = $request['observaciones'];
         $atributos['user_id'] = auth()->user()->id;
 
-        $cliente->update($atributos);
-
-        ContactosTrait::editarContactos($cliente, $request);
-        ClientesTrait::editarUsuario($cliente, $request);
-
-        return ['message' => 'actualizado'];
+        try {
+            DB::transaction(function () use ($cliente, $atributos, $request) {
+                $cliente->update($atributos);
+                ContactosTrait::editarContactos($cliente, $request);
+                ClientesTrait::editarUsuario($cliente, $request);
+            });
+            return response()->json('actualizado');
+        } catch (\Throwable $th) {
+            throw $th;
+        }
     }
 
     public function destroy($id)
     {
         $cliente = Cliente::findOrFail($id);
 
-        ClientesTrait::eliminarCliente($cliente);
+        return ClientesTrait::eliminarCliente($cliente);
     }
 
     public function miCuenta()

@@ -27,13 +27,7 @@ class VentasController extends Controller
 
     public function store(Request $request)
     {
-        try {
-            DB::transaction(function () use ($request) {
-                return VentasTrait::store($request);
-            });
-        } catch (\Throwable $th) {
-            throw $th;
-        }
+        return VentasTrait::store($request);
     }
 
     public function update(Request $request, $id)

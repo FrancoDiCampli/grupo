@@ -50,24 +50,27 @@ trait EntregasTrait
 
     public static function store($request)
     {
-        // return $request;
         $atributos = $request;
         $cliente = Cliente::find($atributos['cliente_id']);
         $atributos['cuit'] = $cliente->documentounico;
 
-        DB::transaction(function () use ($atributos, $request) {
-            // ALMACENAMIENTO DE ENTREGA
-            $entrega = static::crearEntrega($atributos);
+        try {
+            return DB::transaction(function () use ($atributos, $request) {
+                // ALMACENAMIENTO DE ENTREGA
+                $entrega = static::crearEntrega($atributos);
 
-            // ALMACENAMIENTO DE DETALLES
-            $det = static::detallesEntrega($request->get('detalles'), $entrega);
+                // ALMACENAMIENTO DE DETALLES
+                $det = static::detallesEntrega($request->get('detalles'), $entrega);
 
-            $entrega->articulos()->attach($det);
+                $entrega->articulos()->attach($det);
 
-            static::actualizarInventarios($det, $entrega);
+                static::actualizarInventarios($det, $entrega);
 
-            return $entrega->id;
-        });
+                return $entrega->id;
+            });
+        } catch (\Throwable $th) {
+            throw $th;
+        }
     }
 
     public static function detallesEntrega($details, $entrega)
@@ -178,12 +181,16 @@ trait EntregasTrait
             }
         }
         // SE REESTABLECE LA CANTIDAD EN LOS INVENTARIOS
-        // unset($aux);
-        static::reestablecerInventarios($inventarios, $entrega);
-
-        $entrega->articulos()->detach();
-        $entrega->delete();
-        return response()->json('Entrega Anulada');
+        try {
+            DB::transaction(function () use ($inventarios, $entrega) {
+                static::reestablecerInventarios($inventarios, $entrega);
+                $entrega->articulos()->detach();
+                $entrega->delete();
+            });
+            return response()->json('Entrega Anulada');
+        } catch (\Throwable $th) {
+            throw $th;
+        }
     }
 
     public static function reestablecerInventarios($inventarios, $entrega)

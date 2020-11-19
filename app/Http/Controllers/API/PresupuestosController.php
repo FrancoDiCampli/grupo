@@ -53,12 +53,6 @@ class PresupuestosController extends Controller
 
     public function update(Request $request, $id)
     {
-        try {
-            DB::transaction(function () use ($request, $id) {
-                return PresupuestosTrait::update($request, $id);
-            });
-        } catch (\Throwable $th) {
-            throw $th;
-        }
+        return PresupuestosTrait::update($request, $id);
     }
 }
