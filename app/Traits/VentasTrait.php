@@ -118,38 +118,43 @@ trait VentasTrait
 
     public static function store($request)
     {
-        $atributos = $request;
-        $cliente = Cliente::find($atributos['cliente_id']);
-        $atributos['cuit'] = $cliente->documentounico;
-        $atributos['condicionventa'] = $atributos['condicionventa'];
-        $atributos['subtotalPesos'] = ($atributos['subtotal'] * 1) * ($atributos['cotizacion'] * 1);
-        $atributos['totalPesos'] = ($atributos['total'] * 1) * ($atributos['cotizacion'] * 1);
+        try {
+            return DB::transaction(function () use ($request) {
+                $atributos = $request;
+                $cliente = Cliente::find($atributos['cliente_id']);
+                $atributos['cuit'] = $cliente->documentounico;
+                $atributos['condicionventa'] = $atributos['condicionventa'];
+                $atributos['subtotalPesos'] = ($atributos['subtotal'] * 1) * ($atributos['cotizacion'] * 1);
+                $atributos['totalPesos'] = ($atributos['total'] * 1) * ($atributos['cotizacion'] * 1);
 
-        // ALMACENAMIENTO DE FACTURA
-        $factura = static::crearVenta($atributos);
+                // ALMACENAMIENTO DE FACTURA
+                $factura = static::crearVenta($atributos);
 
-        // Metodos de pago
-        // if ($atributos['pagos']) {
-        //     foreach ($atributos['pagos'] as $pay) {
-        //         $ref = FormasDePagoTrait::formaPago($pay, $cliente, $diferencia = null);
-        //         $forma = Formapago::create([
-        //             'referencia' => $ref
-        //         ]);
-        //         $auxiliar[] = $forma->id;
-        //     }
-        //     $factura->formasPago()->attach($auxiliar);
-        // }
+                // Metodos de pago
+                // if ($atributos['pagos']) {
+                //     foreach ($atributos['pagos'] as $pay) {
+                //         $ref = FormasDePagoTrait::formaPago($pay, $cliente, $diferencia = null);
+                //         $forma = Formapago::create([
+                //             'referencia' => $ref
+                //         ]);
+                //         $auxiliar[] = $forma->id;
+                //     }
+                //     $factura->formasPago()->attach($auxiliar);
+                // }
 
-        // ALMACENAMIENTO DE DETALLES
-        $det = static::detallesVentas($request->get('detalles'), $factura);
+                // ALMACENAMIENTO DE DETALLES
+                $det = static::detallesVentas($request->get('detalles'), $factura);
 
-        $factura->articulos()->attach($det);
-        // CREACION DE CUENTA CORRIENTE
-        if ($cliente->documentounico != 0) {
-            CuentasCorrientesTrait::crearCuenta($factura);
+                $factura->articulos()->attach($det);
+                // CREACION DE CUENTA CORRIENTE
+                if ($cliente->documentounico != 0) {
+                    CuentasCorrientesTrait::crearCuenta($factura);
+                }
+                return $factura->id;
+            });
+        } catch (\Throwable $th) {
+            throw $th;
         }
-
-        return $factura->id;
     }
 
     public static function show($id)

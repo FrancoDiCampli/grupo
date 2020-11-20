@@ -290,83 +290,88 @@ trait PresupuestosTrait
 
     public static function update($request, $id)
     {
-        $presupuesto = Presupuesto::find($id);
-        $cliente = Cliente::find($request['cliente_id']);
+        try {
+            DB::transaction(function () use ($request, $id) {
+                $presupuesto = Presupuesto::find($id);
+                $cliente = Cliente::find($request['cliente_id']);
 
-        $presupuesto->update([
-            "comprobanteadherido" => $request['pedidoadherido'],
-            "cuit" => $cliente->documentounico,
-            "fecha" => $request['fecha'],
-            "bonificacion" => $request['bonificacion'] * 1,
-            "recargo" => $request['recargo'] * 1,
-            "subtotal" => $request['subtotal'],
-            "total" => $request['total'],
-            "subtotalPesos" => $request['subtotal'] * $request['cotizacion'],
-            "totalPesos" => $request['totalPesos'],
-            'cotizacion' => $request['cotizacion'],
-            'fechaCotizacion' => $request['fechaCotizacion'],
-            "observaciones" => $request['observaciones'],
-            "cliente_id" => $request['cliente_id'],
-            "user_id" => auth()->user()->id
-        ]);
+                $presupuesto->update([
+                    "comprobanteadherido" => $request['pedidoadherido'],
+                    "cuit" => $cliente->documentounico,
+                    "fecha" => $request['fecha'],
+                    "bonificacion" => $request['bonificacion'] * 1,
+                    "recargo" => $request['recargo'] * 1,
+                    "subtotal" => $request['subtotal'],
+                    "total" => $request['total'],
+                    "subtotalPesos" => $request['subtotal'] * $request['cotizacion'],
+                    "totalPesos" => $request['totalPesos'],
+                    'cotizacion' => $request['cotizacion'],
+                    'fechaCotizacion' => $request['fechaCotizacion'],
+                    "observaciones" => $request['observaciones'],
+                    "cliente_id" => $request['cliente_id'],
+                    "user_id" => auth()->user()->id
+                ]);
 
-        $dets = collect($presupuesto->articulos->map(function ($item) {
-            return $item['pivot'];
-        }));
-        $coleccion = collect();
+                $dets = collect($presupuesto->articulos->map(function ($item) {
+                    return $item['pivot'];
+                }));
+                $coleccion = collect();
 
-        foreach ($request->detalles as $item) {
-            if (array_key_exists('inventarios', $item)) {
-                DB::table('articulo_presupuesto')
-                    ->insert([
-                        'codarticulo' => $item['codarticulo'],
-                        'articulo' => $item['articulo'],
-                        'medida' => $item['medida'],
-                        'cantidad' => $item['cantidad'],
-                        'cantidadLitros' => $item['cantidadLitros'],
-                        'preciounitario' => $item['precio'],
-                        'subtotal' => $item['subtotalDolares'],
-                        'subtotalPesos' => $item['subtotalDolares'] * $item['cotizacion'],
-                        'cotizacion' => $item['cotizacion'],
-                        'fechaCotizacion' => $item['fechaCotizacion'],
-                        'articulo_id' => $item['id'],
-                        'presupuesto_id' => $presupuesto->id,
-                        'created_at' => now(),
-                        'updated_at' => now()
-                    ]);
-            } else {
-                $coleccion->push($item);
-                DB::table('articulo_presupuesto')
-                    ->where('id', $item['id'])
-                    ->update([
-                        'cantidad' => $item['cantidad'],
-                        'preciounitario' => $item['precio'],
-                        'subtotal' => $item['subtotalDolares'],
-                        'subtotalPesos' => $item['subtotalDolares'] * $item['cotizacion'],
-                        'cotizacion' => $item['cotizacion'],
-                        'fechaCotizacion' => $item['fechaCotizacion'],
-                        'updated_at' => now()
-                    ]);
-            }
+                foreach ($request->detalles as $item) {
+                    if (array_key_exists('inventarios', $item)) {
+                        DB::table('articulo_presupuesto')
+                            ->insert([
+                                'codarticulo' => $item['codarticulo'],
+                                'articulo' => $item['articulo'],
+                                'medida' => $item['medida'],
+                                'cantidad' => $item['cantidad'],
+                                'cantidadLitros' => $item['cantidadLitros'],
+                                'preciounitario' => $item['precio'],
+                                'subtotal' => $item['subtotalDolares'],
+                                'subtotalPesos' => $item['subtotalDolares'] * $item['cotizacion'],
+                                'cotizacion' => $item['cotizacion'],
+                                'fechaCotizacion' => $item['fechaCotizacion'],
+                                'articulo_id' => $item['id'],
+                                'presupuesto_id' => $presupuesto->id,
+                                'created_at' => now(),
+                                'updated_at' => now()
+                            ]);
+                    } else {
+                        $coleccion->push($item);
+                        DB::table('articulo_presupuesto')
+                            ->where('id', $item['id'])
+                            ->update([
+                                'cantidad' => $item['cantidad'],
+                                'preciounitario' => $item['precio'],
+                                'subtotal' => $item['subtotalDolares'],
+                                'subtotalPesos' => $item['subtotalDolares'] * $item['cotizacion'],
+                                'cotizacion' => $item['cotizacion'],
+                                'fechaCotizacion' => $item['fechaCotizacion'],
+                                'updated_at' => now()
+                            ]);
+                    }
+                }
+
+                $keys = $coleccion->keyBy('id');
+                $aux = $keys->keys();
+
+                $eliminar = $dets->whereNotIn('id', $aux);
+
+                $eliminar->map(function ($item) {
+                    DB::table('articulo_presupuesto')->where('id', $item['id'])->delete();
+                });
+
+                $atributos = $request;
+                $atributos['cuit'] = $cliente->documentounico;
+
+                if ($atributos->confirmacion) {
+                    static::confirmarVenta($atributos, $request, $presupuesto);
+                }
+            });
+            return response()->json('Actualizado');
+        } catch (\Throwable $th) {
+            throw $th;
         }
-
-        $keys = $coleccion->keyBy('id');
-        $aux = $keys->keys();
-
-        $eliminar = $dets->whereNotIn('id', $aux);
-
-        $eliminar->map(function ($item) {
-            DB::table('articulo_presupuesto')->where('id', $item['id'])->delete();
-        });
-
-        $atributos = $request;
-        $atributos['cuit'] = $cliente->documentounico;
-
-        if ($atributos->confirmacion) {
-            static::confirmarVenta($atributos, $request, $presupuesto);
-        }
-
-        return response()->json('Actualizado');;
     }
 
     public static function delete($id)

@@ -159,4 +159,51 @@ trait ComprasTrait
             'proveedor' => $proveedor
         ];
     }
+
+    public static function delete($id)
+    {
+        $compra = Compra::find($id);
+
+        $detalles = collect($compra->articulos);
+        $pivot = collect();
+        $inventarios = collect();
+        foreach ($detalles as $art) {
+            $pivot = $pivot->push($art->pivot);
+        }
+
+        foreach ($pivot as $piv) {
+            $art = Articulo::findOrFail($piv->articulo_id);
+            $aux = collect($art->inventarios);
+            foreach ($aux as $a) {
+                $inventarios = $inventarios->push($a);
+            }
+        }
+        // SE REESTABLECE LA CANTIDAD EN LOS INVENTARIOS
+        try {
+            DB::transaction(function () use ($inventarios, $compra) {
+                static::reestablecerInventarios($inventarios, $compra);
+                $compra->articulos()->detach();
+                $compra->delete();
+            });
+            return response()->json('Compra Anulada');
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+
+    public static function reestablecerInventarios($inventarios, $compra)
+    {
+        foreach ($inventarios as $inv) {
+            $aux = collect($inv->movimientos);
+            $aux = $aux->where('numcomprobante', $compra->id);
+            foreach ($aux as $a) {
+                $inventario = $a->inventario;
+                $inventario->cantidad = $inventario->cantidad + $a->cantidad;
+                $inventario->cantidadlitros = $inventario->cantidadlitros + $a->cantidadlitros;
+                $inventario->save();
+
+                MovimientosTrait::crearMovimiento('ANULACION', $a->cantidad, $a->cantidadlitros, $inventario, $compra);
+            }
+        }
+    }
 }

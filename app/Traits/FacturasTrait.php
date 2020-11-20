@@ -62,46 +62,50 @@ trait FacturasTrait
 
     public static function store($request)
     {
-        $cliente = Cliente::findOrFail($request['cliente_id']);
-        $configuracion = ConfiguracionTrait::configuracion();
-        // $numfactura = Factura::all()->last() ? Factura::all()->last()->id : 0;
+        try {
+            DB::transaction(function () use ($request) {
+                $cliente = Cliente::findOrFail($request['cliente_id']);
+                $configuracion = ConfiguracionTrait::configuracion();
 
-        $factura = Factura::create([
-            "cuit" => $cliente->documentounico, //cliente
-            "tipocomprobante" => $request['tipocomprobante'],
-            "ptoventa" => $configuracion['puntoventa'],
-            "numfactura" => $request['numfactura'],
-            "comprobanteadherido" => $request['comprobanteadherido'],
-            "fecha" => $request['fecha'],
-            'observaciones' => $request['observaciones'],
-            "bonificacion" => $request['bonificacion'] * 1,
-            "recargo" => $request['recargo'] * 1,
-            "condicionventa" => $request['condicionventa'],
-            "subtotal" => $request['subtotal'],
-            "iva" => $request['valorAgregado'],
-            "total" => $request['total'],
-            "subtotalPesos" => ($request['subtotal'] * 1) * ($request['cotizacion'] * 1),
-            "totalPesos" => $request['totalPesos'],
-            'cotizacion' => $request['cotizacion'],
-            'fechaCotizacion' => $request['fechaCotizacion'],
-            "cliente_id" => $request['cliente_id'],
-            "user_id" => auth()->user()->id,
-        ]);
+                $factura = Factura::create([
+                    "cuit" => $cliente->documentounico, //cliente
+                    "tipocomprobante" => $request['tipocomprobante'],
+                    "ptoventa" => $configuracion['puntoventa'],
+                    "numfactura" => $request['numfactura'],
+                    "comprobanteadherido" => $request['comprobanteadherido'],
+                    "fecha" => $request['fecha'],
+                    'observaciones' => $request['observaciones'],
+                    "bonificacion" => $request['bonificacion'] * 1,
+                    "recargo" => $request['recargo'] * 1,
+                    "condicionventa" => $request['condicionventa'],
+                    "subtotal" => $request['subtotal'],
+                    "iva" => $request['valorAgregado'],
+                    "total" => $request['total'],
+                    "subtotalPesos" => ($request['subtotal'] * 1) * ($request['cotizacion'] * 1),
+                    "totalPesos" => $request['totalPesos'],
+                    'cotizacion' => $request['cotizacion'],
+                    'fechaCotizacion' => $request['fechaCotizacion'],
+                    "cliente_id" => $request['cliente_id'],
+                    "user_id" => auth()->user()->id,
+                ]);
 
-        $det = static::detallesFactura($request->detalles, $factura);
+                $det = static::detallesFactura($request->detalles, $factura);
 
-        foreach ($request->detalles as $item) {
-            $ventas[] = $item['venta_id'];
+                foreach ($request->detalles as $item) {
+                    $ventas[] = $item['venta_id'];
+                }
+
+                $factura->articulos()->attach($det);
+
+                $factura->ventas()->attach($ventas);
+
+                CuentasCorrientesTrait::aplicarIVA($cliente, $request->valorAgregado);
+
+                return response()->json('factura creada');
+            });
+        } catch (\Throwable $th) {
+            throw $th;
         }
-
-        $factura->articulos()->attach($det);
-
-        $factura->ventas()->attach($ventas);
-
-        // OJO ACA
-        CuentasCorrientesTrait::aplicarIVA($cliente, $request->valorAgregado);
-
-        return ['msg' => 'factura creada'];
     }
 
     public static function detallesFactura($details, $factura)

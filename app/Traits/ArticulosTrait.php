@@ -9,6 +9,7 @@ use App\Traits\FotosTrait;
 use App\Traits\MarcasTrait;
 use App\Traits\CategoriasTrait;
 use App\Traits\InventariosAdmin;
+use Illuminate\Support\Facades\DB;
 use App\Notifications\ArticuloNotification;
 
 trait ArticulosTrait
@@ -50,13 +51,13 @@ trait ArticulosTrait
         if ($articulos->count() <= $request->get('limit')) {
             return [
                 'articulos' => $articulos,
-                'total' => $articulos->count(),
+                'total' => Articulo::withTrashed()->count(),
                 'ultimo' => $articulos->first(),
             ];
         } else {
             return [
                 'articulos' => $articulos->take($request->get('limit', null)),
-                'total' => $articulos->count(),
+                'total' => Articulo::withTrashed()->count(),
                 'ultimo' => $articulos->first(),
             ];
         }
@@ -64,74 +65,84 @@ trait ArticulosTrait
 
     public static function store($request)
     {
-        $stockInicial = $request['stockInicial'];
+        try {
+            DB::transaction(function () use ($request) {
+                $stockInicial = $request['stockInicial'];
 
-        $foto = FotosTrait::store($request, $ubicacion = 'articulos');
+                $foto = FotosTrait::store($request, $ubicacion = 'articulos');
 
-        $data = $request;
+                $data = $request;
 
-        $marca_id = MarcasTrait::marcas($data['marca']);
+                $marca_id = MarcasTrait::marcas($data['marca']);
 
-        $categoria_id = CategoriasTrait::categorias($data['categoria']);
+                $categoria_id = CategoriasTrait::categorias($data['categoria']);
 
-        $data = $request->validated();
-        $data['marca_id'] = $marca_id;
-        $data['categoria_id'] = $categoria_id;
-        $data['foto'] = $foto;
+                $data = $request->validated();
+                $data['marca_id'] = $marca_id;
+                $data['categoria_id'] = $categoria_id;
+                $data['foto'] = $foto;
 
-        $articulo = Articulo::create($data);
+                $articulo = Articulo::create($data);
 
-        if ($stockInicial) {
-            $data = [
-                'cantidad' => $stockInicial,
-                'cantidadlitros' => $stockInicial * $articulo->litros,
-                // 'lote' => 1,
-                'articulo_id' => $articulo->id,
-                'supplier_id' => 1
-            ];
-            $inventario = InventariosAdmin::altaInventario($data);
+                if ($stockInicial) {
+                    $data = [
+                        'cantidad' => $stockInicial,
+                        'cantidadlitros' => $stockInicial * $articulo->litros,
+                        // 'lote' => 1,
+                        'articulo_id' => $articulo->id,
+                        'supplier_id' => 1
+                    ];
+                    $inventario = InventariosAdmin::altaInventario($data);
 
-            $datos = [
-                'inventario_id' => $inventario->id,
-                'cantidad' => $inventario->cantidad,
-                'cantidadlitros' => $inventario->cantidadlitros,
-            ];
-            InventariosAdmin::movimientoAlta($inventario, $datos);
-        } else {
-            static::crearNotificacion($articulo);
+                    $datos = [
+                        'inventario_id' => $inventario->id,
+                        'cantidad' => $inventario->cantidad,
+                        'cantidadlitros' => $inventario->cantidadlitros,
+                    ];
+                    InventariosAdmin::movimientoAlta($inventario, $datos);
+                } else {
+                    static::crearNotificacion($articulo);
+                }
+            });
+            return response()->json('creado');
+        } catch (\Throwable $th) {
+            throw $th;
         }
-
-        return 'creado';
     }
 
     public static function update($request, $id)
     {
-        $articulo = Articulo::find($id);
+        try {
+            DB::transaction(function () use ($request, $id) {
+                $articulo = Articulo::find($id);
 
-        $foto = FotosTrait::update($request, $ubicacion = 'articulos', $articulo);
+                $foto = FotosTrait::update($request, $ubicacion = 'articulos', $articulo);
 
-        $data = $request;
+                $data = $request;
 
-        if (gettype($data['marca']) == 'array') {
-            $data['marca'] = $data['marca']['marca'];
+                if (gettype($data['marca']) == 'array') {
+                    $data['marca'] = $data['marca']['marca'];
+                }
+
+                $marca_id = MarcasTrait::marcas($data['marca']);
+
+                if (gettype($data['categoria']) == 'array') {
+                    $data['categoria'] = $data['categoria']['categoria'];
+                }
+
+                $categoria_id = CategoriasTrait::categorias($data['categoria']);
+
+                $data = $request->validated();
+                $data['marca_id'] = $marca_id;
+                $data['categoria_id'] = $categoria_id;
+                $data['foto'] = $foto;
+
+                $articulo->update($data);
+            });
+            return response()->json('actualizado');
+        } catch (\Throwable $th) {
+            throw $th;
         }
-
-        $marca_id = MarcasTrait::marcas($data['marca']);
-
-        if (gettype($data['categoria']) == 'array') {
-            $data['categoria'] = $data['categoria']['categoria'];
-        }
-
-        $categoria_id = CategoriasTrait::categorias($data['categoria']);
-
-        $data = $request->validated();
-        $data['marca_id'] = $marca_id;
-        $data['categoria_id'] = $categoria_id;
-        $data['foto'] = $foto;
-
-        $articulo->update($data);
-
-        return ['message' => 'actualizado'];
     }
 
     public static function show($id)

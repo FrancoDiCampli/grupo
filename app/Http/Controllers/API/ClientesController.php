@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\UpdateCliente;
 use App\Traits\ClientesTrait;
 use App\Traits\ContactosTrait;
+use Illuminate\Support\Facades\DB;
 
 class ClientesController extends Controller
 {
@@ -22,7 +23,10 @@ class ClientesController extends Controller
         $this->middleware('scope:clientes-store')->only('store');
         $this->middleware('scope:clientes-update')->only('update');
         $this->middleware('scope:clientes-destroy')->only('destroy');
-        $this->middleware('scope:clientes-miCuenta')->only('miCuenta');
+        $this->middleware('scope:clientes-mi-cuenta')->only('miCuenta');
+
+        $this->middleware('scope:cuentascorrientes-generar-recibo')->only('showRecibo');
+        $this->middleware('scope:cuentascorrientes-generar-resumen')->only('resumenCuenta');
     }
 
     public function index(Request $request)
@@ -51,19 +55,23 @@ class ClientesController extends Controller
         $atributos['observaciones'] = $request['observaciones'];
         $atributos['user_id'] = auth()->user()->id;
 
-        $cliente->update($atributos);
-
-        ContactosTrait::editarContactos($cliente, $request);
-        ClientesTrait::editarUsuario($cliente, $request);
-
-        return ['message' => 'actualizado'];
+        try {
+            DB::transaction(function () use ($cliente, $atributos, $request) {
+                $cliente->update($atributos);
+                ContactosTrait::editarContactos($cliente, $request);
+                ClientesTrait::editarUsuario($cliente, $request);
+            });
+            return response()->json('actualizado');
+        } catch (\Throwable $th) {
+            throw $th;
+        }
     }
 
     public function destroy($id)
     {
         $cliente = Cliente::findOrFail($id);
 
-        ClientesTrait::eliminarCliente($cliente);
+        return ClientesTrait::eliminarCliente($cliente);
     }
 
     public function miCuenta()

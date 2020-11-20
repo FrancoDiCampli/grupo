@@ -77,16 +77,18 @@ trait ClientesTrait
         $atributos['observaciones'] = $request['observaciones'];
         $atributos['distribuidor'] = $isDistributor;
 
-        $usuario = static::crearUsuario($request);
-
-        $cliente = Cliente::create($atributos);
-
-        $usuario->cliente_id = $cliente->id;
-        $usuario->save();
-
-        ContactosTrait::crearContactos($cliente, $request);
-
-        return ['message' => 'guardado'];
+        try {
+            DB::transaction(function () use ($request, $atributos) {
+                $usuario = static::crearUsuario($request);
+                $cliente = Cliente::create($atributos);
+                $usuario->cliente_id = $cliente->id;
+                $usuario->save();
+                ContactosTrait::crearContactos($cliente, $request);
+            });
+            return response()->json('guardado');
+        } catch (\Throwable $th) {
+            throw $th;
+        }
     }
 
     public static function crearUsuario($request)
@@ -154,11 +156,17 @@ trait ClientesTrait
         }
 
         if ($cond) {
-            $cliente->user->delete();
-            $cliente->delete();
-            return ['message' => 'eliminado'];
+            try {
+                DB::transaction(function () use ($cliente) {
+                    $cliente->user->delete();
+                    $cliente->delete();
+                });
+                return response()->json('eliminado');
+            } catch (\Throwable $th) {
+                throw $th;
+            }
         } else {
-            return ['message' => 'El cliente posee cuentas activas'];
+            return response()->json('El cliente posee cuentas activas');
         }
     }
 
@@ -283,19 +291,10 @@ trait ClientesTrait
         $desde = new Carbon($request->get('desde'));
         $hasta = new Carbon($request->get('hasta'));
 
-        $cuentas = collect();
-        $cuentasAnterior = collect();
-        $pagos = collect();
-        $pagosAnterior = collect();
-
         $auxDebe = collect();
         $auxHaber = collect();
         $auxAntDebe = collect();
         $auxAntHaber = collect();
-
-        // return DB::table('movimientocuentas')->where('created_at', '>=', $desde->format('Y-m-d'))->where('created_at', '<=', $hasta->addDay()->format('Y-m-d'))->get();
-
-        // return $cliente->ctacte->whereBetween('created_at', [$desde->format('Y-m-d'), $hasta->addDay()->format('Y-m-d')]);
 
         foreach ($cliente->ctacte as $cuenta) {
 
@@ -310,26 +309,6 @@ trait ClientesTrait
 
             $auxAH = $cuenta->movimientos->where('created_at', '<', $desde->format('Y-m-d'))->whereIn('tipo', ['PAGO PARCIAL', 'PAGO TOTAL', 'DESCUENTO IVA']);
             $auxAntHaber->push($auxAH->flatten());
-
-            /* if ($cuenta->created_at >= $desde->format('Y-m-d') && $cuenta->created_at <= $hasta->format('Y-m-d')) {
-                $cuenta->factura;
-                $fecha = new Carbon($cuenta->alta);
-                $cuenta->alta = $fecha->format('d-m-Y');
-                $cuentas->push($cuenta);
-            } else if ($cuenta->created_at < $desde->format('Y-m-d')) {
-                $cuentasAnterior->push($cuenta);
-            }
-
-            foreach ($cuenta->pagos as $pago) {
-                if ($pago->fecha >= $desde->format('Ymd') && $pago->fecha <= $hasta->format('Ymd')) {
-                    $pago->recibo;
-                    $fec = new Carbon($pago->fecha);
-                    $pago->fecha = $fec->format('d-m-Y');
-                    $pagos->push($pago);
-                } else if ($pago->fecha < $desde->format('Ymd')) {
-                    $pagosAnterior->push($pago);
-                }
-            } */
         }
 
         $flattenD = $auxDebe->flatten();
@@ -339,14 +318,10 @@ trait ClientesTrait
 
         $debe = $flattenD->sum('importe');
         $haber = $flattenH->sum('importe');
-        // $debe = $cuentas->sum('importe');
-        // $haber = $pagos->sum('importe');
         $saldo = $haber - $debe;
 
         $debeAnterior = $flattenAD->sum('importe');
         $haberAnterior = $flattenAH->sum('importe');
-        /* $debeAnterior = $cuentasAnterior->sum('importe');
-        $haberAnterior = $pagosAnterior->sum('importe'); */
         $saldoAnterior = $haberAnterior - $debeAnterior;
 
         $flattenD->map(function ($item) {
@@ -367,8 +342,6 @@ trait ClientesTrait
             'hasta' => $hasta->format('d-m-Y'),
             'cuentas' => $sortedD->values()->all(),
             'pagos' => $sortedH->values()->all(),
-            /* 'cuentas' => $cuentas,
-            'pagos' => $pagos, */
             'debe' => number_format($debe, 2, ',', '.'),
             'haber' => number_format($haber, 2, ',', '.'),
             'saldoAnterior' => number_format($saldoAnterior, 2, ',', '.'),

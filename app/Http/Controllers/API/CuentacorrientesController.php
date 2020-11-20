@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Cuentacorriente;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -13,14 +12,15 @@ class CuentacorrientesController extends Controller
     public function __construct()
     {
         $this->middleware('auth:airlock');
-        $this->middleware('scope:cuentascorrientes-index')->only('pagar');
+
+        $this->middleware('scope:cuentascorrientes-pagar')->only('pagar');
     }
 
     // PAGOS PARCIALES O TOTALES 
     public function pagar(Request $request)
     {
         try {
-            DB::transaction(function() use($request){
+            DB::transaction(function () use ($request) {
                 return CuentasCorrientesTrait::pagar($request);
             });
         } catch (\Throwable $th) {
@@ -30,8 +30,8 @@ class CuentacorrientesController extends Controller
 
     public function recargar(Request $request)
     {
-        $cuenta = Cuentacorriente::find($request->get('id'));
-        $cuenta->saldo = $request->get('nuevoSaldo');
-        $cuenta->update();
+        // $cuenta = Cuentacorriente::find($request->get('id'));
+        // $cuenta->saldo = $request->get('nuevoSaldo');
+        // $cuenta->update();
     }
 }
