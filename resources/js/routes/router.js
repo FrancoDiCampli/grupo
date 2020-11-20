@@ -56,6 +56,7 @@ import ConsignacionesShow from "../views/consignaciones/Show";
 // Devoluciones
 import Devoluciones from "../views/devoluciones/Devoluciones";
 import DevolucionesCreate from "../views/devoluciones/Create";
+import DevolucionesShow from "../views/devoluciones/Show";
 
 // Reportes
 import Reportes from "../views/reportes/Reportes";
@@ -297,6 +298,12 @@ export default new Router({
             path: "/devoluciones/nueva",
             name: "devoluciones_nueva",
             component: DevolucionesCreate
+        },
+        {
+            path: "/devoluciones/show/:id",
+            name: "devoluciones_show",
+            component: DevolucionesShow,
+            props: true
         },
 
         // Reportes

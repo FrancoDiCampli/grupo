@@ -11,7 +11,7 @@
                     bottom
                     large
                     v-on="on"
-                    @click="$router.go(-1)"
+                    to="/proveedores/nuevo"
                 >
                     <v-icon>fas fa-plus</v-icon>
                 </v-btn>

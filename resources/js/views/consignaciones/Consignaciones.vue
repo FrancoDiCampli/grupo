@@ -11,7 +11,7 @@
                     bottom
                     large
                     v-on="on"
-                    @click="$router.go(-1)"
+                    to="/consignaciones/nueva"
                 >
                     <v-icon>fas fa-plus</v-icon>
                 </v-btn>
@@ -23,7 +23,7 @@
             <v-row justify="center">
                 <v-col cols="12" md="10" lg="8">
                     <ConsignacionesIndex>
-                        <!-- <br />
+                        <br />
                         <v-row justify="center" v-if="$store.state.compras.compras">
                             <v-btn
                                 :loading="$store.state.inProcess"
@@ -35,7 +35,7 @@
                                 outlined
                                 tile
                             >Cargar Más</v-btn>
-                        </v-row>-->
+                        </v-row>
                     </ConsignacionesIndex>
                 </v-col>
             </v-row>
