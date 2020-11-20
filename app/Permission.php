@@ -23,7 +23,7 @@ class Permission extends Model
         });
     }
 
-    public static function permissionAll()
+    public static function permissionExcept()
     {
         $string = explode(' ', 'ventas-index ventas-show ventas-store ventas-destroy');
 
@@ -34,7 +34,7 @@ class Permission extends Model
 
         $permissions = static::permissions();
 
-        $aux = $permissions->whereNotIn('permission', $string);
+        return $aux = $permissions->whereNotIn('permission', $string);
 
         foreach ($permissions as $per) {
             $permissionsString['permissions'] = $permissionsString['permissions'] . $per['permission'] . ' ';
@@ -42,33 +42,6 @@ class Permission extends Model
         }
 
         return $permissionsString;
-    }
-
-    public static function permissionExcept(String $params)
-    {
-        $permissionsString = [
-            'permissions' => '',
-            'descriptions' => ''
-        ];
-
-        $permissions = self::permissions();
-
-        $excepts = explode(' ', $params);
-
-
-
-        return array_diff_assoc($excepts, $permissions->toArray());
-
-        return gettype($permissions->toArray());
-
-
-
-        // foreach ($permissions as $per) {
-        //     $permissionsString['permissions'] = $permissionsString['permissions'] . $per['permission'] . ' ';
-        //     $permissionsString['descriptions'] = $permissionsString['descriptions'] . $per['description'] . ', ';
-        // }
-
-        // return $permissionsString;
     }
 
     // public static function permissionAll()
