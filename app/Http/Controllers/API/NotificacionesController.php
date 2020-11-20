@@ -7,6 +7,11 @@ use App\Http\Controllers\Controller;
 
 class NotificacionesController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:airlock');
+    }
+
     public function index(Request $request)
     {
         $noLeidas = auth()->user()->unreadNotifications()->get();

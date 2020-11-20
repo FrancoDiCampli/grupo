@@ -23,7 +23,10 @@ class ClientesController extends Controller
         $this->middleware('scope:clientes-store')->only('store');
         $this->middleware('scope:clientes-update')->only('update');
         $this->middleware('scope:clientes-destroy')->only('destroy');
-        $this->middleware('scope:clientes-miCuenta')->only('miCuenta');
+        $this->middleware('scope:clientes-mi-cuenta')->only('miCuenta');
+
+        $this->middleware('scope:cuentascorrientes-generar-recibo')->only('showRecibo');
+        $this->middleware('scope:cuentascorrientes-generar-resumen')->only('resumenCuenta');
     }
 
     public function index(Request $request)

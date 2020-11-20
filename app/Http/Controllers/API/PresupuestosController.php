@@ -14,10 +14,13 @@ class PresupuestosController extends Controller
     {
         $this->middleware('auth:airlock');
 
-        $this->middleware('scope:presupuestos-index')->only('index');
-        $this->middleware('scope:presupuestos-show')->only('show');
-        $this->middleware('scope:presupuestos-store')->only('store');
-        $this->middleware('scope:presupuestos-destroy')->only('destroy');
+        $this->middleware('scope:pedidos-index')->only('index');
+        $this->middleware('scope:pedidos-show')->only('show');
+        $this->middleware('scope:pedidos-store')->only('store');
+        $this->middleware('scope:pedidos-destroy')->only('destroy');
+        $this->middleware('scope:pedidos-update')->only('update');
+        $this->middleware('scope:pedidos-destroy')->only('destroy');
+        $this->middleware('scope:pedidos-vender')->only('vender');
     }
 
     public function index(Request $request)

@@ -14,10 +14,11 @@ class VentasController extends Controller
     {
         $this->middleware('auth:airlock');
 
-        $this->middleware('scope:ventas-index')->only('index');
-        $this->middleware('scope:ventas-show')->only('show');
-        $this->middleware('scope:ventas-store')->only('store');
-        $this->middleware('scope:ventas-destroy')->only('destroy');
+        $this->middleware('scope:remitos-index')->only('index');
+        $this->middleware('scope:remitos-show')->only('show');
+        $this->middleware('scope:remitos-store')->only('store');
+        $this->middleware('scope:remitos-destroy')->only('destroy');
+        $this->middleware('scope:remitos-facturar')->only('facturar');
     }
 
     public function index(Request $request)
@@ -28,16 +29,6 @@ class VentasController extends Controller
     public function store(Request $request)
     {
         return VentasTrait::store($request);
-    }
-
-    public function update(Request $request, $id)
-    {
-        return $request;
-        // $factura = Venta::find($id);
-        // if ($request->get('pagada')) {
-        //     $factura->pagada = $request->get('pagada');
-        // }
-        // return $factura->id;
     }
 
     public function facturar(Request $request)

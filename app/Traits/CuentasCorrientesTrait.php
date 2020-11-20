@@ -181,7 +181,7 @@ trait CuentasCorrientesTrait
                 'cliente_id' => $cliente->id,
                 'haber' => $iva
             ]);
-            // static::crearMovimiento($cuenta, 'HABER', $iva);
+            static::crearMovimiento($cuenta, 'HABER', $iva);
         }
     }
 }

@@ -15,6 +15,7 @@ class ComprasController extends Controller
         $this->middleware('scope:compras-index')->only('index');
         $this->middleware('scope:compras-show')->only('show');
         $this->middleware('scope:compras-store')->only('store');
+        $this->middleware('scope:compras-destroy')->only('destroy');
     }
 
     public function index(Request $request)
@@ -30,5 +31,10 @@ class ComprasController extends Controller
     public function show($id)
     {
         return ComprasTrait::show($id);
+    }
+
+    public function destroy($id)
+    {
+        return ComprasTrait::delete($id);
     }
 }

@@ -25,12 +25,16 @@ class Permission extends Model
 
     public static function toString()
     {
+        $string = explode(' ', 'ventas-index ventas-show ventas-store ventas-destroy');
+
         $permissionsString = [
             'permissions' => '',
             'descriptions' => ''
         ];
 
-        $permissions = self::permissions();
+        $permissions = static::permissions();
+
+        $aux = $permissions->whereNotIn('permission', $string);
 
         foreach ($permissions as $per) {
             $permissionsString['permissions'] = $permissionsString['permissions'] . $per['permission'] . ' ';
