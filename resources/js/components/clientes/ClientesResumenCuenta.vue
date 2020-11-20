@@ -9,23 +9,34 @@
                             v-model="dialogs.desde"
                             :return-value.sync="fechaDesde"
                             persistent
-                            :width="$vuetify.breakpoint.xsOnly ? '100%' : '300px'">
+                            :width="
+                                $vuetify.breakpoint.xsOnly ? '100%' : '300px'
+                            "
+                        >
                             <template v-slot:activator="{ on }">
                                 <v-text-field
-                                    v-model="fechaDesde"
+                                    :value="fechaDesde | formatDate"
+                                    @input="value => (fechaDesde = value)"
                                     label="Fecha desde"
                                     readonly
                                     outlined
                                     v-on="on"
                                 ></v-text-field>
                             </template>
-                            <v-date-picker v-model="fechaDesde" scrollable locale="es">
+                            <v-date-picker
+                                v-model="fechaDesde"
+                                scrollable
+                                locale="es"
+                            >
                                 <v-spacer></v-spacer>
                                 <v-btn
                                     text
                                     color="primary"
-                                    @click="$refs.dialogFechaDesde.save(fechaDesde)"
-                                >Aceptar</v-btn>
+                                    @click="
+                                        $refs.dialogFechaDesde.save(fechaDesde)
+                                    "
+                                    >Aceptar</v-btn
+                                >
                             </v-date-picker>
                         </v-dialog>
                     </v-col>
@@ -35,24 +46,34 @@
                             v-model="dialogs.hasta"
                             :return-value.sync="fechaHasta"
                             persistent
-                            :width="$vuetify.breakpoint.xsOnly ? '100%' : '300px'"
+                            :width="
+                                $vuetify.breakpoint.xsOnly ? '100%' : '300px'
+                            "
                         >
                             <template v-slot:activator="{ on }">
                                 <v-text-field
-                                    v-model="fechaHasta"
+                                    :value="fechaHasta | formatDate"
+                                    @input="value => (fechaHasta = value)"
                                     label="Fecha hasta"
                                     readonly
                                     outlined
                                     v-on="on"
                                 ></v-text-field>
                             </template>
-                            <v-date-picker v-model="fechaHasta" scrollable locale="es">
+                            <v-date-picker
+                                v-model="fechaHasta"
+                                scrollable
+                                locale="es"
+                            >
                                 <v-spacer></v-spacer>
                                 <v-btn
                                     text
                                     color="primary"
-                                    @click="$refs.dialogFechaHasta.save(fechaHasta)"
-                                >Aceptar</v-btn>
+                                    @click="
+                                        $refs.dialogFechaHasta.save(fechaHasta)
+                                    "
+                                    >Aceptar</v-btn
+                                >
                             </v-date-picker>
                         </v-dialog>
                     </v-col>
@@ -124,8 +145,7 @@
                             </thead>
                             <tbody>
                                 <tr
-                                    v-for="(item,
-                                    index) in cuenta.cuentas"
+                                    v-for="(item, index) in cuenta.cuentas"
                                     :key="index"
                                 >
                                     <td>{{ item.fecha }}</td>
@@ -159,8 +179,7 @@
                             </thead>
                             <tbody>
                                 <tr
-                                    v-for="(item,
-                                    index) in cuenta.pagos"
+                                    v-for="(item, index) in cuenta.pagos"
                                     :key="index"
                                 >
                                     <td>{{ item.fecha }}</td>
@@ -184,7 +203,7 @@
 </template>
 
 <script>
-import moment from 'moment';
+import moment from "moment";
 
 export default {
     data() {

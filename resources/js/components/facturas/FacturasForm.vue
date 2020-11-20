@@ -70,7 +70,12 @@
                                                 indeterminate
                                             ></v-progress-circular>
                                         </v-row>
-                                        <div v-else-if="searchCliente != null && searchCliente != ''">
+                                        <div
+                                            v-else-if="
+                                                searchCliente != null &&
+                                                    searchCliente != ''
+                                            "
+                                        >
                                             <v-simple-table
                                                 v-if="clientes.length > 0"
                                             >
@@ -152,9 +157,13 @@
                                     >
                                         <template v-slot:activator="{ on }">
                                             <v-text-field
-                                                v-model="
+                                                :value="
                                                     $store.state.facturas.form
-                                                        .fecha
+                                                        .fecha | formatDate
+                                                "
+                                                @input="
+                                                    value =>
+                                                        (store.state.facturas.form.fecha = value)
                                                 "
                                                 label="Fecha"
                                                 :rules="[rules.required]"
@@ -253,7 +262,9 @@
                                                     <th class="text-left">
                                                         Unidades
                                                     </th>
-                                                    <th class="text-left hidden-sm-and-down">
+                                                    <th
+                                                        class="text-left hidden-sm-and-down"
+                                                    >
                                                         Cantidad en litros
                                                     </th>
                                                     <th
@@ -299,7 +310,9 @@
                                                                     detalle.cantidadfacturado
                                                         }}
                                                     </td>
-                                                    <td class="hidden-sm-and-down">
+                                                    <td
+                                                        class="hidden-sm-and-down"
+                                                    >
                                                         {{
                                                             detalle.cantidadLitros
                                                         }}
@@ -471,7 +484,14 @@
                                         >
                                             <template v-slot:activator="{ on }">
                                                 <v-text-field
-                                                    v-model="fechaCotizacion"
+                                                    :value="
+                                                        fechaCotizacion
+                                                            | formatDate
+                                                    "
+                                                    @input="
+                                                        value =>
+                                                            (fechaCotizacion = value)
+                                                    "
                                                     label="Fecha de la cotización"
                                                     readonly
                                                     outlined
@@ -511,7 +531,10 @@
                                     <v-col cols="12" class="py-0">
                                         <v-text-field
                                             v-model="valorAgregado"
-                                            :label="`IVA ${$store.state.facturas.form.tipoiva || 21}%`"
+                                            :label="
+                                                `IVA ${$store.state.facturas
+                                                    .form.tipoiva || 21}%`
+                                            "
                                             outlined
                                             disabled
                                         ></v-text-field>
