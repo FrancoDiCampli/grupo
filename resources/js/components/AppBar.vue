@@ -109,7 +109,9 @@
                 v-if="$store.state.auth.user.user != null"
             ></v-app-bar-nav-icon>
 
-            <slot name="searchBar"></slot>
+            <div>
+                <slot name="searchBar"></slot>
+            </div>
 
             <v-spacer></v-spacer>
             <!-- Notificaciones -->

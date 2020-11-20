@@ -341,6 +341,16 @@
                                 ></v-text-field>
                             </v-col>
                             <v-col cols="12" sm="6" class="py-0">
+                                <v-text-field
+                                    v-model="pesos"
+                                    :rules="[rules.required]"
+                                    @focus="inputFocus = 'pesos'"
+                                    label="Monto en pesos"
+                                    outlined
+                                    type="number"
+                                ></v-text-field>
+                            </v-col>
+                            <v-col cols="12" sm="6" class="py-0">
                                 <v-dialog
                                     ref="dialogFecha"
                                     v-model="fechaDialog"
@@ -371,15 +381,6 @@
                                         >Aceptar</v-btn>
                                     </v-date-picker>
                                 </v-dialog>
-                            </v-col>
-                            <v-col cols="12" sm="6" class="py-0">
-                                <v-text-field
-                                    v-model="divisa.fechaCotizacion"
-                                    :rules="[rules.required]"
-                                    label="Fecha de la cotización"
-                                    outlined
-                                    disabled
-                                ></v-text-field>
                             </v-col>
                             <v-col cols="12" sm="6" class="py-0">
                                 <v-text-field
