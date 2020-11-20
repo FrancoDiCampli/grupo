@@ -165,20 +165,6 @@ trait CuentasCorrientesTrait
             ]);
             static::crearMovimiento($cuentaX, 'IVA', $iva);
         }
-
-        // $cuenta = Cuentacorriente::whereIn('venta_id', $ventas)->where('estado', 'ACTIVA')->first();
-        // $cuenta->saldo += $iva;
-        // $cuenta->update();
-        // static::crearMovimiento($cuenta, 'IVA', $iva);
-
-        // $cuentas = Cuentacorriente::whereIn('venta_id', $ventas)->get();
-
-        // $cuentas->map(function($cuenta) use($iva){
-        //     $cuenta->saldo += $iva;
-        //     $cuenta->update();
-
-        //     static::crearMovimiento($cuenta, 'IVA', $iva);
-        // });
     }
 
     public static function descontarIVA($cliente, $iva)
@@ -195,7 +181,7 @@ trait CuentasCorrientesTrait
                 'cliente_id' => $cliente->id,
                 'haber' => $iva
             ]);
-            // static::crearMovimiento($cuenta, 'HABER', $iva);
+            static::crearMovimiento($cuenta, 'HABER', $iva);
         }
     }
 }

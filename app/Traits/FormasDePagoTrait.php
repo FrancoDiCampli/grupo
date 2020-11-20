@@ -61,7 +61,7 @@ trait FormasDePagoTrait
                     'fecha_cotizacion' => $pay['fecha_cotizacion'],
                     'fechacobro' => $pay['fechacobro'],
                     'fecharecibido' => $pay['fecharecibido'],
-                    'numero' => $pay['numero'] * 1,
+                    'numero' => $pay['numero'],
                     'pesos' => $pay['pesos'] * 1,
                     'observaciones' => $pay['observaciones'],
                 ]);

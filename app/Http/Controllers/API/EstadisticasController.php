@@ -15,6 +15,8 @@ class EstadisticasController extends Controller
     public function __construct()
     {
         $this->middleware('auth:airlock');
+
+        $this->middleware('scope:resportes');
     }
 
     public function chequeCobrado($id)

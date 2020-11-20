@@ -20,6 +20,7 @@ class FacturasController extends Controller
         $this->middleware('scope:facturas-index')->only('index');
         $this->middleware('scope:facturas-show')->only('show');
         $this->middleware('scope:facturas-store')->only('store');
+        $this->middleware('scope:facturas-destroy')->only('destroy');
     }
 
     public function index(Request $request)
