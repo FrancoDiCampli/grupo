@@ -20,10 +20,10 @@ class Permission extends Model
                 'permission' => $permission,
                 'description' => $description
             ];
-        })->values();
+        });
     }
 
-    public static function toString()
+    public static function permissionAll()
     {
         $permissionsString = [
             'permissions' => '',
@@ -39,4 +39,48 @@ class Permission extends Model
 
         return $permissionsString;
     }
+
+    public static function permissionExcept(String $params)
+    {
+        $permissionsString = [
+            'permissions' => '',
+            'descriptions' => ''
+        ];
+
+        $permissions = self::permissions();
+
+        $excepts = explode(' ', $params);
+
+
+
+        return array_diff_assoc($excepts, $permissions->toArray());
+
+        return gettype($permissions->toArray());
+
+
+
+        // foreach ($permissions as $per) {
+        //     $permissionsString['permissions'] = $permissionsString['permissions'] . $per['permission'] . ' ';
+        //     $permissionsString['descriptions'] = $permissionsString['descriptions'] . $per['description'] . ', ';
+        // }
+
+        // return $permissionsString;
+    }
+
+    // public static function permissionAll()
+    // {
+    //     $permissionsString = [
+    //         'permissions' => '',
+    //         'descriptions' => ''
+    //     ];
+
+    //     $permissions = self::permissions();
+
+    //     foreach ($permissions as $per) {
+    //         $permissionsString['permissions'] = $permissionsString['permissions'] . $per['permission'] . ' ';
+    //         $permissionsString['descriptions'] = $permissionsString['descriptions'] . $per['description'] . ', ';
+    //     }
+
+    //     return $permissionsString;
+    // }
 }

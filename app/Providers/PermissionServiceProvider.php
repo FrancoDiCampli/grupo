@@ -25,72 +25,93 @@ class PermissionServiceProvider extends ServiceProvider
     public function boot()
     {
         Permission::permissionCan([
-            // Ventas
-            'ventas-index' => 'Listar ventas',
-            'ventas-show' => 'Ver ventas',
-            'ventas-store' => 'Guardar ventas',
-            'ventas-destroy' => 'Anular ventas',
+            // PEDIDOS
+            'pedidos-index' => 'Listar pedidos',
+            'pedidos-show' => 'Ver pedidos',
+            'pedidos-store' => 'Guardar pedidos',
+            'pedidos-update' => 'Editar pedidos',
+            'pedidos-destroy' => 'Eliminar pedidos',
+            'pedidos-vender' => 'Convertir pedidos a remitos',
 
-            // Facturas
+            // REMITOS
+            'remitos-index' => 'Listar remitos',
+            'remitos-show' => 'Ver remitos',
+            'remitos-store' => 'Guardar remitos',
+            'remitos-destroy' => 'Eliminar remitos',
+            'remitos-facturar' => 'Generar una factura de los remitos',
+
+            // FACTURAS
             'facturas-index' => 'Listar facturas',
             'facturas-show' => 'Ver facturas',
             'facturas-store' => 'Guardar facturas',
+            'facturas-destroy' => 'Eliminar facturas',
 
-            // Presupuestos
-            'presupuestos-index' => 'Listar presupuestos',
-            'presupuestos-show' => 'Ver presupuestos',
-            'presupuestos-store' => 'Guardar presupuestos',
-            'presupuestos-destroy' => 'Eliminar presupuestos',
+            // ENTREGAS
+            'entregas-index' => 'Listar entregas',
+            'entregas-show' => 'Ver entregas',
+            'entregas-store' => 'Guardar entregas',
+            'entregas-destroy' => 'Eliminar entregas',
 
-            // Clientes
+            // CLIENTES
             'clientes-index' => 'Listar clientes',
             'clientes-show' => 'Ver clientes',
             'clientes-store' => 'Guardar clientes',
             'clientes-update' => 'Editar clientes',
             'clientes-destroy' => 'Eliminar clientes',
-            'clientes-miCuenta' => 'Ver su cuenta',
+            'clientes-mi-cuenta' => 'Ver la cliente registrado',
 
-            // Cuentas Corrientes
-            'cuentascorrientes-index' => 'Establecer el pago de cuentas',
+            // CUENTAS CORRIENTES
+            'cuentascorrientes-pagar' => 'Establecer el pago de cuentas',
+            'cuentascorrientes-generar-resumen' => 'Generar un resumen de la cuenta corriente',
+            'cuentascorrientes-generar-recibo' => 'Generar un recibo de la cuenta corriente',
 
-            // Articulos
+            // ARTICULOS
             'articulos-index' => 'Listar articulos',
             'articulos-show' => 'Ver articulos',
             'articulos-store' => 'Guardar articulos',
             'articulos-update' => 'Editar articulos',
             'articulos-destroy' => 'Eliminar articulos',
 
-            // Inventarios
+            // INVENTARIOS
             'inventarios-index' => 'Listar inventarios',
             'inventarios-store' => 'Guardar inventarios',
 
-            // Movimientos
+            // MOVIMIENTOS
             'movimientos-index' => 'Listar movimientos',
 
-            // Proveedores
+            // PROVEEDORES
             'suppliers-index' => 'Listar proveedores',
             'suppliers-show' => 'Ver proveedores',
             'suppliers-store' => 'Guardar proveedores',
             'suppliers-update' => 'Editar proveedores',
             'suppliers-destroy' => 'Eliminar proveedores',
 
-            // Compras
+            // COMPRAS
             'compras-index' => 'Listar compras',
             'compras-show' => 'Ver compras',
             'compras-store' => 'Guardar compras',
+            'compras-destroy' => 'Eliminar compras',
 
-            // Compras
+            // CONSIGNACIONES
             'consignaciones-index' => 'Listar consignaciones',
             'consignaciones-show' => 'Ver consignaciones',
             'consignaciones-store' => 'Guardar consignaciones',
 
-            // Usuario
+            // DEVOLUCIONES
+            'devoluciones-index' => 'Listar devoluciones',
+            'devoluciones-show' => 'Ver devoluciones',
+            'devoluciones-store' => 'Guardar devoluciones',
+
+            // REPORTES
+            'reportes' => 'Reportes, movimientos y cartera',
+
+            // USUARIOS
             'users-index' => 'Listar usuarios',
             'users-store' => 'Guardar usuarios',
             'users-update' => 'Editar usuarios',
             'users-destroy' => 'Eliminar usuarios',
 
-            // Roles
+            // ROLES
             'roles-index' => 'Listar roles',
             'roles-show' => 'Ver roles',
             'roles-store' => 'Guardar roles',

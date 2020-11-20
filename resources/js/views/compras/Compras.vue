@@ -22,7 +22,7 @@
         <v-container>
             <v-row justify="center">
                 <v-col cols="12" md="10" lg="8">
-                    <ComprasIndex>
+                    <ComprasIndex @erase="getCompras()">
                         <br />
                         <v-row
                             justify="center"

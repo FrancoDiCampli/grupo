@@ -1200,7 +1200,8 @@ export default {
             });
             await this.pagosControl();
             this.selected = [];
-
+            
+            await this.setHaber();
             this.inProcess = false;
         },
 

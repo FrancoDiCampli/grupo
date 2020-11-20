@@ -51,6 +51,11 @@ class RolesController extends Controller
         return Permission::permissions();
     }
 
+    public function permissionExcept($params)
+    {
+        return Permission::permissionExcept($params);
+    }
+
     public function update(Request $request, $id)
     {
         $rol = Role::find($id);

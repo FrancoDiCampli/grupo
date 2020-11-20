@@ -3,7 +3,7 @@
         <v-container>
             <v-row justify="center">
                 <v-col cols="12" md="10" lg="8">
-                    <RemitosIndex @erase="restart()">
+                    <RemitosIndex @erase="getRemitos()">
                         <div v-if="$store.state.remitos.remitos">
                             <br />
                             <v-row justify="center" v-if="$store.state.remitos.remitos">
@@ -51,11 +51,6 @@ export default {
         loadMore: async function () {
             this.limit += 10;
             await this.getRemitos();
-        },
-
-        // TODO: Añadir en pedidos y facturas
-        restart() {
-            this.getRemitos();
         },
     },
 };

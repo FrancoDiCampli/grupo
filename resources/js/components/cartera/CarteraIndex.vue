@@ -208,10 +208,16 @@ export default {
     },
 
     methods: {
-        cobrar(id) {
-            this.$store.dispatch("reportes/cobrar", {
+        async cobrar(id) {
+            await this.$store.dispatch("reportes/cobrar", {
                 id: id
             });
+
+            await this.$store.dispatch("reportes/cartera", {
+                limit: this.limit
+            });
+
+            this.getEvents();
         },
 
         daysDiff(endDate) {

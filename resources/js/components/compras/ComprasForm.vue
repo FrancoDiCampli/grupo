@@ -530,6 +530,7 @@ export default {
         },
 
         // TOTAL
+        // TODO:
         total: {
             set() {},
             get() {
@@ -538,18 +539,18 @@ export default {
                     let bonificacion = 0;
                     let recargo = 0;
 
-                    if (this.$store.state.ventas.form.bonificacion) {
+                    if (this.$store.state.compras.form.bonificacion) {
                         bonificacion =
                             Number(
-                                this.$store.state.ventas.form.bonificacion *
+                                this.$store.state.compras.form.bonificacion *
                                     this.subtotal
                             ) / 100;
                     }
 
-                    if (this.$store.state.ventas.form.recargo) {
+                    if (this.$store.state.compras.form.recargo) {
                         recargo =
                             Number(
-                                this.$store.state.ventas.form.recargo *
+                                this.$store.state.compras.form.recargo *
                                     this.subtotal
                             ) / 100;
                     }
@@ -559,6 +560,7 @@ export default {
                     return null;
                 }
             }
+
         }
     },
 

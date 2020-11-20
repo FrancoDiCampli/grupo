@@ -51,6 +51,7 @@ const actions = {
             axios
                 .get("/api/chequeCobrado/" + params.id)
                 .then(response => {
+                    console.log(response.data);
                     resolve(response.data);
                 })
                 .catch(error => {
