@@ -1,6 +1,6 @@
 <template>
     <div>
-        <v-btn color="secondary" dark fab fixed right bottom large to="roles/nuevo">
+        <v-btn color="secondary" dark fab fixed right bottom large @click="$router.go(-1)">
             <v-icon>fas fa-plus</v-icon>
         </v-btn>
         <v-container>

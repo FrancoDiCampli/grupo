@@ -11,7 +11,7 @@
                     bottom
                     large
                     v-on="on"
-                    to="/consignaciones/nueva"
+                    @click="$router.go(-1)"
                 >
                     <v-icon>fas fa-plus</v-icon>
                 </v-btn>

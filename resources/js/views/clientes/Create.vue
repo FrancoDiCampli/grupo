@@ -11,7 +11,7 @@
                     bottom
                     large
                     v-on="on"
-                    to="/clientes"
+                    @click="$router.go(-1)"
                 >
                     <v-icon>fas fa-chevron-left</v-icon>
                 </v-btn>
