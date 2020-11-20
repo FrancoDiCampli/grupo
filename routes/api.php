@@ -74,10 +74,7 @@ Route::middleware('auth:airlock')->group(function () {
 
     /*Roles & Permissions*/
     Route::apiResource('roles', 'API\RolesController', ['except' => ['create', 'edit', 'show']]);
-    Route::get('permissions', 'API\RolesController@permissions');
-
-    Route::get('permissions/except/{params}', 'API\RolesController@permissionExcept');
-
+    Route::get('permissions', 'API\RolesController@permissionAll');
 
     /*PDFs*/
     Route::get('presupuestosPDF/{id}', 'API\PdfController@presupuestosPDF');

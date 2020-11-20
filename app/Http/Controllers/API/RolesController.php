@@ -46,14 +46,9 @@ class RolesController extends Controller
         Role::create($attributes);
     }
 
-    public function permissions()
+    public function permissionAll()
     {
-        return Permission::permissions();
-    }
-
-    public function permissionExcept($params)
-    {
-        return Permission::permissionExcept($params);
+        return Permission::permissionAll();
     }
 
     public function update(Request $request, $id)

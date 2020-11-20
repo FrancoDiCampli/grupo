@@ -23,18 +23,48 @@ class Permission extends Model
         });
     }
 
-    public static function permissionExcept()
+    public static function permissionExcept($params)
     {
-        $string = explode(' ', 'ventas-index ventas-show ventas-store ventas-destroy');
+        $permissionsString = [
+            'permissions' => '',
+            'descriptions' => ''
+        ];
+        $permissions = static::permissions();
+        $permissionsFilter = $permissions->whereNotIn('permission', explode(' ', $params));
 
+        foreach ($permissionsFilter as $per) {
+            $permissionsString['permissions'] = $permissionsString['permissions'] . $per['permission'] . ' ';
+            $permissionsString['descriptions'] = $permissionsString['descriptions'] . $per['description'] . ', ';
+        }
+
+        return $permissionsString;
+    }
+
+    public static function permissionOnly($params)
+    {
+        $permissionsString = [
+            'permissions' => '',
+            'descriptions' => ''
+        ];
+        $permissions = static::permissions();
+        $permissionsFilter = $permissions->whereIn('permission', explode(' ', $params));
+
+        foreach ($permissionsFilter as $per) {
+            $permissionsString['permissions'] = $permissionsString['permissions'] . $per['permission'] . ' ';
+            $permissionsString['descriptions'] = $permissionsString['descriptions'] . $per['description'] . ', ';
+        }
+
+        return $permissionsString;
+    }
+
+    public static function permissionAll()
+    {
         $permissionsString = [
             'permissions' => '',
             'descriptions' => ''
         ];
 
-        $permissions = static::permissions();
-
-        return $aux = $permissions->whereNotIn('permission', $string);
+        $permissions = self::permissions();
 
         foreach ($permissions as $per) {
             $permissionsString['permissions'] = $permissionsString['permissions'] . $per['permission'] . ' ';
@@ -43,21 +73,4 @@ class Permission extends Model
 
         return $permissionsString;
     }
-
-    // public static function permissionAll()
-    // {
-    //     $permissionsString = [
-    //         'permissions' => '',
-    //         'descriptions' => ''
-    //     ];
-
-    //     $permissions = self::permissions();
-
-    //     foreach ($permissions as $per) {
-    //         $permissionsString['permissions'] = $permissionsString['permissions'] . $per['permission'] . ' ';
-    //         $permissionsString['descriptions'] = $permissionsString['descriptions'] . $per['description'] . ', ';
-    //     }
-
-    //     return $permissionsString;
-    // }
 }
