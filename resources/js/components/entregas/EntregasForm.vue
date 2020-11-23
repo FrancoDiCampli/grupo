@@ -9,12 +9,16 @@
                         <v-list-item two-line class="text-right">
                             <v-list-item-content>
                                 <v-list-item-title>
-                                    <b v-if="$vuetify.breakpoint.xsOnly">N°:&nbsp;</b>
+                                    <b v-if="$vuetify.breakpoint.xsOnly"
+                                        >N°:&nbsp;</b
+                                    >
                                     <b v-else>Comprobante N°:&nbsp;</b>
                                     {{ NumComprobante }}
                                 </v-list-item-title>
                                 <v-list-item-subtitle>
-                                    <b v-if="$vuetify.breakpoint.xsOnly">P:&nbsp;</b>
+                                    <b v-if="$vuetify.breakpoint.xsOnly"
+                                        >P:&nbsp;</b
+                                    >
                                     <b v-else>Punto de venta:&nbsp;</b>
                                     {{ PuntoVenta }}
                                 </v-list-item-subtitle>
@@ -50,7 +54,14 @@
                         >
                             <template v-slot:activator="{ on }">
                                 <v-text-field
-                                    v-model="$store.state.entregas.form.fecha"
+                                    :value="
+                                        $store.state.entregas.form.fecha
+                                            | formatDate
+                                    "
+                                    @input="
+                                        value =>
+                                            (store.state.entregas.form.fecha = value)
+                                    "
                                     label="Fecha"
                                     :rules="[rules.required]"
                                     readonly
@@ -72,7 +83,8 @@
                                             $store.state.entregas.form.fecha
                                         )
                                     "
-                                >Aceptar</v-btn>
+                                    >Aceptar</v-btn
+                                >
                             </v-date-picker>
                         </v-dialog>
                     </v-col>
@@ -97,33 +109,54 @@
                                     <thead>
                                         <tr>
                                             <th class="text-left">Articulo</th>
-                                            <th class="text-left">Presentación</th>
+                                            <th class="text-left">
+                                                Presentación
+                                            </th>
                                             <th class="text-left">Unidades</th>
                                             <th></th>
                                             <th></th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr v-for="(detalle, index) in detalles" :key="index">
+                                        <tr
+                                            v-for="(detalle, index) in detalles"
+                                            :key="index"
+                                        >
                                             <td>{{ detalle.articulo }}</td>
                                             <td>{{ detalle.litros }} L.</td>
-                                            <td>{{ detalle.entregando || detalle.cantidad - detalle.cantidadentregado }}</td>
+                                            <td>
+                                                {{
+                                                    detalle.entregando ||
+                                                        detalle.cantidad -
+                                                            detalle.cantidadentregado
+                                                }}
+                                            </td>
                                             <td class="px-0">
                                                 <v-btn
                                                     icon
                                                     color="secondary"
-                                                    @click="openEditDetailDialog(detalle)"
+                                                    @click="
+                                                        openEditDetailDialog(
+                                                            detalle
+                                                        )
+                                                    "
                                                 >
-                                                    <v-icon size="medium">fas fa-pen</v-icon>
+                                                    <v-icon size="medium"
+                                                        >fas fa-pen</v-icon
+                                                    >
                                                 </v-btn>
                                             </td>
                                             <td>
                                                 <v-btn
                                                     icon
                                                     color="secondary"
-                                                    @click="deleteDetail(detalle)"
+                                                    @click="
+                                                        deleteDetail(detalle)
+                                                    "
                                                 >
-                                                    <v-icon size="medium">fas fa-times</v-icon>
+                                                    <v-icon size="medium"
+                                                        >fas fa-times</v-icon
+                                                    >
                                                 </v-btn>
                                             </td>
                                         </tr>
@@ -212,7 +245,7 @@ var stockDisponible = 999999999;
 
 export default {
     directives: {
-        clickOutside: ClickOutside.directive,
+        clickOutside: ClickOutside.directive
     },
 
     data: () => ({
@@ -220,13 +253,12 @@ export default {
         // GENERAL
         inProcess: false,
         rules: {
-            required: (value) => !!value || "Este campo es obligatorio",
+            required: value => !!value || "Este campo es obligatorio",
             entregaMaxima: value =>
                 value <= Number(entregaMaxima) ||
                 "No se puede entregar más unidades",
             stockDisponible: value =>
-                value <= Number(stockDisponible) ||
-                "No hay suficiente stock"
+                value <= Number(stockDisponible) || "No hay suficiente stock"
         },
         // HEADER
         PuntoVenta: null,
@@ -237,7 +269,7 @@ export default {
         selectedDetail: {},
         editDetailDialog: false,
         // SUBTOTAL
-        fechaDialog: false,
+        fechaDialog: false
     }),
 
     created() {
@@ -248,7 +280,7 @@ export default {
         }
     },
 
-    mounted: async function () {
+    mounted: async function() {
         this.inProcess = true;
         await this.getPoint();
         this.inProcess = false;
@@ -256,9 +288,9 @@ export default {
 
     methods: {
         // HEADER
-        getPoint: async function () {
+        getPoint: async function() {
             let data;
-            await axios.get("/api/config").then((response) => {
+            await axios.get("/api/config").then(response => {
                 data = response.data;
             });
             this.PuntoVenta = data.puntoventa;
@@ -308,8 +340,8 @@ export default {
         setData() {
             this.$store.state.facturas.form.detalles = this.detalles;
             return true;
-        },
-    },
+        }
+    }
 };
 </script>
 

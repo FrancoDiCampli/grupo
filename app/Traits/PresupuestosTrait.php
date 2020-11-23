@@ -228,8 +228,6 @@ trait PresupuestosTrait
     {
         $configuracion = ConfiguracionTrait::configuracion();
         $presupuesto = Presupuesto::find($id);
-        $fecha = new Carbon($presupuesto->fecha);
-        $presupuesto->fecha = $fecha->format('d-m-Y');
         $cliente = Cliente::withTrashed()->find($presupuesto->cliente_id);
         $detalles = DB::table('articulo_presupuesto')->where('presupuesto_id', $presupuesto->id)->get();
 

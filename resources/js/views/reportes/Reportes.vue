@@ -20,14 +20,22 @@
                                     >
                                         <template v-slot:activator="{ on }">
                                             <v-text-field
-                                                v-model="fechaDesde"
+                                                :value="fechaDesde | formatDate"
+                                                @input="
+                                                    value =>
+                                                        (fechaDesde = value)
+                                                "
                                                 label="Fecha desde"
                                                 readonly
                                                 outlined
                                                 v-on="on"
                                             ></v-text-field>
                                         </template>
-                                        <v-date-picker v-model="fechaDesde" scrollable locale="es">
+                                        <v-date-picker
+                                            v-model="fechaDesde"
+                                            scrollable
+                                            locale="es"
+                                        >
                                             <v-spacer></v-spacer>
                                             <v-btn
                                                 text
@@ -37,7 +45,8 @@
                                                         fechaDesde
                                                     )
                                                 "
-                                            >Aceptar</v-btn>
+                                                >Aceptar</v-btn
+                                            >
                                         </v-date-picker>
                                     </v-dialog>
                                 </v-col>
@@ -55,14 +64,22 @@
                                     >
                                         <template v-slot:activator="{ on }">
                                             <v-text-field
-                                                v-model="fechaHasta"
+                                                :value="fechaHasta | formatDate"
+                                                @input="
+                                                    value =>
+                                                        (fechaHasta = value)
+                                                "
                                                 label="Fecha hasta"
                                                 readonly
                                                 outlined
                                                 v-on="on"
                                             ></v-text-field>
                                         </template>
-                                        <v-date-picker v-model="fechaHasta" scrollable locale="es">
+                                        <v-date-picker
+                                            v-model="fechaHasta"
+                                            scrollable
+                                            locale="es"
+                                        >
                                             <v-spacer></v-spacer>
                                             <v-btn
                                                 text
@@ -72,7 +89,8 @@
                                                         fechaHasta
                                                     )
                                                 "
-                                            >Aceptar</v-btn>
+                                                >Aceptar</v-btn
+                                            >
                                         </v-date-picker>
                                     </v-dialog>
                                 </v-col>
@@ -153,5 +171,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

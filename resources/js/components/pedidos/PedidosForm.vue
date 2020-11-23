@@ -162,8 +162,14 @@
                                     >
                                         <template v-slot:activator="{ on }">
                                             <v-text-field
-                                                :value="$store.state.pedidos.form.fecha | formatDate" 
-                                                @input="value => store.state.pedidos.form.fecha = value"
+                                                :value="
+                                                    $store.state.pedidos.form
+                                                        .fecha | formatDate
+                                                "
+                                                @input="
+                                                    value =>
+                                                        (store.state.pedidos.form.fecha = value)
+                                                "
                                                 label="Fecha"
                                                 :rules="[rules.required]"
                                                 readonly
@@ -592,7 +598,13 @@
                                     >
                                         <template v-slot:activator="{ on }">
                                             <v-text-field
-                                                v-model="fechaCotizacion"
+                                                :value="
+                                                    fechaCotizacion | formatDate
+                                                "
+                                                @input="
+                                                    value =>
+                                                        (fechaCotizacion = value)
+                                                "
                                                 label="Fecha de la cotización"
                                                 readonly
                                                 outlined

@@ -10,7 +10,9 @@
                         <v-list-item two-line class="text-right">
                             <v-list-item-content>
                                 <v-list-item-title>
-                                    <b v-if="$vuetify.breakpoint.xsOnly">P:&nbsp;</b>
+                                    <b v-if="$vuetify.breakpoint.xsOnly"
+                                        >P:&nbsp;</b
+                                    >
                                     <b v-else>Punto de venta:&nbsp;</b>
                                     {{ PuntoVenta }}
                                 </v-list-item-title>
@@ -28,8 +30,11 @@
                         step="1"
                         :editable="true"
                         edit-icon="fas fa-pen"
-                        :rules="[() => validateStep(1, 'comprasProveedoresForm')]"
-                    >Proveedor</v-stepper-step>
+                        :rules="[
+                            () => validateStep(1, 'comprasProveedoresForm')
+                        ]"
+                        >Proveedor</v-stepper-step
+                    >
                     <v-stepper-content step="1">
                         <v-form ref="comprasProveedoresForm">
                             <v-row justify="space-around" class="my-1">
@@ -50,7 +55,11 @@
                                         class="search-proveedor-table mb-5"
                                         v-if="searchProveedorTable"
                                     >
-                                        <v-row justify="center" v-if="searchInProcess" class="py-5">
+                                        <v-row
+                                            justify="center"
+                                            v-if="searchInProcess"
+                                            class="py-5"
+                                        >
                                             <v-progress-circular
                                                 :size="70"
                                                 :width="7"
@@ -59,31 +68,55 @@
                                             ></v-progress-circular>
                                         </v-row>
                                         <div
-                                            v-else-if="searchProveedor != null && searchProveedor != ''"
+                                            v-else-if="
+                                                searchProveedor != null &&
+                                                    searchProveedor != ''
+                                            "
                                         >
-                                            <v-simple-table v-if="proveedores.length > 0">
+                                            <v-simple-table
+                                                v-if="proveedores.length > 0"
+                                            >
                                                 <thead>
                                                     <tr>
-                                                        <th class="text-xs-left">Apellido y nombre</th>
-                                                        <th class="text-xs-left">CUIT</th>
+                                                        <th
+                                                            class="text-xs-left"
+                                                        >
+                                                            Apellido y nombre
+                                                        </th>
+                                                        <th
+                                                            class="text-xs-left"
+                                                        >
+                                                            CUIT
+                                                        </th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
                                                     <tr
-                                                        v-for="(proveedor, index) in proveedores"
+                                                        v-for="(proveedor,
+                                                        index) in proveedores"
                                                         :key="index"
                                                         class="search-client-select"
-                                                        @click="selectProveedor( proveedor)"
+                                                        @click="
+                                                            selectProveedor(
+                                                                proveedor
+                                                            )
+                                                        "
                                                     >
-                                                        <td>{{proveedor.razonsocial}}</td>
-                                                        <td>{{proveedor.cuit}}</td>
+                                                        <td>
+                                                            {{
+                                                                proveedor.razonsocial
+                                                            }}
+                                                        </td>
+                                                        <td>
+                                                            {{ proveedor.cuit }}
+                                                        </td>
                                                     </tr>
                                                 </tbody>
                                             </v-simple-table>
                                             <div v-else class="py-5">
                                                 <h3 class="text-center">
-                                                    Ningun dato coincide con
-                                                    el criterio de busqueda
+                                                    Ningun dato coincide con el
+                                                    criterio de busqueda
                                                 </h3>
                                             </div>
                                         </div>
@@ -92,7 +125,9 @@
                                 <!-- N° REMITO -->
                                 <v-col cols="12" sm="6" class="py-0">
                                     <v-text-field
-                                        v-model="$store.state.compras.form.numcompra"
+                                        v-model="
+                                            $store.state.compras.form.numcompra
+                                        "
                                         :rules="[rules.required]"
                                         label="N° remito"
                                         type="number"
@@ -105,13 +140,26 @@
                                     <v-dialog
                                         ref="dialogFecha"
                                         v-model="fechaDialog"
-                                        :return-value.sync="$store.state.compras.form.fecha"
+                                        :return-value.sync="
+                                            $store.state.compras.form.fecha
+                                        "
                                         persistent
-                                        :width="$vuetify.breakpoint.xsOnly ? '100%' : '300px'"
+                                        :width="
+                                            $vuetify.breakpoint.xsOnly
+                                                ? '100%'
+                                                : '300px'
+                                        "
                                     >
                                         <template v-slot:activator="{ on }">
                                             <v-text-field
-                                                v-model="$store.state.compras.form.fecha"
+                                                :value="
+                                                    $store.state.compras.form
+                                                        .fecha | formatDate
+                                                "
+                                                @input="
+                                                    value =>
+                                                        (store.state.compras.form.fecha = value)
+                                                "
                                                 label="Fecha"
                                                 :rules="[rules.required]"
                                                 readonly
@@ -120,7 +168,9 @@
                                             ></v-text-field>
                                         </template>
                                         <v-date-picker
-                                            v-model="$store.state.compras.form.fecha"
+                                            v-model="
+                                                $store.state.compras.form.fecha
+                                            "
                                             scrollable
                                             locale="es"
                                         >
@@ -128,8 +178,14 @@
                                             <v-btn
                                                 text
                                                 color="primary"
-                                                @click="$refs.dialogFecha.save($store.state.compras.form.fecha)"
-                                            >Aceptar</v-btn>
+                                                @click="
+                                                    $refs.dialogFecha.save(
+                                                        $store.state.compras
+                                                            .form.fecha
+                                                    )
+                                                "
+                                                >Aceptar</v-btn
+                                            >
                                         </v-date-picker>
                                     </v-dialog>
                                 </v-col>
@@ -141,7 +197,8 @@
                                 @click="step = 2"
                                 color="secondary"
                                 class="elevation-0 mb-2"
-                            >Continuar</v-btn>
+                                >Continuar</v-btn
+                            >
                         </v-row>
                     </v-stepper-content>
 
@@ -154,7 +211,9 @@
                         :rules="[() => validateDetail(2)]"
                     >
                         Detalles.
-                        <small v-if="!validateDetail(2)">Debe ingresar al menos un detalle.</small>
+                        <small v-if="!validateDetail(2)"
+                            >Debe ingresar al menos un detalle.</small
+                        >
                     </v-stepper-step>
                     <v-stepper-content step="2">
                         <v-row justify="space-around" class="my-1">
@@ -162,40 +221,85 @@
                             <v-col cols="12" class="py-0 articulos-panel">
                                 <v-expansion-panels v-model="articulosPanel">
                                     <v-expansion-panel>
-                                        <v-expansion-panel-header expand-icon="fas fa-caret-down">
+                                        <v-expansion-panel-header
+                                            expand-icon="fas fa-caret-down"
+                                        >
                                             <div
                                                 v-if="articuloSelected.articulo"
-                                            >{{ articuloSelected.articulo }}</div>
+                                            >
+                                                {{ articuloSelected.articulo }}
+                                            </div>
                                             <div v-else>Articulos</div>
                                         </v-expansion-panel-header>
                                         <v-expansion-panel-content>
-                                            <v-simple-table v-if="articulos.length > 0">
+                                            <v-simple-table
+                                                v-if="articulos.length > 0"
+                                            >
                                                 <thead>
                                                     <tr>
-                                                        <th class="text-xs-left">Codigo</th>
-                                                        <th class="text-xs-left">Articulo</th>
-                                                        <th class="text-xs-left">Precio</th>
-                                                        <th class="text-xs-left">Stock</th>
+                                                        <th
+                                                            class="text-xs-left"
+                                                        >
+                                                            Codigo
+                                                        </th>
+                                                        <th
+                                                            class="text-xs-left"
+                                                        >
+                                                            Articulo
+                                                        </th>
+                                                        <th
+                                                            class="text-xs-left"
+                                                        >
+                                                            Precio
+                                                        </th>
+                                                        <th
+                                                            class="text-xs-left"
+                                                        >
+                                                            Stock
+                                                        </th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
                                                     <tr
-                                                        v-for="(articulo, index) in articulos"
+                                                        v-for="(articulo,
+                                                        index) in articulos"
                                                         :key="index"
-                                                        :class="articulo.stock >0? 'search-articulo-select': ''"
-                                                        @click="selectArticulo(articulo)"
+                                                        :class="
+                                                            articulo.stock > 0
+                                                                ? 'search-articulo-select'
+                                                                : ''
+                                                        "
+                                                        @click="
+                                                            selectArticulo(
+                                                                articulo
+                                                            )
+                                                        "
                                                     >
-                                                        <td>{{articulo.codarticulo }}</td>
-                                                        <td>{{articulo.articulo}}</td>
-                                                        <td>{{ articulo.precio}}</td>
-                                                        <td>{{articulo.stock}}</td>
+                                                        <td>
+                                                            {{
+                                                                articulo.codarticulo
+                                                            }}
+                                                        </td>
+                                                        <td>
+                                                            {{
+                                                                articulo.articulo
+                                                            }}
+                                                        </td>
+                                                        <td>
+                                                            {{
+                                                                articulo.precio
+                                                            }}
+                                                        </td>
+                                                        <td>
+                                                            {{ articulo.stock }}
+                                                        </td>
                                                     </tr>
                                                 </tbody>
                                             </v-simple-table>
                                             <div v-else class="py-5">
                                                 <h3 class="text-center">
-                                                    No existe ningún
-                                                    articulo registrado
+                                                    No existe ningún articulo
+                                                    registrado
                                                 </h3>
                                             </div>
                                         </v-expansion-panel-content>
@@ -204,7 +308,10 @@
                             </v-col>
                             <v-col cols="12" class="py-0">
                                 <v-expand-transition>
-                                    <v-row justify="center" v-if="searchInProcess">
+                                    <v-row
+                                        justify="center"
+                                        v-if="searchInProcess"
+                                    >
                                         <v-progress-circular
                                             :size="70"
                                             :width="7"
@@ -218,9 +325,15 @@
                                         v-else-if="!disabled.detalles"
                                     >
                                         <v-row justify="center">
-                                            <v-col cols="12" sm="6" class="py-0">
+                                            <v-col
+                                                cols="12"
+                                                sm="6"
+                                                class="py-0"
+                                            >
                                                 <v-select
-                                                    v-model="articuloSelected.movimiento"
+                                                    v-model="
+                                                        articuloSelected.movimiento
+                                                    "
                                                     disabled
                                                     :items="movimientos"
                                                     :rules="[rules.required]"
@@ -228,9 +341,15 @@
                                                     outlined
                                                 ></v-select>
                                             </v-col>
-                                            <v-col cols="12" sm="6" class="py-0">
+                                            <v-col
+                                                cols="12"
+                                                sm="6"
+                                                class="py-0"
+                                            >
                                                 <v-text-field
-                                                    v-model="articuloSelected.cantidad"
+                                                    v-model="
+                                                        articuloSelected.cantidad
+                                                    "
                                                     :rules="[rules.required]"
                                                     label="Unidades"
                                                     required
@@ -238,9 +357,15 @@
                                                     type="number"
                                                 ></v-text-field>
                                             </v-col>
-                                            <v-col cols="12" sm="6" class="py-0">
+                                            <v-col
+                                                cols="12"
+                                                sm="6"
+                                                class="py-0"
+                                            >
                                                 <v-text-field
-                                                    v-model="articuloSelected.litros"
+                                                    v-model="
+                                                        articuloSelected.litros
+                                                    "
                                                     :rules="[rules.required]"
                                                     label="Litros"
                                                     required
@@ -249,7 +374,11 @@
                                                     type="number"
                                                 ></v-text-field>
                                             </v-col>
-                                            <v-col cols="12" sm="6" class="py-0">
+                                            <v-col
+                                                cols="12"
+                                                sm="6"
+                                                class="py-0"
+                                            >
                                                 <v-text-field
                                                     v-model="cantidadLitros"
                                                     :rules="[rules.required]"
@@ -260,9 +389,15 @@
                                                     type="number"
                                                 ></v-text-field>
                                             </v-col>
-                                            <v-col cols="12" sm="6" class="py-0">
+                                            <v-col
+                                                cols="12"
+                                                sm="6"
+                                                class="py-0"
+                                            >
                                                 <v-text-field
-                                                    v-model="articuloSelected.precio"
+                                                    v-model="
+                                                        articuloSelected.precio
+                                                    "
                                                     :rules="[rules.required]"
                                                     label="Precio"
                                                     required
@@ -270,7 +405,11 @@
                                                     type="number"
                                                 ></v-text-field>
                                             </v-col>
-                                            <v-col cols="12" sm="6" class="py-0">
+                                            <v-col
+                                                cols="12"
+                                                sm="6"
+                                                class="py-0"
+                                            >
                                                 <v-text-field
                                                     v-model="subtotalDetalle"
                                                     :rules="[rules.required]"
@@ -288,7 +427,8 @@
                                                 outlined
                                                 tile
                                                 color="secondary"
-                                            >Añadir detalle</v-btn>
+                                                >Añadir detalle</v-btn
+                                            >
                                         </v-row>
                                     </v-form>
                                 </v-expand-transition>
@@ -297,53 +437,91 @@
                             <v-col cols="12" class="py-0 mb-5">
                                 <v-alert type="error" v-if="errorAlert">
                                     Uno o más pedidos de los detalles no
-                                    corresponden al proveedor
-                                    seleccionado. Por favor, elimina los
-                                    detalles en conflicto o selecciona
-                                    otro proveedor
+                                    corresponden al proveedor seleccionado. Por
+                                    favor, elimina los detalles en conflicto o
+                                    selecciona otro proveedor
                                 </v-alert>
                                 <v-card outlined>
                                     <v-simple-table>
                                         <template v-slot:default>
                                             <thead>
                                                 <tr>
-                                                    <th class="text-left">Actualizar</th>
-                                                    <th class="text-left">Articulo</th>
-                                                    <th class="text-left hidden-sm-and-down">Precio</th>
-                                                    <th class="text-left">Unidades</th>
-                                                    <th class="text-left">Subtotal</th>
+                                                    <th class="text-left">
+                                                        Actualizar
+                                                    </th>
+                                                    <th class="text-left">
+                                                        Articulo
+                                                    </th>
+                                                    <th
+                                                        class="text-left hidden-sm-and-down"
+                                                    >
+                                                        Precio
+                                                    </th>
+                                                    <th class="text-left">
+                                                        Unidades
+                                                    </th>
+                                                    <th class="text-left">
+                                                        Subtotal
+                                                    </th>
                                                     <th></th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <tr
-                                                    v-for="(detalle, index) in detalles"
+                                                    v-for="(detalle,
+                                                    index) in detalles"
                                                     :key="index"
                                                 >
                                                     <td>
-                                                        <div v-if="!detalle.error">
-                                                            <v-checkbox v-model="detalle.update"></v-checkbox>
+                                                        <div
+                                                            v-if="
+                                                                !detalle.error
+                                                            "
+                                                        >
+                                                            <v-checkbox
+                                                                v-model="
+                                                                    detalle.update
+                                                                "
+                                                            ></v-checkbox>
                                                         </div>
                                                         <div v-else>
-                                                            <v-icon size="medium" color="red">
+                                                            <v-icon
+                                                                size="medium"
+                                                                color="red"
+                                                            >
                                                                 fas
                                                                 fa-exclamation-triangle
                                                             </v-icon>
                                                         </div>
                                                     </td>
-                                                    <td>{{detalle.articulo}}</td>
+                                                    <td>
+                                                        {{ detalle.articulo }}
+                                                    </td>
                                                     <td
                                                         class="hidden-sm-and-down"
-                                                    >{{detalle.precio}}</td>
-                                                    <td>{{detalle.cantidad}}</td>
-                                                    <td>{{detalle.subtotal}}</td>
+                                                    >
+                                                        {{ detalle.precio }}
+                                                    </td>
+                                                    <td>
+                                                        {{ detalle.cantidad }}
+                                                    </td>
+                                                    <td>
+                                                        {{ detalle.subtotal }}
+                                                    </td>
                                                     <td>
                                                         <v-btn
                                                             icon
                                                             color="secondary"
-                                                            @click="deleteDetail(detalle)"
+                                                            @click="
+                                                                deleteDetail(
+                                                                    detalle
+                                                                )
+                                                            "
                                                         >
-                                                            <v-icon size="medium">fasfa-times</v-icon>
+                                                            <v-icon
+                                                                size="medium"
+                                                                >fasfa-times</v-icon
+                                                            >
                                                         </v-btn>
                                                     </td>
                                                 </tr>
@@ -359,7 +537,8 @@
                                 tile
                                 class="elevation-0 mb-2"
                                 @click="step = 3"
-                            >Continuar</v-btn>
+                                >Continuar</v-btn
+                            >
                         </v-row>
                     </v-stepper-content>
 
@@ -370,7 +549,8 @@
                         :editable="true"
                         edit-icon="fas fa-pen"
                         :rules="[() => validateStep(3, 'comprasTotalesForm')]"
-                    >Bonificación y recargo.</v-stepper-step>
+                        >Bonificación y recargo.</v-stepper-step
+                    >
                     <v-stepper-content step="3">
                         <v-form ref="comprasTotalesForm">
                             <v-row justify="space-around" class="my-1">
@@ -378,9 +558,9 @@
                                     <v-col cols="12" class="py-0">
                                         <v-text-field
                                             v-model="
-                                                    $store.state.compras.form
-                                                        .bonificacion
-                                                "
+                                                $store.state.compras.form
+                                                    .bonificacion
+                                            "
                                             type="number"
                                             label="Bonificacion %"
                                             outlined
@@ -389,9 +569,9 @@
                                     <v-col cols="12" class="py-0">
                                         <v-text-field
                                             v-model="
-                                                    $store.state.compras.form
-                                                        .recargo
-                                                "
+                                                $store.state.compras.form
+                                                    .recargo
+                                            "
                                             type="number"
                                             label="Recargo %"
                                             outlined
@@ -428,7 +608,8 @@
                                 tile
                                 class="elevation-0 mb-2"
                                 @click="step = 4"
-                            >Continuar</v-btn>
+                                >Continuar</v-btn
+                            >
                         </v-row>
                     </v-stepper-content>
 
@@ -438,7 +619,8 @@
                         step="4"
                         :editable="true"
                         edit-icon="fas fa-pen"
-                    >Observaciones</v-stepper-step>
+                        >Observaciones</v-stepper-step
+                    >
                     <v-stepper-content step="4">
                         <v-row justify="center" class="my-1">
                             <v-col cols="12" class="py-0">
@@ -560,7 +742,6 @@ export default {
                     return null;
                 }
             }
-
         }
     },
 
@@ -814,5 +995,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>
