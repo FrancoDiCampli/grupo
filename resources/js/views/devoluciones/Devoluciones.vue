@@ -11,7 +11,7 @@
                     bottom
                     large
                     v-on="on"
-                    to="/devoluciones/nueva"
+                    to="devoluciones/nueva"
                 >
                     <v-icon>fas fa-plus</v-icon>
                 </v-btn>

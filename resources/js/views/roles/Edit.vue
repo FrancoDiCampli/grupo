@@ -2,7 +2,7 @@
     <div>
         <v-tooltip left>
             <template v-slot:activator="{ on }">
-                <v-btn color="secondary" dark fab fixed right bottom large v-on="on" to="/roles">
+                <v-btn color="secondary" dark fab fixed right bottom large v-on="on" @click="$router.go(-1)">
                     <v-icon>fas fa-chevron-left</v-icon>
                 </v-btn>
             </template>

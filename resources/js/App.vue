@@ -7,7 +7,7 @@
                 </v-list-item>
             </template>
             <template slot="searchBar" v-if="$store.state.auth.user">
-                <div class="search-input" v-click-outside="closeSearch">
+                <div v-click-outside="closeSearch">
                     <v-row class="pa-0" justify="center" align-content="center">
                         <v-text-field
                             hide-details
@@ -20,14 +20,17 @@
                         "
                             v-model="searchItems"
                             class="search-field"
+                            append-icon="fas fa-search"
+                            @click:append="findItems()"
                         >
                             <template v-slot:progress>
                                 <v-progress-linear absolute height="0"></v-progress-linear>
                             </template>
                         </v-text-field>
-                        <!-- <div class="px-2 py-1" @click="searchItemsAfter()" style="cursor: pointer;">
+
+                        <!-- <div @click="findItems()" style="cursor: pointer;">
                             <v-icon size="large">fas fa-search</v-icon>
-                        </div>-->
+                        </div> -->
                     </v-row>
                 </div>
             </template>
@@ -311,37 +314,27 @@ export default {
                 });
         },
 
-        searchItemsAfter() {
-            this.searchDialog = true;
-            this.searchInProcess = true;
-            this.searchItemsList = true;
-            if (this.searchItems != null && this.searchItems != "") {
-                if (this.timer) {
-                    clearTimeout(this.timer);
-                    this.timer = null;
-                }
-                this.timer = setTimeout(() => {
-                    this.findItems();
-                }, 1000);
-            }
-        },
-
         findItems: async function () {
-            axios
-                .post("/api/buscando", { buscar: this.searchItems })
-                .then((response) => {
-                    this.items = {
-                        proveedores: response.data.proveedores || [],
-                        clientes: response.data.clientes || [],
-                        distribuidores: response.data.distribuidores || [],
-                        articulos: response.data.articulos || [],
-                    };
-                    this.searchInProcess = false;
-                })
-                .catch((error) => {
-                    console.log(error);
-                    this.searchInProcess = false;
-                });
+            if (this.searchItems != null && this.searchItems != "") {
+                this.searchDialog = true;
+                this.searchInProcess = true;
+                this.searchItemsList = true;
+                axios
+                    .post("/api/buscando", { buscar: this.searchItems })
+                    .then((response) => {
+                        this.items = {
+                            proveedores: response.data.proveedores || [],
+                            clientes: response.data.clientes || [],
+                            distribuidores: response.data.distribuidores || [],
+                            articulos: response.data.articulos || [],
+                        };
+                        this.searchInProcess = false;
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                        this.searchInProcess = false;
+                    });
+            }
         },
 
         closeSearch() {
@@ -386,6 +379,16 @@ body::-webkit-scrollbar-thumb {
             .v-text-field__slot {
                 input {
                     padding-left: 12px;
+                }
+            }
+
+            .v-input__append-inner {
+                margin-right: 8px;
+                .v-input__icon {
+                    .v-icon {
+                        font-size: 18px;
+                        color: white;
+                    }
                 }
             }
         }

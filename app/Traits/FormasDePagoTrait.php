@@ -80,7 +80,7 @@ trait FormasDePagoTrait
                     'emisor' => $pay['emisor'],
                     'fecha' => $pay['fecha'],
                     'fecha_cotizacion' => $pay['fecha_cotizacion'],
-                    'numero' => $pay['numero'] * 1,
+                    'numero' => $pay['numero'],
                     'pesos' => $pay['pesos'] * 1,
                     'observaciones' => $pay['observaciones'],
                 ]);

@@ -71,7 +71,6 @@
                 </v-row>
                 <h1 class="text-center secondary--text">Bienvenido</h1>
                 <br />
-                <v-btn @click="getPermisos()">Permisos</v-btn>
             </div>
         </div>
     </div>
@@ -83,18 +82,6 @@ export default {
         exitTo(route) {
             window.open(route);
         },
-
-        getPermisos() {
-            axios
-                .get("/api/permissions/except/pedidos-index pedidos-show")
-                .then(response => {
-                    
-                    console.log(response.data);
-                })
-                .catch(error => {
-                    console.log(error.response.data);
-                });
-        }
     }
 };
 </script>

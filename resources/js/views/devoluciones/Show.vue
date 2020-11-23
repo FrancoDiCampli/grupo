@@ -12,7 +12,7 @@
         <v-container>
             <v-row justify="center">
                 <v-col cols="12" md="10" lg="8">
-                    <ClientesShow :id="id"></ClientesShow>
+                    <DevolucionesShow :id="id"></DevolucionesShow>
                 </v-col>
             </v-row>
         </v-container>
@@ -20,15 +20,16 @@
 </template>
 
 <script>
-import ClientesShow from "../../components/clientes/ClientesShow";
+import DevolucionesShow from "../../components/devoluciones/DevolucionesShow";
 
 export default {
-    props: ["id"],
+    props: ['id'],
 
     components: {
-        ClientesShow
+        DevolucionesShow
     }
 };
 </script>
 
-<style></style>
+<style>
+</style>

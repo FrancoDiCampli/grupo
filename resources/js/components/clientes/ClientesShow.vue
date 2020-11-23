@@ -137,7 +137,7 @@
                                         active-class="secondary--text"
                                     >
                                         <v-tab>Datos</v-tab>
-                                        <v-tab>Ventas</v-tab>
+                                        <v-tab>Comprobantes</v-tab>
                                         <v-tab>
                                             <span class="hidden-sm-and-up">Cuenta</span>
                                             <span class="hidden-xs-only">Resumen corriente</span>
