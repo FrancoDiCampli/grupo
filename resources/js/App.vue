@@ -27,10 +27,6 @@
                                 <v-progress-linear absolute height="0"></v-progress-linear>
                             </template>
                         </v-text-field>
-
-                        <!-- <div @click="findItems()" style="cursor: pointer;">
-                            <v-icon size="large">fas fa-search</v-icon>
-                        </div> -->
                     </v-row>
                 </div>
             </template>

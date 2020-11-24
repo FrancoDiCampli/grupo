@@ -88,6 +88,7 @@ export default new Router({
         },
         {
             path: "/accessd_denied",
+            name: "accessd_denied",
             component: AccessDenied
         },
         {
@@ -113,252 +114,411 @@ export default new Router({
         {
             path: "/pedidos",
             name: "pedidos",
-            component: Pedidos
+            component: Pedidos,
+            meta: {
+                rol: ["superAdmin", "administrador", 'vendedor'],
+                redirect: "welcome"
+            }
         },
         {
             path: "/pedidos/nuevo",
             name: "pedidos_nuevo",
-            component: PedidosCreate
+            component: PedidosCreate,
+            meta: {
+                rol: ["superAdmin", "administrador", 'vendedor'],
+                redirect: "welcome"
+            }
         },
         {
             path: "/pedidos/editar/:id",
             name: "pedidos_editar",
             component: PedidosEdit,
-            props: true
+            props: true,
+            meta: {
+                rol: ["superAdmin", "administrador", 'vendedor'],
+                redirect: "welcome"
+            }
         },
         {
             path: "/pedidos/show/:id",
             name: "pedidos_show",
             component: PedidosShow,
-            props: true
+            props: true,
+            meta: {
+                rol: ["superAdmin", "administrador", 'vendedor'],
+                redirect: "welcome"
+            }
         },
 
         // Remitos
         {
             path: "/remitos",
             name: "remitos",
-            component: Remitos
+            component: Remitos,
+            meta: {
+                rol: ["superAdmin", "administrador", 'vendedor'],
+                redirect: "welcome"
+            }
         },
         {
             path: "/remitos/show/:id",
             name: "remitos_show",
             component: RemitosShow,
-            props: true
+            props: true,
+            meta: {
+                rol: ["superAdmin", "administrador", 'vendedor'],
+                redirect: "welcome"
+            }
         },
 
         // Facturas
         {
             path: "/facturas",
             name: "facturas",
-            component: Facturas
+            component: Facturas,
+            meta: {
+                rol: ["superAdmin", "administrador"],
+                redirect: "welcome"
+            }
         },
         {
             path: "/facturas/create",
             name: "facturasCreate",
-            component: FacturasCreate
+            component: FacturasCreate,
+            meta: {
+                rol: ["superAdmin", "administrador"],
+                redirect: "welcome"
+            }
         },
         {
             path: "/facturas/show/:id",
             name: "facturas_show",
             component: FacturasShow,
-            props: true
+            props: true,
+            meta: {
+                rol: ["superAdmin", "administrador"],
+                redirect: "welcome"
+            }
         },
 
         // Entregas
         {
             path: "/entregas",
             name: "entregas",
-            component: Entregas
+            component: Entregas,
+            meta: {
+                rol: ["superAdmin", "administrador", 'vendedor'],
+                redirect: "welcome"
+            }
         },
         {
             path: "/entregas/create",
             name: "entregasCreate",
-            component: EntregasCreate
+            component: EntregasCreate,
+            meta: {
+                rol: ["superAdmin", "administrador", 'vendedor'],
+                redirect: "welcome"
+            }
         },
         {
             path: "/entregas/show/:id",
             name: "entregas_show",
             component: EntregasShow,
-            props: true
+            props: true,
+            meta: {
+                rol: ["superAdmin", "administrador", 'vendedor'],
+                redirect: "welcome"
+            }
         },
 
         // Clientes
         {
             path: "/clientes",
             name: "clientes",
-            component: Clientes
+            component: Clientes,
+            meta: {
+                rol: ["superAdmin", "administrador", 'vendedor'],
+                redirect: "welcome"
+            }
         },
         {
             path: "/clientes/nuevo",
             name: "clientes_nuevo",
-            component: ClientesCreate
+            component: ClientesCreate,
+            meta: {
+                rol: ["superAdmin", "administrador", 'vendedor'],
+                redirect: "welcome"
+            }
         },
         {
             path: "/clientes/show/:id",
             name: "clientes_show",
             component: ClientesShow,
-            props: true
+            props: true,
+            meta: {
+                rol: ["superAdmin", "administrador", 'vendedor'],
+                redirect: "welcome"
+            }
         },
         {
             path: "/clientes/micuenta",
             name: "mi_cuenta",
-            component: MiCuenta
+            component: MiCuenta,
+            meta: {
+                rol: ["cliente"],
+                redirect: "welcome"
+            }
         },
         {
             path: "/clientes/showRecibos/:id",
             name: "clientes_showRecibos",
             component: ShowRecibos,
-            props: true
-        },
-        {
-            path: "/clientes/resumenCuenta",
-            name: "clientes_resumenCuenta",
-            component: ResumenCuenta
+            props: true,
+            meta: {
+                rol: ["superAdmin", "administrador", 'vendedor', 'cliente'],
+                redirect: "welcome"
+            }
         },
 
         // Articulos
         {
             path: "/articulos",
             name: "articulos",
-            component: Articulos
+            component: Articulos,
+            meta: {
+                rol: ["superAdmin", "administrador", 'vendedor'],
+                redirect: "welcome"
+            }
         },
         {
             path: "/articulos/nuevo",
             name: "articulos_nuevo",
-            component: ArticulosCreate
+            component: ArticulosCreate,
+            meta: {
+                rol: ["superAdmin", "administrador"],
+                redirect: "welcome"
+            }
         },
         {
             path: "/articulos/show/:id",
             name: "articulos_show",
             component: ArticulosShow,
-            props: true
+            props: true,
+            meta: {
+                rol: ["superAdmin", "administrador", 'vendedor'],
+                redirect: "welcome"
+            }
         },
 
         // Proveedores
         {
             path: "/proveedores",
             name: "proveedores",
-            component: Proveedores
+            component: Proveedores,
+            meta: {
+                rol: ["superAdmin", "administrador"],
+                redirect: "welcome"
+            }
         },
         {
             path: "/proveedores/nuevo",
             name: "proveedores_nuevo",
-            component: ProveedoresCreate
+            component: ProveedoresCreate,
+            meta: {
+                rol: ["superAdmin", "administrador"],
+                redirect: "welcome"
+            }
         },
         {
             path: "/proveedores/show/:id",
             name: "proveedores_show",
             component: ProveedoresShow,
-            props: true
+            props: true,
+            meta: {
+                rol: ["superAdmin", "administrador"],
+                redirect: "welcome"
+            }
         },
 
         // Compras
         {
             path: "/compras",
             name: "compras",
-            component: Compras
+            component: Compras,
+            meta: {
+                rol: ["superAdmin", "administrador"],
+                redirect: "welcome"
+            }
         },
         {
             path: "/compras/nueva",
             name: "compras_nueva",
-            component: ComprasCreate
+            component: ComprasCreate,
+            meta: {
+                rol: ["superAdmin", "administrador"],
+                redirect: "welcome"
+            }
         },
         {
             path: "/compras/show/:id",
             name: "compras_show",
             component: ComprasShow,
-            props: true
+            props: true,
+            meta: {
+                rol: ["superAdmin", "administrador"],
+                redirect: "welcome"
+            }
         },
 
         // Consignaciones
         {
             path: "/consignaciones",
             name: "consignaciones",
-            component: Consignaciones
+            component: Consignaciones,
+            meta: {
+                rol: ["superAdmin", "administrador"],
+                redirect: "welcome"
+            }
         },
         {
             path: "/consignaciones/nueva",
             name: "consignaciones_nueva",
-            component: ConsignacionesCreate
+            component: ConsignacionesCreate,
+            meta: {
+                rol: ["superAdmin", "administrador"],
+                redirect: "welcome"
+            }
         },
         {
             path: "/consignaciones/show/:id",
             name: "consignaciones_show",
             component: ConsignacionesShow,
-            props: true
+            props: true,
+            meta: {
+                rol: ["superAdmin", "administrador"],
+                redirect: "welcome"
+            }
         },
 
         // Devoluciones
         {
             path: "/devoluciones",
             name: "devoluciones",
-            component: Devoluciones
+            component: Devoluciones,
+            meta: {
+                rol: ["superAdmin", "administrador"],
+                redirect: "welcome"
+            }
         },
         {
             path: "/devoluciones/nueva",
             name: "devoluciones_nueva",
-            component: DevolucionesCreate
+            component: DevolucionesCreate,
+            meta: {
+                rol: ["superAdmin", "administrador"],
+                redirect: "welcome"
+            }
         },
         {
             path: "/devoluciones/show/:id",
             name: "devoluciones_show",
             component: DevolucionesShow,
-            props: true
+            props: true,
+            meta: {
+                rol: ["superAdmin", "administrador"],
+                redirect: "welcome"
+            }
         },
 
         // Reportes
         {
             path: "/reportes",
             name: "reportes",
-            component: Reportes
+            component: Reportes,
+            meta: {
+                rol: ["superAdmin", "administrador"],
+                redirect: "welcome"
+            }
         },
 
         // Movimientos
         {
             path: "/movimientos",
             name: "movimientos",
-            component: Movimientos
+            component: Movimientos,
+            meta: {
+                rol: ["superAdmin", "administrador"],
+                redirect: "welcome"
+            }
         },
 
         // Cartera
         {
             path: "/cartera",
             name: "cartera",
-            component: Cartera
+            component: Cartera,
+            meta: {
+                rol: ["superAdmin", "administrador"],
+                redirect: "welcome"
+            }
         },
 
         // Roles
         {
             path: "/roles",
             name: "roles",
-            component: Roles
+            component: Roles,
+            meta: {
+                rol: ["superAdmin"],
+                redirect: "welcome"
+            }
         },
         {
             path: "/roles/nuevo",
             name: "roles_create",
-            component: RolesCreate
+            component: RolesCreate,
+            meta: {
+                rol: ["superAdmin"],
+                redirect: "welcome"
+            }
         },
         {
             path: "/roles/editar",
             name: "roles_edit",
-            component: RolesEdit
+            component: RolesEdit,
+            meta: {
+                rol: ["superAdmin"],
+                redirect: "welcome"
+            }
         },
 
         // Users
         {
             path: "/users",
             name: "users",
-            component: Users
+            component: Users,
+            meta: {
+                rol: ["superAdmin", "administrador"],
+                redirect: "welcome"
+            }
         },
         {
             path: "/users/nuevo",
             name: "users_create",
-            component: UsersCreate
+            component: UsersCreate,
+            meta: {
+                rol: ["superAdmin", "administrador"],
+                redirect: "welcome"
+            }
         },
         {
             path: "/users/editar",
             name: "users_edit",
-            component: UsersEdit
+            component: UsersEdit,
+            meta: {
+                rol: ["superAdmin", "administrador"],
+                redirect: "welcome"
+            }
         }
     ]
 });

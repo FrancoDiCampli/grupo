@@ -9,7 +9,6 @@
             stateless
             app
             hide-overlay
-            v-if="$store.state.auth.user.rol != 'cliente'"
         >
             <v-list-item class="drawer-action primary" dark>
                 <v-list-item-icon @click="mini = !mini" class="drawer-action-icon hidden-xs-only">
@@ -57,48 +56,59 @@
                             </v-list-item-title>
                         </v-list-item-content>
                     </v-list-item>
-                    <v-divider v-if="route.divider"></v-divider>
+                    <v-divider 
+                        v-if="
+                            route.divider && 
+                            route.roles.find(element => {
+                                return element == $store.state.auth.user.rol;
+                            })
+                        "
+                    ></v-divider>
                 </div>
+                <v-list-item
+                    @click="
+                        $vuetify.breakpoint.xsOnly
+                            ? (drawer = false)
+                            : (drawer = true)
+                    "
+                    v-if="$store.state.auth.user.rol == 'cliente'"
+                    href="http://www.grupoapc.com.ar/"
+                    target="_blank"
+                    color="primary"
+                    link
+                >
+                    <v-list-item-icon>
+                        <v-icon>fas fa-globe</v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-content>
+                        <v-list-item-title>
+                            grupoapc.com
+                        </v-list-item-title>
+                    </v-list-item-content>
+                </v-list-item>
+                <v-list-item
+                    @click="
+                        $vuetify.breakpoint.xsOnly
+                            ? (drawer = false)
+                            : (drawer = true)
+                    "
+                    v-if="$store.state.auth.user.rol == 'cliente'"
+                    href="https://play.google.com/store/apps/details?id=com.grupoapcapp.ar&hl=es"
+                    target="_blank"
+                    color="primary"
+                    link
+                >
+                    <v-list-item-icon>
+                        <v-icon>fas fa-mobile-alt</v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-content>
+                        <v-list-item-title>
+                            Grupo APC App
+                        </v-list-item-title>
+                    </v-list-item-content>
+                </v-list-item>
             </v-list>
         </v-navigation-drawer>
-
-        <!-- Drawer Notificaciones -->
-        <!-- <v-navigation-drawer v-model="notificationDrawer" absolute temporary right>
-            <div v-if="$store.state.notificaciones.unread.length > 0">
-                <v-list dense>
-                    <v-subheader>No leidas</v-subheader>
-                    <v-list-item
-                        v-for="noti in $store.state.notificaciones.unread"
-                        :key="noti.id"
-                        @click="markRead(noti)"
-                    >
-                        <v-list-item-icon>
-                            <v-icon color="amber">fas fa-box-open</v-icon>
-                        </v-list-item-icon>
-
-                        <v-list-item-content>
-                            <v-list-item-title>{{ noti.data.message }}</v-list-item-title>
-                        </v-list-item-content>
-                    </v-list-item>
-                </v-list>
-            </div>
-
-            <v-divider></v-divider>
-            <div v-if="$store.state.notificaciones.read.length > 0">
-                <v-list dense disabled>
-                    <v-subheader>Leidas</v-subheader>
-                    <v-list-item v-for="noti in $store.state.notificaciones.read" :key="noti.id">
-                        <v-list-item-icon>
-                            <v-icon>fas fa-box-open</v-icon>
-                        </v-list-item-icon>
-
-                        <v-list-item-content>
-                            <v-list-item-title>{{ noti.data.message }}</v-list-item-title>
-                        </v-list-item-content>
-                    </v-list-item>
-                </v-list>
-            </div>
-        </v-navigation-drawer>-->
 
         <!-- Navbar superior -->
         <v-app-bar color="primary" dark flat app fixed>
@@ -109,13 +119,21 @@
                 v-if="$store.state.auth.user.user != null"
             ></v-app-bar-nav-icon>
 
-            <div>
+            <div v-if="$store.state.auth.user.rol != 'cliente'">
                 <slot name="searchBar"></slot>
             </div>
 
             <v-spacer></v-spacer>
             <!-- Notificaciones -->
-            <v-btn icon @click="notificationDrawer = true" class="mx-2">
+            <v-btn 
+                icon 
+                @click="openSide('noti')" 
+                class="mx-2" 
+                v-if="
+                    $store.state.auth.user.rol == 'superAdmin' || 
+                    $store.state.auth.user.rol == 'administrador'
+                "
+            >
                 <v-badge
                     :content="$store.state.notificaciones.unread.length"
                     :value="$store.state.notificaciones.unread.length"
@@ -142,7 +160,7 @@
                     </v-avatar>
                 </template>
                 <v-list>
-                    <v-list-item @click="sidenav = true">
+                    <v-list-item @click="openSide('user')">
                         <v-list-item-title>Perfil</v-list-item-title>
                     </v-list-item>
                     <slot name="userActions"></slot>
@@ -150,18 +168,62 @@
             </v-menu>
         </v-app-bar>
 
-        <!-- Sidenav de usuario -->
+        <!-- Sidenav usuarios/notificaciones -->
         <v-slide-x-reverse-transition>
-            <v-col cols="12" sm="5" lg="4" v-show="sidenav" class="sidenav pa-0">
+            <v-col cols="12" sm="5" lg="4" v-show="sidenav.active" class="sidenav pa-0">
                 <v-card tile class="sidenav-overflow">
                     <v-toolbar color="secondary" dark flat>
-                        <v-toolbar-title>Perfil</v-toolbar-title>
+                        <v-toolbar-title v-if="sidenav.mode == 'user'">Perfil</v-toolbar-title>
+                        <v-toolbar-title v-else-if="sidenav.mode == 'noti'">Notificaciones</v-toolbar-title>
                         <v-spacer></v-spacer>
-                        <v-btn @click="sidenav = false" icon>
+                        <v-btn @click="closeSide()" icon>
                             <v-icon>fas fa-arrow-right</v-icon>
                         </v-btn>
                     </v-toolbar>
-                    <Account v-if="$store.state.auth.user.user != null"></Account>
+                    <div v-if="sidenav.mode == 'user'">
+                        <Account v-if="$store.state.auth.user.user != null"></Account>
+                    </div>
+                    <div v-else-if="sidenav.mode == 'noti'">
+                        <div v-if="$store.state.notificaciones.unread.length > 0">
+                            <v-list dense>
+                                <v-subheader>No leidas</v-subheader>
+                                <v-list-item
+                                    v-for="noti in $store.state.notificaciones.unread"
+                                    :key="noti.id"
+                                    @click="markRead(noti)"
+                                >
+                                    <v-list-item-icon>
+                                        <v-icon color="amber">fas fa-box-open</v-icon>
+                                    </v-list-item-icon>
+
+                                    <v-list-item-content>
+                                        <v-list-item-title>{{ noti.data.message }}</v-list-item-title>
+                                    </v-list-item-content>
+                                </v-list-item>
+                            </v-list>
+                        </div>
+                        <v-divider></v-divider>
+                        <div v-if="$store.state.notificaciones.read.length > 0">
+                            <v-list dense disabled>
+                                <v-subheader>Leidas</v-subheader>
+                                <v-list-item v-for="noti in $store.state.notificaciones.read" :key="noti.id">
+                                    <v-list-item-icon>
+                                        <v-icon>fas fa-box-open</v-icon>
+                                    </v-list-item-icon>
+
+                                    <v-list-item-content>
+                                        <v-list-item-title>{{ noti.data.message }}</v-list-item-title>
+                                    </v-list-item-content>
+                                </v-list-item>
+                            </v-list>
+                        </div>
+                        <div v-if="
+                            $store.state.notificaciones.unread.length <= 0 &&
+                            $store.state.notificaciones.read.length <= 0    
+                        ">
+                            <h2 class="text-center py-2">No hay notificaciones</h2>
+                        </div>
+                    </div>
                 </v-card>
             </v-col>
         </v-slide-x-reverse-transition>
@@ -173,7 +235,6 @@ import Account from "./auth/Account";
 
 export default {
     data: () => ({
-        notificationDrawer: false,
         clientes: [],
         proveedores: [],
         articulos: [],
@@ -182,8 +243,18 @@ export default {
         mini: false,
         permanent: false,
         temporary: true,
-        sidenav: false,
+        sidenav: {
+            active: false,
+            mode: ''
+        },
         routes: [
+            {
+                name: "Mi cuenta",
+                icon: "fas fa-dollar-sign",
+                url: "/clientes/micuenta",
+                roles: ["cliente"],
+                divider: false,
+            },
             {
                 name: "Pedidos",
                 icon: "fas fa-receipt",
@@ -221,7 +292,6 @@ export default {
                     "superAdmin",
                     "administrador",
                     "vendedor",
-                    "distribuidor",
                 ],
                 divider: false,
             },
@@ -234,7 +304,6 @@ export default {
                     "superAdmin",
                     "administrador",
                     "vendedor",
-                    "distribuidor",
                 ],
                 divider: true,
             },
@@ -347,6 +416,16 @@ export default {
             this.negocios = [];
             this.proveedores = [];
             this.noMostrar = true;
+        },
+
+        openSide(mode) {
+            this.sidenav.mode = mode;
+            this.sidenav.active = true;
+        },
+
+        closeSide() {
+            this.sidenav.mode = '';
+            this.sidenav.active = false;
         },
 
         markRead(noti) {

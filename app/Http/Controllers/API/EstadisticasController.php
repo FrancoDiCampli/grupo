@@ -16,7 +16,7 @@ class EstadisticasController extends Controller
     {
         $this->middleware('auth:airlock');
 
-        $this->middleware('scope:resportes');
+        $this->middleware('scope:reportes');
     }
 
     public function chequeCobrado($id)
