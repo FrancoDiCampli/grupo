@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Exports\AllExport;
 use App\Traits\ChequesTrait;
 use Illuminate\Http\Request;
+use App\Exports\ReportesExport;
 use App\Http\Controllers\Controller;
-use App\Traits\EstadisticasComprasTrait;
-use App\Traits\EstadisticasDetallesComprasTrait;
-use App\Traits\EstadisticasDetallesVentasTrait;
+use Maatwebsite\Excel\Facades\Excel;
 use App\Traits\EstadisticasVentasTrait;
+use App\Traits\EstadisticasComprasTrait;
+use App\Traits\EstadisticasDetallesVentasTrait;
+use App\Traits\EstadisticasDetallesComprasTrait;
 
 class EstadisticasController extends Controller
 {
@@ -47,5 +50,11 @@ class EstadisticasController extends Controller
     public function detallesCompras(Request $request)
     {
         return EstadisticasDetallesComprasTrait::detallesCompras($request);
+    }
+
+    public function export()
+    {
+        $export = new AllExport();
+        return Excel::download($export, 'report.xlsx');
     }
 }
