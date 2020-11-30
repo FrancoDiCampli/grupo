@@ -21,7 +21,7 @@
                             <td>{{ item.numcompra }}</td>
                             <td>{{ item.proveedor.razonsocial }}</td>
                             <td class="hidden-xs-only">{{ item.fecha }}</td>
-                            <td>{{ item.total }}</td>
+                            <td>{{ item.total | formatCurrency('USD') }}</td>
                             <td>
                                 <v-menu offset-y>
                                     <template v-slot:activator="{ on }">

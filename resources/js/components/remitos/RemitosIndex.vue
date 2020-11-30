@@ -44,7 +44,7 @@
                                 {{ item.comprobanteadherido || item.numventa }}
                             </td>
                             <td>{{ item.cliente.razonsocial }}</td>
-                            <td>{{ item.total }}</td>
+                            <td>{{ item.total | formatCurrency('USD') }}</td>
                             <td class="hidden-sm-and-down">{{ item.fecha }}</td>
                             <td>
                                 <v-menu offset-y>

@@ -19,7 +19,7 @@
                             <template v-slot:item="{ item }">
                                 <tr>
                                     <td>{{ item.numero }}</td>
-                                    <td>{{ item.dolares }}</td>
+                                    <td>{{ item.dolares | formatMoney }}</td>
                                     <td>{{ item.estado }}</td>
                                     <td class="hidden-xs-only">
                                         <div
@@ -37,7 +37,7 @@
                                                 <v-list-item @click="showCheque(item)">
                                                     <v-list-item-title>Detalles</v-list-item-title>
                                                 </v-list-item>
-                                                <v-list-item @click="cobrar(item.id)">
+                                                <v-list-item @click="cobrar(item.id)" v-if="item.estado == 'POR COBRAR'">
                                                     <v-list-item-title>Cobrar</v-list-item-title>
                                                 </v-list-item>
                                             </v-list>
@@ -109,7 +109,7 @@
                             <p>
                                 <b>Monto en dolares:</b>
                             </p>
-                            <p>{{ cheque.dolares }}</p>
+                            <p>{{ cheque.dolares | formatCurrency('USD') }}</p>
                         </v-col>
                         <v-col cols="12" sm="6" class="py-0">
                             <p>
@@ -121,7 +121,7 @@
                             <p>
                                 <b>Monto en pesos:</b>
                             </p>
-                            <p>{{ cheque.pesos }}</p>
+                            <p>{{ cheque.pesos | formatCurrency('ARS') }}</p>
                         </v-col>
                         <v-col cols="12" sm="6" class="py-0">
                             <p>

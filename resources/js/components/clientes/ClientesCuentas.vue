@@ -35,7 +35,7 @@
                                             index) in item.movimientos"
                                             :key="index"
                                         >
-                                            <td>{{ movimiento.importe }}</td>
+                                            <td>{{ movimiento.importe | formatCurrency('USD') }}</td>
                                             <td>{{ movimiento.fecha }}</td>
                                             <td>{{ movimiento.tipo }}</td>
                                         </tr>

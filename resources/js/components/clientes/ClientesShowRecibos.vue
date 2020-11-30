@@ -108,7 +108,7 @@
                                                     :key="index"
                                                 >
                                                     <th>{{ pago.numpago }}</th>
-                                                    <th>USD $ {{ pago.importe }}</th>
+                                                    <th>{{ pago.importe | formatCurrency('USD') }}</th>
                                                     <th>{{ pago.fecha }}</th>
                                                     <th>{{ pago.forma[0] }}</th>
                                                     <th>
@@ -128,7 +128,7 @@
                                     <div class="footer-final">
                                         <p>
                                             <b>Cotización:</b>
-                                            ${{ recibo.recibo.cotizacion }}
+                                            {{ recibo.recibo.cotizacion | formatCurrency('USD') }}
                                         </p>
                                         <p>
                                             <b>Fecha Cotización:</b>

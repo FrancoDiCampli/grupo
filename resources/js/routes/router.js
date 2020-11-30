@@ -115,39 +115,39 @@ export default new Router({
             path: "/pedidos",
             name: "pedidos",
             component: Pedidos,
-            meta: {
-                rol: ["superAdmin", "administrador", 'vendedor'],
-                redirect: "welcome"
-            }
+            // meta: {
+            //     rol: ["superAdmin", "administrador", 'vendedor'],
+            //     redirect: "welcome"
+            // }
         },
         {
             path: "/pedidos/nuevo",
             name: "pedidos_nuevo",
             component: PedidosCreate,
-            meta: {
-                rol: ["superAdmin", "administrador", 'vendedor'],
-                redirect: "welcome"
-            }
+            // meta: {
+            //     rol: ["superAdmin", "administrador", 'vendedor'],
+            //     redirect: "welcome"
+            // }
         },
         {
             path: "/pedidos/editar/:id",
             name: "pedidos_editar",
             component: PedidosEdit,
             props: true,
-            meta: {
-                rol: ["superAdmin", "administrador", 'vendedor'],
-                redirect: "welcome"
-            }
+            // meta: {
+            //     rol: ["superAdmin", "administrador", 'vendedor'],
+            //     redirect: "welcome"
+            // }
         },
         {
             path: "/pedidos/show/:id",
             name: "pedidos_show",
             component: PedidosShow,
             props: true,
-            meta: {
-                rol: ["superAdmin", "administrador", 'vendedor'],
-                redirect: "welcome"
-            }
+            // meta: {
+            //     rol: ["superAdmin", "administrador", 'vendedor'],
+            //     redirect: "welcome"
+            // }
         },
 
         // Remitos
@@ -155,20 +155,20 @@ export default new Router({
             path: "/remitos",
             name: "remitos",
             component: Remitos,
-            meta: {
-                rol: ["superAdmin", "administrador", 'vendedor'],
-                redirect: "welcome"
-            }
+            // meta: {
+            //     rol: ["superAdmin", "administrador", 'vendedor'],
+            //     redirect: "welcome"
+            // }
         },
         {
             path: "/remitos/show/:id",
             name: "remitos_show",
             component: RemitosShow,
             props: true,
-            meta: {
-                rol: ["superAdmin", "administrador", 'vendedor'],
-                redirect: "welcome"
-            }
+            // meta: {
+            //     rol: ["superAdmin", "administrador", 'vendedor'],
+            //     redirect: "welcome"
+            // }
         },
 
         // Facturas
@@ -176,29 +176,29 @@ export default new Router({
             path: "/facturas",
             name: "facturas",
             component: Facturas,
-            meta: {
-                rol: ["superAdmin", "administrador"],
-                redirect: "welcome"
-            }
+            // meta: {
+            //     rol: ["superAdmin", "administrador"],
+            //     redirect: "welcome"
+            // }
         },
         {
             path: "/facturas/create",
             name: "facturasCreate",
             component: FacturasCreate,
-            meta: {
-                rol: ["superAdmin", "administrador"],
-                redirect: "welcome"
-            }
+            // meta: {
+            //     rol: ["superAdmin", "administrador"],
+            //     redirect: "welcome"
+            // }
         },
         {
             path: "/facturas/show/:id",
             name: "facturas_show",
             component: FacturasShow,
             props: true,
-            meta: {
-                rol: ["superAdmin", "administrador"],
-                redirect: "welcome"
-            }
+            // meta: {
+            //     rol: ["superAdmin", "administrador"],
+            //     redirect: "welcome"
+            // }
         },
 
         // Entregas
@@ -206,29 +206,29 @@ export default new Router({
             path: "/entregas",
             name: "entregas",
             component: Entregas,
-            meta: {
-                rol: ["superAdmin", "administrador", 'vendedor'],
-                redirect: "welcome"
-            }
+            // meta: {
+            //     rol: ["superAdmin", "administrador", 'vendedor'],
+            //     redirect: "welcome"
+            // }
         },
         {
             path: "/entregas/create",
             name: "entregasCreate",
             component: EntregasCreate,
-            meta: {
-                rol: ["superAdmin", "administrador", 'vendedor'],
-                redirect: "welcome"
-            }
+            // meta: {
+            //     rol: ["superAdmin", "administrador", 'vendedor'],
+            //     redirect: "welcome"
+            // }
         },
         {
             path: "/entregas/show/:id",
             name: "entregas_show",
             component: EntregasShow,
             props: true,
-            meta: {
-                rol: ["superAdmin", "administrador", 'vendedor'],
-                redirect: "welcome"
-            }
+            // meta: {
+            //     rol: ["superAdmin", "administrador", 'vendedor'],
+            //     redirect: "welcome"
+            // }
         },
 
         // Clientes
@@ -236,48 +236,48 @@ export default new Router({
             path: "/clientes",
             name: "clientes",
             component: Clientes,
-            meta: {
-                rol: ["superAdmin", "administrador", 'vendedor'],
-                redirect: "welcome"
-            }
+            // meta: {
+            //     rol: ["superAdmin", "administrador", 'vendedor'],
+            //     redirect: "welcome"
+            // }
         },
         {
             path: "/clientes/nuevo",
             name: "clientes_nuevo",
             component: ClientesCreate,
-            meta: {
-                rol: ["superAdmin", "administrador", 'vendedor'],
-                redirect: "welcome"
-            }
+            // meta: {
+            //     rol: ["superAdmin", "administrador", 'vendedor'],
+            //     redirect: "welcome"
+            // }
         },
         {
             path: "/clientes/show/:id",
             name: "clientes_show",
             component: ClientesShow,
             props: true,
-            meta: {
-                rol: ["superAdmin", "administrador", 'vendedor'],
-                redirect: "welcome"
-            }
+            // meta: {
+            //     rol: ["superAdmin", "administrador", 'vendedor'],
+            //     redirect: "welcome"
+            // }
         },
         {
             path: "/clientes/micuenta",
             name: "mi_cuenta",
             component: MiCuenta,
-            meta: {
-                rol: ["cliente"],
-                redirect: "welcome"
-            }
+            // meta: {
+            //     rol: ["cliente"],
+            //     redirect: "welcome"
+            // }
         },
         {
             path: "/clientes/showRecibos/:id",
             name: "clientes_showRecibos",
             component: ShowRecibos,
             props: true,
-            meta: {
-                rol: ["superAdmin", "administrador", 'vendedor', 'cliente'],
-                redirect: "welcome"
-            }
+            // meta: {
+            //     rol: ["superAdmin", "administrador", 'vendedor', 'cliente'],
+            //     redirect: "welcome"
+            // }
         },
 
         // Articulos
@@ -285,29 +285,29 @@ export default new Router({
             path: "/articulos",
             name: "articulos",
             component: Articulos,
-            meta: {
-                rol: ["superAdmin", "administrador", 'vendedor'],
-                redirect: "welcome"
-            }
+            // meta: {
+            //     rol: ["superAdmin", "administrador", 'vendedor'],
+            //     redirect: "welcome"
+            // }
         },
         {
             path: "/articulos/nuevo",
             name: "articulos_nuevo",
             component: ArticulosCreate,
-            meta: {
-                rol: ["superAdmin", "administrador"],
-                redirect: "welcome"
-            }
+            // meta: {
+            //     rol: ["superAdmin", "administrador"],
+            //     redirect: "welcome"
+            // }
         },
         {
             path: "/articulos/show/:id",
             name: "articulos_show",
             component: ArticulosShow,
             props: true,
-            meta: {
-                rol: ["superAdmin", "administrador", 'vendedor'],
-                redirect: "welcome"
-            }
+            // meta: {
+            //     rol: ["superAdmin", "administrador", 'vendedor'],
+            //     redirect: "welcome"
+            // }
         },
 
         // Proveedores
@@ -315,29 +315,29 @@ export default new Router({
             path: "/proveedores",
             name: "proveedores",
             component: Proveedores,
-            meta: {
-                rol: ["superAdmin", "administrador"],
-                redirect: "welcome"
-            }
+            // meta: {
+            //     rol: ["superAdmin", "administrador"],
+            //     redirect: "welcome"
+            // }
         },
         {
             path: "/proveedores/nuevo",
             name: "proveedores_nuevo",
             component: ProveedoresCreate,
-            meta: {
-                rol: ["superAdmin", "administrador"],
-                redirect: "welcome"
-            }
+            // meta: {
+            //     rol: ["superAdmin", "administrador"],
+            //     redirect: "welcome"
+            // }
         },
         {
             path: "/proveedores/show/:id",
             name: "proveedores_show",
             component: ProveedoresShow,
             props: true,
-            meta: {
-                rol: ["superAdmin", "administrador"],
-                redirect: "welcome"
-            }
+            // meta: {
+            //     rol: ["superAdmin", "administrador"],
+            //     redirect: "welcome"
+            // }
         },
 
         // Compras
@@ -345,29 +345,29 @@ export default new Router({
             path: "/compras",
             name: "compras",
             component: Compras,
-            meta: {
-                rol: ["superAdmin", "administrador"],
-                redirect: "welcome"
-            }
+            // meta: {
+            //     rol: ["superAdmin", "administrador"],
+            //     redirect: "welcome"
+            // }
         },
         {
             path: "/compras/nueva",
             name: "compras_nueva",
             component: ComprasCreate,
-            meta: {
-                rol: ["superAdmin", "administrador"],
-                redirect: "welcome"
-            }
+            // meta: {
+            //     rol: ["superAdmin", "administrador"],
+            //     redirect: "welcome"
+            // }
         },
         {
             path: "/compras/show/:id",
             name: "compras_show",
             component: ComprasShow,
             props: true,
-            meta: {
-                rol: ["superAdmin", "administrador"],
-                redirect: "welcome"
-            }
+            // meta: {
+            //     rol: ["superAdmin", "administrador"],
+            //     redirect: "welcome"
+            // }
         },
 
         // Consignaciones
@@ -375,29 +375,29 @@ export default new Router({
             path: "/consignaciones",
             name: "consignaciones",
             component: Consignaciones,
-            meta: {
-                rol: ["superAdmin", "administrador"],
-                redirect: "welcome"
-            }
+            // meta: {
+            //     rol: ["superAdmin", "administrador"],
+            //     redirect: "welcome"
+            // }
         },
         {
             path: "/consignaciones/nueva",
             name: "consignaciones_nueva",
             component: ConsignacionesCreate,
-            meta: {
-                rol: ["superAdmin", "administrador"],
-                redirect: "welcome"
-            }
+            // meta: {
+            //     rol: ["superAdmin", "administrador"],
+            //     redirect: "welcome"
+            // }
         },
         {
             path: "/consignaciones/show/:id",
             name: "consignaciones_show",
             component: ConsignacionesShow,
             props: true,
-            meta: {
-                rol: ["superAdmin", "administrador"],
-                redirect: "welcome"
-            }
+            // meta: {
+            //     rol: ["superAdmin", "administrador"],
+            //     redirect: "welcome"
+            // }
         },
 
         // Devoluciones
@@ -405,29 +405,29 @@ export default new Router({
             path: "/devoluciones",
             name: "devoluciones",
             component: Devoluciones,
-            meta: {
-                rol: ["superAdmin", "administrador"],
-                redirect: "welcome"
-            }
+            // meta: {
+            //     rol: ["superAdmin", "administrador"],
+            //     redirect: "welcome"
+            // }
         },
         {
             path: "/devoluciones/nueva",
             name: "devoluciones_nueva",
             component: DevolucionesCreate,
-            meta: {
-                rol: ["superAdmin", "administrador"],
-                redirect: "welcome"
-            }
+            // meta: {
+            //     rol: ["superAdmin", "administrador"],
+            //     redirect: "welcome"
+            // }
         },
         {
             path: "/devoluciones/show/:id",
             name: "devoluciones_show",
             component: DevolucionesShow,
             props: true,
-            meta: {
-                rol: ["superAdmin", "administrador"],
-                redirect: "welcome"
-            }
+            // meta: {
+            //     rol: ["superAdmin", "administrador"],
+            //     redirect: "welcome"
+            // }
         },
 
         // Reportes
@@ -435,10 +435,10 @@ export default new Router({
             path: "/reportes",
             name: "reportes",
             component: Reportes,
-            meta: {
-                rol: ["superAdmin", "administrador"],
-                redirect: "welcome"
-            }
+            // meta: {
+            //     rol: ["superAdmin", "administrador"],
+            //     redirect: "welcome"
+            // }
         },
 
         // Movimientos
@@ -446,10 +446,10 @@ export default new Router({
             path: "/movimientos",
             name: "movimientos",
             component: Movimientos,
-            meta: {
-                rol: ["superAdmin", "administrador"],
-                redirect: "welcome"
-            }
+            // meta: {
+            //     rol: ["superAdmin", "administrador"],
+            //     redirect: "welcome"
+            // }
         },
 
         // Cartera
@@ -457,10 +457,10 @@ export default new Router({
             path: "/cartera",
             name: "cartera",
             component: Cartera,
-            meta: {
-                rol: ["superAdmin", "administrador"],
-                redirect: "welcome"
-            }
+            // meta: {
+            //     rol: ["superAdmin", "administrador"],
+            //     redirect: "welcome"
+            // }
         },
 
         // Roles
@@ -468,28 +468,28 @@ export default new Router({
             path: "/roles",
             name: "roles",
             component: Roles,
-            meta: {
-                rol: ["superAdmin"],
-                redirect: "welcome"
-            }
+            // meta: {
+            //     rol: ["superAdmin"],
+            //     redirect: "welcome"
+            // }
         },
         {
             path: "/roles/nuevo",
             name: "roles_create",
             component: RolesCreate,
-            meta: {
-                rol: ["superAdmin"],
-                redirect: "welcome"
-            }
+            // meta: {
+            //     rol: ["superAdmin"],
+            //     redirect: "welcome"
+            // }
         },
         {
             path: "/roles/editar",
             name: "roles_edit",
             component: RolesEdit,
-            meta: {
-                rol: ["superAdmin"],
-                redirect: "welcome"
-            }
+            // meta: {
+            //     rol: ["superAdmin"],
+            //     redirect: "welcome"
+            // }
         },
 
         // Users
@@ -497,28 +497,28 @@ export default new Router({
             path: "/users",
             name: "users",
             component: Users,
-            meta: {
-                rol: ["superAdmin", "administrador"],
-                redirect: "welcome"
-            }
+            // meta: {
+            //     rol: ["superAdmin", "administrador"],
+            //     redirect: "welcome"
+            // }
         },
         {
             path: "/users/nuevo",
             name: "users_create",
             component: UsersCreate,
-            meta: {
-                rol: ["superAdmin", "administrador"],
-                redirect: "welcome"
-            }
+            // meta: {
+            //     rol: ["superAdmin", "administrador"],
+            //     redirect: "welcome"
+            // }
         },
         {
             path: "/users/editar",
             name: "users_edit",
             component: UsersEdit,
-            meta: {
-                rol: ["superAdmin", "administrador"],
-                redirect: "welcome"
-            }
+            // meta: {
+            //     rol: ["superAdmin", "administrador"],
+            //     redirect: "welcome"
+            // }
         }
     ]
 });

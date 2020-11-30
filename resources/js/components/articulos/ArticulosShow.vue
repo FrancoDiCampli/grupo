@@ -118,9 +118,9 @@
                                 <h2 class="text-center secondary--text">
                                     Stock:
                                     {{
-                                        $store.state.articulos.articulo.stock
+                                        $store.state.articulos.articulo.stock | formatNumber
                                     }}
-                                    unidades. {{ stockLitros }} litros
+                                    unidades. {{ stockLitros | formatNumber }} litros
                                 </h2>
                             </v-col>
                             <v-divider></v-divider>

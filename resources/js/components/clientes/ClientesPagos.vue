@@ -180,8 +180,8 @@
                                                 :key="index"
                                             >
                                                 <td>{{ pago.tipo }}</td>
-                                                <td>{{ pago.dolares }}</td>
-                                                <td>{{ pago.pesos }}</td>
+                                                <td>{{ pago.dolares | formatCurrency('USD') }}</td>
+                                                <td>{{ pago.pesos | formatCurrency('ARS') }}</td>
 
                                                 <td>
                                                     <v-btn

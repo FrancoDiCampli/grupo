@@ -12,8 +12,8 @@
             >
                 <template v-slot:item="item">
                     <tr>
-                        <td>{{ item.item.cantidad }}</td>
-                        <td>{{ item.item.cantidadlitros }}</td>
+                        <td>{{ item.item.cantidad | formatNumber }}</td>
+                        <td>{{ item.item.cantidadlitros | formatNumber }} Litros</td>
                         <td>
                             <div
                                 v-if="item.item.dependencia.id == 1"
