@@ -13,6 +13,7 @@ class AllVentasExport implements WithMultipleSheets
             new SheetVentasExport(),
             new SheetVendedoresExport(),
             new SheetClientesExport(),
+            new SheetLitrosClientesExport()
         ];
 
         return $sheets;

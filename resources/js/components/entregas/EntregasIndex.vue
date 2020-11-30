@@ -78,8 +78,8 @@
             <v-card v-else>
                 <v-card-title class="headline">¿Estas seguro?</v-card-title>
                 <v-card-text>
-                    Se eliminará la entrega seleccionada, esta acción es irreversible.
-                    El stock sera restaurado.
+                    Se eliminará la entrega seleccionada, esta acción es
+                    irreversible. El stock sera restaurado.
                 </v-card-text>
                 <v-divider></v-divider>
                 <v-card-actions>
@@ -136,9 +136,11 @@ export default {
 
         async deleteEntrega() {
             this.inProcess = true;
-            await this.$store.dispatch("entregas/destroy", { id: this.deleteId });
+            await this.$store.dispatch("entregas/destroy", {
+                id: this.deleteId
+            });
             this.inProcess = false;
-            this.$emit('erase');
+            this.$emit("erase");
             this.deleteDialog = false;
         }
     }
