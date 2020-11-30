@@ -5,13 +5,9 @@ namespace App\Traits;
 use App\Venta;
 use App\Cliente;
 use App\Entrega;
-use App\Factura;
 use App\Articulo;
-use App\Formapago;
 use Carbon\Carbon;
 use App\Inventario;
-use App\Traits\ArticulosTrait;
-use App\Traits\FormasDePagoTrait;
 use App\Traits\ConfiguracionTrait;
 use Illuminate\Support\Facades\DB;
 use App\Traits\CuentasCorrientesTrait;
@@ -84,9 +80,11 @@ trait VentasTrait
 
                 $det['pivot']['litros'] = $det->litros;
 
-                count($fac->cuenta->pagos) > 0 ? $fac['hasPagos'] = true : $fac['hasPagos'] = false;
-                count($fac->entregas) > 0 ? $fac['hasEntregas'] = true : $fac['hasEntregas'] = false;
-                count($fac->facturas) > 0 ? $fac['hasFacturas'] = true : $fac['hasFacturas'] = false;
+                if ($fac->cliente_id <> 1) {
+                    count($fac->cuenta->pagos) > 0 ? $fac['hasPagos'] = true : $fac['hasPagos'] = false;
+                    count($fac->entregas) > 0 ? $fac['hasEntregas'] = true : $fac['hasEntregas'] = false;
+                    count($fac->facturas) > 0 ? $fac['hasFacturas'] = true : $fac['hasFacturas'] = false;
+                }
             }
 
             $facturas->push($fac);

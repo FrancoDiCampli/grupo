@@ -1,6 +1,8 @@
 <template>
     <div>
-        <v-btn @click="exportar()">reportes export</v-btn>
+        <v-btn @click="exportarVentas()">ventas export</v-btn>
+        <v-btn @click="exportarVentas()">compras export</v-btn>
+        <v-btn @click="exportarVentas()">articulos export</v-btn>
         <v-tabs right active-class="piymary--text" hide-slider>
             <v-btn
                 color="primary"
@@ -75,9 +77,9 @@ export default {
     },
 
     methods: {
-        exportar() {
+        exportarVentas() {
             axios({
-                url: "/api/reportes/export",
+                url: "/api/reportes/ventas/export",
                 method: "GET",
                 responseType: "blob"
             })
@@ -87,7 +89,7 @@ export default {
                     );
                     const link = document.createElement("a");
                     link.href = url;
-                    link.setAttribute("download", "reporte.xlsx");
+                    link.setAttribute("download", "reportesVentas.xlsx");
                     document.body.appendChild(link);
                     link.click();
                 })
