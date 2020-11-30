@@ -35,6 +35,19 @@ Vue.filter("formatDate", function(value) {
     }
 });
 
+// NUMBER FORMATS
+Vue.filter("formatCurrency", function(value, currency) {
+    if (value) {
+        return Intl.NumberFormat('es-AR', {style: "currency", currency: currency}).format(Number(value));
+    }
+});
+
+Vue.filter("formatNumber", function(value) {
+    if (value) {
+        return Intl.NumberFormat('es-AR').format(Number(value));
+    }
+});
+
 // ELIMINAR ADVERTENCIA AL USAR V-CALENDAR
 const ignoreWarnMessage =
     "The .native modifier for v-on is only valid on components but it was used on <div>.";

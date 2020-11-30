@@ -1,7 +1,8 @@
 <template>
     <div>
         <v-row justify="center">
-            <v-col cols="12" md="10" lg="8">
+            <v-col cols="12">
+                <br>
                 <v-row>
                     <v-col cols="12" sm="6" class="py-0">
                         <v-dialog
@@ -81,21 +82,24 @@
             </v-col>
         </v-row>
         <v-row justify="center">
-            <div v-if="cuenta" class="print-button" @click="print()">
-                <v-icon>fas fa-print</v-icon>
-            </div>
             <v-row>
                 <v-col v-if="cuenta">
                     <v-row cols="12">
-                        <v-col cols="6" class="text-center">
+                        <v-col cols="4" class="text-center ml-4">
                             <b>DESDE:</b>
                             {{ cuenta.desde }}
                         </v-col>
-                        <v-col cols="6" class="text-center">
+                        <v-col cols="4" class="text-center">
                             <b>HASTA:</b>
                             {{ cuenta.hasta }}
                         </v-col>
+                        <v-col cols="3">
+                            <v-btn color="secondary" class="mt-2 elevation-0" absolute right v-if="cuenta" fab @click="print()">
+                                <v-icon>fas fa-print</v-icon>
+                            </v-btn>
+                        </v-col>
                     </v-row>
+                    
                     <v-divider></v-divider>
                     <v-col cols="12" class="pre-body">
                         <p>
@@ -117,11 +121,11 @@
                         <v-row>
                             <v-col cols="6" class="text-center">
                                 <b>SALDO ANTERIOR:</b>
-                                U$D {{ cuenta.saldoAnterior }}
+                                {{ cuenta.saldoAnterior | formatCurrency('USD') }}
                             </v-col>
                             <v-col cols="6" class="text-center">
                                 <b>SALDO:</b>
-                                U$D {{ cuenta.saldo }}
+                                {{ cuenta.saldo | formatCurrency('USD') }}
                             </v-col>
                         </v-row>
                         <v-divider></v-divider>
@@ -150,13 +154,13 @@
                                 >
                                     <td>{{ item.fecha }}</td>
                                     <td>{{ item.tipo }}</td>
-                                    <td>U$D {{ item.importe }}</td>
+                                    <td>{{ item.importe | formatCurrency('USD') }}</td>
                                 </tr>
                             </tbody>
                         </v-simple-table>
 
                         <div class="text-right">
-                            <b>Subtotal (U$D) {{ cuenta.debe }}</b>
+                            <b>Subtotal {{ cuenta.debe | formatCurrency('USD') }}</b>
                         </div>
                         <v-divider></v-divider>
                         <br />
@@ -186,12 +190,12 @@
                                     <td>
                                         {{ item.tipo }}
                                     </td>
-                                    <td>U$D {{ item.importe }}</td>
+                                    <td>{{ item.importe | formatCurrency('USD') }}</td>
                                 </tr>
                             </tbody>
                         </v-simple-table>
                         <div class="text-right">
-                            <b>Subtotal (U$D) {{ cuenta.haber }}</b>
+                            <b>Subtotal {{ cuenta.haber | formatCurrency('USD') }}</b>
                         </div>
 
                         <v-divider></v-divider>

@@ -115,12 +115,12 @@
                                     <v-row justify="space-between">
                                         <h3
                                             :class="saldo > 0 ? 'red--text' : 'secondary--text'"
-                                        >U$D Saldo: {{ saldo }}</h3>
+                                        >Saldo: {{ saldo | formatCurrency('USD') }}</h3>
                                         <h3 class="secondary--text">
-                                            U$D Haber:
+                                            Haber:
                                             {{
                                             $store.state.clientes.cliente
-                                            .haber
+                                            .haber | formatCurrency('USD')
                                             }}
                                         </h3>
                                     </v-row>

@@ -12,7 +12,7 @@
                     <tr>
                         <td>{{item.numrecibo}}</td>
                         <td>{{item.fecha}}</td>
-                        <td>{{item.total}}</td>
+                        <td>{{item.total | formatCurrency('USD') }}</td>
                         <td>
                             <v-menu offset-y>
                                 <template v-slot:activator="{ on }">

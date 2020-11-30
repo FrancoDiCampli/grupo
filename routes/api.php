@@ -97,12 +97,6 @@ Route::middleware('auth:airlock')->group(function () {
     /*Notificaciones*/
     Route::apiResource('notificaciones', 'API\NotificacionesController');
 
-    /*Dolar*/
-    Route::group(['middleware' => 'cors'], function () {
-        Route::get('/consultar', 'API\DolarController@consultar');
-    });
-    Route::post('/setCotizacion', 'API\DolarController@setCotizacion');
-
     /*Configuraciones*/
     Route::get('/config', 'API\PreferencesController@getConfig');
 

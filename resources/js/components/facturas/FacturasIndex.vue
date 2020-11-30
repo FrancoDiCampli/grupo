@@ -20,7 +20,7 @@
                             </td>
                             <td>{{ item.cliente.razonsocial }}</td>
                             <td class="hidden-xs-only">{{ item.fecha }}</td>
-                            <td>{{ item.total }}</td>
+                            <td>{{ item.total | formatCurrency('USD') }}</td>
                             <td>
                                 <v-menu offset-y>
                                     <template v-slot:activator="{ on }">

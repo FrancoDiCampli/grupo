@@ -280,7 +280,7 @@ export default {
                 name: "Entregas",
                 icon: "fas fa-luggage-cart",
                 url: "/entregas",
-                roles: ["superAdmin", "administrador"],
+                roles: ["superAdmin", "administrador", "vendedor",],
                 divider: true,
             },
 
@@ -430,7 +430,8 @@ export default {
 
         markRead(noti) {
             this.$store.dispatch("notificaciones/markRead", { id: noti.id });
-            this.$router.push(noti.data.action);
+            this.$router.push(`/${noti.data.action}`);
+            this.sidenav.active = false;
         },
     },
 };

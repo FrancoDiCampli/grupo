@@ -176,7 +176,7 @@
                                                 <th>{{ detalle.cantidadLitros }}</th>
                                                 <th class="hidden-sm-and-down">{{ detalle.medida }}</th>
                                                 <th>{{ detalle.preciounitario }}</th>
-                                                <th>{{ detalle.subtotal }}</th>
+                                                <th>{{ detalle.subtotal | formatCurrency('USD') }}</th>
                                             </tr>
                                         </tbody>
                                     </template>
@@ -205,10 +205,9 @@
                                 <div class="footer-final">
                                     <p>
                                         <b>Subtotal:</b>
-                                        U$D
                                         {{
                                         $store.state.pedidos.pedido.pedido
-                                        .subtotal
+                                        .subtotal | formatCurrency('USD')
                                         }}
                                     </p>
                                     <p>
@@ -227,10 +226,9 @@
                                     </p>
                                     <p>
                                         <b>Total:</b>
-                                        U$D
                                         {{
                                         $store.state.pedidos.pedido.pedido
-                                        .total
+                                        .total | formatCurrency('USD')
                                         }}
                                     </p>
                                 </div>

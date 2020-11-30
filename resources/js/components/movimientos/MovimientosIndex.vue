@@ -111,7 +111,7 @@
                                                 <div class="move-info">
                                                     <p>
                                                         <b>Importe:</b>
-                                                        {{ move.importe }}
+                                                        {{ move.importe | formatCurrency('USD') }}
                                                     </p>
                                                     <p>
                                                         <b>Cliente:</b>

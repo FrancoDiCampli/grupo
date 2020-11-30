@@ -78,7 +78,7 @@
                                     </v-list-item-title>
                                     <v-list-item-subtitle
                                         class="black--text"
-                                    >$ {{ $store.state.articulos.articulo.articulo.precio }}</v-list-item-subtitle>
+                                    >{{ $store.state.articulos.articulo.articulo.precio | formatCurrency('USD') }}</v-list-item-subtitle>
                                 </v-list-item-content>
                             </v-list-item>
                             <v-list-item style="margin: 10px 0px;">
@@ -88,7 +88,7 @@
                                     </v-list-item-title>
                                     <v-list-item-subtitle
                                         class="black--text"
-                                    >{{ $store.state.articulos.articulo.articulo.litros }} Litros</v-list-item-subtitle>
+                                    >{{ $store.state.articulos.articulo.articulo.litros | formatNumber }} Litros</v-list-item-subtitle>
                                 </v-list-item-content>
                             </v-list-item>
                         </v-list>

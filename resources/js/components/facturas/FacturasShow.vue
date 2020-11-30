@@ -156,8 +156,8 @@
                                                 <th>{{ detalle.cantidad }}</th>
                                                 <th>{{ detalle.cantidadLitros }}</th>
                                                 <th class="hidden-sm-and-down">{{ detalle.medida }}</th>
-                                                <th>{{ detalle.preciounitario }}</th>
-                                                <th>{{ detalle.subtotal }}</th>
+                                                <th>{{ detalle.preciounitario | formatCurrency('USD') }}</th>
+                                                <th>{{ detalle.subtotal | formatCurrency('USD') }}</th>
                                             </tr>
                                         </tbody>
                                     </template>
@@ -199,10 +199,9 @@
                                     </p>
                                     <p>
                                         <b>Total en pesos:</b>
-                                        $
                                         {{
                                         $store.state.facturas.factura.factura
-                                        .totalPesos
+                                        .totalPesos | formatCurrency('ARS')
                                         }}
                                     </p>
                                 </div>
@@ -212,10 +211,9 @@
                                 <div class="footer-final">
                                     <p>
                                         <b>Subtotal:</b>
-                                        U$D
                                         {{
                                         $store.state.facturas.factura
-                                        .factura.subtotal
+                                        .factura.subtotal | formatCurrency('USD')
                                         }}
                                     </p>
                                     <p>
@@ -242,10 +240,9 @@
                                     </p>
                                     <p>
                                         <b>Total:</b>
-                                        U$D
                                         {{
                                         $store.state.facturas.factura
-                                        .factura.total
+                                        .factura.total | formatCurrency('USD')
                                         }}
                                     </p>
                                 </div>

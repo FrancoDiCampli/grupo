@@ -25,7 +25,7 @@
                                     >
                                         <td>{{ remito.numventa }}</td>
                                         <td>{{ remito.fecha }}</td>
-                                        <td>{{ remito.total }}</td>
+                                        <td>{{ remito.total | formatCurrency('USD') }}</td>
                                         <td>
                                             <v-menu offset-y>
                                                 <template v-slot:activator="{ on }">
@@ -78,8 +78,8 @@
                                         :key="index"
                                     >
                                         <td>{{ factura.comprobanteadherido }}</td>
-                                        <td>{{ factura.fecha }}</td>
-                                        <td>{{ factura.total }}</td>
+                                        <td>{{ factura.fecha | formatDate }}</td>
+                                        <td>{{ factura.total | formatCurrency('USD') }}</td>
                                         <td>
                                             <v-menu offset-y>
                                                 <template v-slot:activator="{ on }">
@@ -128,7 +128,7 @@
                                         :key="index"
                                     >
                                         <td>{{ entrega.numentrega }}</td>
-                                        <td>{{ entrega.fecha }}</td>
+                                        <td>{{ entrega.fecha | formatDate }}</td>
                                         <td>
                                             <v-menu offset-y>
                                                 <template v-slot:activator="{ on }">

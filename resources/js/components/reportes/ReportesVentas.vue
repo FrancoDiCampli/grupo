@@ -35,13 +35,6 @@
                             :data="$store.state.reportes.ventas.ventas.ventasClientes"
                         ></ve-pie>
                     </div>
-                    <div v-if="activeTab == 3" key="3">
-                        <ve-pie
-                            v-if="$store.state.reportes.ventas"
-                            :legend-visible="false"
-                            :data="$store.state.reportes.ventas.ventas.ventasCondiciones"
-                        ></ve-pie>
-                    </div>
                 </v-fade-transition>
             </v-col>
         </v-row>
@@ -52,7 +45,7 @@
 export default {
     data: () => ({
         activeTab: 0,
-        reports: ["Ventas", "Vendedor", "Client. | Dist.", "Condiciones"]
+        reports: ["Ventas", "Vendedor", "Client. | Dist."]
     })
 };
 </script>

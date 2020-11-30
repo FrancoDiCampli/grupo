@@ -149,9 +149,9 @@
                                                     {{ detalle.medida }}
                                                 </th>
                                                 <th>
-                                                    {{ detalle.preciounitario }}
+                                                    {{ detalle.preciounitario | formatCurrency('USD') }}
                                                 </th>
-                                                <th>{{ detalle.subtotal }}</th>
+                                                <th>{{ detalle.subtotal | formatCurrency('USD') }}</th>
                                             </tr>
                                         </tbody>
                                     </template>
@@ -182,7 +182,7 @@
                                         <b>Subtotal:</b>
                                         ${{
                                             $store.state.compras.compra.remito
-                                                .subtotal
+                                                .subtotal | formatCurrency('USD')
                                         }}
                                     </p>
                                     <p>
@@ -203,7 +203,7 @@
                                         <b>Total:</b>
                                         ${{
                                             $store.state.compras.compra.remito
-                                                .total
+                                                .total | formatCurrency('USD')
                                         }}
                                     </p>
                                 </div>

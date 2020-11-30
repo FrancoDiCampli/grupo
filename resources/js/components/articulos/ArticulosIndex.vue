@@ -26,10 +26,10 @@
                                 <tr>
                                     <td class="hidden-sm-and-down">{{ item.item.codarticulo }}</td>
                                     <td>{{ item.item.articulo }}</td>
-                                    <td>$ {{ item.item.precio }}</td>
+                                    <td>{{ item.item.precio | formatCurrency('USD') }}</td>
                                     <td class="hidden-sm-and-down">
                                         <div v-if="item.item.stock <= 0">0</div>
-                                        <div v-else>{{ item.item.stock }}</div>
+                                        <div v-else>{{ item.item.stock | formatNumber }}</div>
                                     </td>
                                     <td>
                                         <v-btn
@@ -159,9 +159,9 @@
                                 <v-card-text>
                                     <h3 class="headline">{{ articulo.articulo }}</h3>
                                     <div>
-                                        <p>{{ articulo.litros }} Litros</p>
-                                        <p>Total litros: {{ articulo.stock }}</p>
-                                        <p>$ {{ articulo.precio }}</p>
+                                        <p>{{ articulo.litros | formatNumber }} Litros</p>
+                                        <p>Total litros: {{ articulo.stock |formatNumber }}</p>
+                                        <p>{{ articulo.precio | formatCurrency('USD') }}</p>
                                     </div>
                                 </v-card-text>
                             </v-card>
