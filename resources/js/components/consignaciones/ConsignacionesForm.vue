@@ -672,7 +672,7 @@ export default {
         // HEADER
         PuntoVenta: null,
         // COTIZACION
-        cotizacion: 1,
+        cotizacion: null,
         fechaCotizacion: "",
         dialogCotizacion: false,
         // CLIENTES
@@ -798,7 +798,6 @@ export default {
 
     async mounted() {
         this.inProcess = true;
-        await this.checkCurrency();
         await this.getPoint();
         await this.getArticles();
         this.$store.state.consignaciones.form.tipo = "TRANSFERENCIA";
@@ -826,36 +825,6 @@ export default {
             }
 
             return true;
-        },
-
-        checkCurrency() {
-            return new Promise((resolve, reject) => {
-                axios
-                    .get("/api/consultar")
-                    .then(response => {
-                        this.cotizacion = response.data.valor;
-                        this.fechaCotizacion = response.data.fecha;
-                        resolve(response.data);
-                    })
-                    .catch(error => {
-                        this.cotizacion = 1;
-                        this.fechaCotizacion = moment().format("DD/MM/YYYY");
-                        reject(error);
-                    });
-            });
-        },
-        setCurrency: async function() {
-            await axios
-                .post("/api/setCotizacion", {
-                    cotizacion: this.cotizacion,
-                    fechaCotizacion: this.fechaCotizacion
-                })
-                .then(response => {
-                    console.log(response.data);
-                })
-                .catch(error => {
-                    console.log(error);
-                });
         },
 
         // HEADER
@@ -1032,14 +1001,12 @@ export default {
         },
 
         resetData: async function() {
-            await this.setCurrency();
             this.vendedores = [];
             this.detalles = [];
             this.articuloSelected = {};
             this.$refs.consignacionesVendedorForm.reset();
             this.$refs.consignacionesTotalesForm.reset();
             this.step = 1;
-            this.checkCurrency();
             this.$store.state.consignaciones.form.tipo = "TRANSFERENCIA";
         }
     }

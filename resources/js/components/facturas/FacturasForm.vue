@@ -769,7 +769,12 @@ export default {
 
     created() {
         if (this.$store.state.facturas.form.detalles) {
-            this.detalles = this.$store.state.facturas.form.detalles;
+            let detallesForm = this.$store.state.facturas.form.detalles;
+            for (let i = 0; i < detallesForm.length; i++) {
+                if((detallesForm[i].cantidad - detallesForm[i].cantidadfacturado) > 0) {
+                    this.detalles.push(detallesForm[i]);
+                }
+            }
         } else {
             this.$router.push("/remitos");
         }
@@ -777,7 +782,6 @@ export default {
 
     mounted: async function() {
         this.inProcess = true;
-        await this.checkCurrency();
         await this.getPoint();
         await this.subtotalControl();
         await this.initState();
@@ -802,37 +806,6 @@ export default {
                 }
             }
             return true;
-        },
-
-        checkCurrency() {
-            return new Promise((resolve, reject) => {
-                axios
-                    .get("/api/consultar")
-                    .then(response => {
-                        this.cotizacion = response.data.valor;
-                        this.fechaCotizacion = response.data.fecha;
-                        resolve(response.data);
-                    })
-                    .catch(error => {
-                        this.cotizacion = 1;
-                        this.fechaCotizacion = moment().format("DD/MM/YYYY");
-                        this.inProcess = false;
-                        reject(error);
-                    });
-            });
-        },
-        setCurrency: async function() {
-            await axios
-                .post("/api/setCotizacion", {
-                    cotizacion: this.cotizacion,
-                    fechaCotizacion: this.fechaCotizacion
-                })
-                .then(response => {
-                    console.log(response.data);
-                })
-                .catch(error => {
-                    console.log(error);
-                });
         },
 
         // HEADER
@@ -983,7 +956,6 @@ export default {
 
         // FORM
         setData: async function() {
-            await this.setCurrency();
             if (this.$refs.facturasClienteForm.validate()) {
                 this.$store.state.facturas.form.subtotal = this.subtotal;
                 this.$store.state.facturas.form.valorAgregado = this.valorAgregado;

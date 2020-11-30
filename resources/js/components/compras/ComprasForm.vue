@@ -712,7 +712,6 @@ export default {
         },
 
         // TOTAL
-        // TODO:
         total: {
             set() {},
             get() {
@@ -930,9 +929,6 @@ export default {
                             Number(this.detalles[i].precio) *
                             Number(this.detalles[i].cantidadLitros);
                         // SE DEFINE EL SUBTOTAL EN PESOS
-                        this.detalles[i].subtotalPesos =
-                            Number(this.detalles[i].subtotalDolares) *
-                            Number(this.cotizacion);
 
                         nuevoDetalle = false;
                     }

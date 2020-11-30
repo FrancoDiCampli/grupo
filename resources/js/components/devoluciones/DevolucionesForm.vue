@@ -691,7 +691,6 @@ export default {
 
     async mounted() {
         this.inProcess = true;
-        await this.checkCurrency();
         await this.getPoint();
         await this.getArticles();
         this.$store.state.devoluciones.form.tipo = "DEVOLUCION";
@@ -719,36 +718,6 @@ export default {
             }
 
             return true;
-        },
-
-        checkCurrency() {
-            return new Promise((resolve, reject) => {
-                axios
-                    .get("/api/consultar")
-                    .then(response => {
-                        this.cotizacion = response.data.valor;
-                        this.fechaCotizacion = response.data.fecha;
-                        resolve(response.data);
-                    })
-                    .catch(error => {
-                        this.cotizacion = 1;
-                        this.fechaCotizacion = moment().format("DD/MM/YYYY");
-                        reject(error);
-                    });
-            });
-        },
-        setCurrency: async function() {
-            await axios
-                .post("/api/setCotizacion", {
-                    cotizacion: this.cotizacion,
-                    fechaCotizacion: this.fechaCotizacion
-                })
-                .then(response => {
-                    console.log(response.data);
-                })
-                .catch(error => {
-                    console.log(error);
-                });
         },
 
         // HEADER
@@ -938,14 +907,12 @@ export default {
         },
 
         resetData: async function() {
-            await this.setCurrency();
             this.vendedores = [];
             this.detalles = [];
             this.articuloSelected = {};
             this.$refs.devolucionesVendedorForm.reset();
             this.$refs.devolucionesTotalesForm.reset();
             this.step = 1;
-            this.checkCurrency();
             this.$store.state.devoluciones.form.tipo = "DEVOLUCION";
         }
     }

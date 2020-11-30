@@ -74,7 +74,7 @@
                                             >
                                         </v-list-item>
                                         <v-list-item
-                                            v-if="!item.todoentregado"
+                                            v-if="checkDelivery(item)"
                                             @click="delivery(item)"
                                         >
                                             <v-list-item-title
@@ -234,6 +234,22 @@ export default {
             } else {
                 return false;
             }
+        },
+
+        checkDelivery(item) {
+            let details = [];
+            for (let i = 0; i < item.articulos.length; i++) {
+                if(item.articulos[i].disponible > (item.articulos[i].cantidad - item.articulos[i].cantidadentregado)) {
+                    details.push(item.articulos[i].pivot);
+                }
+            }
+
+            if(details.length > 0) {
+                return item.todoentregado;
+            } else {
+                return false;
+            }
+
         },
 
         openDeleteDialog(id) {

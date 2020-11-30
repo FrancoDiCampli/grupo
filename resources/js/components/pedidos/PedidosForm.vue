@@ -902,7 +902,6 @@ export default {
     async mounted() {
         this.inProcess = true;
         await this.getArticles();
-        await this.checkCurrency();
         await this.getPoint();
         if (this.mode == "edit") {
             await this.setForm();
@@ -931,31 +930,6 @@ export default {
             }
 
             return true;
-        },
-
-        checkCurrency() {
-            return new Promise((resolve, reject) => {
-                axios
-                    .get("/api/consultar")
-                    .then(response => {
-                        this.cotizacion = response.data.valor;
-                        this.fechaCotizacion = response.data.fecha;
-                        this.condicion = "CUENTA CORRIENTE";
-                        resolve(response.data);
-                    })
-                    .catch(error => {
-                        this.cotizacion = 1;
-                        this.fechaCotizacion = moment().format("DD/MM/YYYY");
-                        this.inProcess = false;
-                        reject(error);
-                    });
-            });
-        },
-        setCurrency: async function() {
-            await axios.post("/api/setCotizacion", {
-                cotizacion: this.cotizacion,
-                fechaCotizacion: this.fechaCotizacion
-            });
         },
 
         // HEADER
@@ -1184,14 +1158,12 @@ export default {
         },
 
         resetData: async function() {
-            await this.setCurrency();
             this.clientes = [];
             this.detalles = [];
             this.articuloSelected = {};
             this.$refs.pedidosClienteForm.reset();
             this.$refs.pedidosTotalesForm.reset();
             this.step = 1;
-            this.checkCurrency();
         }
     }
 };

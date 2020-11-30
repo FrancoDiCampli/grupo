@@ -1176,32 +1176,12 @@ export default {
 
     mounted: async function() {
         this.inProcess = true;
-        await this.consultarDivisa();
         await this.pagosControl();
         await this.setHaber();
         this.inProcess = false;
     },
 
     methods: {
-        // Consultar el intercabio de divizas de la API
-        consultarDivisa() {
-            return new Promise(resolve => {
-                axios
-                    .get("/api/consultar")
-                    .then(response => {
-                        this.divisa = {
-                            cotizacion: response.data.valor,
-                            fechaCotizacion: response.data.fecha
-                        };
-                        resolve(response.data);
-                    })
-                    .catch(error => {
-                        this.inProcess = false;
-                        throw new Error(error);
-                    });
-            });
-        },
-
         pagosControl() {
             let arrayPagos = [];
 
