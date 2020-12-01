@@ -11,6 +11,7 @@ use App\Traits\EstadisticasVentasTrait;
 use App\Traits\EstadisticasComprasTrait;
 use App\Traits\EstadisticasDetallesVentasTrait;
 use App\Traits\EstadisticasDetallesComprasTrait;
+use App\Traits\EstadisticasLitrosClienteTrait;
 
 class EstadisticasController extends Controller
 {
@@ -55,5 +56,10 @@ class EstadisticasController extends Controller
     {
         $export = new AllVentasExport();
         return Excel::download($export, 'reportesVentas.xlsx');
+    }
+
+    public function ventasClientesArticulos(Request $request)
+    {
+        return EstadisticasLitrosClienteTrait::litrosCliente($request);
     }
 }

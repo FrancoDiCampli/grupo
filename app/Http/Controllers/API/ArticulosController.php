@@ -25,7 +25,6 @@ class ArticulosController extends Controller
 
     public function index(Request $request)
     {
-        return EstadisticasLitrosClienteTrait::litrosCliente();
         return ArticulosTrait::index($request);
     }
 
