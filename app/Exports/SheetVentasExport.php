@@ -6,6 +6,7 @@ use App\Venta;
 use Carbon\Carbon;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\WithTitle;
+use Maatwebsite\Excel\Events\BeforeSheet;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\WithStyles;
@@ -14,16 +15,17 @@ use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
+use Maatwebsite\Excel\Concerns\WithCustomStartCell;
 use Maatwebsite\Excel\Concerns\WithColumnFormatting;
 use Maatwebsite\Excel\Concerns\RegistersEventListeners;
 
-class SheetVentasExport implements FromQuery, WithTitle, ShouldAutoSize, WithMapping, WithHeadings, WithStyles, WithColumnFormatting, WithEvents
+class SheetVentasExport implements FromQuery, WithTitle, ShouldAutoSize, WithMapping, WithHeadings, WithStyles, WithColumnFormatting, WithEvents, WithCustomStartCell
 {
     use Exportable, RegistersEventListeners;
 
     public function query()
     {
-        return Venta::query()->whereBetween('created_at', ['2020-10-31', '2020-11-30']);
+        return Venta::query()->whereBetween('created_at', ['2020-10-31', '2020-12-30']);
     }
 
     public function map($venta): array
@@ -116,7 +118,20 @@ class SheetVentasExport implements FromQuery, WithTitle, ShouldAutoSize, WithMap
             ],
         ];
 
-        $sheet->getStyle('A1:K1')->applyFromArray($auxStyles);
-        $sheet->getStyle('A1:K99')->applyFromArray($styleArray);
+        $sheet->getStyle('A2:K2')->applyFromArray($auxStyles);
+        $sheet->getStyle('A2:K99')->applyFromArray($styleArray);
+    }
+
+    public function startCell(): string
+    {
+        return 'A2';
+    }
+
+    public static function beforeSheet(BeforeSheet $event)
+    {
+        $event->sheet->setCellValue('A1', 'Desde:');
+        $event->sheet->setCellValue('B1', now()->format('d-m-Y'));
+        $event->sheet->setCellValue('C1', 'Hasta:');
+        $event->sheet->setCellValue('D1', now()->addDay()->format('d-m-Y'));
     }
 }

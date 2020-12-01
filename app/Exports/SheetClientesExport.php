@@ -5,6 +5,7 @@ namespace App\Exports;
 use App\Cliente;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\WithTitle;
+use Maatwebsite\Excel\Events\BeforeSheet;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\WithStyles;
@@ -99,7 +100,20 @@ class SheetClientesExport implements FromQuery, WithTitle, ShouldAutoSize, WithM
             ],
         ];
 
-        $sheet->getStyle('A1:E1')->applyFromArray($auxStyles);
-        $sheet->getStyle('A1:E99')->applyFromArray($styleArray);
+        $sheet->getStyle('A2:E2')->applyFromArray($auxStyles);
+        $sheet->getStyle('A2:E99')->applyFromArray($styleArray);
+    }
+
+    public function startCell(): string
+    {
+        return 'A2';
+    }
+
+    public static function beforeSheet(BeforeSheet $event)
+    {
+        $event->sheet->setCellValue('A1', 'Desde:');
+        $event->sheet->setCellValue('B1', now()->format('d-m-Y'));
+        $event->sheet->setCellValue('C1', 'Hasta:');
+        $event->sheet->setCellValue('D1', now()->addDay()->format('d-m-Y'));
     }
 }
