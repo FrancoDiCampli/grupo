@@ -34,8 +34,6 @@ trait EstadisticasVentasTrait
         $ventasClientes = [];
         $clientes = [];
         $clients = collect();
-        $ventasCondiciones = [];
-        $condiciones = collect(['CONTADO', 'CUENTA CORRIENTE']);
 
         // Buscar las facturas entre las fechas
         $facturas = Venta::whereDate('fecha', '>=', $desde->format('Ymd'))->whereDate('fecha', '<=', $hasta->format('Ymd'))->orderBy('fecha', 'ASC')->take($request->get('limit', null))->get();
@@ -84,8 +82,8 @@ trait EstadisticasVentasTrait
         $auxVendedores = $sellers->unique();
         foreach ($auxVendedores as $key) {
             $facs = Venta::where('user_id', $key->id)
-                ->where('fecha', '>=', $desde->format('Ymd'))
-                ->where('fecha', '<=', $hasta->format('Ymd'))
+                ->whereDate('fecha', '>=', $desde->format('Ymd'))
+                ->whereDate('fecha', '<=', $hasta->format('Ymd'))
                 ->orderBy('fecha', 'ASC')
                 ->get();
             array_push($vendedores, $key);
@@ -139,33 +137,6 @@ trait EstadisticasVentasTrait
         $ventasClientes->put('rows', $rowsClientes);
         // Fin Clientes
 
-        // Condiciones
-        foreach ($condiciones as $cond) {
-            $fa = Venta::where('condicionventa', $cond)
-                ->whereDate('fecha', '>=', $desde->format('Ymd'))
-                ->whereDate('fecha', '<=', $hasta->format('Ymd'))
-                ->orderBy('fecha', 'ASC')->get();;
-            array_push($ventasCondiciones, $fa);
-        }
-        $columnsCondiciones = ['condicion', 'totalVendido'];
-        $rowsCondiciones = collect();
-        $total = 0;
-        for ($i = 0; $i < count($ventasCondiciones); $i++) {
-            $otro = $ventasCondiciones[$i];
-            foreach ($otro as $a) {
-                $total += $a->total;
-            }
-            $rowsCondiciones->push([
-                'condicion' => $condiciones[$i],
-                'totalVendido' =>  $total
-            ]);
-            $total = 0;
-        };
-        $ventasCondiciones = collect();
-        $ventasCondiciones->put('columns', $columnsCondiciones);
-        $ventasCondiciones->put('rows', $rowsCondiciones);
-        // Fin Condiciones
-
         $ventas = [
             'fechas' => ['desde' => $desde->format('Y-m-d'), 'hasta' => $hasta->format('Y-m-d')],
             'ventasFecha' => $facturas,
@@ -174,9 +145,7 @@ trait EstadisticasVentasTrait
             'vendedores' => $vendedores,
             'ventasVendedores' => $ventasVendedores,
             'clientes' => $clientes,
-            'ventasClientes' => $ventasClientes,
-            'condiciones' => $condiciones,
-            'ventasCondiciones' => $ventasCondiciones
+            'ventasClientes' => $ventasClientes
         ];
 
         return ['ventas' => $ventas];

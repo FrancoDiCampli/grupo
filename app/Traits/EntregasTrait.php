@@ -184,6 +184,12 @@ trait EntregasTrait
         try {
             DB::transaction(function () use ($inventarios, $entrega) {
                 static::reestablecerInventarios($inventarios, $entrega);
+                $entrega->articulos->map(function ($detalle) {
+                    return auth()->user()->notifications()
+                        ->where('data->action', 'articulos/show/' . $detalle['id'])
+                        ->whereRead_at(null)
+                        ->delete();
+                });
                 $entrega->articulos()->detach();
                 $entrega->delete();
             });

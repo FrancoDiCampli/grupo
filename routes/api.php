@@ -88,17 +88,14 @@ Route::middleware('auth:airlock')->group(function () {
     Route::get('entregasPDF/{id}', 'API\PdfController@entregasPDF');
     Route::get('facturasPDF/{id}', 'API\PdfController@facturasPDF');
 
+    /* Excel */
+    Route::get('reportes/ventas/export', 'API\EstadisticasController@ventasExcel');
+
     /*Busqueda*/
     Route::post('/buscando', 'API\BuscadorController@buscando');
 
     /*Notificaciones*/
     Route::apiResource('notificaciones', 'API\NotificacionesController');
-
-    /*Dolar*/
-    Route::group(['middleware' => 'cors'], function () {
-        Route::get('/consultar', 'API\DolarController@consultar');
-    });
-    Route::post('/setCotizacion', 'API\DolarController@setCotizacion');
 
     /*Configuraciones*/
     Route::get('/config', 'API\PreferencesController@getConfig');
