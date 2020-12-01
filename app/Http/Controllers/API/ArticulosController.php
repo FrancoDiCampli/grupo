@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreArticulo;
 use App\Http\Requests\UpdateArticulo;
 use App\Traits\ArticulosTrait;
+use App\Traits\EstadisticasLitrosClienteTrait;
 
 class ArticulosController extends Controller
 {
