@@ -492,6 +492,7 @@
                                                         value =>
                                                             (fechaCotizacion = value)
                                                     "
+                                                    :rules="[rules.required]"
                                                     label="Fecha de la cotización"
                                                     readonly
                                                     outlined

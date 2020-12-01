@@ -1121,19 +1121,6 @@ export default {
                 return true;
             }
         }
-
-        // Cotización
-        // latinDate: {
-        //     set() {},
-        //     get() {
-        //         if (this.fechaCotizacion) {
-        //             let date = moment(this.fechaCotizacion).format(
-        //                 "DD-MM-YYYY"
-        //             );
-        //             return date;
-        //         }
-        //     }
-        // }
     },
 
     watch: {
@@ -1312,7 +1299,10 @@ export default {
                 }
             }
             this.observaciones = null;
-            this.divisa = JSON.parse(window.localStorage.getItem("divisa"));
+            this.divisa = {
+                cotizacion: null,
+                fechaCotizacion: null
+            };
             window.localStorage.removeItem("divisa");
             this.adding = false;
             this.setHaber();

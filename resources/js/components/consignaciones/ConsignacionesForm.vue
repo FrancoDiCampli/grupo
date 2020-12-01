@@ -487,6 +487,7 @@
                                                     value =>
                                                         (fechaCotizacion = value)
                                                 "
+                                                :rules="[rules.required]"
                                                 label="Fecha de la cotización"
                                                 readonly
                                                 outlined
@@ -709,17 +710,6 @@ export default {
         },
 
         // COTIZACION
-        latinDate: {
-            set() {},
-            get() {
-                if (this.fechaCotizacion) {
-                    let date = moment(this.fechaCotizacion).format(
-                        "DD-MM-YYYY"
-                    );
-                    return date;
-                }
-            }
-        },
 
         dolares: {
             set() {},
