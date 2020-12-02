@@ -3,6 +3,8 @@
 namespace App\Exports;
 
 use App\Cliente;
+use App\Articulo;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\WithTitle;
@@ -24,25 +26,48 @@ class SheetLitrosClientesExport implements FromCollection, WithTitle, ShouldAuto
 {
     use Exportable, RegistersEventListeners;
 
-    protected static $cliente;
+    public $cliente;
+    public $desde;
+    public $hasta;
+    public static $esto;
+
+    public function __construct($desde, $hasta, $id)
+    {
+        $this->desde = new Carbon($desde);
+        $this->hasta = new Carbon($hasta);
+        $this->cliente = Cliente::find($id);
+        self::$esto = $this;
+    }
 
     public function collection()
     {
-        self::$cliente = Cliente::find(2);
-
         $ventasIds = collect();
-        self::$cliente->facturas->map(function ($venta) use ($ventasIds) {
+        $this->cliente->facturas->map(function ($venta) use ($ventasIds) {
             $ventasIds->push($venta->id);
         });
-        return DB::table('articulo_venta')->whereIn('venta_id', $ventasIds)->get();
+        $detalles = DB::table('articulo_venta')->whereIn('venta_id', $ventasIds)->whereDate('created_at', '>=', $this->desde->format('Y-m-d'))->whereDate('created_at', '<=', $this->hasta->format('Y-m-d'))->get();
+
+        $articulos = collect();
+
+        $detalles->groupBy('articulo_id')->map(function ($det) use ($articulos) {
+            $aux = collect();
+            $articulo = Articulo::withTrashed()->find($det->first()->articulo_id);
+            $aux->put('articulo', $articulo->articulo);
+            $aux->put('unidades', $det->sum('cantidad'));
+            $aux->put('litros', $det->sum('cantidadLitros'));
+            $articulos->push($aux);
+        });
+
+        return $articulos;
     }
 
-    public function map($detalle): array
+    public function map($article): array
     {
         return [
             [
-                $detalle->cantidad,
-                $detalle->cantidadLitros
+                $article['articulo'],
+                $article['unidades'],
+                $article['litros'],
             ]
         ];
     }
@@ -57,14 +82,15 @@ class SheetLitrosClientesExport implements FromCollection, WithTitle, ShouldAuto
     public function headings(): array
     {
         return [
-            'Total Unidades',
+            'Articulo',
+            'Unidades',
             'Total Litros',
         ];
     }
 
     public function title(): string
     {
-        return 'Litros por Clientes';
+        return 'Litros por Cliente';
     }
 
     public function styles(Worksheet $sheet)
@@ -107,8 +133,8 @@ class SheetLitrosClientesExport implements FromCollection, WithTitle, ShouldAuto
             ],
         ];
 
-        $sheet->getStyle('A3:B3')->applyFromArray($auxStyles);
-        $sheet->getStyle('A3:B99')->applyFromArray($styleArray);
+        $sheet->getStyle('A3:C3')->applyFromArray($auxStyles);
+        $sheet->getStyle('A3:C99')->applyFromArray($styleArray);
     }
 
     public function startCell(): string
@@ -118,13 +144,11 @@ class SheetLitrosClientesExport implements FromCollection, WithTitle, ShouldAuto
 
     public static function beforeSheet(BeforeSheet $event)
     {
-        $event->sheet->setCellValue('A1', 'Desde:');
-        $event->sheet->setCellValue('B1', now()->format('d-m-Y'));
-        $event->sheet->setCellValue('C1', 'Hasta:');
-        $event->sheet->setCellValue('D1', now()->addDay()->format('d-m-Y'));
+        $event->sheet->mergeCells('A1:C1');
+        $event->sheet->setCellValue('A1', self::$esto->desde->format('d-m-Y') . ' | ' . self::$esto->hasta->format('d-m-Y'));
         $event->sheet->setCellValue('A2', 'Cliente:');
-        $event->sheet->setCellValue('B2', self::$cliente);
+        $event->sheet->setCellValue('B2', self::$esto->cliente->razonsocial);
         $event->sheet->setCellValue('C2', 'CUIT:');
-        $event->sheet->setCellValue('D2', self::$cliente);
+        $event->sheet->setCellValue('D2', self::$esto->cliente->documentounico);
     }
 }

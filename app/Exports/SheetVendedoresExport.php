@@ -24,6 +24,17 @@ class SheetVendedoresExport implements FromQuery, WithTitle, ShouldAutoSize, Wit
 {
     use Exportable, RegistersEventListeners;
 
+    public $desde;
+    public $hasta;
+    public static $esto;
+
+    public function __construct($desde, $hasta)
+    {
+        $this->desde = new Carbon($desde);
+        $this->hasta = new Carbon($hasta);
+        self::$esto = $this;
+    }
+
     public function query()
     {
         return User::query()->whereIn('role_id', [1, 2, 3]);
@@ -112,9 +123,7 @@ class SheetVendedoresExport implements FromQuery, WithTitle, ShouldAutoSize, Wit
 
     public static function beforeSheet(BeforeSheet $event)
     {
-        $event->sheet->setCellValue('A1', 'Desde:');
-        $event->sheet->setCellValue('B1', now()->format('d-m-Y'));
-        $event->sheet->setCellValue('C1', 'Hasta:');
-        $event->sheet->setCellValue('D1', now()->addDay()->format('d-m-Y'));
+        $event->sheet->mergeCells('A1:D1');
+        $event->sheet->setCellValue('A1', self::$esto->desde->format('d-m-Y') . ' | ' . self::$esto->hasta->format('d-m-Y'));
     }
 }

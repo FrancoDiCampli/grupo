@@ -52,9 +52,9 @@ class EstadisticasController extends Controller
         return EstadisticasDetallesComprasTrait::detallesCompras($request);
     }
 
-    public function ventasExcel()
+    public function ventasExcel() // Request
     {
-        $export = new AllVentasExport();
+        $export = new AllVentasExport('2020-11-30', '2020-12-31');
         return Excel::download($export, 'reportesVentas.xlsx');
     }
 
