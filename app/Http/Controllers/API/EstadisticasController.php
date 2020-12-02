@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Exports\AllArticulosExport;
+use App\Exports\AllComprasExport;
 use App\Traits\ChequesTrait;
 use Illuminate\Http\Request;
 use App\Exports\AllVentasExport;
@@ -52,10 +54,22 @@ class EstadisticasController extends Controller
         return EstadisticasDetallesComprasTrait::detallesCompras($request);
     }
 
-    public function ventasExcel() // Request
+    public function ventasExcel(Request $request)
     {
-        $export = new AllVentasExport('2020-11-30', '2020-12-31');
+        $export = new AllVentasExport($request->desde, $request->hasta);
         return Excel::download($export, 'reportesVentas.xlsx');
+    }
+
+    public function articulosExcel(Request $request)
+    {
+        $export = new AllArticulosExport($request->desde, $request->hasta);
+        return Excel::download($export, 'reportesArticulos.xlsx');
+    }
+
+    public function comprasExcel(Request $request)
+    {
+        $export = new AllComprasExport($request->desde, $request->hasta);
+        return Excel::download($export, 'reportesCompras.xlsx');
     }
 
     public function ventasClientesArticulos(Request $request)
