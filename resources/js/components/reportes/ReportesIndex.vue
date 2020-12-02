@@ -1,8 +1,8 @@
 <template>
     <div>
         <v-btn @click="exportarVentas()">ventas export</v-btn>
-        <v-btn @click="exportarVentas()">compras export</v-btn>
-        <v-btn @click="exportarVentas()">articulos export</v-btn>
+        <v-btn @click="exportarCompras()">compras export</v-btn>
+        <v-btn @click="exportarArticulos()">articulos export</v-btn>
         <v-tabs right active-class="piymary--text" hide-slider>
             <v-btn
                 color="primary"
@@ -80,8 +80,12 @@ export default {
         exportarVentas() {
             axios({
                 url: "/api/reportes/ventas/export",
-                method: "GET",
-                responseType: "blob"
+                method: "POST",
+                responseType: "blob",
+                data: {
+                    desde: "2020-11-15",
+                    hasta: "2020-12-15"
+                }
             })
                 .then(response => {
                     const url = window.URL.createObjectURL(
@@ -90,6 +94,54 @@ export default {
                     const link = document.createElement("a");
                     link.href = url;
                     link.setAttribute("download", "reportesVentas.xlsx");
+                    document.body.appendChild(link);
+                    link.click();
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+        },
+        exportarArticulos() {
+            axios({
+                url: "/api/reportes/articulos/export",
+                method: "POST",
+                responseType: "blob",
+                data: {
+                    desde: "2020-11-15",
+                    hasta: "2020-12-15"
+                }
+            })
+                .then(response => {
+                    const url = window.URL.createObjectURL(
+                        new Blob([response.data])
+                    );
+                    const link = document.createElement("a");
+                    link.href = url;
+                    link.setAttribute("download", "reportesArticulos.xlsx");
+                    document.body.appendChild(link);
+                    link.click();
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+        },
+        exportarCompras() {
+            axios({
+                url: "/api/reportes/compras/export",
+                method: "POST",
+                responseType: "blob",
+                data: {
+                    desde: "2020-11-15",
+                    hasta: "2020-12-15"
+                }
+            })
+                .then(response => {
+                    const url = window.URL.createObjectURL(
+                        new Blob([response.data])
+                    );
+                    const link = document.createElement("a");
+                    link.href = url;
+                    link.setAttribute("download", "reportesCompras.xlsx");
                     document.body.appendChild(link);
                     link.click();
                 })

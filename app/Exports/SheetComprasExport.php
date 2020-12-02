@@ -2,7 +2,8 @@
 
 namespace App\Exports;
 
-use App\Venta;
+use App\Compra;
+use App\User;
 use Carbon\Carbon;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\WithTitle;
@@ -12,6 +13,7 @@ use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\WithStyles;
 use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
@@ -19,7 +21,7 @@ use Maatwebsite\Excel\Concerns\WithCustomStartCell;
 use Maatwebsite\Excel\Concerns\WithColumnFormatting;
 use Maatwebsite\Excel\Concerns\RegistersEventListeners;
 
-class SheetVentasExport implements FromQuery, WithTitle, ShouldAutoSize, WithMapping, WithHeadings, WithStyles, WithColumnFormatting, WithEvents, WithCustomStartCell
+class SheetComprasExport implements FromQuery, WithTitle, ShouldAutoSize, WithMapping, WithHeadings, WithStyles, WithColumnFormatting, WithEvents, WithCustomStartCell
 {
     use Exportable, RegistersEventListeners;
 
@@ -36,34 +38,32 @@ class SheetVentasExport implements FromQuery, WithTitle, ShouldAutoSize, WithMap
 
     public function query()
     {
-        return Venta::query()->whereDate('created_at', '>=', $this->desde->format('Y-m-d'))->whereDate('created_at', '<=', $this->hasta->format('Y-m-d'));
+        return Compra::query()->whereBetween('created_at', [$this->desde->format('Y-m-d'), $this->hasta->format('Y-m-d')]);
     }
 
-    public function map($venta): array
+    public function map($compra): array
     {
-        $aux = new Carbon($venta->created_at);
+        $aux = new Carbon($compra->created_at);
+        $auxUser = User::find($compra->user_id);
         return [
-            $venta->numventa,
-            $venta->tipocomprobante,
-            $venta->comprobanteadherido,
-            $venta->cuit,
-            $venta->cliente->razonsocial,
-            $venta->bonificacion,
-            $venta->recargo,
-            $venta->subtotal,
-            $venta->total,
+            $compra->numcompra,
+            $compra->proveedor->razonsocial,
+            $compra->bonificacion,
+            $compra->recargo,
+            $compra->subtotal,
+            $compra->total,
             $aux->format('d-m-Y'),
-            $venta->user->name,
+            $compra->user = $auxUser->name,
         ];
     }
 
     public function columnFormats(): array
     {
         return [
-            'F' => NumberFormat::FORMAT_PERCENTAGE_00,
-            'G' => NumberFormat::FORMAT_PERCENTAGE_00,
-            'H' => NumberFormat::FORMAT_CURRENCY_USD_SIMPLE,
-            'I' => NumberFormat::FORMAT_CURRENCY_USD_SIMPLE,
+            'C' => NumberFormat::FORMAT_PERCENTAGE_00,
+            'D' => NumberFormat::FORMAT_PERCENTAGE_00,
+            'E' => NumberFormat::FORMAT_CURRENCY_USD_SIMPLE,
+            'F' => NumberFormat::FORMAT_CURRENCY_USD_SIMPLE,
         ];
     }
 
@@ -71,10 +71,7 @@ class SheetVentasExport implements FromQuery, WithTitle, ShouldAutoSize, WithMap
     {
         return [
             '#',
-            'Tipo Comprobante',
-            'Comprobante Adherido',
-            'CUIT',
-            'Cliente',
+            'Proveedor',
             'Bonificación',
             'Recargo',
             'Subtotal',
@@ -86,7 +83,7 @@ class SheetVentasExport implements FromQuery, WithTitle, ShouldAutoSize, WithMap
 
     public function title(): string
     {
-        return 'Ventas';
+        return 'Compras';
     }
 
     public function styles(Worksheet $sheet)
@@ -129,8 +126,8 @@ class SheetVentasExport implements FromQuery, WithTitle, ShouldAutoSize, WithMap
             ],
         ];
 
-        $sheet->getStyle('A2:K2')->applyFromArray($auxStyles);
-        $sheet->getStyle('A2:K99')->applyFromArray($styleArray);
+        $sheet->getStyle('A2:H2')->applyFromArray($auxStyles);
+        $sheet->getStyle('A2:H99')->applyFromArray($styleArray);
     }
 
     public function startCell(): string
@@ -140,7 +137,7 @@ class SheetVentasExport implements FromQuery, WithTitle, ShouldAutoSize, WithMap
 
     public static function beforeSheet(BeforeSheet $event)
     {
-        $event->sheet->mergeCells('A1:K1');
+        $event->sheet->mergeCells('A1:H1');
         $event->sheet->setCellValue('A1', self::$esto->desde->format('d-m-Y') . ' | ' . self::$esto->hasta->format('d-m-Y'));
     }
 }

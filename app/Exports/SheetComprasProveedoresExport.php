@@ -2,7 +2,8 @@
 
 namespace App\Exports;
 
-use App\Venta;
+use App\Supplier;
+use App\User;
 use Carbon\Carbon;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\WithTitle;
@@ -12,14 +13,15 @@ use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\WithStyles;
 use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
-use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use Maatwebsite\Excel\Concerns\WithCustomStartCell;
 use Maatwebsite\Excel\Concerns\WithColumnFormatting;
 use Maatwebsite\Excel\Concerns\RegistersEventListeners;
+use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 
-class SheetVentasExport implements FromQuery, WithTitle, ShouldAutoSize, WithMapping, WithHeadings, WithStyles, WithColumnFormatting, WithEvents, WithCustomStartCell
+class SheetComprasProveedoresExport implements FromQuery, WithTitle, ShouldAutoSize, WithMapping, WithHeadings, WithStyles, WithColumnFormatting, WithEvents, WithCustomStartCell
 {
     use Exportable, RegistersEventListeners;
 
@@ -36,34 +38,23 @@ class SheetVentasExport implements FromQuery, WithTitle, ShouldAutoSize, WithMap
 
     public function query()
     {
-        return Venta::query()->whereDate('created_at', '>=', $this->desde->format('Y-m-d'))->whereDate('created_at', '<=', $this->hasta->format('Y-m-d'));
+        return Supplier::query();
     }
 
-    public function map($venta): array
+    public function map($proveedor): array
     {
-        $aux = new Carbon($venta->created_at);
         return [
-            $venta->numventa,
-            $venta->tipocomprobante,
-            $venta->comprobanteadherido,
-            $venta->cuit,
-            $venta->cliente->razonsocial,
-            $venta->bonificacion,
-            $venta->recargo,
-            $venta->subtotal,
-            $venta->total,
-            $aux->format('d-m-Y'),
-            $venta->user->name,
+            $proveedor->id,
+            $proveedor->razonsocial,
+            $proveedor->remitos->count(),
+            $proveedor->remitos->sum('total')
         ];
     }
 
     public function columnFormats(): array
     {
         return [
-            'F' => NumberFormat::FORMAT_PERCENTAGE_00,
-            'G' => NumberFormat::FORMAT_PERCENTAGE_00,
-            'H' => NumberFormat::FORMAT_CURRENCY_USD_SIMPLE,
-            'I' => NumberFormat::FORMAT_CURRENCY_USD_SIMPLE,
+            'D' => NumberFormat::FORMAT_CURRENCY_USD_SIMPLE,
         ];
     }
 
@@ -71,22 +62,15 @@ class SheetVentasExport implements FromQuery, WithTitle, ShouldAutoSize, WithMap
     {
         return [
             '#',
-            'Tipo Comprobante',
-            'Comprobante Adherido',
-            'CUIT',
-            'Cliente',
-            'Bonificación',
-            'Recargo',
-            'Subtotal',
+            'Proeedor',
+            'Cant. Compras',
             'Total',
-            'Fecha',
-            'Usuario',
         ];
     }
 
     public function title(): string
     {
-        return 'Ventas';
+        return 'Proveedores';
     }
 
     public function styles(Worksheet $sheet)
@@ -129,8 +113,8 @@ class SheetVentasExport implements FromQuery, WithTitle, ShouldAutoSize, WithMap
             ],
         ];
 
-        $sheet->getStyle('A2:K2')->applyFromArray($auxStyles);
-        $sheet->getStyle('A2:K99')->applyFromArray($styleArray);
+        $sheet->getStyle('A2:D2')->applyFromArray($auxStyles);
+        $sheet->getStyle('A2:D99')->applyFromArray($styleArray);
     }
 
     public function startCell(): string
@@ -140,7 +124,7 @@ class SheetVentasExport implements FromQuery, WithTitle, ShouldAutoSize, WithMap
 
     public static function beforeSheet(BeforeSheet $event)
     {
-        $event->sheet->mergeCells('A1:K1');
+        $event->sheet->mergeCells('A1:D1');
         $event->sheet->setCellValue('A1', self::$esto->desde->format('d-m-Y') . ' | ' . self::$esto->hasta->format('d-m-Y'));
     }
 }
