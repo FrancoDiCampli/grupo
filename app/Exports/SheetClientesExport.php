@@ -3,6 +3,7 @@
 namespace App\Exports;
 
 use App\Cliente;
+use Carbon\Carbon;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\WithTitle;
 use Maatwebsite\Excel\Events\BeforeSheet;
@@ -20,6 +21,17 @@ use Maatwebsite\Excel\Concerns\RegistersEventListeners;
 class SheetClientesExport implements FromQuery, WithTitle, ShouldAutoSize, WithMapping, WithHeadings, WithStyles, WithColumnFormatting, WithEvents
 {
     use Exportable, RegistersEventListeners;
+
+    public $desde;
+    public $hasta;
+    public static $esto;
+
+    public function __construct($desde, $hasta)
+    {
+        $this->desde = new Carbon($desde);
+        $this->hasta = new Carbon($hasta);
+        self::$esto = $this;
+    }
 
     public function query()
     {
@@ -111,9 +123,7 @@ class SheetClientesExport implements FromQuery, WithTitle, ShouldAutoSize, WithM
 
     public static function beforeSheet(BeforeSheet $event)
     {
-        $event->sheet->setCellValue('A1', 'Desde:');
-        $event->sheet->setCellValue('B1', now()->format('d-m-Y'));
-        $event->sheet->setCellValue('C1', 'Hasta:');
-        $event->sheet->setCellValue('D1', now()->addDay()->format('d-m-Y'));
+        $event->sheet->mergeCells('A1:E1');
+        $event->sheet->setCellValue('A1', self::$esto->desde->format('d-m-Y') . ' | ' . self::$esto->hasta->format('d-m-Y'));
     }
 }

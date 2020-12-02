@@ -23,6 +23,17 @@ class SheetVentasExport implements FromQuery, WithTitle, ShouldAutoSize, WithMap
 {
     use Exportable, RegistersEventListeners;
 
+    public $desde;
+    public $hasta;
+    public static $esto;
+
+    public function __construct($desde, $hasta)
+    {
+        $this->desde = new Carbon($desde);
+        $this->hasta = new Carbon($hasta);
+        self::$esto = $this;
+    }
+
     public function query()
     {
         return Venta::query()->whereBetween('created_at', ['2020-10-31', '2020-12-30']);
@@ -129,9 +140,7 @@ class SheetVentasExport implements FromQuery, WithTitle, ShouldAutoSize, WithMap
 
     public static function beforeSheet(BeforeSheet $event)
     {
-        $event->sheet->setCellValue('A1', 'Desde:');
-        $event->sheet->setCellValue('B1', now()->format('d-m-Y'));
-        $event->sheet->setCellValue('C1', 'Hasta:');
-        $event->sheet->setCellValue('D1', now()->addDay()->format('d-m-Y'));
+        $event->sheet->mergeCells('A1:K1');
+        $event->sheet->setCellValue('A1', self::$esto->desde->format('d-m-Y') . ' | ' . self::$esto->hasta->format('d-m-Y'));
     }
 }
