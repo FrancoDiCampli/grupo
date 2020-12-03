@@ -86,6 +86,12 @@
         color: white !important;
         font-size: 20px !important;
     }
+
+    &.excel {
+        .v-icon {
+            margin: -46px 0px 0px 6px;
+        }
+    }
 }
 
 .option-button {

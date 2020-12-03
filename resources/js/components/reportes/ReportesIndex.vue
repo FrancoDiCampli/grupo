@@ -1,8 +1,5 @@
 <template>
     <div>
-        <v-btn @click="exportarVentas()">ventas export</v-btn>
-        <v-btn @click="exportarVentas()">compras export</v-btn>
-        <v-btn @click="exportarVentas()">articulos export</v-btn>
         <v-tabs right active-class="piymary--text" hide-slider>
             <v-btn
                 color="primary"
@@ -25,7 +22,14 @@
                 </v-expand-transition>
                 <v-card shaped outlined :loading="process">
                     <v-card-text class="pa-0">
-                        <ReportesVentas></ReportesVentas>
+                        <div 
+                            @click="exportarVentas()" 
+                            class="print-button excel"  
+                            v-if="ventasPrint"
+                        >
+                            <v-icon>fas fa-file-excel</v-icon>
+                        </div>
+                        <ReportesVentas ref="reportesVentas" @changetab="checkPrint($event)" ></ReportesVentas>
                     </v-card-text>
                 </v-card>
             </v-tab-item>
@@ -37,6 +41,9 @@
                 </v-expand-transition>
                 <v-card shaped outlined :loading="process">
                     <v-card-text class="pa-0">
+                        <div @click="exportarVentas()" class="print-button excel">
+                            <v-icon>fas fa-file-excel</v-icon>
+                        </div>
                         <ReportesCompras></ReportesCompras>
                     </v-card-text>
                 </v-card>
@@ -49,6 +56,9 @@
                 </v-expand-transition>
                 <v-card shaped outlined :loading="process">
                     <v-card-text class="pa-0">
+                        <div @click="exportarVentas()" class="print-button excel">
+                            <v-icon>fas fa-file-excel</v-icon>
+                        </div>
                         <ReportesProductos></ReportesProductos>
                     </v-card-text>
                 </v-card>
@@ -65,7 +75,8 @@ import ReportesProductos from "./ReportesProductos.vue";
 
 export default {
     data: () => ({
-        filterMenu: false
+        filterMenu: false,
+        ventasPrint: true
     }),
 
     props: ["process"],
@@ -77,6 +88,10 @@ export default {
     },
 
     methods: {
+        checkPrint(e) {
+            this.ventasPrint = e != 3;
+        },
+
         exportarVentas() {
             axios({
                 url: "/api/reportes/ventas/export",

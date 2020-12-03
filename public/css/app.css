@@ -222,6 +222,10 @@
   font-size: 20px !important;
 }
 
+.print-button.excel .v-icon {
+  margin: -46px 0px 0px 6px;
+}
+
 .option-button {
   width: 0;
   height: 0;
