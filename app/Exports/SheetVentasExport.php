@@ -6,6 +6,7 @@ use App\Venta;
 use Carbon\Carbon;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\WithTitle;
+use Maatwebsite\Excel\Events\BeforeSheet;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\WithStyles;
@@ -14,16 +15,28 @@ use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
+use Maatwebsite\Excel\Concerns\WithCustomStartCell;
 use Maatwebsite\Excel\Concerns\WithColumnFormatting;
 use Maatwebsite\Excel\Concerns\RegistersEventListeners;
 
-class SheetVentasExport implements FromQuery, WithTitle, ShouldAutoSize, WithMapping, WithHeadings, WithStyles, WithColumnFormatting, WithEvents
+class SheetVentasExport implements FromQuery, WithTitle, ShouldAutoSize, WithMapping, WithHeadings, WithStyles, WithColumnFormatting, WithEvents, WithCustomStartCell
 {
     use Exportable, RegistersEventListeners;
 
+    public $desde;
+    public $hasta;
+    public static $esto;
+
+    public function __construct($desde, $hasta)
+    {
+        $this->desde = new Carbon($desde);
+        $this->hasta = new Carbon($hasta);
+        self::$esto = $this;
+    }
+
     public function query()
     {
-        return Venta::query()->whereBetween('created_at', ['2020-10-31', '2020-11-30']);
+        return Venta::query()->whereDate('created_at', '>=', $this->desde->format('Y-m-d'))->whereDate('created_at', '<=', $this->hasta->format('Y-m-d'));
     }
 
     public function map($venta): array
@@ -67,7 +80,7 @@ class SheetVentasExport implements FromQuery, WithTitle, ShouldAutoSize, WithMap
             'Subtotal',
             'Total',
             'Fecha',
-            'User',
+            'Usuario',
         ];
     }
 
@@ -116,7 +129,18 @@ class SheetVentasExport implements FromQuery, WithTitle, ShouldAutoSize, WithMap
             ],
         ];
 
-        $sheet->getStyle('A1:K1')->applyFromArray($auxStyles);
-        $sheet->getStyle('A1:K99')->applyFromArray($styleArray);
+        $sheet->getStyle('A2:K2')->applyFromArray($auxStyles);
+        $sheet->getStyle('A2:K99')->applyFromArray($styleArray);
+    }
+
+    public function startCell(): string
+    {
+        return 'A2';
+    }
+
+    public static function beforeSheet(BeforeSheet $event)
+    {
+        $event->sheet->mergeCells('A1:K1');
+        $event->sheet->setCellValue('A1', self::$esto->desde->format('d-m-Y') . ' | ' . self::$esto->hasta->format('d-m-Y'));
     }
 }

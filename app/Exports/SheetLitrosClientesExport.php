@@ -3,49 +3,71 @@
 namespace App\Exports;
 
 use App\Cliente;
+use App\Articulo;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\WithTitle;
+use Maatwebsite\Excel\Events\BeforeSheet;
 use Maatwebsite\Excel\Concerns\Exportable;
-use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\WithStyles;
 use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
+use Maatwebsite\Excel\Concerns\WithCustomStartCell;
 use Maatwebsite\Excel\Concerns\WithColumnFormatting;
 use Maatwebsite\Excel\Concerns\RegistersEventListeners;
 
-class SheetLitrosClientesExport implements FromCollection, WithTitle, ShouldAutoSize, WithMapping, WithHeadings, WithStyles, WithColumnFormatting, WithEvents
+class SheetLitrosClientesExport implements FromCollection, WithTitle, ShouldAutoSize, WithMapping, WithHeadings, WithStyles, WithColumnFormatting, WithEvents, WithCustomStartCell
 {
     use Exportable, RegistersEventListeners;
 
-    public function collection()
+    public $cliente;
+    public $desde;
+    public $hasta;
+    public static $esto;
+
+    public function __construct($desde, $hasta, $id)
     {
-        $clientes = Cliente::all();
-
-        foreach ($clientes as $cliente) {
-            $ventasIds = collect();
-            $cliente->facturas->map(function ($venta) use ($ventasIds) {
-                $ventasIds->push($venta->id);
-            });
-            $cliente['detalles'] = DB::table('articulo_venta')->whereIn('venta_id', $ventasIds->all())->get();
-        }
-
-        return $clientes;
+        $this->desde = new Carbon($desde);
+        $this->hasta = new Carbon($hasta);
+        $this->cliente = Cliente::find($id);
+        self::$esto = $this;
     }
 
-    public function map($cliente): array
+    public function collection()
+    {
+        $ventasIds = collect();
+        $this->cliente->facturas->map(function ($venta) use ($ventasIds) {
+            $ventasIds->push($venta->id);
+        });
+        $detalles = DB::table('articulo_venta')->whereIn('venta_id', $ventasIds)->whereDate('created_at', '>=', $this->desde->format('Y-m-d'))->whereDate('created_at', '<=', $this->hasta->format('Y-m-d'))->get();
+
+        $articulos = collect();
+
+        $detalles->groupBy('articulo_id')->map(function ($det) use ($articulos) {
+            $aux = collect();
+            $articulo = Articulo::withTrashed()->find($det->first()->articulo_id);
+            $aux->put('articulo', $articulo->articulo);
+            $aux->put('unidades', $det->sum('cantidad'));
+            $aux->put('litros', $det->sum('cantidadLitros'));
+            $articulos->push($aux);
+        });
+
+        return $articulos;
+    }
+
+    public function map($article): array
     {
         return [
             [
-                $cliente->id,
-                $cliente->documentounico,
-                $cliente->razonsocial,
-                $cliente->facturas->count(),
-                $cliente['detalles']->sum('cantidadLitros')
+                $article['articulo'],
+                $article['unidades'],
+                $article['litros'],
             ]
         ];
     }
@@ -60,17 +82,15 @@ class SheetLitrosClientesExport implements FromCollection, WithTitle, ShouldAuto
     public function headings(): array
     {
         return [
-            '#',
-            'CUIT',
-            'Razon Social',
-            'Cant. Ventas',
+            'Articulo',
+            'Unidades',
             'Total Litros',
         ];
     }
 
     public function title(): string
     {
-        return 'Litros por Clientes';
+        return 'Litros por Cliente';
     }
 
     public function styles(Worksheet $sheet)
@@ -113,7 +133,22 @@ class SheetLitrosClientesExport implements FromCollection, WithTitle, ShouldAuto
             ],
         ];
 
-        $sheet->getStyle('A1:E1')->applyFromArray($auxStyles);
-        $sheet->getStyle('A1:E99')->applyFromArray($styleArray);
+        $sheet->getStyle('A3:C3')->applyFromArray($auxStyles);
+        $sheet->getStyle('A3:C99')->applyFromArray($styleArray);
+    }
+
+    public function startCell(): string
+    {
+        return 'A3';
+    }
+
+    public static function beforeSheet(BeforeSheet $event)
+    {
+        $event->sheet->mergeCells('A1:C1');
+        $event->sheet->setCellValue('A1', self::$esto->desde->format('d-m-Y') . ' | ' . self::$esto->hasta->format('d-m-Y'));
+        $event->sheet->setCellValue('A2', 'Cliente:');
+        $event->sheet->setCellValue('B2', self::$esto->cliente->razonsocial);
+        $event->sheet->setCellValue('C2', 'CUIT:');
+        $event->sheet->setCellValue('D2', self::$esto->cliente->documentounico);
     }
 }
