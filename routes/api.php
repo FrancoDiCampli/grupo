@@ -61,7 +61,7 @@ Route::middleware('auth:airlock')->group(function () {
     Route::get('estadisticas/detallesVentas', 'API\EstadisticasController@detallesVentas');
     Route::get('estadisticas/detallesCompras', 'API\EstadisticasController@detallesCompras');
     Route::get('estadisticas/compras', 'API\EstadisticasController@compras');
-    Route::get('estadisticas/ventas-clientes-articulos', 'API\EstadisticasController@ventasClientesArticulos');
+    Route::get('estadisticas/ventasClientesArticulos', 'API\EstadisticasController@ventasClientesArticulos');
 
     /*Movimientos*/
     Route::apiResource('movimientos', 'API\MovimientosController', ['only' => ['index']]);

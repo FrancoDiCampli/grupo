@@ -3,7 +3,11 @@
         <v-container>
             <v-row justify="center">
                 <v-col cols="12" md="10" lg="8">
-                    <ReportesIndex :process="inProcess">
+                    <ReportesIndex
+                        :process="inProcess"
+                        :desde="fechaDesde"
+                        :hasta="fechaHasta"
+                    >
                         <template slot="filter">
                             <v-row>
                                 <v-col cols="12" sm="6" class="py-0">
@@ -43,7 +47,8 @@
                                                 @click="
                                                     $refs.dialogFechaDesde.save(
                                                         fechaDesde
-                                                    )
+                                                    );
+                                                    getData();
                                                 "
                                                 >Aceptar</v-btn
                                             >
@@ -87,7 +92,8 @@
                                                 @click="
                                                     $refs.dialogFechaHasta.save(
                                                         fechaHasta
-                                                    )
+                                                    );
+                                                    getData();
                                                 "
                                                 >Aceptar</v-btn
                                             >
@@ -120,16 +126,6 @@ export default {
 
     components: {
         ReportesIndex
-    },
-
-    watch: {
-        fechaDesde() {
-            this.getData();
-        },
-
-        fechaHasta() {
-            this.getData();
-        }
     },
 
     mounted() {

@@ -22,14 +22,20 @@
                 </v-expand-transition>
                 <v-card shaped outlined :loading="process">
                     <v-card-text class="pa-0">
-                        <div 
-                            @click="exportarVentas()" 
-                            class="print-button excel"  
+                        <div
+                            @click="exportarVentas()"
+                            class="print-button excel"
                             v-if="ventasPrint"
                         >
                             <v-icon>fas fa-file-excel</v-icon>
                         </div>
-                        <ReportesVentas ref="reportesVentas" @changetab="checkPrint($event)" ></ReportesVentas>
+                        <br />
+                        <ReportesVentas
+                            ref="reportesVentas"
+                            @changetab="checkPrint($event)"
+                            :desde="desde"
+                            :hasta="hasta"
+                        ></ReportesVentas>
                     </v-card-text>
                 </v-card>
             </v-tab-item>
@@ -41,7 +47,10 @@
                 </v-expand-transition>
                 <v-card shaped outlined :loading="process">
                     <v-card-text class="pa-0">
-                        <div @click="exportarVentas()" class="print-button excel">
+                        <div
+                            @click="exportarVentas()"
+                            class="print-button excel"
+                        >
                             <v-icon>fas fa-file-excel</v-icon>
                         </div>
                         <ReportesCompras></ReportesCompras>
@@ -56,7 +65,10 @@
                 </v-expand-transition>
                 <v-card shaped outlined :loading="process">
                     <v-card-text class="pa-0">
-                        <div @click="exportarVentas()" class="print-button excel">
+                        <div
+                            @click="exportarVentas()"
+                            class="print-button excel"
+                        >
                             <v-icon>fas fa-file-excel</v-icon>
                         </div>
                         <ReportesProductos></ReportesProductos>
@@ -79,7 +91,7 @@ export default {
         ventasPrint: true
     }),
 
-    props: ["process"],
+    props: ["process", "desde", "hasta"],
 
     components: {
         ReportesVentas,

@@ -3,8 +3,15 @@
         <v-row justify="space-between">
             <v-col cols="6" sm="4" lg="3">
                 <v-list shaped class="mt-10">
-                    <v-list-item-group v-model="activeTab" @change="$emit('changetab', activeTab)" color="primary">
-                        <v-list-item v-for="(tab, index) in reports" :key="index">
+                    <v-list-item-group
+                        v-model="activeTab"
+                        @change="$emit('changetab', activeTab)"
+                        color="primary"
+                    >
+                        <v-list-item
+                            v-for="(tab, index) in reports"
+                            :key="index"
+                        >
                             <v-list-item-content>
                                 <v-list-item-title>{{ tab }}</v-list-item-title>
                             </v-list-item-content>
@@ -18,21 +25,30 @@
                         <ve-line
                             v-if="$store.state.reportes.ventas"
                             :legend-visible="false"
-                            :data="$store.state.reportes.ventas.ventas.ventasFechaChart"
+                            :data="
+                                $store.state.reportes.ventas.ventas
+                                    .ventasFechaChart
+                            "
                         ></ve-line>
                     </div>
                     <div v-if="activeTab == 1" key="1">
                         <ve-pie
                             v-if="$store.state.reportes.ventas"
                             :legend-visible="false"
-                            :data="$store.state.reportes.ventas.ventas.ventasVendedores"
+                            :data="
+                                $store.state.reportes.ventas.ventas
+                                    .ventasVendedores
+                            "
                         ></ve-pie>
                     </div>
                     <div v-if="activeTab == 2" key="2">
                         <ve-pie
                             v-if="$store.state.reportes.ventas"
                             :legend-visible="false"
-                            :data="$store.state.reportes.ventas.ventas.ventasClientes"
+                            :data="
+                                $store.state.reportes.ventas.ventas
+                                    .ventasClientes
+                            "
                         ></ve-pie>
                     </div>
                     <div v-if="activeTab == 3" key="3">
@@ -74,14 +90,10 @@
                                         >
                                             <thead>
                                                 <tr>
-                                                    <th
-                                                        class="text-xs-left"
-                                                    >
+                                                    <th class="text-xs-left">
                                                         Apellido Nombre
                                                     </th>
-                                                    <th
-                                                        class="text-xs-left"
-                                                    >
+                                                    <th class="text-xs-left">
                                                         Documento
                                                     </th>
                                                     <th>Tipo</th>
@@ -94,9 +106,7 @@
                                                     :key="index"
                                                     class="search-client-select"
                                                     @click="
-                                                        selectCliente(
-                                                            cliente
-                                                        )
+                                                        selectCliente(cliente)
                                                     "
                                                 >
                                                     <td>
@@ -134,7 +144,21 @@
                                 </v-card>
                             </v-col>
                         </v-row>
-                        <ve-pie :data="chartData" :legend-visible="false"></ve-pie>
+                        <div v-if="chartData">
+                            <ve-pie
+                                :data="chartData"
+                                :legend-visible="false"
+                            ></ve-pie>
+                            <v-row justify="center">
+                                <v-btn
+                                    color="secondary"
+                                    tile
+                                    class="elevation-0"
+                                    >Imprimir</v-btn
+                                >
+                                <br />
+                            </v-row>
+                        </div>
                     </div>
                 </v-fade-transition>
             </v-col>
@@ -155,16 +179,10 @@ export default {
         searchClienteTable: false,
         clientes: [],
 
-        chartData: {
-          columns: ['articulo', 'litrosVendidos'],
-          rows: [
-            { 'articulo': 'Articulo 1', 'litrosVendidos': 123},
-            { 'articulo': 'Articulo 2', 'litrosVendidos': 1223},
-            { 'articulo': 'Articulo 3', 'litrosVendidos': 2123},
-            { 'articulo': 'Articulo 4', 'litrosVendidos': 4123},
-          ]
-        }
+        chartData: null
     }),
+
+    props: ["desde", "hasta"],
 
     methods: {
         getActiveTab() {
@@ -179,6 +197,7 @@ export default {
                 if (this.searchCliente == "0") {
                     this.searchCliente = "CONSUMIDOR FINAL";
                     this.clientes = [];
+                    this.searchData(1);
                     this.searchClienteTable = false;
                     this.searchInProcess = false;
                 } else {
@@ -195,7 +214,7 @@ export default {
 
         findCliente: async function() {
             this.clientes = [];
-            
+
             axios
                 .post("/api/buscando", {
                     buscar: this.searchCliente,
@@ -204,7 +223,6 @@ export default {
                 .then(response => {
                     let responseClientes = response.data.clientes;
                     let responseDistribuidores = response.data.distribuidores;
-                    console.log('encontrado');
                     for (let i = 0; i < responseClientes.length; i++) {
                         this.clientes.push(responseClientes[i]);
                     }
@@ -223,10 +241,23 @@ export default {
             this.searchCliente = cliente.razonsocial;
             this.clientes = [];
             this.searchClienteTable = false;
+            this.searchData(cliente.id);
         },
+
+        async searchData(id) {
+            let response = await this.$store.dispatch(
+                "reportes/ventasClientesArticulos",
+                {
+                    id: id,
+                    desde: this.desde,
+                    hasta: this.hasta
+                }
+            );
+
+            this.chartData = response;
+        }
     }
 };
 </script>
 
-<style>
-</style>
+<style></style>

@@ -29,7 +29,7 @@ trait EstadisticasLitrosClienteTrait
             $aux = collect();
             $articulo = Articulo::withTrashed()->find($det->first()->articulo_id);
             $aux->put('articulo', $articulo->articulo);
-            $aux->put('litros', $det->sum('cantidadLitros'));
+            $aux->put('litrosVendidos', $det->sum('cantidadLitros'));
             $rows->push($aux);
         });
 

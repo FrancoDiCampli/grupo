@@ -3,7 +3,8 @@ const state = {
     ventas: null,
     compras: null,
     productosVentas: null,
-    productosCompras: null
+    productosCompras: null,
+    ventasClientesArticulos: null
 };
 
 const mutations = {
@@ -25,6 +26,10 @@ const mutations = {
 
     fillProductosCompras(state, productosCompras) {
         state.productosCompras = productosCompras;
+    },
+    
+    fillVentasClientesArticulos(state, ventasClientesArticulos) {
+        state.ventasClientesArticulos = ventasClientesArticulos;
     }
 };
 
@@ -129,6 +134,23 @@ const actions = {
                     reject(error.response.data);
                 });
         });
+    },
+
+    ventasClientesArticulos({ commit, dispatch }, params) {
+        return new Promise((resolve, reject) => {
+            axios
+                .get("/api/estadisticas/ventasClientesArticulos", { params: params })
+                .then(response => {
+                    commit("fillVentasClientesArticulos", response.data);
+                    resolve(response.data);
+                })
+                .catch(error => {
+                    dispatch("errorHandle", error.response, {
+                        root: true
+                    });
+                    reject(error.response.data);
+                })
+        })
     }
 };
 
