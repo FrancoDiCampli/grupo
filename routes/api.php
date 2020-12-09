@@ -93,7 +93,7 @@ Route::middleware('auth:airlock')->group(function () {
     Route::post('reportes/ventas/export', 'API\EstadisticasController@ventasExcel');
     Route::post('reportes/articulos/export', 'API\EstadisticasController@articulosExcel');
     Route::post('reportes/compras/export', 'API\EstadisticasController@comprasExcel');
-    Route::post('reportes/litroscliente', 'API\EstadisticasController@litrosCliente');
+    Route::post('reportes/litrosCliente', 'API\EstadisticasController@litrosCliente');
 
     /*Busqueda*/
     Route::post('/buscando', 'API\BuscadorController@buscando');
