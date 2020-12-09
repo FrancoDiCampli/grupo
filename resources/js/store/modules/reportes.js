@@ -151,7 +151,7 @@ const actions = {
                     reject(error.response.data);
                 })
         })
-    }
+    },
 };
 
 export default {

@@ -154,6 +154,7 @@
                                     color="secondary"
                                     tile
                                     class="elevation-0"
+                                    @click="exportarLitrosCliente()"
                                     >Imprimir</v-btn
                                 >
                                 <br />
@@ -178,7 +179,7 @@ export default {
         searchCliente: null,
         searchClienteTable: false,
         clientes: [],
-
+        cliente_id: null,
         chartData: null
     }),
 
@@ -239,6 +240,7 @@ export default {
 
         selectCliente(cliente) {
             this.searchCliente = cliente.razonsocial;
+            this.cliente_id = cliente.id;
             this.clientes = [];
             this.searchClienteTable = false;
             this.searchData(cliente.id);
@@ -255,6 +257,35 @@ export default {
             );
 
             this.chartData = response;
+        },
+
+        exportarLitrosCliente() {
+            axios({
+                url: "/api/reportes/litrosCliente",
+                method: "POST",
+                responseType: "blob",
+                data: {
+                    id: this.cliente_id,
+                    desde: this.desde,
+                    hasta: this.hasta
+                }
+            })
+                .then(response => {
+                    const url = window.URL.createObjectURL(
+                        new Blob([response.data])
+                    );
+                    const link = document.createElement("a");
+                    link.href = url;
+                    link.setAttribute(
+                        "download",
+                        "reportesLitrosPorCliente.xlsx"
+                    );
+                    document.body.appendChild(link);
+                    link.click();
+                })
+                .catch(error => {
+                    console.log(error);
+                });
         }
     }
 };

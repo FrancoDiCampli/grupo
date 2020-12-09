@@ -110,8 +110,8 @@ export default {
                 method: "POST",
                 responseType: "blob",
                 data: {
-                    desde: "2020-11-15",
-                    hasta: "2020-12-15"
+                    desde: this.desde,
+                    hasta: this.hasta
                 }
             })
                 .then(response => {
@@ -134,8 +134,8 @@ export default {
                 method: "POST",
                 responseType: "blob",
                 data: {
-                    desde: "2020-11-15",
-                    hasta: "2020-12-15"
+                    desde: this.desde,
+                    hasta: this.hasta
                 }
             })
                 .then(response => {
@@ -158,8 +158,8 @@ export default {
                 method: "POST",
                 responseType: "blob",
                 data: {
-                    desde: "2020-11-15",
-                    hasta: "2020-12-15"
+                    desde: this.desde,
+                    hasta: this.hasta
                 }
             })
                 .then(response => {
