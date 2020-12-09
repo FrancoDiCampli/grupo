@@ -10,11 +10,11 @@ trait SuppliersTrait
 {
     public static function index($request)
     {
-        $suppliers = Supplier::orderBy('razonsocial', 'asc');
+        $suppliers = Supplier::orderBy('razonsocial', 'asc')->take($request->get('limit', null))->get();
 
         return [
-            'proveedores' => $suppliers->take($request->get('limit', null))->get(),
-            'total' => $suppliers->count(),
+            'proveedores' => $suppliers,
+            'total' => Supplier::count(),
         ];
     }
 

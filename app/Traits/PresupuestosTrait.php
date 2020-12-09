@@ -16,19 +16,19 @@ trait PresupuestosTrait
         if (auth()->user()->role->role != 'vendedor') {
             if ($request->fec) {
                 $fec = $request->fec;
-                $pres = Presupuesto::whereDate('created_at', $fec)->orderBy('id', 'DESC')->get();
+                $pres = Presupuesto::whereDate('created_at', $fec)->orderBy('id', 'DESC')->take($request->get('limit', null))->get();
             } else {
-                $pres = Presupuesto::orderBy('id', 'DESC')->get();
+                $pres = Presupuesto::orderBy('id', 'DESC')->take($request->get('limit', null))->get();
             }
         } else {
             if ($request->fec) {
                 $fec = $request->fec;
                 $pres = Presupuesto::whereDate('created_at', $fec)
                     ->where('user_id', auth()->user()->id)
-                    ->orderBy('id', 'DESC')->get();
+                    ->orderBy('id', 'DESC')->take($request->get('limit', null))->get();
             } else {
                 $pres = Presupuesto::orderBy('id', 'DESC')
-                    ->where('user_id', auth()->user()->id)
+                    ->where('user_id', auth()->user()->id)->take($request->get('limit', null))
                     ->get();
             }
         }
@@ -45,19 +45,25 @@ trait PresupuestosTrait
             $presupuestos->push($pre);
         }
 
-        if ($presupuestos->count() <= $request->get('limit')) {
-            return response()->json([
-                'presupuestos' => $presupuestos,
-                'ultimo' => $presupuestos->first(),
-                'total' => $presupuestos->count(),
-            ]);
-        } else {
-            return response()->json([
-                'presupuestos' => $presupuestos->take($request->get('limit', null)),
-                'ultimo' => $presupuestos->first(),
-                'total' => $presupuestos->count(),
-            ]);
-        }
+        return response()->json([
+            'presupuestos' => $presupuestos,
+            'ultimo' => $presupuestos->first(),
+            'total' => Presupuesto::count(),
+        ]);
+
+        // if ($presupuestos->count() <= $request->get('limit')) {
+        //     return response()->json([
+        //         'presupuestos' => $presupuestos,
+        //         'ultimo' => $presupuestos->first(),
+        //         'total' => $presupuestos->count(),
+        //     ]);
+        // } else {
+        //     return response()->json([
+        //         'presupuestos' => $presupuestos->take($request->get('limit', null)),
+        //         'ultimo' => $presupuestos->first(),
+        //         'total' => $presupuestos->count(),
+        //     ]);
+        // }
     }
 
     public static function store($request)

@@ -6,23 +6,23 @@ use Carbon\Carbon;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 
-class AllVentasExport implements WithMultipleSheets
+class OnlyLitrosClienteExport implements WithMultipleSheets
 {
     public $desde;
     public $hasta;
+    public $id;
 
-    public function __construct($desde, $hasta)
+    public function __construct($desde, $hasta, $id)
     {
         $this->desde = new Carbon($desde);
         $this->hasta = new Carbon($hasta);
+        $this->id = $id;
     }
 
     public function sheets(): array
     {
         $sheets = [
-            new SheetVentasExport($this->desde, $this->hasta),
-            new SheetVendedoresExport($this->desde, $this->hasta),
-            new SheetClientesExport($this->desde, $this->hasta),
+            new SheetLitrosClientesExport($this->desde, $this->hasta, $this->id)
         ];
 
         return $sheets;

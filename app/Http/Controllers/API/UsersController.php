@@ -50,7 +50,7 @@ class UsersController extends Controller
         $user = User::find(auth()->user()->id);
         $rol = $user->role_id;
         if ($rol == 1) {
-            $users = User::all();
+            $users = User::take($request->get('limit', null))->get();
             $data = collect();
             foreach ($users as $usuario) {
                 if ($usuario->role_id != null) {
@@ -63,7 +63,7 @@ class UsersController extends Controller
                 $data->push($usuario);
             }
         } else {
-            $users = User::where('id', '!=', 1)->get();
+            $users = User::where('id', '!=', 1)->take($request->get('limit', null))->get();
             $data = collect();
             foreach ($users as $usuario) {
                 if ($usuario->role_id != null) {
@@ -78,8 +78,8 @@ class UsersController extends Controller
         }
 
         return [
-            'users' => $data->take($request->get('limit', null)),
-            'total' => $data->count(),
+            'users' => $data,
+            'total' => User::count(),
         ];
     }
 
