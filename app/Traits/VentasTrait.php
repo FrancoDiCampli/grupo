@@ -20,6 +20,7 @@ trait VentasTrait
             if ($request->fec) {
                 $fec = $request->fec;
                 $facs = Venta::whereDate('created_at', $fec)
+                    ->take($request->get('limit', null))
                     ->orderBy('id', 'DESC')
                     ->get();
             } else {
@@ -30,11 +31,13 @@ trait VentasTrait
             if ($request->fec) {
                 $fec = $request->fec;
                 $facs = Venta::whereDate('created_at', $fec)
+                    ->take($request->get('limit', null))
                     ->orderBy('id', 'DESC')
                     ->where('user_id', auth()->user()->id)
                     ->get();
             } else {
                 $facs = Venta::orderBy('id', 'DESC')
+                    ->take($request->get('limit', null))
                     ->where('user_id', auth()->user()->id)
                     ->get();
             }
@@ -97,21 +100,28 @@ trait VentasTrait
             $eliminada->cliente;
         }
 
-        if ($facturas->count() <= $request->get('limit')) {
-            return [
-                'ventas' => $facturas,
-                'ultima' => $facturas->first(),
-                'total' => $facturas->count(),
-                'eliminadas' => $eliminadas
-            ];
-        } else {
-            return [
-                'ventas' => $facturas->take($request->get('limit', null)),
-                'ultima' => $facturas->first(),
-                'total' => $facturas->count(),
-                'eliminadas' => $eliminadas
-            ];
-        }
+        return [
+            'ventas' => $facturas,
+            'ultima' => $facturas->first(),
+            'total' => Venta::count(),
+            'eliminadas' => $eliminadas
+        ];
+
+        // if ($facturas->count() <= $request->get('limit')) {
+        //     return [
+        //         'ventas' => $facturas,
+        //         'ultima' => $facturas->first(),
+        //         'total' => $facturas->count(),
+        //         'eliminadas' => $eliminadas
+        //     ];
+        // } else {
+        //     return [
+        //         'ventas' => $facturas,
+        //         'ultima' => $facturas->first(),
+        //         'total' => $facturas->count(),
+        //         'eliminadas' => $eliminadas
+        //     ];
+        // }
     }
 
     public static function store($request)

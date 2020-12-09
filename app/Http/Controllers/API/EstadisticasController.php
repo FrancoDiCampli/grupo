@@ -7,6 +7,7 @@ use App\Exports\AllComprasExport;
 use App\Traits\ChequesTrait;
 use Illuminate\Http\Request;
 use App\Exports\AllVentasExport;
+use App\Exports\OnlyLitrosClienteExport;
 use App\Http\Controllers\Controller;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Traits\EstadisticasVentasTrait;
@@ -70,6 +71,12 @@ class EstadisticasController extends Controller
     {
         $export = new AllComprasExport($request->desde, $request->hasta);
         return Excel::download($export, 'reportesCompras.xlsx');
+    }
+
+    public function litrosCliente(Request $request)
+    {
+        $export = new OnlyLitrosClienteExport($request->desde, $request->hasta, $request->id);
+        return Excel::download($export, 'reportesLitrosCliente.xlsx');
     }
 
     public function ventasClientesArticulos(Request $request)

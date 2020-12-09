@@ -16,7 +16,7 @@ trait ArticulosTrait
 {
     public static function index($request)
     {
-        $articles = Articulo::get();
+        $articles = Articulo::with(['inventarios'])->take($request->get('limit'), null)->get();
         $articulos = collect();
         $inventarios = collect();
 
@@ -48,19 +48,11 @@ trait ArticulosTrait
             $articulos->push($art);
         }
 
-        if ($articulos->count() <= $request->get('limit')) {
-            return [
-                'articulos' => $articulos,
-                'total' => Articulo::withTrashed()->count(),
-                'ultimo' => $articulos->first(),
-            ];
-        } else {
-            return [
-                'articulos' => $articulos->take($request->get('limit', null)),
-                'total' => Articulo::withTrashed()->count(),
-                'ultimo' => $articulos->first(),
-            ];
-        }
+        return [
+            'articulos' => $articulos,
+            'total' => Articulo::withTrashed()->count(),
+            'ultimo' => $articulos->first(),
+        ];
     }
 
     public static function store($request)

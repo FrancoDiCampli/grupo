@@ -16,10 +16,12 @@ trait FacturasTrait
     {
         if (auth()->user()->role->role == 'superAdmin' || auth()->user()->role->role == 'administrador') {
             $facs = Factura::orderBy('id', 'DESC')
+                ->take($request->get('limit', null))
                 ->get();
         } else {
             $facs = Factura::orderBy('id', 'DESC')
                 ->where('user_id', auth()->user()->id)
+                ->take($request->get('limit', null))
                 ->get();
         }
 
@@ -45,19 +47,25 @@ trait FacturasTrait
             $facturas->push($fac);
         }
 
-        if ($facturas->count() <= $request->get('limit')) {
-            return [
-                'facturas' => $facturas,
-                'ultima' => $facturas->first(),
-                'total' => $facturas->count()
-            ];
-        } else {
-            return [
-                'facturas' => $facturas->take($request->get('limit', null)),
-                'ultima' => $facturas->first(),
-                'total' => $facturas->count()
-            ];
-        }
+        return [
+            'facturas' => $facturas,
+            'ultima' => $facturas->first(),
+            'total' => Factura::count()
+        ];
+
+        // if ($facturas->count() <= $request->get('limit')) {
+        //     return [
+        //         'facturas' => $facturas,
+        //         'ultima' => $facturas->first(),
+        //         'total' => $facturas->count()
+        //     ];
+        // } else {
+        //     return [
+        //         'facturas' => $facturas->take($request->get('limit', null)),
+        //         'ultima' => $facturas->first(),
+        //         'total' => $facturas->count()
+        //     ];
+        // }
     }
 
     public static function store($request)
