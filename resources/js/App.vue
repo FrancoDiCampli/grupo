@@ -16,22 +16,27 @@
                             placeholder="Buscar"
                             @focus="searchOnFocus = true"
                             :class="
-                            searchOnFocus ? 'searchBar focusBar' : 'searchBar'
-                        "
+                                searchOnFocus
+                                    ? 'searchBar focusBar'
+                                    : 'searchBar'
+                            "
                             v-model="searchItems"
                             class="search-field"
                             append-icon="fas fa-search"
                             @click:append="findItems()"
                         >
                             <template v-slot:progress>
-                                <v-progress-linear absolute height="0"></v-progress-linear>
+                                <v-progress-linear
+                                    absolute
+                                    height="0"
+                                ></v-progress-linear>
                             </template>
                         </v-text-field>
                     </v-row>
                 </div>
             </template>
         </AppBar>
-        <v-content>
+        <v-main>
             <div class="searchContainer" v-if="searchDialog">
                 <div class="flexSearch">
                     <v-card>
@@ -72,7 +77,7 @@
                                                     <v-list-item-content>
                                                         <v-list-item-title>
                                                             {{
-                                                            cliente.razonsocial
+                                                                cliente.razonsocial
                                                             }}
                                                         </v-list-item-title>
                                                     </v-list-item-content>
@@ -106,7 +111,7 @@
                                                     <v-list-item-content>
                                                         <v-list-item-title>
                                                             {{
-                                                            articulo.articulo
+                                                                articulo.articulo
                                                             }}
                                                         </v-list-item-title>
                                                     </v-list-item-content>
@@ -118,7 +123,9 @@
                                 <div v-if="items.distribuidores.length > 0">
                                     <v-divider></v-divider>
                                     <v-row justify="center">
-                                        <v-col cols="4" sm="3">Distribuidores</v-col>
+                                        <v-col cols="4" sm="3"
+                                            >Distribuidores</v-col
+                                        >
                                         <v-col
                                             cols="8"
                                             sm="9"
@@ -140,7 +147,7 @@
                                                     <v-list-item-content>
                                                         <v-list-item-title>
                                                             {{
-                                                            distribuidor.razonsocial
+                                                                distribuidor.razonsocial
                                                             }}
                                                         </v-list-item-title>
                                                     </v-list-item-content>
@@ -152,7 +159,9 @@
                                 <div v-if="items.proveedores.length > 0">
                                     <v-divider></v-divider>
                                     <v-row justify="center">
-                                        <v-col cols="4" sm="3">Proveedores</v-col>
+                                        <v-col cols="4" sm="3"
+                                            >Proveedores</v-col
+                                        >
                                         <v-col
                                             cols="8"
                                             sm="9"
@@ -174,7 +183,7 @@
                                                     <v-list-item-content>
                                                         <v-list-item-title>
                                                             {{
-                                                            proveedor.razonsocial
+                                                                proveedor.razonsocial
                                                             }}
                                                         </v-list-item-title>
                                                     </v-list-item-content>
@@ -210,7 +219,7 @@
                     <router-view></router-view>
                 </div>
             </v-container>
-        </v-content>
+        </v-main>
     </v-app>
 </template>
 
@@ -232,17 +241,17 @@ export default {
             clientes: [],
             proveedores: [],
             articulos: [],
-            distribuidores: [],
-        },
+            distribuidores: []
+        }
     }),
 
     components: {
         AppBar,
-        Errors,
+        Errors
     },
 
     directives: {
-        clickOutside: ClickOutside.directive,
+        clickOutside: ClickOutside.directive
     },
 
     computed: {
@@ -283,7 +292,7 @@ export default {
                     return false;
                 }
             }
-        },
+        }
     },
 
     mounted() {
@@ -297,36 +306,36 @@ export default {
             this.process = true;
             this.$store
                 .dispatch("auth/user")
-                .then((response) => {
+                .then(response => {
                     response.permissions.push("authenticated");
                     this.$user.set({
                         rol: response.rol,
-                        permissions: response.permissions,
+                        permissions: response.permissions
                     });
                     this.process = false;
                 })
-                .catch((error) => {
+                .catch(error => {
                     this.process = false;
                 });
         },
 
-        findItems: async function () {
+        findItems: async function() {
             if (this.searchItems != null && this.searchItems != "") {
                 this.searchDialog = true;
                 this.searchInProcess = true;
                 this.searchItemsList = true;
                 axios
                     .post("/api/buscando", { buscar: this.searchItems })
-                    .then((response) => {
+                    .then(response => {
                         this.items = {
                             proveedores: response.data.proveedores || [],
                             clientes: response.data.clientes || [],
                             distribuidores: response.data.distribuidores || [],
-                            articulos: response.data.articulos || [],
+                            articulos: response.data.articulos || []
                         };
                         this.searchInProcess = false;
                     })
-                    .catch((error) => {
+                    .catch(error => {
                         console.log(error);
                         this.searchInProcess = false;
                     });
@@ -342,7 +351,7 @@ export default {
             this.items = {
                 clientes: [],
                 proveedores: [],
-                articulos: [],
+                articulos: []
             };
         },
 
@@ -351,13 +360,13 @@ export default {
             this.closeSearch();
         },
 
-        exit: async function () {
+        exit: async function() {
             this.process = true;
             await this.$store.dispatch("auth/logout");
             this.$router.push("/"); // BORRAR CUANDO SE DEFINAN LOS PERMISOS Y ROLES EN LAS RUTAS
             this.process = false;
-        },
-    },
+        }
+    }
 };
 </script>
 
