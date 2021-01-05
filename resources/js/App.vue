@@ -31,7 +31,7 @@
                 </div>
             </template>
         </AppBar>
-        <v-content>
+        <v-main>
             <div class="searchContainer" v-if="searchDialog">
                 <div class="flexSearch">
                     <v-card>
@@ -210,7 +210,7 @@
                     <router-view></router-view>
                 </div>
             </v-container>
-        </v-content>
+        </v-main>
     </v-app>
 </template>
 

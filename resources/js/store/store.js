@@ -40,8 +40,13 @@ export default new Vuex.Store({
 
     actions: {
         errorHandle({ commit, dispatch }, errors) {
+            console.log({
+                info: "Probando",
+                errors: errors
+            });
             if (errors.status == 401) {
                 dispatch("auth/deleteAuthData", {}, { root: true });
+                router.push('/');
             } else if (errors.status == 403) {
                 router.push("/accessd_denied");
             } else {
