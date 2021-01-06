@@ -62,12 +62,12 @@ trait BuscadorTrait
                 break;
 
             case 'vendedor':
-                $user = User::find(auth()->user()->id);
-                $clientes = $user->clientes()->where('razonsocial', 'LIKE', "%$buscar%")
-                    ->get()
-                    ->where('distribuidor', false);
+                // $user = User::find(auth()->user()->id);
+                // $clientes = $user->clientes()->where('razonsocial', 'LIKE', "%$buscar%")
+                //     ->get()
+                //     ->where('distribuidor', false);
                 return [
-                    'clientes' => $clientes,
+                    'clientes' => $auxClientes->where('distribuidor', false),
                     'articulos' => $auxArticulos
                 ];
                 break;
