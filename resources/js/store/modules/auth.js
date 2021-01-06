@@ -33,6 +33,7 @@ const actions = {
                     axios
                         .post("/login", state.form)
                         .then(response => {
+                            console.log(response.data);
                             window.localStorage.setItem(
                                 "logged",
                                 JSON.stringify(true)
