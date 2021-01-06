@@ -15,7 +15,7 @@
     <div id="app">
     </div>
 
-    <script src="{{ url('/js/app.js?v=14') }}"></script>
+    <script src="{{ mix('/js/app.js') }}"></script>
 </body>
 
 </html>

@@ -76,7 +76,7 @@
                                     <b>Comprobante adherido</b>
                                     {{
                                     $store.state.pedidos.pedido.pedido
-                                    .numpresupuesto
+                                    .comprobanteadherido
                                     }}
                                 </p>
                                 <p>

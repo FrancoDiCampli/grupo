@@ -59,8 +59,9 @@
                                             | formatDate
                                     "
                                     @input="
-                                        value =>
-                                            (store.state.entregas.form.fecha = value)
+                                        store ?
+                                        value => (store.state.entregas.form.fecha = value) :
+                                        value => null
                                     "
                                     label="Fecha"
                                     :rules="[rules.required]"
@@ -275,8 +276,8 @@ export default {
     created() {
         if (this.$store.state.entregas.form.detalles) {
             let detallesForm = this.$store.state.entregas.form.detalles;
-            for (let i = 0; i < detallesForm; i++) {
-                if(detallesForm[i].disponible > (detallesForm[i].cantidad - detallesForm[i].cantidadentregado)) {
+            for (let i = 0; i < detallesForm.length; i++) {
+                if(detallesForm[i].disponible >= (detallesForm[i].cantidad - detallesForm[i].cantidadentregado)) {
                     this.detalles.push(detallesForm[i]);
                 }
             }
