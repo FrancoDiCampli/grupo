@@ -33,6 +33,7 @@ trait ArticulosTrait
                 }
                 $art = collect($art);
                 $art->put('stock', $stock);
+                $articulos->push($art);
             } else {
                 foreach ($art->inventarios as $inv) {
                     if ($inv->dependencia == auth()->user()->id) {
@@ -40,12 +41,12 @@ trait ArticulosTrait
                         $stock = $inv['cantidadlitros'];
                         $art = collect($art);
                         $art->put('stock', $stock);
+                        $articulos->push($art);
                     }
                 }
             }
 
             $art['inventarios'] = $inventarios;
-            $articulos->push($art);
         }
 
         return [
