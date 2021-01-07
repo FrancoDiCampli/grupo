@@ -167,8 +167,9 @@
                                                         .fecha | formatDate
                                                 "
                                                 @input="
-                                                    value =>
-                                                        (store.state.pedidos.form.fecha = value)
+                                                    store ?
+                                                    value => (store.state.pedidos.form.fecha = value) :
+                                                    value => null
                                                 "
                                                 label="Fecha"
                                                 :rules="[rules.required]"

@@ -239,13 +239,16 @@ export default {
         checkDelivery(item) {
             let details = [];
             for (let i = 0; i < item.articulos.length; i++) {
-                if(item.articulos[i].disponible > (item.articulos[i].cantidad - item.articulos[i].cantidadentregado)) {
+                let disponible = item.articulos[i].pivot.disponible;
+                let cantidad = item.articulos[i].pivot.cantidad;
+                let cantidadentregado = item.articulos[i].pivot.cantidadentregado;
+                if(disponible >= (cantidad - cantidadentregado)) {
                     details.push(item.articulos[i].pivot);
                 }
             }
 
             if(details.length > 0) {
-                return item.todoentregado;
+                return !item.todoentregado;
             } else {
                 return false;
             }
