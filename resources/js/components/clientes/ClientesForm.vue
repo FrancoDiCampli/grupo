@@ -27,7 +27,7 @@
             </v-col>
             <v-col
                 cols="12"
-                :sm="$store.state.auth.user.rol != 'vendedor' ? '6' : '12'"
+                :sm="checkRole() ? '6' : '12'"
                 class="py-0"
             >
                 <v-text-field
@@ -42,7 +42,7 @@
                 cols="12"
                 sm="6"
                 class="py-0"
-                v-if="$store.state.auth.user.rol != 'vendedor'"
+                v-if="checkRole()"
             >
                 <v-select
                     label="Tipo"
@@ -454,6 +454,20 @@ export default {
                 this.$store.state.clientes.form.localidad = this.$store.state.clientes.form.localidad.nombre;
             } else {
                 this.$store.state.clientes.form.localidad = null;
+            }
+        },
+
+        checkRole() {
+            if(this.$store.state.auth.user) {
+                if(
+                    this.$store.state.auth.user.rol != 'vendedor'
+                ) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
             }
         }
     }

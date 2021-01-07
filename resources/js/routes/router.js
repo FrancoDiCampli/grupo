@@ -77,6 +77,13 @@ import Users from "../views/users/Users";
 import UsersCreate from "../views/users/Create";
 import UsersEdit from "../views/users/Edit";
 
+const originalPush = Router.prototype.push;
+Router.prototype.push = function push(location) {
+  return originalPush.call(this, location).catch(err => {
+    if (err.name !== 'NavigationDuplicated') throw err
+  });
+}
+
 Vue.use(Router);
 
 export default new Router({

@@ -12,6 +12,7 @@
                     large
                     v-on="on"
                     to="/articulos/nuevo"
+                    v-if="checkRole()"
                 >
                     <v-icon>fas fa-plus</v-icon>
                 </v-btn>
@@ -74,6 +75,21 @@ export default {
         loadMore() {
             this.limit += this.limit;
             this.getArticulos();
+        },
+
+        checkRole() {
+            if(this.$store.state.auth.user) {
+                if(
+                    this.$store.state.auth.user.rol =='superAdmin' || 
+                    this.$store.state.auth.user.rol =='administrador'
+                ) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
         }
     }
 };

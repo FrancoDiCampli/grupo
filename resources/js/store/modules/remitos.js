@@ -40,7 +40,7 @@ const actions = {
                     dispatch("errorHandle", error.response, {
                         root: true
                     });
-                    reject(error.response.data);
+                    reject(error.response);
                 });
         });
     },
@@ -57,7 +57,7 @@ const actions = {
                     dispatch("errorHandle", error.response, {
                         root: true
                     });
-                    reject(error.response.data);
+                    reject(error.response);
                 });
         });
     },
@@ -74,7 +74,7 @@ const actions = {
                     dispatch("errorHandle", error.response, {
                         root: true
                     });
-                    reject(error.response.data);
+                    reject(error.response);
                 });
         });
     },
@@ -95,7 +95,7 @@ const actions = {
                     dispatch("errorHandle", error.response, {
                         root: true
                     });
-                    reject(error.response.data);
+                    reject(error.response);
                 });
         });
     },
@@ -111,7 +111,7 @@ const actions = {
                     dispatch("errorHandle", error.response, {
                         root: true
                     });
-                    reject(error.response.data);
+                    reject(error.response);
                 });
         });
     }

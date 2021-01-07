@@ -27,7 +27,7 @@ class StoreCliente extends FormRequest
             'razonsocial' => 'required|min:1|max:190',
             'documentounico' => 'required|min:8|max:11|unique:clientes',
             'direccion' => 'required|min:1|max:190',
-            'email' => 'required|email',
+            'email' => 'required|email|unique:clientes',
             'telefono' => 'required|min:6|max:13',
             'codigopostal' => 'required|min:4|max:4',
             'localidad' => 'required|min:1|max:190',

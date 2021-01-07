@@ -45,7 +45,13 @@
                                 </v-tooltip>
                             </div>
                         </div>
-
+                        <v-btn
+                            tile
+                            class="mr-5 elevation-0"
+                            color="#25D366"
+                            dark
+                            @click="notificate(error)"
+                        >Enviar <v-icon class="ml-2" size="small">fab fa-whatsapp</v-icon></v-btn>
                         <v-btn
                             tile
                             class="mr-5 elevation-0"
@@ -67,11 +73,12 @@
 export default {
     methods: {
         notificate(error) {
+            console.log(error);
             let testString = `Error ${error.status}: \n${error.data.message}`;
 
             let errorString = `Error ${error.status}: `;
             if (error.data.message) {
-                errorString = errorString + `${error.data.message}.\n`;
+                errorString = errorString + `${error.data.message}\n`;
 
                 for (const key in error.data.errors) {
                     if (error.data.errors.hasOwnProperty(key)) {
@@ -89,13 +96,15 @@ export default {
                 errorString = errorString + `${error.data}.`;
             }
 
-            let errorURI = encodeURI(errorString);
-
-            let randomNumber = Math.floor(Math.random() * 2);
-            let phoneNumbers = ["5493735414420", "5493735527874"];
+            let errorURI = encodeURI(`
+                    message: ${errorString} |
+                    url: ${error.config.url} | 
+                    method: ${error.config.method} |
+                    data: ${error.config.data}
+                `);
 
             window.open(
-                `https://wa.me/${phoneNumbers[randomNumber]}?text=${errorURI}`,
+                `https://wa.me/5493735527874?text=${errorURI}`,
                 "_blank"
             );
         }

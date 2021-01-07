@@ -157,9 +157,10 @@
                                                         .fecha | formatDate
                                                 "
                                                 @input="
-                                                    store ?
-                                                    value => (store.state.compras.form.fecha = value) :
-                                                    value => null
+                                                    store
+                                                        ? value =>
+                                                              (store.state.compras.form.fecha = value)
+                                                        : value => null
                                                 "
                                                 label="Fecha"
                                                 :rules="[rules.required]"
@@ -686,9 +687,10 @@ export default {
             set() {},
             get() {
                 if (this.articuloSelected.cantidad) {
-                    let cantidad = Number(this.articuloSelected.cantidad);
-                    let litros = Number(this.articuloSelected.litros);
-                    return cantidad * litros;
+                    return Number(
+                        this.articuloSelected.cantidad *
+                            this.articuloSelected.litros
+                    );
                 } else {
                     return null;
                 }
@@ -700,9 +702,9 @@ export default {
             get() {
                 if (
                     this.articuloSelected.precio &&
-                    this.articuloSelected.cantidad
+                    this.cantidadLitros
                 ) {
-                    let cantidad = Number(this.articuloSelected.cantidad);
+                    let cantidad = Number(this.cantidadLitros);
                     let precio = Number(this.articuloSelected.precio);
 
                     return cantidad * precio;

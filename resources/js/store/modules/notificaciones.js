@@ -25,7 +25,7 @@ const actions = {
                     resolve(response.data);
                 })
                 .catch(error => {
-                    reject(error.response.data);
+                    reject(error.response);
                 });
         });
     },
@@ -39,7 +39,7 @@ const actions = {
                     resolve(response.data);
                 })
                 .catch(error => {
-                    reject(error.response.data);
+                    reject(error.response);
                 });
         });
     }

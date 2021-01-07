@@ -52,14 +52,7 @@
                     <div v-else>
                         <div>
                             <br />
-                            <div
-                                v-if="
-                                    $store.state.auth.user.rol ==
-                                        'superAdmin' ||
-                                        $store.state.auth.user.rol ==
-                                            'administrador'
-                                "
-                            >
+                            <div>
                                 <v-menu>
                                     <template v-slot:activator="{ on }">
                                         <v-btn

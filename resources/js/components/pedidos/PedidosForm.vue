@@ -215,9 +215,8 @@
                                 <!-- CONDICION PEDIDO -->
                                 <v-col cols="12" sm="6" class="py-0">
                                     <v-text-field
-                                        v-model="condicion"
-                                        value="Cuenta Corriente"
                                         label="Condición"
+                                        placeholder="CUENTA CORRIENTE"
                                         disabled
                                         outlined
                                     ></v-text-field>
@@ -801,8 +800,6 @@ export default {
         searchCliente: null,
         searchClienteTable: false,
         clientes: [],
-        // CONDICION
-        condicion: "CUENTA CORRIENTE",
         // ARTICULOS
         articulosPanel: [],
         articulos: [],
@@ -963,7 +960,6 @@ export default {
             this.totalPesos = this.$store.state.pedidos.form.totalPesos;
             this.cotizacion = this.$store.state.pedidos.form.cotizacion;
             this.fechaCotizacion = this.$store.state.pedidos.form.fechaCotizacion;
-            this.condicion = this.$store.state.pedidos.form.condicion;
 
             this.detalles = this.$store.state.pedidos.form.detalles;
             for (let i = 0; i < this.detalles.length; i++) {
@@ -1009,8 +1005,10 @@ export default {
                     for (let i = 0; i < responseClientes.length; i++) {
                         this.clientes.push(responseClientes[i]);
                     }
-                    for (let i = 0; i < responseDistribuidores.length; i++) {
-                        this.clientes.push(responseDistribuidores[i]);
+                    if(responseDistribuidores) {
+                        for (let i = 0; i < responseDistribuidores.length; i++) {
+                            this.clientes.push(responseDistribuidores[i]);
+                        }
                     }
                     this.searchInProcess = false;
                 })
@@ -1153,7 +1151,6 @@ export default {
                     this.$store.state.pedidos.form.cotizacion = this.cotizacion;
                     this.$store.state.pedidos.form.fechaCotizacion = this.fechaCotizacion;
                     this.$store.state.pedidos.form.numpedido = this.NumComprobante;
-                    this.$store.state.pedidos.form.condicion = this.condicion;
                     return true;
                 }
             }

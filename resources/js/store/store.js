@@ -51,6 +51,7 @@ export default new Vuex.Store({
                 router.push("/accessd_denied");
             } else {
                 let error = {
+                    config: errors.config,
                     data: errors.data,
                     status: errors.status
                 };

@@ -132,7 +132,7 @@ trait PresupuestosTrait
                 'preciounitario' => $detail['precio'],
                 'subtotalPesos' => $detail['subtotalDolares'] * $factura['cotizacion'],
                 'subtotal' => $detail['subtotalDolares'],
-                'cotizacion' => $detail['cotizacion'],
+                'cotizacion' => $factura['cotizacion'],
                 'fechaCotizacion' => $factura['fechaCotizacion'],
                 'articulo_id' => $detail['articulo_id'] ?? $detail['id'],
                 'venta_id' => $factura->id,

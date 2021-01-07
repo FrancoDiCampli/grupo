@@ -38,6 +38,7 @@
                                     v-model="selected"
                                     :value="item.id"
                                     :disabled="isDisabled(item)"
+                                    v-if="checkRole()"
                                 ></v-checkbox>
                             </td>
                             <td class="hidden-xs-only">
@@ -271,6 +272,21 @@ export default {
             this.inProcess = false;
             this.$emit('erase');
             this.deleteDialog = false;
+        },
+
+        checkRole() {
+            if(this.$store.state.auth.user) {
+                if(
+                    this.$store.state.auth.user.rol =='superAdmin' || 
+                    this.$store.state.auth.user.rol =='administrador'
+                ) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
         }
     }
 };

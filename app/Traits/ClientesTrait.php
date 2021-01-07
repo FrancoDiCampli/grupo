@@ -63,7 +63,7 @@ trait ClientesTrait
 
     public static function store($request)
     {
-        $foto = FotosTrait::store($request, $ubicacion = 'clientes');
+        // $foto = FotosTrait::store($request, $ubicacion = 'clientes');
         $isDistributor = false;
 
         if ($request['tipo'] == 'distribuidor') {
@@ -72,7 +72,7 @@ trait ClientesTrait
 
         $atributos = $request->validated();
 
-        $atributos['foto'] = $foto;
+        // $atributos['foto'] = $foto;
         $atributos['user_id'] = auth()->user()->id;
         $atributos['observaciones'] = $request['observaciones'];
         $atributos['distribuidor'] = $isDistributor;

@@ -33,7 +33,6 @@ const actions = {
                     axios
                         .post("/login", state.form)
                         .then(response => {
-                            console.log(response.data);
                             window.localStorage.setItem(
                                 "logged",
                                 JSON.stringify(true)
@@ -44,7 +43,7 @@ const actions = {
                             dispatch("errorHandle", error.response, {
                                 root: true
                             });
-                            reject(error.response.data);
+                            reject(error.response);
                         });
                 })
                 .catch(error => {
@@ -67,7 +66,7 @@ const actions = {
                     dispatch("errorHandle", error.response, {
                         root: true
                     });
-                    reject(error.response.data);
+                    reject(error.response);
                 });
         });
     },
@@ -83,7 +82,7 @@ const actions = {
                     dispatch("errorHandle", error.response, {
                         root: true
                     });
-                    reject(error.response.data);
+                    reject(error.response);
                 });
         });
     },
