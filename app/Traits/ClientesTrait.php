@@ -31,12 +31,9 @@ trait ClientesTrait
                 ->where('distribuidor', true)
                 ->get();
         } else {
-            // $clientes = Cliente::orderBy('razonsocial', 'asc')
-            //     ->where('documentounico', '<>', 0)
-            //     ->where('user_id', auth()->user()->id);
             $clientes = Cliente::orderBy('razonsocial', 'asc')
                 ->where('documentounico', '<>', 0)
-                ->where('distribuidor', false);
+                ->where('user_id', auth()->user()->id);
         }
 
         if ($clientes->count() <= $request->get('limit')) {
