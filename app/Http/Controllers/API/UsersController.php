@@ -90,6 +90,7 @@ class UsersController extends Controller
                 'name' => 'required|string|max:255',
                 'email' => 'required|string|email|max:255|unique:users',
                 'password' => 'required|string|min:6',
+                'password_confirm' => 'required|string|min:6|same:password',
                 'role_id' => 'nullable',
             ]);
             $attributes['password'] = bcrypt($attributes['password']);
@@ -104,6 +105,8 @@ class UsersController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|max:255|unique:users,email,' . $user->id,
+            'password' => 'required|string|min:6',
+            'password_confirm' => 'required|string|min:6|same:password',
         ]);
         $user->name = $request->name;
         $user->email = $request->email;
