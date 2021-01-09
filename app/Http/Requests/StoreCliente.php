@@ -37,4 +37,11 @@ class StoreCliente extends FormRequest
             'foto' => 'nullable'
         ];
     }
+
+    public function messages()
+    {
+        return [
+            'documentounico.unique' => 'El valor del campo CUIT ya está en uso.'
+        ];
+    }
 }
