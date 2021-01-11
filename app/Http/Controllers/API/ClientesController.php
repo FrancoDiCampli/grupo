@@ -53,7 +53,7 @@ class ClientesController extends Controller
 
         $atributos['foto'] = $foto;
         $atributos['observaciones'] = $request['observaciones'];
-        $atributos['user_id'] = auth()->user()->id;
+        // $atributos['user_id'] = auth()->user()->id;
 
         try {
             DB::transaction(function () use ($cliente, $atributos, $request) {
