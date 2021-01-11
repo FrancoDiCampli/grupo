@@ -143,6 +143,7 @@
 </template>
 
 <script>
+import moment from "moment";
 import FacturasIndex from "../facturas/FacturasIndex";
 
 export default {
@@ -207,7 +208,9 @@ export default {
                     detalles: details,
                     cliente: item.cliente.razonsocial,
                     cliente_id: item.cliente.id,
-                    venta_id: item.id
+                    venta_id: item.id,
+                    fecha: moment(item.fecha, 'YYYY-MM-DD').format('YYYY-MM-DD'),
+                    comprobanteadherido: item.comprobanteadherido
                 })
                 .then(() => {
                     this.$router.push("/entregas/create");

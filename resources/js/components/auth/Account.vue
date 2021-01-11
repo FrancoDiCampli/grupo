@@ -228,6 +228,27 @@
                     </v-btn>
                 </v-card-title>
                 <v-card-text>
+                    <v-alert
+                        color="error"
+                        border="left"
+                        colored-border
+                        class="alert-border mt-5"
+                        style="border: thin solid #e0e0e0; border-left: none;"
+                        v-if="editPassErrors"
+                    >
+                        <div v-if="editPassErrors.data.errors">
+                            <div v-for="(errors, i) in editPassErrors.data.errors" :key="i">
+                                <p class="error--text" v-for="(error, e) in errors" :key="e">
+                                    {{ error }}
+                                </p>
+                            </div> 
+                        </div>
+                        <div v-else>
+                            <p class="error--text">
+                                {{ editPassErrors.data }}
+                            </p>
+                        </div>
+                    </v-alert>
                     <v-form ref="passForm">
                         <v-row justify="center" style="margin-top: 40px;">
                             <v-col cols="12" class="py-0 px-3">
@@ -268,7 +289,7 @@
                                         $store.state.auth.form.confirm_password
                                     "
                                     label="Confirmar contraseña"
-                                    :rules="[rules.required, rules.minLength]"
+                                    :rules="[rules.required, rules.minLength, confirmpassRule]"
                                     :append-icon="
                                         confirmPass
                                             ? 'fas fa-eye'
@@ -286,7 +307,7 @@
                 <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn
-                        :loading="$store.state.inProcess"
+                        :loading="editPassProcess"
                         color="primary"
                         text
                         @click="editPass()"
@@ -310,6 +331,8 @@ export default {
             currentPass: false,
             newPass: false,
             confirmPass: false,
+            editPassProcess: false,
+            editPassErrors: null,
             rules: {
                 required: value => !!value || "Este campo es obligatorio",
                 minLength: value =>
@@ -342,20 +365,34 @@ export default {
 
         edit: async function() {
             if (this.$refs.editForm.validate()) {
-                await this.$store.dispatch("auth/updateAccount", {sendErrors: true});
+                await this.$store.dispatch("auth/updateAccount");
                 await this.$store.dispatch("auth/user");
                 this.editName = false;
                 this.editEmail = false;
             }
         },
 
+        confirmpassRule() {
+            if(this.$store.state.auth.form.password != this.$store.state.auth.form.confirm_password) {
+                return 'Las contraseñas no coinciden';
+            } else {
+                return true;
+            }
+        },
+
         editPass: async function() {
+            this.editPassProcess = true;
+            this.editPassErrors = null;
             if (this.$refs.passForm.validate()) {
-                await this.$store.dispatch("auth/updateAccount", {sendErrors: false}).catch(error => {
-                    console.log(error);
+                await this.$store.dispatch("auth/updatePass").then(async response => {
+                    await this.$store.dispatch("auth/user");
+                    this.editPassDialog = false;
+                    this.editPassErrors = false;
+                }).catch(error => {
+                    this.editPassErrors = error;
+                    this.editPassProcess = false;
                 });
-                await this.$store.dispatch("auth/user");
-                this.editPassDialog = false;
+                
             }
         }
     }

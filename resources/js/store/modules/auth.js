@@ -71,7 +71,7 @@ const actions = {
         });
     },
 
-    updateAccount({ dispatch }, sendErrors) {
+    updateAccount({ dispatch }) {
         return new Promise((resolve, reject) => {
             axios
                 .post("/api/update_account", state.form)
@@ -79,12 +79,22 @@ const actions = {
                     resolve(response.data);
                 })
                 .catch(error => {
-                    if(sendErrors) {
-                        dispatch("errorHandle", error.response, {
-                            root: true
-                        });
-                    }
-                    
+                    dispatch("errorHandle", error.response, {
+                        root: true
+                    });
+                    reject(error.response);
+                });
+        });
+    },
+
+    updatePass({ dispatch }) {
+        return new Promise((resolve, reject) => {
+            axios
+                .post("/api/update_account", state.form)
+                .then(response => {
+                    resolve(response.data);
+                })
+                .catch(error => {
                     reject(error.response);
                 });
         });
