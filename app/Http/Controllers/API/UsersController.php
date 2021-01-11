@@ -85,14 +85,15 @@ class UsersController extends Controller
 
     public function store(Request $request)
     {
+        $attributes = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255|unique:users',
+            'password' => 'required|string|min:6',
+            'password_confirm' => 'required|string|min:6|same:password',
+            'role_id' => 'nullable',
+        ]);
+
         if ($request->password == $request->password_confirm) {
-            $attributes = $request->validate([
-                'name' => 'required|string|max:255',
-                'email' => 'required|string|email|max:255|unique:users',
-                'password' => 'required|string|min:6',
-                'password_confirm' => 'required|string|min:6|same:password',
-                'role_id' => 'nullable',
-            ]);
             $attributes['password'] = bcrypt($attributes['password']);
             $attributes['role_id'] = $request->get('role_id', 3);
             User::create($attributes);

@@ -68,6 +68,15 @@ trait PresupuestosTrait
 
     public static function store($request)
     {
+        $request->validate(
+            [
+                'pedidoadherido' => 'required|unique:presupuestos,comprobanteadherido'
+            ],
+            [
+                'pedidoadherido.unique' => 'El valor del campo Nota de pedido adherida Nº ya está en uso.',
+            ]
+        );
+
         $atributos = $request;
         $cliente = Cliente::find($atributos['cliente_id']);
         $atributos['cuit'] = $cliente->documentounico;
@@ -92,6 +101,15 @@ trait PresupuestosTrait
 
     public static function confirmarVenta($atributos, $request, $presupuesto)
     {
+        $request->validate(
+            [
+                'remitoadherido' => 'required|unique:ventas,comprobanteadherido'
+            ],
+            [
+                'remitoadherido.unique' => 'El valor del campo Remito adherido Nº ya está en uso.',
+            ]
+        );
+
         $atributos['comprobanteadherido'] = $request['remitoadherido'];
         $atributos['tipoComprobante'] = 'REMITO X';
         $atributos['condicionventa'] = 'CUENTA CORRIENTE';
@@ -256,6 +274,15 @@ trait PresupuestosTrait
         $presupuesto['condicionventa'] = 'CUENTA CORRIENTE';
         $presupuesto['remitoadherido'] = $request->remitoadherido;
 
+        $request->validate(
+            [
+                'remitoadherido' => 'required|unique:ventas,comprobanteadherido'
+            ],
+            [
+                'remitoadherido.unique' => 'El valor del campo Remito adherido Nº ya está en uso.',
+            ]
+        );
+
         $venta = VentasTrait::crearVenta($presupuesto);
 
         // CREACION DE CUENTA CORRIENTE
@@ -294,6 +321,15 @@ trait PresupuestosTrait
 
     public static function update($request, $id)
     {
+        $request->validate(
+            [
+                'pedidoadherido' => 'required|unique:presupuestos,comprobanteadherido,' . $id
+            ],
+            [
+                'pedidoadherido.unique' => 'El valor del campo Nota de pedido adherida Nº ya está en uso.',
+            ]
+        );
+
         try {
             DB::transaction(function () use ($request, $id) {
                 $presupuesto = Presupuesto::find($id);
