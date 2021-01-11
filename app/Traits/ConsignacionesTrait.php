@@ -11,6 +11,7 @@ use App\Consignment;
 use App\Traits\ArticulosTrait;
 use App\Traits\InventariosAdmin;
 use App\Traits\ConfiguracionTrait;
+use Exception;
 use Illuminate\Support\Facades\DB;
 
 trait ConsignacionesTrait
@@ -167,6 +168,7 @@ trait ConsignacionesTrait
             DB::commit();
         } else {
             DB::rollback();
+            abort(400, 'Stock Insuficiente');
         }
         return $aux;
     }
