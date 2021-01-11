@@ -47,6 +47,15 @@ trait ComprasTrait
 
     public static function store($request)
     {
+        $request->validate(
+            [
+                'numcompra' => 'required|unique:compras,numcompra'
+            ],
+            [
+                'numcompra.unique' => 'El valor del campo Nº Remito ya está en uso.',
+            ]
+        );
+
         $atributos = $request;
 
         // ALMACENAMIENTO DE REMITO

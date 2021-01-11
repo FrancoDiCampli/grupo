@@ -50,6 +50,15 @@ trait EntregasTrait
 
     public static function store($request)
     {
+        $request->validate(
+            [
+                'comprobanteadherido' => 'required|unique:entregas,comprobanteadherido'
+            ],
+            [
+                'comprobanteadherido.unique' => 'El valor del campo Entrega adherida Nº ya está en uso.',
+            ]
+        );
+
         $atributos = $request;
         $cliente = Cliente::find($atributos['cliente_id']);
         $atributos['cuit'] = $cliente->documentounico;

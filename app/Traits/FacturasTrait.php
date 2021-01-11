@@ -70,6 +70,15 @@ trait FacturasTrait
 
     public static function store($request)
     {
+        $request->validate(
+            [
+                'comprobanteadherido' => 'required|unique:facturas,comprobanteadherido'
+            ],
+            [
+                'comprobanteadherido.unique' => 'El valor del campo Factura adherida Nº ya está en uso.',
+            ]
+        );
+
         try {
             DB::transaction(function () use ($request) {
                 $cliente = Cliente::findOrFail($request['cliente_id']);
