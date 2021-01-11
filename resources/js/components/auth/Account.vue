@@ -342,7 +342,7 @@ export default {
 
         edit: async function() {
             if (this.$refs.editForm.validate()) {
-                await this.$store.dispatch("auth/updateAccount");
+                await this.$store.dispatch("auth/updateAccount", {sendErrors: true});
                 await this.$store.dispatch("auth/user");
                 this.editName = false;
                 this.editEmail = false;
@@ -351,7 +351,9 @@ export default {
 
         editPass: async function() {
             if (this.$refs.passForm.validate()) {
-                await this.$store.dispatch("auth/updateAccount");
+                await this.$store.dispatch("auth/updateAccount", {sendErrors: false}).catch(error => {
+                    console.log(error);
+                });
                 await this.$store.dispatch("auth/user");
                 this.editPassDialog = false;
             }

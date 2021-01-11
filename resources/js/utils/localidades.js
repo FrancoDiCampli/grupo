@@ -1360,7 +1360,8 @@ export default [
             { "id": "4004", "nombre": "Villa Riachuelo" },
             { "id": "4005", "nombre": "Villa Santa Rita" },
             { "id": "4006", "nombre": "Villa Soldati" },
-            { "id": "4007", "nombre": "Villa Urquiza" }
+            { "id": "4007", "nombre": "Villa Urquiza" },
+            { "id": "9999", "nombre": "Capital Federal" }
         ]
     },
     {

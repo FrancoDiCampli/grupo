@@ -31,7 +31,7 @@
             <v-col cols="12" class="py-0 px-5">
                 <v-text-field
                     v-model="$store.state.users.form.password_confirm"
-                    :rules="rulesPassword ? [rules.required, rules.max, rules.min] : []"
+                    :rules="rulesPassword ? [rules.required, rules.max, rules.min, confirmpass] : [confirmpass]"
                     :append-icon="confirm_password ? 'fas fa-eye' : 'fas fa-eye-slash'"
                     @click:append="confirm_password = !confirm_password"
                     :type="confirm_password ? 'text' : 'password'"
@@ -64,6 +64,7 @@ export default {
             selected: "",
             password: false,
             confirm_password: false,
+            confirm: false,
             rules: {
                 required: value => !!value || "Este campo es obligatorio",
                 max: value =>
@@ -71,7 +72,7 @@ export default {
                     "Este campo no puede contener mas de 255 digitos",
                 min: value =>
                     (value && value.length >= 6) ||
-                    "Este campo debe contener al menos 6 digitos"
+                    "Este campo debe contener al menos 6 digitos",
             }
         };
     },
@@ -92,6 +93,16 @@ export default {
 
     mounted() {
         this.$store.dispatch("roles/index");
+    },
+
+    methods: {
+        confirmpass() {
+            if(this.$store.state.users.form.password != this.$store.state.users.form.password_confirm) {
+                return 'Las contraseñas no coinciden';
+            } else {
+                return true;
+            }
+        }
     }
 };
 </script>

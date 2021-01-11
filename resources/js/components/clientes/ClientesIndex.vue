@@ -3,7 +3,7 @@
         <v-tabs right hide-slider background-color="transparent">
             <v-spacer></v-spacer>
             <v-tab>Clientes</v-tab>
-            <v-tab v-if="$store.state.auth.user.rol != 'vendedor'"
+            <v-tab v-if="checkRole()"
                 >Distribuidores</v-tab
             >
             <v-tab-item>
@@ -49,7 +49,7 @@
                     </v-card-text>
                 </v-card>
             </v-tab-item>
-            <v-tab-item v-if="$store.state.auth.user.rol != 'vendedor'">
+            <v-tab-item v-if="checkRole()">
                 <v-card shaped outlined :loading="$store.state.inProcess">
                     <v-card-title>Distribuidores</v-card-title>
                     <v-divider></v-divider>
@@ -112,7 +112,23 @@ export default {
         ]
     }),
 
-    props: ["limit"]
+    props: ["limit"],
+
+    methods: {
+        checkRole() {
+            if(this.$store.state.auth.user) {
+                if(
+                    this.$store.state.auth.user.rol != 'vendedor'
+                ) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        },
+    }
 };
 </script>
 

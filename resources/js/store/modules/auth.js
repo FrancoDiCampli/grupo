@@ -71,7 +71,7 @@ const actions = {
         });
     },
 
-    updateAccount({ dispatch }) {
+    updateAccount({ dispatch }, sendErrors) {
         return new Promise((resolve, reject) => {
             axios
                 .post("/api/update_account", state.form)
@@ -79,9 +79,12 @@ const actions = {
                     resolve(response.data);
                 })
                 .catch(error => {
-                    dispatch("errorHandle", error.response, {
-                        root: true
-                    });
+                    if(sendErrors) {
+                        dispatch("errorHandle", error.response, {
+                            root: true
+                        });
+                    }
+                    
                     reject(error.response);
                 });
         });

@@ -84,7 +84,7 @@
             <v-col cols="12" sm="6" class="py-0">
                 <v-text-field
                     v-model="$store.state.clientes.form.confirm_password"
-                    :rules="mode != 'edit' ? [rules.required] : []"
+                    :rules="mode != 'edit' ? [rules.required, confirmpass] : [confirmpass]"
                     :append-icon="
                         password_type_confirm
                             ? 'fas fa-eye'
@@ -359,7 +359,7 @@ export default {
                 "Este campo no puede contener más de 13 digitos",
             maxTelefono: value =>
                 (value && value.length >= 6) ||
-                "Este campo debe contener al menos 6 digitos"
+                "Este campo debe contener al menos 6 digitos",
         }
     }),
 
@@ -468,6 +468,14 @@ export default {
                 }
             } else {
                 return false;
+            }
+        },
+
+        confirmpass() {
+            if(this.$store.state.clientes.form.password != this.$store.state.clientes.form.confirm_password) {
+                return 'Las contraseñas no coinciden';
+            } else {
+                return true;
             }
         }
     }
