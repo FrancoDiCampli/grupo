@@ -93,6 +93,19 @@ trait ClientesTrait
 
     public static function crearUsuario($request)
     {
+        $request->validate(
+            [
+                'email' => 'required|email|unique:users',
+                'password' => 'required|min:6',
+                'confirm_password' => 'required|min:6|same:password'
+            ],
+            [
+                'email.unique' => 'El valor del campo email ya está en uso.',
+                'password.required' => 'La contraseña es requerida',
+                'confirm_password.same' => 'Las contraseñas deben coincidir',
+            ]
+        );
+
         if ($request->password == $request->confirm_password) {
             $rol = Role::where('role', 'cliente')->get()->first();
 
@@ -111,9 +124,23 @@ trait ClientesTrait
 
     public static function editarUsuario($cliente, $request)
     {
+        $user = $cliente->user;
+
+        $request->validate(
+            [
+                'email' => 'required|email|unique:users,email,' . $user->id,
+                'password' => 'nullable|min:6',
+                'confirm_password' => 'nullable|min:6|same:password'
+            ],
+            [
+                'email.unique' => 'El valor del campo email ya está en uso.',
+                'password.required' => 'La contraseña es requerida',
+                'confirm_password.same' => 'Las contraseñas deben coincidir',
+            ]
+        );
+
         if ($request->password) {
             if ($request->password == $request->confirm_password) {
-                $user = $cliente->user;
                 $user->password =  bcrypt($request->password);
 
                 if ($cliente->email != $user->email) {

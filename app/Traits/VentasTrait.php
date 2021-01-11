@@ -126,6 +126,15 @@ trait VentasTrait
 
     public static function store($request)
     {
+        $request->validate(
+            [
+                'remitoadherido' => 'required|unique:ventas,comprobanteadherido'
+            ],
+            [
+                'remitoadherido.unique' => 'El valor del campo Remito adherido Nº ya está en uso.',
+            ]
+        );
+
         try {
             return DB::transaction(function () use ($request) {
                 $atributos = $request;
