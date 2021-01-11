@@ -109,4 +109,8 @@ Route::middleware('auth:airlock')->group(function () {
     Route::get('showRecibo/{id}', 'API\ClientesController@showRecibo');
 
     Route::post('/resumenCuenta', 'API\ClientesController@resumenCuenta');
+
+    /*Dolar*/
+    Route::get('/consultar', 'API\DolarController@consultar');
+    Route::post('/setCotizacion', 'API\DolarController@setCotizacion');
 });

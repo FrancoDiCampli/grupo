@@ -14,23 +14,11 @@ trait PresupuestosTrait
     public static function index($request)
     {
         if (auth()->user()->role->role != 'vendedor') {
-            if ($request->fec) {
-                $fec = $request->fec;
-                $pres = Presupuesto::whereDate('created_at', $fec)->orderBy('id', 'DESC')->take($request->get('limit', null))->get();
-            } else {
-                $pres = Presupuesto::orderBy('id', 'DESC')->take($request->get('limit', null))->get();
-            }
+            $pres = Presupuesto::orderBy('id', 'DESC')->take($request->get('limit', null))->get();
         } else {
-            if ($request->fec) {
-                $fec = $request->fec;
-                $pres = Presupuesto::whereDate('created_at', $fec)
-                    ->where('user_id', auth()->user()->id)
-                    ->orderBy('id', 'DESC')->take($request->get('limit', null))->get();
-            } else {
-                $pres = Presupuesto::orderBy('id', 'DESC')
-                    ->where('user_id', auth()->user()->id)->take($request->get('limit', null))
-                    ->get();
-            }
+            $pres = Presupuesto::orderBy('id', 'DESC')
+                ->where('user_id', auth()->user()->id)->take($request->get('limit', null))
+                ->get();
         }
 
         $presupuestos = collect();
@@ -50,20 +38,6 @@ trait PresupuestosTrait
             'ultimo' => $presupuestos->first(),
             'total' => Presupuesto::count(),
         ]);
-
-        // if ($presupuestos->count() <= $request->get('limit')) {
-        //     return response()->json([
-        //         'presupuestos' => $presupuestos,
-        //         'ultimo' => $presupuestos->first(),
-        //         'total' => $presupuestos->count(),
-        //     ]);
-        // } else {
-        //     return response()->json([
-        //         'presupuestos' => $presupuestos->take($request->get('limit', null)),
-        //         'ultimo' => $presupuestos->first(),
-        //         'total' => $presupuestos->count(),
-        //     ]);
-        // }
     }
 
     public static function store($request)

@@ -17,30 +17,14 @@ trait VentasTrait
     public static function index($request)
     {
         if (auth()->user()->role->role != 'vendedor') {
-            if ($request->fec) {
-                $fec = $request->fec;
-                $facs = Venta::whereDate('created_at', $fec)
-                    ->take($request->get('limit', null))
-                    ->orderBy('id', 'DESC')
-                    ->get();
-            } else {
-                $facs = Venta::orderBy('id', 'DESC')
-                    ->get();
-            }
+            $facs = Venta::take($request->get('limit', null))
+                ->orderBy('id', 'DESC')
+                ->get();
         } else {
-            if ($request->fec) {
-                $fec = $request->fec;
-                $facs = Venta::whereDate('created_at', $fec)
-                    ->take($request->get('limit', null))
-                    ->orderBy('id', 'DESC')
-                    ->where('user_id', auth()->user()->id)
-                    ->get();
-            } else {
-                $facs = Venta::orderBy('id', 'DESC')
-                    ->take($request->get('limit', null))
-                    ->where('user_id', auth()->user()->id)
-                    ->get();
-            }
+            $facs = Venta::take($request->get('limit', null))
+                ->orderBy('id', 'DESC')
+                ->where('user_id', auth()->user()->id)
+                ->get();
         }
 
         $facturas = collect();
@@ -56,8 +40,6 @@ trait VentasTrait
             // $fac->put('pagos', $pagos);
 
             foreach ($fac->articulos as $det) {
-                // return $det;
-
                 if (auth()->user()->role->role == 'superAdmin' || auth()->user()->role->role == 'administrador') {
                     $article = Inventario::where('dependencia', null)
                         ->where('cantidad', '>', 0)
@@ -106,22 +88,6 @@ trait VentasTrait
             'total' => Venta::count(),
             'eliminadas' => $eliminadas
         ];
-
-        // if ($facturas->count() <= $request->get('limit')) {
-        //     return [
-        //         'ventas' => $facturas,
-        //         'ultima' => $facturas->first(),
-        //         'total' => $facturas->count(),
-        //         'eliminadas' => $eliminadas
-        //     ];
-        // } else {
-        //     return [
-        //         'ventas' => $facturas,
-        //         'ultima' => $facturas->first(),
-        //         'total' => $facturas->count(),
-        //         'eliminadas' => $eliminadas
-        //     ];
-        // }
     }
 
     public static function store($request)
