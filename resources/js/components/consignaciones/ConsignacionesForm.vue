@@ -880,7 +880,7 @@ export default {
                 );
 
                 // Establecer la cantidad maxima a vender
-                cantidadMaxima = articulo.stock;
+                cantidadMaxima = Number(Number(articulo.stock) / Number(articulo.stock)).toFixed(0);
                 if (this.detalles.length > 0) {
                     let stockExistente = 0;
                     for (let i = 0; i < this.detalles.length; i++) {

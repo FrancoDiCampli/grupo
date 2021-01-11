@@ -198,17 +198,14 @@
 
                                 <!-- CONDICION VENTA -->
                                 <v-col cols="12" sm="6" class="py-0">
-                                    <v-text-field
-                                        v-model="
-                                            $store.state.facturas.form
-                                                .condicionventa
-                                        "
+                                    <v-select
+                                        v-model="$store.state.facturas.form.condicionventa"
+                                        :items="['CONTADO', 'CUENTA CORRIENTE']"
                                         :rules="[rules.required]"
                                         label="Condición"
                                         required
                                         outlined
-                                        disabled
-                                    ></v-text-field>
+                                    ></v-select>
                                 </v-col>
                                 <!-- COMPROBANTE ADHERIDO -->
                                 <v-col cols="12" sm="6" class="py-0">
@@ -794,7 +791,6 @@ export default {
         // GENERAL
         initState() {
             this.$store.state.facturas.form.tipocomprobante = "FACTURA";
-            this.$store.state.facturas.form.condicionventa = "CONTADO";
             this.$store.state.facturas.form.tipoiva = 21;
             this.valorAgregadoControl();
         },
