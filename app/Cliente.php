@@ -55,6 +55,11 @@ class Cliente extends Model
         return $this->hasMany(Entrega::class)->orderBy('id', 'DESC');
     }
 
+    public function pedidos()
+    {
+        return $this->hasMany(Presupuesto::class)->orderBy('id', 'DESC');
+    }
+
     public function ctacte()
     {
         return $this->hasManyThrough(
