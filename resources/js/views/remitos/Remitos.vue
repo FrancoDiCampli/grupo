@@ -205,7 +205,7 @@ export default {
         },
 
         loadOnScroll() {
-            if(window.scrollY >= (document.body.clientHeight - window.innerHeight)) {
+            if(document.body.scrollTop + document.body.clientHeight >= document.body.scrollHeight) {
                 this.loadMore();
             }
         },
