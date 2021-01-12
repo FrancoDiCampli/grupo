@@ -48,6 +48,18 @@ Vue.filter("formatNumber", function(value) {
     }
 });
 
+// SCROOL DIRECTIVE
+Vue.directive('scroll', {
+    inserted: function (el, binding) {
+        let f = function (evt) {
+            if (binding.value(evt, el)) {
+                window.removeEventListener('scroll', f)
+            }
+        }
+        window.addEventListener('scroll', f)
+    }
+})
+
 // ELIMINAR ADVERTENCIA AL USAR V-CALENDAR
 const ignoreWarnMessage =
     "The .native modifier for v-on is only valid on components but it was used on <div>.";

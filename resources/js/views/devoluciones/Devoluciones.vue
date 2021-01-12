@@ -34,15 +34,23 @@ import DevolucionesIndex from "../../components/devoluciones/DevolucionesIndex";
 
 export default {
     data: () => ({
-        // limit: 10
+        limit: 10
     }),
 
     components: {
         DevolucionesIndex
     },
 
+    created() {
+        window.addEventListener("scroll", this.loadOnScroll);
+    },
+
     mounted() {
         this.getDevoluciones();
+    },
+
+    destroyed() {
+        window.removeEventListener("scroll", this.loadOnScroll);
     },
 
     methods: {
@@ -55,7 +63,13 @@ export default {
         loadMore: async function() {
             this.limit += this.limit;
             await this.getDevoluciones();
-        }
+        },
+
+        loadOnScroll() {
+            if(window.scrollY >= (document.body.clientHeight - window.innerHeight)) {
+                this.loadMore();
+            }
+        },
     }
 };
 </script>

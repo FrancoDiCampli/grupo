@@ -55,8 +55,16 @@ export default {
         ConsignacionesIndex
     },
 
+    created() {
+        window.addEventListener("scroll", this.loadOnScroll);
+    },
+
     mounted() {
         this.getConsignaciones();
+    },
+
+    destroyed() {
+        window.removeEventListener("scroll", this.loadOnScroll);
     },
 
     methods: {
@@ -69,7 +77,13 @@ export default {
         loadMore: async function() {
             this.limit += this.limit;
             await this.getConsignaciones();
-        }
+        },
+
+        loadOnScroll() {
+            if(window.scrollY >= (document.body.clientHeight - window.innerHeight)) {
+                this.loadMore();
+            }
+        },
     }
 };
 </script>

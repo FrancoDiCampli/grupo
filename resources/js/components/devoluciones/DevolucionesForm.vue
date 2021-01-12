@@ -1,6 +1,7 @@
 <template>
     <div>
         <v-card shaped outlined :loading="inProcess" class="pb-4">
+            <!-- HEADER -->
             <v-card-title class="py-0 px-2">
                 <v-row class="pa-0 ma-0">
                     <v-col cols="auto" align-self="center"
@@ -39,7 +40,8 @@
                     <v-stepper-content step="1">
                         <v-form ref="devolucionesVendedorForm">
                             <v-row justify="space-around" class="my-1">
-                                <v-col cols="9" class="py-0">
+                                <!-- CLIENTE -->
+                                <v-col cols="12" class="py-0">
                                     <v-text-field
                                         v-model="searchVendedor"
                                         :rules="[rules.required]"
@@ -112,7 +114,7 @@
                                     </v-card>
                                 </v-col>
                                 <!-- FECHA -->
-                                <v-col cols="12" sm="3" class="py-0">
+                                <v-col cols="12" sm="6" class="py-0">
                                     <v-dialog
                                         ref="dialogFecha"
                                         v-model="fechaDialog"
@@ -167,6 +169,19 @@
                                             >
                                         </v-date-picker>
                                     </v-dialog>
+                                </v-col>
+                                <!-- TIPO DE COMPROBANTE -->
+                                <v-col cols="12" sm="6" class="py-0">
+                                    <v-text-field
+                                        v-model="
+                                            $store.state.devoluciones.form
+                                                .tipo
+                                        "
+                                        :rules="[rules.required]"
+                                        label="Tipo de comprobante"
+                                        outlined
+                                        disabled
+                                    ></v-text-field>
                                 </v-col>
                             </v-row>
                         </v-form>
@@ -448,69 +463,15 @@
                         </v-row>
                     </v-stepper-content>
 
-                    <!-- BONIFICACION, RECARGO, SUBTOTAL, TOTAL -->
+                    <!-- OBSERVACIONES, SAVE SLOT -->
                     <v-stepper-step
                         :complete="step > 3"
                         step="3"
                         :editable="true"
                         edit-icon="fas fa-pen"
-                        :rules="[
-                            () => validateStep(3, 'devolucionesTotalesForm')
-                        ]"
-                        >Total</v-stepper-step
-                    >
-                    <v-stepper-content step="3">
-                        <v-form ref="devolucionesTotalesForm">
-                            <v-row justify="space-around" class="my-1">
-                                <v-col cols="12" sm="6" class="py-0 px-0">
-                                    <!-- TIPO DE COMPROBANTE -->
-                                    <v-col cols="12" class="py-0">
-                                        <v-text-field
-                                            v-model="
-                                                $store.state.devoluciones.form
-                                                    .tipo
-                                            "
-                                            :rules="[rules.required]"
-                                            label="Tipo de comprobante"
-                                            outlined
-                                            disabled
-                                        ></v-text-field>
-                                    </v-col>
-                                </v-col>
-                                <v-col cols="12" sm="6" class="py-0 px-0">
-                                    <!-- TOTAL -->
-                                    <v-col cols="12" class="py-0">
-                                        <v-text-field
-                                            v-model="total"
-                                            type="number"
-                                            label="Total"
-                                            outlined
-                                            disabled
-                                        ></v-text-field>
-                                    </v-col>
-                                </v-col>
-                            </v-row>
-                        </v-form>
-                        <v-row justify="center">
-                            <v-btn
-                                color="secondary"
-                                tile
-                                class="elevation-0 mb-2"
-                                @click="step = 4"
-                                >Continuar</v-btn
-                            >
-                        </v-row>
-                    </v-stepper-content>
-
-                    <!-- OBSERVACIONES, SAVE SLOT -->
-                    <v-stepper-step
-                        :complete="step > 4"
-                        step="4"
-                        :editable="true"
-                        edit-icon="fas fa-pen"
                         >Observaciones</v-stepper-step
                     >
-                    <v-stepper-content step="4">
+                    <v-stepper-content step="3">
                         <v-row justify="center" class="my-1">
                             <v-col cols="12" class="py-0">
                                 <v-textarea
@@ -579,8 +540,8 @@ export default {
         // HEADER
         PuntoVenta: null,
         // COTIZACION
-        cotizacion: 1,
-        fechaCotizacion: "",
+        cotizacion: localStorage.getItem('cotizacion') || null,
+        fechaCotizacion: localStorage.getItem('fechaCotizacion') || null,
         dialogCotizacion: false,
         // CLIENTES
         searchVendedor: null,
@@ -783,10 +744,11 @@ export default {
                 })
                 .then(response => {
                     this.articulos = response.data;
-                    resolve(response.data);
                 })
                 .catch(error => {
-                    reject(error);
+                    this.$store.dispatch("errorHandle", error.response, {
+                        root: true
+                    });
                 });
         },
 
@@ -902,6 +864,10 @@ export default {
                     this.$store.state.devoluciones.form.detalles = this.detalles;
                     this.$store.state.devoluciones.form.cotizacion = this.cotizacion;
                     this.$store.state.devoluciones.form.fechaCotizacion = this.fechaCotizacion;
+
+                    localStorage.setItem('cotizacion', this.cotizacion);
+                    localStorage.setItem('fechaCotizacion', this.fechaCotizacion);
+
                     return true;
                 }
             }
@@ -911,10 +877,15 @@ export default {
             this.vendedores = [];
             this.detalles = [];
             this.articuloSelected = {};
-            this.$refs.devolucionesVendedorForm.reset();
-            this.$refs.devolucionesTotalesForm.reset();
-            this.step = 1;
+            await this.$refs.devolucionesVendedorForm.reset();
+            await this.$refs.devolucionesTotalesForm.reset();
+            
+            this.cotizacion = localStorage.getItem('cotizacion') || null,
+            this.fechaCotizacion = localStorage.getItem('fechaCotizacion') || null,
             this.$store.state.devoluciones.form.tipo = "DEVOLUCION";
+
+            this.step = 1;
+            
         }
     }
 };

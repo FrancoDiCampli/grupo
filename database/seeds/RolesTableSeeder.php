@@ -14,7 +14,7 @@ class RolesTableSeeder extends Seeder
     public function run()
     {
         $permissionsSuperAdmin = Permission::permissionAll();
-        $permissionsAdmin = Permission::permissionExcept('clientes-mi-cuenta roles-index roles-show roles-store roles-update roles-destroy');
+        $permissionsAdmin = Permission::permissionExcept('clientes-mi-cuenta roles-show roles-store roles-update roles-destroy');
         $permissionsVendedor = Permission::permissionExcept('clientes-mi-cuenta articulos-store articulos-update articulos-destroy inventarios-index inventarios-store movimientos-index suppliers-index suppliers-show suppliers-store suppliers-update suppliers-destroy compras-index compras-show compras-store compras-destroy consignaciones-index consignaciones-show consignaciones-store devoluciones-index devoluciones-show devoluciones-store reportes users-index users-store users-update users-destroy roles-index roles-show roles-store roles-update roles-destroy');
         $permissionsCliente = Permission::permissionOnly('clientes-mi-cuenta remitos-show facturas-show entregas-show cuentascorrientes-generar-resumen cuentascorrientes-generar-recibo');
 

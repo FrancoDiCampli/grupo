@@ -276,7 +276,7 @@
                             </v-col>
                             <v-col cols="12" sm="6" class="py-0">
                                 <v-text-field
-                                    v-model="divisa.cotizacion"
+                                    v-model="cotizacion"
                                     :rules="[rules.required]"
                                     label="Cotizacion"
                                     outlined
@@ -285,7 +285,7 @@
                                 <v-dialog
                                     ref="dialogFecha"
                                     v-model="fechaDialog"
-                                    :return-value.sync="divisa.fechaCotizacion"
+                                    :return-value.sync="fechaCotizacion"
                                     persistent
                                     :width="
                                         $vuetify.breakpoint.xsOnly
@@ -296,12 +296,12 @@
                                     <template v-slot:activator="{ on }">
                                         <v-text-field
                                             :value="
-                                                divisa.fechaCotizacion
+                                                fechaCotizacion
                                                     | formatDate
                                             "
                                             @input="
                                                 value =>
-                                                    (divisa.fechaCotizacion = value)
+                                                    (fechaCotizacion = value)
                                             "
                                             label="Fecha de la cotizacion"
                                             :rules="[rules.required]"
@@ -311,7 +311,7 @@
                                         ></v-text-field>
                                     </template>
                                     <v-date-picker
-                                        v-model="divisa.fechaCotizacion"
+                                        v-model="fechaCotizacion"
                                         scrollable
                                         locale="es"
                                     >
@@ -321,7 +321,7 @@
                                             color="primary"
                                             @click="
                                                 $refs.dialogFecha.save(
-                                                    divisa.fechaCotizacion
+                                                    fechaCotizacion
                                                 )
                                             "
                                             >Aceptar</v-btn
@@ -396,7 +396,7 @@
                             </v-col>
                             <v-col cols="12" sm="6" class="py-0">
                                 <v-text-field
-                                    v-model="divisa.cotizacion"
+                                    v-model="cotizacion"
                                     :rules="[rules.required]"
                                     label="Cotizacion"
                                     outlined
@@ -417,7 +417,7 @@
                                 <v-dialog
                                     ref="dialogFecha"
                                     v-model="fechaDialog"
-                                    :return-value.sync="divisa.fechaCotizacion"
+                                    :return-value.sync="fechaCotizacion"
                                     persistent
                                     :width="
                                         $vuetify.breakpoint.xsOnly
@@ -428,12 +428,12 @@
                                     <template v-slot:activator="{ on }">
                                         <v-text-field
                                             :value="
-                                                divisa.fechaCotizacion
+                                                fechaCotizacion
                                                     | formatDate
                                             "
                                             @input="
                                                 value =>
-                                                    (divisa.fechaCotizacion = value)
+                                                    (fechaCotizacion = value)
                                             "
                                             label="Fecha de la cotizacion"
                                             :rules="[rules.required]"
@@ -443,7 +443,7 @@
                                         ></v-text-field>
                                     </template>
                                     <v-date-picker
-                                        v-model="divisa.fechaCotizacion"
+                                        v-model="fechaCotizacion"
                                         scrollable
                                         locale="es"
                                     >
@@ -453,7 +453,7 @@
                                             color="primary"
                                             @click="
                                                 $refs.dialogFecha.save(
-                                                    divisa.fechaCotizacion
+                                                    fechaCotizacion
                                                 )
                                             "
                                             >Aceptar</v-btn
@@ -675,7 +675,7 @@
                             </v-col>
                             <v-col cols="12" sm="6" class="py-0">
                                 <v-text-field
-                                    v-model="divisa.cotizacion"
+                                    v-model="cotizacion"
                                     :rules="[rules.required]"
                                     label="Cotizacion"
                                     outlined
@@ -696,7 +696,7 @@
                                 <v-dialog
                                     ref="dialogFecha"
                                     v-model="fechaDialog"
-                                    :return-value.sync="divisa.fechaCotizacion"
+                                    :return-value.sync="fechaCotizacion"
                                     persistent
                                     :width="
                                         $vuetify.breakpoint.xsOnly
@@ -707,12 +707,12 @@
                                     <template v-slot:activator="{ on }">
                                         <v-text-field
                                             :value="
-                                                divisa.fechaCotizacion
+                                                fechaCotizacion
                                                     | formatDate
                                             "
                                             @input="
                                                 value =>
-                                                    (divisa.fechaCotizacion = value)
+                                                    (fechaCotizacion = value)
                                             "
                                             label="Fecha de la cotizacion"
                                             :rules="[rules.required]"
@@ -722,7 +722,7 @@
                                         ></v-text-field>
                                     </template>
                                     <v-date-picker
-                                        v-model="divisa.fechaCotizacion"
+                                        v-model="fechaCotizacion"
                                         scrollable
                                         locale="es"
                                     >
@@ -732,7 +732,7 @@
                                             color="primary"
                                             @click="
                                                 $refs.dialogFecha.save(
-                                                    divisa.fechaCotizacion
+                                                    fechaCotizacion
                                                 )
                                             "
                                             >Aceptar</v-btn
@@ -904,7 +904,7 @@
                             </v-col>
                             <v-col cols="12" sm="6" class="py-0">
                                 <v-text-field
-                                    v-model="divisa.cotizacion"
+                                    v-model="cotizacion"
                                     :rules="[rules.required]"
                                     label="Cotizacion"
                                     outlined
@@ -925,7 +925,7 @@
                                 <v-dialog
                                     ref="dialogFecha"
                                     v-model="fechaDialog"
-                                    :return-value.sync="divisa.fechaCotizacion"
+                                    :return-value.sync="fechaCotizacion"
                                     persistent
                                     :width="
                                         $vuetify.breakpoint.xsOnly
@@ -936,12 +936,12 @@
                                     <template v-slot:activator="{ on }">
                                         <v-text-field
                                             :value="
-                                                divisa.fechaCotizacion
+                                                fechaCotizacion
                                                     | formatDate
                                             "
                                             @input="
                                                 value =>
-                                                    (divisa.fechaCotizacion = value)
+                                                    (fechaCotizacion = value)
                                             "
                                             label="Fecha de la cotizacion"
                                             :rules="[rules.required]"
@@ -951,7 +951,7 @@
                                         ></v-text-field>
                                     </template>
                                     <v-date-picker
-                                        v-model="divisa.fechaCotizacion"
+                                        v-model="fechaCotizacion"
                                         scrollable
                                         locale="es"
                                     >
@@ -961,7 +961,7 @@
                                             color="primary"
                                             @click="
                                                 $refs.dialogFecha.save(
-                                                    divisa.fechaCotizacion
+                                                    fechaCotizacion
                                                 )
                                             "
                                             >Aceptar</v-btn
@@ -1023,7 +1023,8 @@ export default {
         // Forularios_________________________________________________________
         // Cotizacion
         fechaDialog: false,
-        divisa: {},
+        cotizacion: localStorage.getItem('cotizacion') || null,
+        fechaCotizacion: localStorage.getItem('fechaCotizacion') || null,
         // Variable para indicar el inicio y finalizacion del proceso de añadir un pago
         adding: false,
         // Array con los pagos de cada cuenta
@@ -1126,10 +1127,7 @@ export default {
     watch: {
         // Modificador del dolar o pesos cuando cambia la cotización
         cotizacion() {
-            this.dolares = Number(this.pesos / this.divisa.cotizacion).toFixed(
-                2
-            );
-            this.pesos = Number(this.dolares * this.divisa.cotizacion).toFixed(
+            this.pesos = Number(this.dolares * this.cotizacion).toFixed(
                 2
             );
         },
@@ -1139,7 +1137,7 @@ export default {
             if (this.inputFocus == "pesos") {
                 if (this.pesos) {
                     this.dolares = Number(
-                        this.pesos / this.divisa.cotizacion
+                        this.pesos / this.cotizacion
                     ).toFixed(2);
                 } else {
                     this.dolares = null;
@@ -1152,7 +1150,7 @@ export default {
             if (this.inputFocus == "dolares") {
                 if (this.dolares) {
                     this.pesos = Number(
-                        this.dolares * this.divisa.cotizacion
+                        this.dolares * this.cotizacion
                     ).toFixed(2);
                 } else {
                     this.pesos = null;
@@ -1226,13 +1224,12 @@ export default {
         addPay: async function(type) {
             // Añadir pago en efectivo
             this.adding = true;
-            window.localStorage.setItem("divisa", JSON.stringify(this.divisa));
             if (type == "Efectivo") {
                 if (this.$refs.efectivoForm.validate()) {
                     let pago = {
                         tipo: type,
-                        cotizacion: this.divisa.cotizacion,
-                        fecha_cotizacion: this.divisa.fechaCotizacion,
+                        cotizacion: this.cotizacion,
+                        fecha_cotizacion: this.fechaCotizacion,
                         pesos: this.pesos,
                         dolares: this.dolares
                     };
@@ -1245,8 +1242,8 @@ export default {
                 if (this.$refs.chequeForm.validate()) {
                     let pago = {
                         tipo: type,
-                        cotizacion: this.divisa.cotizacion,
-                        fecha_cotizacion: this.divisa.fechaCotizacion,
+                        cotizacion: this.cotizacion,
+                        fecha_cotizacion: this.fechaCotizacion,
                         pesos: this.pesos,
                         dolares: this.dolares,
                         observaciones: this.observaciones
@@ -1265,8 +1262,8 @@ export default {
             } else if (type == "Transferencia") {
                 let pago = {
                     tipo: type,
-                    cotizacion: this.divisa.cotizacion,
-                    fecha_cotizacion: this.divisa.fechaCotizacion,
+                    cotizacion: this.cotizacion,
+                    fecha_cotizacion: this.fechaCotizacion,
                     pesos: this.pesos,
                     dolares: this.dolares,
                     observaciones: this.observaciones
@@ -1285,8 +1282,8 @@ export default {
                 if (this.$refs.haberForm.validate()) {
                     let pago = {
                         tipo: type,
-                        cotizacion: this.divisa.cotizacion,
-                        fecha_cotizacion: this.divisa.fechaCotizacion,
+                        cotizacion: this.cotizacion,
+                        fecha_cotizacion: this.fechaCotizacion,
                         pesos: this.pesos,
                         dolares: this.dolares,
                         observaciones: this.observaciones
@@ -1299,11 +1296,10 @@ export default {
                 }
             }
             this.observaciones = null;
-            this.divisa = {
-                cotizacion: null,
-                fechaCotizacion: null
-            };
-            window.localStorage.removeItem("divisa");
+            
+            localStorage.setItem('cotizacion', this.cotizacion);
+            localStorage.setItem('fechaCotizacion', this.fechaCotizacion);
+
             this.adding = false;
             this.setHaber();
         },

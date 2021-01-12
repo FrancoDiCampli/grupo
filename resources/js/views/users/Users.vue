@@ -37,8 +37,16 @@ export default {
         UsersIndex
     },
 
+    created() {
+        window.addEventListener("scroll", this.loadOnScroll);
+    },
+
     mounted() {
         this.getUsers();
+    },
+
+    destroyed() {
+        window.removeEventListener("scroll", this.loadOnScroll);
     },
 
     methods: {
@@ -51,7 +59,13 @@ export default {
         loadMore() {
             this.limit += this.limit;
             this.getUsers();
-        }
+        },
+
+        loadOnScroll() {
+            if(window.scrollY >= (document.body.clientHeight - window.innerHeight)) {
+                this.loadMore();
+            }
+        },
     }
 };
 </script>

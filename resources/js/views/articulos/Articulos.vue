@@ -61,8 +61,16 @@ export default {
         ArticulosIndex
     },
 
+    created() {
+        window.addEventListener("scroll", this.loadOnScroll);
+    },
+
     mounted() {
         this.getArticulos();
+    },
+
+    destroyed() {
+        window.removeEventListener("scroll", this.loadOnScroll);
     },
 
     methods: {
@@ -75,6 +83,12 @@ export default {
         loadMore() {
             this.limit += this.limit;
             this.getArticulos();
+        },
+
+        loadOnScroll() {
+            if(window.scrollY >= (document.body.clientHeight - window.innerHeight)) {
+                this.loadMore();
+            }
         },
 
         checkRole() {

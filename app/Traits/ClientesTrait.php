@@ -303,13 +303,13 @@ trait ClientesTrait
             }
         }
 
-        $facturas = $invoices;
+        $ventas = $invoices; // VENTAS
 
-        $invoices = $cliente->invoices;
+        $facturas = $cliente->invoices; // FACTURAS
 
-        $entregas = $cliente->entregas;
+        $entregas = $cliente->entregas; // ENTREGAS
 
-        return compact('cliente', 'contactos', 'user', 'facturas', 'invoices', 'entregas', 'cuentas', 'recibos', 'billing', 'haber');
+        return compact('cliente', 'contactos', 'user', 'facturas', 'ventas', 'entregas', 'cuentas', 'recibos', 'billing', 'haber');
     }
 
     public static function resumenCuenta($request)

@@ -80,10 +80,18 @@ export default {
         }
     },
 
+    created() {
+        window.addEventListener("scroll", this.loadOnScroll);
+    },
+
     mounted() {
         this.getClientes();
     },
 
+    destroyed() {
+        window.removeEventListener("scroll", this.loadOnScroll);
+    },
+    
     methods: {
         getClientes: async function() {
             await this.$store.dispatch("clientes/index", {
@@ -94,7 +102,13 @@ export default {
         loadMore: async function() {
             this.limit += this.limit;
             await this.getClientes();
-        }
+        },
+
+        loadOnScroll() {
+            if(window.scrollY >= (document.body.clientHeight - window.innerHeight)) {
+                this.loadMore();
+            }
+        },
     }
 };
 </script>

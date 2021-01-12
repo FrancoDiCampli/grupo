@@ -675,8 +675,8 @@ export default {
         PuntoVenta: null,
         // COTIZACION
         cotizacion: null,
-        fechaCotizacion: "",
-        dialogCotizacion: false,
+        cotizacion: localStorage.getItem('cotizacion') || null,
+        fechaCotizacion: localStorage.getItem('fechaCotizacion') || null,
         // CLIENTES
         searchVendedor: null,
         searchVendedorTable: false,
@@ -986,6 +986,10 @@ export default {
                     this.$store.state.consignaciones.form.detalles = this.detalles;
                     this.$store.state.consignaciones.form.cotizacion = this.cotizacion;
                     this.$store.state.consignaciones.form.fechaCotizacion = this.fechaCotizacion;
+
+                    localStorage.setItem('cotizacion', this.cotizacion);
+                    localStorage.setItem('fechaCotizacion', this.fechaCotizacion);
+
                     return true;
                 }
             }
@@ -995,10 +999,14 @@ export default {
             this.vendedores = [];
             this.detalles = [];
             this.articuloSelected = {};
-            this.$refs.consignacionesVendedorForm.reset();
-            this.$refs.consignacionesTotalesForm.reset();
-            this.step = 1;
+            await this.$refs.consignacionesVendedorForm.reset();
+            await this.$refs.consignacionesTotalesForm.reset();
+
+            this.cotizacion = localStorage.getItem('cotizacion') || null,
+            this.fechaCotizacion = localStorage.getItem('fechaCotizacion') || null,
             this.$store.state.consignaciones.form.tipo = "TRANSFERENCIA";
+
+            this.step = 1;
         }
     }
 };

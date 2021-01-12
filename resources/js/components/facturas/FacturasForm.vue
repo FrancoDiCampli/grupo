@@ -715,8 +715,8 @@ export default {
         editDetailDialog: false,
         // COTIZACION
         valorAgregado: null,
-        cotizacion: 1,
-        fechaCotizacion: "",
+        cotizacion: localStorage.getItem('cotizacion') || null,
+        fechaCotizacion: localStorage.getItem('fechaCotizacion') || null,
         dialogCotizacion: false,
         // SUBTOTAL
         subtotal: null,
@@ -963,6 +963,10 @@ export default {
                 this.$store.state.facturas.form.fechaCotizacion = this.fechaCotizacion;
                 this.$store.state.facturas.form.detalles = this.detalles;
                 this.$store.state.facturas.form.numfactura = this.NumComprobante;
+
+                localStorage.setItem('cotizacion', this.cotizacion);
+                localStorage.setItem('fechaCotizacion', this.fechaCotizacion);
+
                 return true;
             }
         }

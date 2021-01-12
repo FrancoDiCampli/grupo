@@ -1,5 +1,6 @@
 <template>
     <div>
+        
         <v-tooltip left>
             <template v-slot:activator="{ on }">
                 <v-btn
@@ -236,8 +237,16 @@ export default {
         ]
     }),
 
+    created() {
+        window.addEventListener("scroll", this.loadOnScroll);
+    },
+
     mounted() {
         this.getPedidos();
+    },
+
+    destroyed() {
+        window.removeEventListener("scroll", this.loadOnScroll);
     },
 
     methods: {
@@ -250,6 +259,12 @@ export default {
         loadMore: async function() {
             this.limit += this.limit;
             await this.getPedidos();
+        },
+
+        loadOnScroll() {
+            if(window.scrollY >= (document.body.clientHeight - window.innerHeight)) {
+                this.loadMore();
+            }
         },
 
         print(id) {

@@ -59,8 +59,16 @@ export default {
         ComprasIndex
     },
 
+    created() {
+        window.addEventListener("scroll", this.loadOnScroll);
+    },
+
     mounted() {
         this.getCompras();
+    },
+
+    destroyed() {
+        window.removeEventListener("scroll", this.loadOnScroll);
     },
 
     methods: {
@@ -73,7 +81,13 @@ export default {
         loadMore: async function() {
             this.limit += this.limit;
             await this.getCompras();
-        }
+        },
+
+        loadOnScroll() {
+            if(window.scrollY >= (document.body.clientHeight - window.innerHeight)) {
+                this.loadMore();
+            }
+        },
     }
 };
 </script>

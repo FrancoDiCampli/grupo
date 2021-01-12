@@ -138,8 +138,16 @@ export default {
         ]
     }),
 
+    created() {
+        window.addEventListener("scroll", this.loadOnScroll);
+    },
+
     mounted() {
         this.getEntregas();
+    },
+
+    destroyed() {
+        window.removeEventListener("scroll", this.loadOnScroll);
     },
 
     methods: {
@@ -152,6 +160,12 @@ export default {
         loadMore: async function () {
             this.limit += 10;
             await this.getEntregas();
+        },
+
+        loadOnScroll() {
+            if(window.scrollY >= (document.body.clientHeight - window.innerHeight)) {
+                this.loadMore();
+            }
         },
 
         print(id) {

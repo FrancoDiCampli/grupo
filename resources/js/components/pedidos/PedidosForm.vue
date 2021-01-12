@@ -805,8 +805,8 @@ export default {
         articulos: [],
         articuloSelected: {},
         // COTIZACION
-        cotizacion: 1,
-        fechaCotizacion: "",
+        cotizacion: localStorage.getItem('cotizacion') || null,
+        fechaCotizacion: localStorage.getItem('fechaCotizacion') || null,
         dialogCotizacion: false,
         // DETALLES
         detalles: [],
@@ -1151,6 +1151,10 @@ export default {
                     this.$store.state.pedidos.form.cotizacion = this.cotizacion;
                     this.$store.state.pedidos.form.fechaCotizacion = this.fechaCotizacion;
                     this.$store.state.pedidos.form.numpedido = this.NumComprobante;
+
+                    localStorage.setItem('cotizacion', this.cotizacion);
+                    localStorage.setItem('fechaCotizacion', this.fechaCotizacion);
+
                     return true;
                 }
             }
@@ -1160,8 +1164,12 @@ export default {
             this.clientes = [];
             this.detalles = [];
             this.articuloSelected = {};
-            this.$refs.pedidosClienteForm.reset();
-            this.$refs.pedidosTotalesForm.reset();
+            await this.$refs.pedidosClienteForm.reset();
+            await this.$refs.pedidosTotalesForm.reset();
+
+            this.cotizacion = localStorage.getItem('cotizacion') || null,
+            this.fechaCotizacion = localStorage.getItem('fechaCotizacion') || null,
+
             this.step = 1;
         }
     }
