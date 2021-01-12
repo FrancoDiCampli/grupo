@@ -46,7 +46,6 @@ const actions = {
                 .get("/api/clientes/" + params.id, { params: params })
                 .then(response => {
                     commit("fillCliente", response.data);
-                    console.log(response.data);
                     resolve(response.data);
                 })
                 .catch(error => {
