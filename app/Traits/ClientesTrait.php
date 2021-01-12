@@ -7,8 +7,9 @@ use App\Role;
 use App\User;
 use App\Venta;
 use App\Cliente;
-use App\Cuentacorriente;
 use Carbon\Carbon;
+use App\Inventario;
+use App\Cuentacorriente;
 use App\Traits\FotosTrait;
 use App\Traits\RecibosTrait;
 use App\Traits\ContactosTrait;
@@ -296,14 +297,14 @@ trait ClientesTrait
 
         $billing = $ordenando->values()->all();
 
-        $invoices = collect();
+        $ventas = collect();
         foreach ($facturas as $item) {
             if ($item->tipocomprobante != 'IVA') {
-                $invoices->push($item);
+                $ventas->push($item);
             }
         }
 
-        $ventas = $invoices; // VENTAS
+        $ventas = static::detallesVentas($ventas);
 
         $facturas = $cliente->invoices; // FACTURAS
 
@@ -376,5 +377,57 @@ trait ClientesTrait
             'saldoAnterior' => number_format($saldoAnterior, 2, ',', '.'),
             'saldo' => number_format($saldo, 2, ',', '.')
         ];
+    }
+
+    public static function detallesVentas($ventas)
+    {
+        $auxVentas = collect();
+        foreach ($ventas as $venta) {
+            $fecha = new Carbon($venta->fecha);
+            $venta->fecha = $fecha->format('d-m-Y');
+            $venta->cliente = Cliente::withTrashed()->find($venta->cliente_id);
+            // $fac->forma;
+            // $pagos = FormasDePagoTrait::verPagos($fac);
+            // $fac->cuenta ? $fac->cuenta->pagos : null;
+            // $fac = collect($fac);
+            // $fac->put('pagos', $pagos);
+
+            foreach ($venta->articulos as $det) {
+                if (auth()->user()->role->role == 'superAdmin' || auth()->user()->role->role == 'administrador') {
+                    $article = Inventario::where('dependencia', null)
+                        ->where('cantidad', '>', 0)
+                        ->where('articulo_id', $det['id'])
+                        ->first();
+                } else {
+                    $article = Inventario::where('dependencia', auth()->user()->id)
+                        ->where('cantidad', '>', 0)
+                        ->where('articulo_id', $det['id'])
+                        ->first();
+                }
+
+                $article ? $det['pivot']['disponible'] = $article->cantidad : $det['pivot']['disponible'] = 0;
+
+                $detsVenta = DB::table('articulo_factura')->where('articulo_venta_id', $det['pivot']->id)->get();
+                $detsEntrega = DB::table('articulo_entrega')->where('articulo_venta_id', $det['pivot']->id)->get();
+
+                $detsVenta->sum('cantidad') < $det['pivot']->cantidad ? $fac['todofacturado'] = false : $fac['todofacturado'] = true;
+                $det['pivot']['cantidadfacturado'] = $detsVenta->sum('cantidad');
+
+                $detsEntrega->sum('cantidad') < $det['pivot']->cantidad ? $fac['todoentregado'] = false : $fac['todoentregado'] = true;
+                $det['pivot']['cantidadentregado'] = $detsEntrega->sum('cantidad');
+
+                $det['pivot']['litros'] = $det->litros;
+
+                if ($venta->cliente_id <> 1) {
+                    count($venta->cuenta->pagos) > 0 ? $venta['hasPagos'] = true : $venta['hasPagos'] = false;
+                    count($venta->entregas) > 0 ? $venta['hasEntregas'] = true : $venta['hasEntregas'] = false;
+                    count($venta->facturas) > 0 ? $venta['hasFacturas'] = true : $venta['hasFacturas'] = false;
+                }
+            }
+
+            $auxVentas->push($venta);
+        }
+
+        return $auxVentas;
     }
 }
