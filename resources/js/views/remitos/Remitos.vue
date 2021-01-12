@@ -162,6 +162,7 @@
 </template>
 
 <script>
+import moment from "moment";
 
 export default {
     data: () => ({
@@ -206,7 +207,9 @@ export default {
 
         loadOnScroll() {
             if(document.body.scrollTop + document.body.clientHeight >= document.body.scrollHeight) {
-                this.loadMore();
+                if(!this.$store.state.inProcess) {
+                    this.loadMore();
+                }
             }
         },
 
