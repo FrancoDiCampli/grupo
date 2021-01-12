@@ -309,7 +309,9 @@ trait ClientesTrait
 
         $entregas = $cliente->entregas;
 
-        return compact('cliente', 'contactos', 'user', 'facturas', 'invoices', 'entregas', 'cuentas', 'recibos', 'billing', 'haber');
+        $pedidos = $cliente->pedidos;
+
+        return compact('cliente', 'contactos', 'user', 'facturas', 'invoices', 'entregas', 'pedidos', 'cuentas', 'recibos', 'billing', 'haber');
     }
 
     public static function resumenCuenta($request)
