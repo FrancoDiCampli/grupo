@@ -18,11 +18,11 @@ trait VentasTrait
     {
         if (auth()->user()->role->role != 'vendedor') {
             $facs = Venta::take($request->get('limit', null))
-                ->orderBy('id', 'DESC')
+                ->orderBy('comprobanteadherido', 'DESC')
                 ->get();
         } else {
             $facs = Venta::take($request->get('limit', null))
-                ->orderBy('id', 'DESC')
+                ->orderBy('comprobanteadherido', 'DESC')
                 ->where('user_id', auth()->user()->id)
                 ->get();
         }
