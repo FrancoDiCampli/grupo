@@ -41,23 +41,23 @@ class Cliente extends Model
 
     public function facturas()
     {
-        return $this->hasMany(Venta::class);
+        return $this->hasMany(Venta::class)->orderBy('comprobanteadherido', 'DESC');
         // return $this->hasMany(Venta::class)->withTrashed();
     }
 
     public function invoices()
     {
-        return $this->hasMany(Factura::class)->orderBy('id', 'DESC');
+        return $this->hasMany(Factura::class)->orderBy('comprobanteadherido', 'DESC');
     }
 
     public function entregas()
     {
-        return $this->hasMany(Entrega::class)->orderBy('id', 'DESC');
+        return $this->hasMany(Entrega::class)->orderBy('comprobanteadherido', 'DESC');
     }
 
     public function pedidos()
     {
-        return $this->hasMany(Presupuesto::class)->orderBy('id', 'DESC');
+        return $this->hasMany(Presupuesto::class)->orderBy('comprobanteadherido', 'DESC');
     }
 
     public function ctacte()
