@@ -51,7 +51,6 @@ export default {
                 let checkData = await this.$refs.formEntregas.setData();
                 if (checkData) {
                     await this.$store.dispatch("entregas/save");
-                    // this.$refs.formEntregas.getPoint();
                     this.resetForm();
                 }
             }

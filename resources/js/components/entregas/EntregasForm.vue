@@ -344,7 +344,7 @@ export default {
 
         // FORM
         setData() {
-            this.$store.state.facturas.form.detalles = this.detalles;
+            this.$store.state.entregas.form.detalles = this.detalles;
             return true;
         }
     }

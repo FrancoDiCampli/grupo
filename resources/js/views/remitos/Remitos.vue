@@ -64,7 +64,58 @@
                                                         </v-icon>
                                                     </v-btn>
                                                 </template>
-                                                <v-list>
+
+                                                <v-card>
+                                                    <v-list>
+                                                        <v-list-item :to="`/remitos/show/${item.id}`">
+                                                            <v-list-item-title>Detalles</v-list-item-title>
+                                                        </v-list-item>
+                                                        <v-list-item @click="print(item.id)">
+                                                            <v-list-item-title>Imprimir</v-list-item-title>
+                                                        </v-list-item>
+                                                        <v-list-item v-if="checkDelivery(item)" @click="delivery(item)">
+                                                            <v-list-item-title>Generar entrega</v-list-item-title>
+                                                        </v-list-item>
+                                                        <v-list-item v-if="checkOptions(item)" @click="openDeleteDialog(item.id)">
+                                                            <v-list-item-title>Eliminar</v-list-item-title>
+                                                        </v-list-item>
+                                                    </v-list>
+                                                    <v-divider></v-divider>
+                                                    <v-card-actions class="py-4">
+                                                        <v-row justify="space-around">
+                                                            <v-tooltip bottom>
+                                                                <template v-slot:activator="{ on, attrs }">
+                                                                    <v-icon 
+                                                                        v-bind="attrs" 
+                                                                        v-on="on"
+                                                                        :color="hasEntregasColor(item)"
+                                                                    >fas fa-truck</v-icon>
+                                                                </template>
+                                                                <span>
+                                                                    <div v-if="item.todoentregado">Posee entregas totales</div>
+                                                                    <div v-else-if="item.hasEntregas">Posee entregas parciales</div>
+                                                                    <div v-else>No posee entregas</div>
+                                                                </span>
+                                                            </v-tooltip>
+                                                            <v-tooltip bottom>
+                                                                <template v-slot:activator="{ on, attrs }">
+                                                                    <v-icon 
+                                                                        v-bind="attrs" 
+                                                                        v-on="on"
+                                                                        :color="hasFacturasColor(item)"
+                                                                    >fas fa-dollar-sign</v-icon>
+                                                                </template>
+                                                                <span>
+                                                                    <div v-if="item.todofacturado">Posee facturas totales</div>
+                                                                    <div v-else-if="item.hasFacturas">Posee facturas parciales</div>
+                                                                    <div v-else>No posee facturas</div>
+                                                                </span>
+                                                            </v-tooltip>
+                                                        </v-row>
+                                                    </v-card-actions>
+                                                </v-card>
+
+                                                <!-- <v-list>
                                                     <v-list-item
                                                         :to="`/remitos/show/${item.id}`"
                                                     >
@@ -94,7 +145,7 @@
                                                             >Eliminar</v-list-item-title
                                                         >
                                                     </v-list-item>
-                                                </v-list>
+                                                </v-list> -->
                                             </v-menu>
                                         </td>
                                     </tr>
@@ -334,6 +385,27 @@ export default {
                 }
             } else {
                 return false;
+            }
+        },
+
+        // ESTILOS
+        hasEntregasColor(item) {
+            if(item.todoentregado) {
+                return 'error';
+            } else if(item.hasEntregas) {
+                return 'warning';
+            } else {
+                return 'success';
+            }
+        },
+
+        hasFacturasColor(item) {
+            if(item.todofacturado) {
+                return 'error';
+            } else if(item.hasFacturas) {
+                return 'warning';
+            } else {
+                return 'success';
             }
         }
     },

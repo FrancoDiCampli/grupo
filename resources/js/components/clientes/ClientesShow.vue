@@ -216,6 +216,10 @@ export default {
     },
 
     watch: {
+        id() {
+            this.getCliente();
+        },
+
         mode() {
             if (this.mode == "show") {
                 let provinciaState = this.$store.state.clientes.cliente.cliente
