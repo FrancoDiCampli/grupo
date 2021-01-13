@@ -23,7 +23,7 @@
         <v-container>
             <v-row justify="center">
                 <v-col cols="12" md="10" lg="8">
-                    <ArticulosIndex :limit="limit">
+                    <ArticulosIndex :limit="limit" ref="ArticulosIndex">
                         <br />
                         <v-row
                             justify="center"
@@ -87,7 +87,7 @@ export default {
 
         loadOnScroll() {
             if(document.body.scrollTop + document.body.clientHeight >= document.body.scrollHeight) {
-                if(!this.$store.state.inProcess) {
+                if(!this.$store.state.inProcess && this.$refs.ArticulosIndex.articulosTabs == 0) {
                     this.loadMore();
                 }
             }
