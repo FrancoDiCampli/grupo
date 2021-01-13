@@ -77,7 +77,7 @@ trait PresupuestosTrait
     {
         $request->validate(
             [
-                'remitoadherido' => 'required|unique:ventas,comprobanteadherido'
+                'remitoadherido' => 'required|unique:ventas,comprobanteadherido,NULL,id,deleted_at,NULL'
             ],
             [
                 'remitoadherido.unique' => 'El valor del campo Remito adherido Nº ya está en uso.',
@@ -250,7 +250,7 @@ trait PresupuestosTrait
 
         $request->validate(
             [
-                'remitoadherido' => 'required|unique:ventas,comprobanteadherido'
+                'remitoadherido' => 'required|unique:ventas,comprobanteadherido,NULL,id,deleted_at,NULL'
             ],
             [
                 'remitoadherido.unique' => 'El valor del campo Remito adherido Nº ya está en uso.',
