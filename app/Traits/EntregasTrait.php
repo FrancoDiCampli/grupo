@@ -16,9 +16,9 @@ trait EntregasTrait
     public static function index($request)
     {
         if (auth()->user()->role->role != 'vendedor') {
-            $ents = Entrega::orderBy('id', 'DESC')->get();
+            $ents = Entrega::orderBy('comprobanteadherido', 'DESC')->get();
         } else {
-            $ents = Entrega::orderBy('id', 'DESC')
+            $ents = Entrega::orderBy('comprobanteadherido', 'DESC')
                 ->where('user_id', auth()->user()->id)
                 ->get();
         }

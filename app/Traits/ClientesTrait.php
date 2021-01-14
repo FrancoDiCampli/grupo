@@ -96,7 +96,7 @@ trait ClientesTrait
     {
         $request->validate(
             [
-                'email' => 'required|email|unique:users',
+                'email' => 'required|email|unique:users,email,NULL,id,deleted_at,NULL',
                 'password' => 'required|min:6',
                 'confirm_password' => 'required|min:6|same:password'
             ],
@@ -129,7 +129,7 @@ trait ClientesTrait
 
         $request->validate(
             [
-                'email' => 'required|email|unique:users,email,' . $user->id,
+                'email' => 'required|email|unique:users,email,' . $user->id . ',NULL,id,deleted_at,NULL,',
                 'password' => 'nullable|min:6',
                 'confirm_password' => 'nullable|min:6|same:password'
             ],

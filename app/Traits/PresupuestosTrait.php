@@ -14,9 +14,9 @@ trait PresupuestosTrait
     public static function index($request)
     {
         if (auth()->user()->role->role != 'vendedor') {
-            $pres = Presupuesto::orderBy('id', 'DESC')->take($request->get('limit', null))->get();
+            $pres = Presupuesto::orderBy('comprobanteadherido', 'DESC')->whereNull('numventa')->take($request->get('limit', null))->get();
         } else {
-            $pres = Presupuesto::orderBy('id', 'DESC')
+            $pres = Presupuesto::orderBy('comprobanteadherido', 'DESC')->whereNull('numventa')
                 ->where('user_id', auth()->user()->id)->take($request->get('limit', null))
                 ->get();
         }
