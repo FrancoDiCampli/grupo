@@ -125,6 +125,7 @@
 
 export default {
     data: () => ({
+        inProcess: false,
         limit: 10,
         deleteDialog: false,
         deleteId: null,

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <v-tabs right hide-slider background-color="transparent">
+        <v-tabs right hide-slider background-color="transparent" v-model="articulosTabs">
             <v-tab>
                 <v-icon size="medium">fas fa-th-list</v-icon>
             </v-tab>
@@ -182,6 +182,7 @@ import EskeletonLoader from "../loaders/EskeletonLoader";
 
 export default {
     data: () => ({
+        articulosTabs: 0,
         headers: [
             { text: "Codigo", sortable: false, class: "hidden-sm-and-down" },
             { text: "Articulo", sortable: false },

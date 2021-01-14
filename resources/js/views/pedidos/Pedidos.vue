@@ -221,11 +221,11 @@
 
 export default {
     data: () => ({
+        inProcess: false,
         limit: 10,
         ventaID: null,
         preventDialog: false,
         remitoadherido: null,
-        inProcess: false,
         deleteDialog: false,
         deleteId: null,
         headers: [

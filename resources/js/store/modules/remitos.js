@@ -34,6 +34,7 @@ const actions = {
                 .get("/api/remitos", { params: params })
                 .then(response => {
                     commit("fillRemitos", response.data);
+                    console.log(response.data);
                     resolve(response.data);
                 })
                 .catch(error => {
