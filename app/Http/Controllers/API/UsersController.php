@@ -8,6 +8,7 @@ use App\Traits\FotosTrait;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
 
 class UsersController extends Controller
 {
@@ -85,13 +86,20 @@ class UsersController extends Controller
 
     public function store(Request $request)
     {
-        $attributes = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255|unique:users',
-            'password' => 'required|string|min:6',
-            'password_confirm' => 'required|string|min:6|same:password',
-            'role_id' => 'nullable',
-        ]);
+        $attributes = $request->validate(
+            [
+                'name' => 'required|string|max:255',
+                'email' => 'required|email|unique:users,email,null,id,deleted_at,NULL',
+                'password' => 'required|string|min:6',
+                'password_confirm' => 'required|string|min:6|same:password',
+                'role_id' => 'nullable',
+            ],
+            [
+                'email.unique' => 'El valor del campo email ya está en uso.',
+                'password.required' => 'La contraseña es requerida',
+                'password_confirm.same' => 'Las contraseñas deben coincidir',
+            ]
+        );
 
         if ($request->password == $request->password_confirm) {
             $attributes['password'] = bcrypt($attributes['password']);
@@ -105,7 +113,7 @@ class UsersController extends Controller
         $user = User::find($id);
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|string|max:255|unique:users,email,' . $user->id,
+            'email' => 'required|string|max:255|unique:users,email,' . $user->id . ',id,deleted_at,null',
             'password' => 'required|string|min:6',
             'password_confirm' => 'required|string|min:6|same:password',
         ]);

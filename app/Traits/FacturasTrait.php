@@ -15,11 +15,11 @@ trait FacturasTrait
     public static function index($request)
     {
         if (auth()->user()->role->role == 'superAdmin' || auth()->user()->role->role == 'administrador') {
-            $facs = Factura::orderBy('id', 'DESC')
+            $facs = Factura::orderBy('comprobanteadherido', 'DESC')
                 ->take($request->get('limit', null))
                 ->get();
         } else {
-            $facs = Factura::orderBy('id', 'DESC')
+            $facs = Factura::orderBy('comprobanteadherido', 'DESC')
                 ->where('user_id', auth()->user()->id)
                 ->take($request->get('limit', null))
                 ->get();
