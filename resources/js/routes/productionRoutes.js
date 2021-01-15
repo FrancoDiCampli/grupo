@@ -77,6 +77,9 @@ import Users from "../views/users/Users";
 import UsersCreate from "../views/users/Create";
 import UsersEdit from "../views/users/Edit";
 
+// Preferencias
+import Preferencias from "../views/preferencias/Preferencias"
+
 const originalPush = Router.prototype.push;
 Router.prototype.push = function push(location) {
   return originalPush.call(this, location).catch(err => {
@@ -525,6 +528,16 @@ export default new Router({
             meta: {
                 rol: ["superAdmin", "administrador"],
                 redirect: "welcome"
+            }
+        },
+        // Preferencias
+        {
+            path: "/preferencias",
+            name: "preferencias",
+            component: Preferencias,
+            meta: {
+                permission: "authenticated",
+                redirect: "home"
             }
         }
     ]

@@ -1,6 +1,6 @@
 import Vue from "vue";
 import App from "./App.vue";
-import router from "./routes/router";
+import router from "./routes/productionRoutes";
 import store from "./store/store";
 import moment from "moment";
 
