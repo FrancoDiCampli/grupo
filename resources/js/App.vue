@@ -302,6 +302,14 @@ export default {
         if (JSON.parse(window.localStorage.getItem("logged"))) {
             this.recoverSession();
         }
+
+        if(window.localStorage.getItem('customTheme')) {
+            let customTheme = JSON.parse(window.localStorage.getItem('customTheme'));
+            this.$vuetify.theme.themes.light = customTheme.light;
+            this.$vuetify.theme.themes.dark = customTheme.dark
+        }
+
+        
     },
 
     methods: {
