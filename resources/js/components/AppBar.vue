@@ -368,7 +368,7 @@ export default {
             //     icon: "fas fa-tag",
             //     url: "/roles",
             //     roles: ["superAdmin"],
-            //     divider: false,
+            //     divider: true,
             // },
         ],
     }),

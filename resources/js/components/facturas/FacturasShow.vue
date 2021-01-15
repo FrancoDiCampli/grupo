@@ -49,7 +49,14 @@
                                     <b>Comprobante Nº:</b>
                                     {{
                                     $store.state.facturas.factura.factura
-                                    .numventa
+                                    .numfactura
+                                    }}
+                                </p>
+                                <p>
+                                    <b>Comprobante adherido:</b>
+                                    {{
+                                    $store.state.facturas.factura.factura
+                                    .comprobanteadherido
                                     }}
                                 </p>
                                 <p>
@@ -80,13 +87,7 @@
                                     .configuracion.inicioactividades
                                     }}
                                 </p>
-                                <p>
-                                    <b>Comprobante adherido:</b>
-                                    {{
-                                    $store.state.facturas.factura.factura
-                                    .comprobanteadherido
-                                    }}
-                                </p>
+                                
                             </v-col>
                             <v-col cols="12" class="pre-body">
                                 <v-divider></v-divider>
