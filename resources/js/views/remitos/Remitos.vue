@@ -35,7 +35,7 @@
                                 :single-select="false"
                             >
                                 <template v-slot:item="{ item }">
-                                    <tr>
+                                    <tr :class="item.todoentregado && item.todofacturado ? 'disabled--text' : ''">
                                         <td>
                                             <v-checkbox
                                                 v-model="selected"
@@ -43,6 +43,38 @@
                                                 :disabled="isDisabled(item)"
                                                 v-if="checkRole()"
                                             ></v-checkbox>
+                                        </td>
+                                        <td class="hidden-sm-and-down">
+                                            <v-tooltip top>
+                                                <template v-slot:activator="{ on, attrs }">
+                                                    <v-icon 
+                                                        v-bind="attrs" 
+                                                        v-on="on"
+                                                        :color="hasEntregasColor(item)"
+                                                    >fas fa-truck</v-icon>
+                                                </template>
+                                                <span>
+                                                    <div v-if="item.todoentregado">Posee entregas totales</div>
+                                                    <div v-else-if="item.hasEntregas">Posee entregas parciales</div>
+                                                    <div v-else>No posee entregas</div>
+                                                </span>
+                                            </v-tooltip>
+                                        </td>
+                                        <td class="hidden-sm-and-down">   
+                                            <v-tooltip top>
+                                                <template v-slot:activator="{ on, attrs }">
+                                                    <v-icon 
+                                                        v-bind="attrs" 
+                                                        v-on="on"
+                                                        :color="hasFacturasColor(item)"
+                                                    >fas fa-dollar-sign</v-icon>
+                                                </template>
+                                                <span>
+                                                    <div v-if="item.todofacturado">Posee facturas totales</div>
+                                                    <div v-else-if="item.hasFacturas">Posee facturas parciales</div>
+                                                    <div v-else>No posee facturas</div>
+                                                </span>
+                                            </v-tooltip>    
                                         </td>
                                         <td class="hidden-xs-only">
                                             {{ item.comprobanteadherido || item.numventa }}
@@ -64,58 +96,7 @@
                                                         </v-icon>
                                                     </v-btn>
                                                 </template>
-
-                                                <v-card>
-                                                    <v-list>
-                                                        <v-list-item :to="`/remitos/show/${item.id}`">
-                                                            <v-list-item-title>Detalles</v-list-item-title>
-                                                        </v-list-item>
-                                                        <v-list-item @click="print(item.id)">
-                                                            <v-list-item-title>Imprimir</v-list-item-title>
-                                                        </v-list-item>
-                                                        <v-list-item v-if="checkDelivery(item)" @click="delivery(item)">
-                                                            <v-list-item-title>Generar entrega</v-list-item-title>
-                                                        </v-list-item>
-                                                        <v-list-item v-if="checkOptions(item)" @click="openDeleteDialog(item.id)">
-                                                            <v-list-item-title>Eliminar</v-list-item-title>
-                                                        </v-list-item>
-                                                    </v-list>
-                                                    <v-divider></v-divider>
-                                                    <v-card-actions class="py-4">
-                                                        <v-row justify="space-around">
-                                                            <v-tooltip bottom>
-                                                                <template v-slot:activator="{ on, attrs }">
-                                                                    <v-icon 
-                                                                        v-bind="attrs" 
-                                                                        v-on="on"
-                                                                        :color="hasEntregasColor(item)"
-                                                                    >fas fa-truck</v-icon>
-                                                                </template>
-                                                                <span>
-                                                                    <div v-if="item.todoentregado">Posee entregas totales</div>
-                                                                    <div v-else-if="item.hasEntregas">Posee entregas parciales</div>
-                                                                    <div v-else>No posee entregas</div>
-                                                                </span>
-                                                            </v-tooltip>
-                                                            <v-tooltip bottom>
-                                                                <template v-slot:activator="{ on, attrs }">
-                                                                    <v-icon 
-                                                                        v-bind="attrs" 
-                                                                        v-on="on"
-                                                                        :color="hasFacturasColor(item)"
-                                                                    >fas fa-dollar-sign</v-icon>
-                                                                </template>
-                                                                <span>
-                                                                    <div v-if="item.todofacturado">Posee facturas totales</div>
-                                                                    <div v-else-if="item.hasFacturas">Posee facturas parciales</div>
-                                                                    <div v-else>No posee facturas</div>
-                                                                </span>
-                                                            </v-tooltip>
-                                                        </v-row>
-                                                    </v-card-actions>
-                                                </v-card>
-
-                                                <!-- <v-list>
+                                                <v-list>
                                                     <v-list-item
                                                         :to="`/remitos/show/${item.id}`"
                                                     >
@@ -145,7 +126,7 @@
                                                             >Eliminar</v-list-item-title
                                                         >
                                                     </v-list-item>
-                                                </v-list> -->
+                                                </v-list>
                                             </v-menu>
                                         </td>
                                     </tr>
@@ -223,6 +204,8 @@ export default {
         deleteId: null,
         headers: [
             { text: "", sortable: false },
+            { text: "", sortable: false, class: 'hidden-sm-and-down' },
+            { text: "", sortable: false, class: 'hidden-sm-and-down' },
             { text: "N°", sortable: false, class: "hidden-xs-only" },
             { text: "Cliente", sortable: false },
             { text: "Importe", sortable: false },
@@ -391,7 +374,7 @@ export default {
         // ESTILOS
         hasEntregasColor(item) {
             if(item.todoentregado) {
-                return 'error';
+                return '#787878';
             } else if(item.hasEntregas) {
                 return 'warning';
             } else {
@@ -401,7 +384,7 @@ export default {
 
         hasFacturasColor(item) {
             if(item.todofacturado) {
-                return 'error';
+                return '#787878';
             } else if(item.hasFacturas) {
                 return 'warning';
             } else {

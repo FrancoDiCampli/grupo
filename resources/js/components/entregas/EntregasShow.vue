@@ -56,6 +56,13 @@
                                     }}
                                 </p>
                                 <p>
+                                    <b>Comprobante adherido:</b>
+                                    {{
+                                    $store.state.entregas.entrega.entrega
+                                    .comprobanteadherido
+                                    }}
+                                </p>
+                                <p>
                                     <b>Fecha de emisión:</b>
                                     {{
                                     $store.state.entregas.entrega.entrega
@@ -83,13 +90,7 @@
                                     .configuracion.inicioactividades
                                     }}
                                 </p>
-                                <p>
-                                    <b>Comprobante adherido:</b>
-                                    {{
-                                    $store.state.entregas.entrega.entrega
-                                    .comprobanteadherido
-                                    }}
-                                </p>
+                                
                             </v-col>
                             <v-col cols="12" class="pre-body">
                                 <v-divider></v-divider>

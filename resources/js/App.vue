@@ -5,6 +5,9 @@
                 <v-list-item @click="exit()">
                     <v-list-item-title>Cerrar sesión</v-list-item-title>
                 </v-list-item>
+                <v-list-item to="/preferencias">
+                    <v-list-item-title>Preferencias</v-list-item-title>
+                </v-list-item>
             </template>
             <template slot="searchBar" v-if="$store.state.auth.user">
                 <div v-click-outside="closeSearch">
