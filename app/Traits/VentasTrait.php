@@ -94,7 +94,7 @@ trait VentasTrait
     {
         $request->validate(
             [
-                'remitoadherido' => 'required|unique:ventas,comprobanteadherido'
+                'remitoadherido' => 'required|unique:ventas,comprobanteadherido,NULL,id,deleted_at,NULL'
             ],
             [
                 'remitoadherido.unique' => 'El valor del campo Remito adherido Nº ya está en uso.',
@@ -254,6 +254,8 @@ trait VentasTrait
         $venta = Venta::findOrFail($id);
         $sePuede = true;
 
+        return $venta->articulos;
+
         if (!$venta->numfactura) {
             if ($venta->cuenta) {
                 count($venta->cuenta->pagos) == 0 ? $sePuede = true : $sePuede = false;
@@ -283,7 +285,8 @@ trait VentasTrait
 
                 $venta->pedido->numventa = null;
                 $venta->pedido->touch();
-                $venta->articulos()->detach();
+                // $venta->articulos()->detach();
+                // $venta->articulos()->sync(array('deleted_at' => DB::raw('NOW()')));
                 $venta->delete();
             });
             return response()->json('Venta Anulada');
