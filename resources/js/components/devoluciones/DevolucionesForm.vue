@@ -44,7 +44,7 @@
                                 <v-col cols="12" class="py-0">
                                     <v-text-field
                                         v-model="searchVendedor"
-                                        :rules="[rules.required]"
+                                        :rules="[rules.required, hasVendedor]"
                                         @keyup="searchVendedorAfter()"
                                         class="search-client-input"
                                         append-icon="fas fa-search"
@@ -729,6 +729,14 @@ export default {
             this.getInventarios(vendedor);
             this.vendedores = [];
             this.searchVendedorTable = false;
+        },
+
+        hasVendedor() {
+            if(this.searchVendedor && !this.$store.state.devoluciones.form.vendedor_id) {
+                return 'Debe seleccionar un vendedor';
+            } else {
+                return true;
+            }
         },
 
         // ARTICULOS

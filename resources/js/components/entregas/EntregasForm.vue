@@ -37,6 +37,7 @@
                             :rules="[rules.required]"
                             label="Cliente"
                             outlined
+                            disabled
                         ></v-text-field>
                     </v-col>
                     <!-- FECHA -->

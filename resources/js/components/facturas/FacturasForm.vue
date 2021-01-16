@@ -46,7 +46,7 @@
                                 <v-col cols="9" class="py-0">
                                     <v-text-field
                                         v-model="searchCliente"
-                                        :rules="[rules.required]"
+                                        :rules="[rules.required, hasCliente]"
                                         @keyup="searchClienteAfter()"
                                         class="search-client-input"
                                         append-icon="fas fa-search"
@@ -871,6 +871,14 @@ export default {
             this.$store.state.facturas.form.cliente_id = cliente.id;
             this.clientes = [];
             this.searchClienteTable = false;
+        },
+
+        hasCliente() {
+            if(this.searchCliente && !this.$store.state.facturas.form.cliente_id) {
+                return 'Debe seleccionar un cliente';
+            } else {
+                return true;
+            }
         },
 
         // DETALLES

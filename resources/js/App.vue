@@ -217,7 +217,7 @@
                         style="margin-top: 250px;"
                     ></v-progress-circular>
                 </v-row>
-                <div v-else>
+                <div v-else class="scroll-fix-height">
                     <Errors></Errors>
                     <router-view></router-view>
                 </div>
@@ -409,5 +409,9 @@ body::-webkit-scrollbar-thumb {
             }
         }
     }
+}
+
+.scroll-fix-height {
+    min-height: 101vh;
 }
 </style>
