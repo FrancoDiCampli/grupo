@@ -80,7 +80,6 @@ trait ConsignacionesTrait
             'fecha' => 'required',
             'subtotal' => 'required',
             'total' => 'required',
-            'dependencia' => 'required',
         ]);
 
         $data = [
