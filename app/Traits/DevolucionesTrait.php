@@ -15,7 +15,18 @@ trait DevolucionesTrait
 {
     public static function index($request)
     {
-        $devoluciones = GiveBack::orderBy('id', 'DESC')->get();
+        // $devoluciones = GiveBack::orderBy('id', 'DESC')->get();
+
+        if (auth()->user()->role->role != 'vendedor') {
+            $devoluciones = GiveBack::take($request->get('limit', null))
+                ->orderBy('id', 'DESC')
+                ->get();
+        } else {
+            $devoluciones = GiveBack::take($request->get('limit', null))
+                ->orderBy('id', 'DESC')
+                ->where('dependencia', auth()->user()->id)
+                ->get();
+        }
 
         foreach ($devoluciones as $devolu) {
             $fecha = new Carbon($devolu->fecha);
