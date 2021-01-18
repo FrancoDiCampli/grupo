@@ -24,9 +24,9 @@ class StoreArticulo extends FormRequest
     public function rules()
     {
         return [
-            'codprov' => 'nullable|unique:articulos|max:13',
-            'codarticulo' => 'required||min:13|max:13unique:articulos',
-            'articulo' => 'required|min:1|max:190|unique:articulos',
+            'codprov' => 'nullable|unique:articulos|max:13,codprov,NULL,id,deleted_at,NULL',
+            'codarticulo' => 'required||min:13|max:13|unique:articulos,codarticulo,NULL,id,deleted_at,NULL',
+            'articulo' => 'required|min:1|max:190|unique:articulos,articulo,NULL,id,deleted_at,NULL',
             'descripcion' => 'required|max:190',
             'precio' => 'required',
             'stockminimo' => 'required',

@@ -129,7 +129,7 @@ trait ClientesTrait
 
         $request->validate(
             [
-                'email' => 'required|email|unique:users,email,' . $user->id . ',NULL,id,deleted_at,NULL,',
+                'email' => 'required|email|unique:users,email,null,id,deleted_at,null' . $user->id,
                 'password' => 'nullable|min:6',
                 'confirm_password' => 'nullable|min:6|same:password'
             ],
@@ -186,7 +186,7 @@ trait ClientesTrait
         if ($cond) {
             try {
                 DB::transaction(function () use ($cliente) {
-                    $cliente->user->delete();
+                    $cliente->user->forceDelete();
                     $cliente->delete();
                 });
                 return response()->json('eliminado');
@@ -293,9 +293,8 @@ trait ClientesTrait
         }
         $recibos = $recibosCol->keyBy('id')->values();
 
-        $ordenando = $cliente->facturas->sortByDesc('id');
-
-        $billing = $ordenando->values()->all();
+        // $billing = $cliente->facturas; // VENTAS
+        $billing = []; // VENTAS
 
         $ventas = collect();
         foreach ($facturas as $item) {
@@ -307,10 +306,22 @@ trait ClientesTrait
         $ventas = static::detallesVentas($ventas);
 
         $facturas = $cliente->invoices; // FACTURAS
+        foreach ($facturas as $item) {
+            $fec = new Carbon($item->fecha);
+            $item->fecha = $fec->format('d-m-Y');
+        }
 
         $entregas = $cliente->entregas; // ENTREGAS
+        foreach ($entregas as $item) {
+            $fec = new Carbon($item->fecha);
+            $item->fecha = $fec->format('d-m-Y');
+        }
 
         $pedidos = $cliente->pedidos;
+        foreach ($pedidos as $item) {
+            $fec = new Carbon($item->fecha);
+            $item->fecha = $fec->format('d-m-Y');
+        }
 
         return compact('cliente', 'contactos', 'user', 'facturas', 'ventas', 'entregas', 'pedidos', 'cuentas', 'recibos', 'billing', 'haber');
     }

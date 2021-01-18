@@ -24,9 +24,9 @@ class UpdateArticulo extends FormRequest
     public function rules()
     {
         return [
-            'codprov' => 'nullable|min:1|max:13|unique:articulos,codprov,' . $this->id,
-            'codarticulo' => 'required|min:13|max:13|unique:articulos,codarticulo,' . $this->id,
-            'articulo' => 'required|min:1|max:190|unique:articulos,articulo,' . $this->id,
+            'codprov' => 'nullable|min:1|max:13|unique:articulos,codprov,NULL,id,deleted_at,NULL' . $this->id,
+            'codarticulo' => 'required|min:13|max:13|unique:articulos,codarticulo,NULL,id,deleted_at,NULL' . $this->id,
+            'articulo' => 'required|min:1|max:190|unique:articulos,articulo,NULL,id,deleted_at,NULL' . $this->id,
             'descripcion' => 'required|min:1|max:190',
             'precio' => 'required',
             'stockminimo' => 'required',

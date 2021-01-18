@@ -113,9 +113,9 @@ class UsersController extends Controller
         $user = User::find($id);
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|string|max:255|unique:users,email,' . $user->id . ',id,deleted_at,null',
-            'password' => 'required|string|min:6',
-            'password_confirm' => 'required|string|min:6|same:password',
+            'email' => 'required|email|unique:users,email,' . $user->id,
+            'password' => 'nullable|string|min:6',
+            'password_confirm' => 'nullable|string|min:6|same:password',
         ]);
         $user->name = $request->name;
         $user->email = $request->email;
@@ -175,7 +175,7 @@ class UsersController extends Controller
     {
         if ($id != 1) {
             $user = User::find($id);
-            $user->delete();
+            $user->forceDelete();
         }
     }
 }

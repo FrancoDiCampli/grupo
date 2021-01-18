@@ -36,7 +36,7 @@ trait PresupuestosTrait
         return response()->json([
             'presupuestos' => $presupuestos,
             'ultimo' => $presupuestos->first(),
-            'total' => Presupuesto::count(),
+            'total' => Presupuesto::whereNull('numventa')->count(),
         ]);
     }
 
@@ -44,7 +44,7 @@ trait PresupuestosTrait
     {
         $request->validate(
             [
-                'pedidoadherido' => 'required|unique:presupuestos,comprobanteadherido'
+                'pedidoadherido' => 'required|unique:presupuestos,comprobanteadherido,NULL,id,deleted_at,NULL'
             ],
             [
                 'pedidoadherido.unique' => 'El valor del campo Nota de pedido adherida Nº ya está en uso.',
@@ -297,7 +297,7 @@ trait PresupuestosTrait
     {
         $request->validate(
             [
-                'pedidoadherido' => 'required|unique:presupuestos,comprobanteadherido,' . $id
+                'pedidoadherido' => 'required|unique:presupuestos,comprobanteadherido,' . $id . ',id,deleted_at,NULL'
             ],
             [
                 'pedidoadherido.unique' => 'El valor del campo Nota de pedido adherida Nº ya está en uso.',
