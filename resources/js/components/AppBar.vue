@@ -325,14 +325,14 @@ export default {
                 name: "Consignaciones",
                 icon: "fas fa-file-signature",
                 url: "/consignaciones",
-                roles: ["superAdmin", "administrador"],
+                roles: ["superAdmin", "administrador", "vendedor"],
                 divider: false,
             },
             {
                 name: "Devoluciones",
                 icon: "fas fa-exchange-alt",
                 url: "/devoluciones",
-                roles: ["superAdmin", "administrador"],
+                roles: ["superAdmin", "administrador", "vendedor"],
                 divider: true,
             },
             {

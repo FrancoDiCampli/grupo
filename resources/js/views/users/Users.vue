@@ -53,6 +53,8 @@ export default {
         getUsers() {
             this.$store.dispatch("users/index", {
                 limit: this.limit
+            }).then(response => {
+                console.log(response);
             });
         },
 

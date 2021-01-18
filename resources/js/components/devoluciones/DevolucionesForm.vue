@@ -854,10 +854,7 @@ export default {
 
         // FORM
         setData: async function() {
-            if (
-                this.$refs.devolucionesVendedorForm.validate() &&
-                this.$refs.devolucionesTotalesForm.validate()
-            ) {
+            if (this.$refs.devolucionesVendedorForm.validate() ) {
                 if (this.detalles.length <= 0) {
                     this.detallesDialog = true;
                     return false;
@@ -883,7 +880,6 @@ export default {
             this.detalles = [];
             this.articuloSelected = {};
             await this.$refs.devolucionesVendedorForm.reset();
-            await this.$refs.devolucionesTotalesForm.reset();
     
             this.cotizacion = localStorage.getItem('cotizacion') || null,
             this.fechaCotizacion = localStorage.getItem('fechaCotizacion') || null,
