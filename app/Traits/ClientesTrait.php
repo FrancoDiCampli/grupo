@@ -293,9 +293,8 @@ trait ClientesTrait
         }
         $recibos = $recibosCol->keyBy('id')->values();
 
-        $ordenando = $cliente->facturas->sortByDesc('id');
-
-        $billing = $ordenando->values()->all();
+        // $billing = $cliente->facturas; // VENTAS
+        $billing = []; // VENTAS
 
         $ventas = collect();
         foreach ($facturas as $item) {
@@ -307,10 +306,22 @@ trait ClientesTrait
         $ventas = static::detallesVentas($ventas);
 
         $facturas = $cliente->invoices; // FACTURAS
+        foreach ($facturas as $item) {
+            $fec = new Carbon($item->fecha);
+            $item->fecha = $fec->format('d-m-Y');
+        }
 
         $entregas = $cliente->entregas; // ENTREGAS
+        foreach ($entregas as $item) {
+            $fec = new Carbon($item->fecha);
+            $item->fecha = $fec->format('d-m-Y');
+        }
 
         $pedidos = $cliente->pedidos;
+        foreach ($pedidos as $item) {
+            $fec = new Carbon($item->fecha);
+            $item->fecha = $fec->format('d-m-Y');
+        }
 
         return compact('cliente', 'contactos', 'user', 'facturas', 'ventas', 'entregas', 'pedidos', 'cuentas', 'recibos', 'billing', 'haber');
     }
