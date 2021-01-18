@@ -52,7 +52,7 @@ trait ArticulosTrait
         return [
             'articulos' => $articulos,
             'total' => Articulo::withTrashed()->count(),
-            'ultimo' => $articulos->first(),
+            'ultimo' => $articulos->last(),
         ];
     }
 

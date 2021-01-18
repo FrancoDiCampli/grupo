@@ -25,7 +25,7 @@ class StoreCliente extends FormRequest
     {
         return [
             'razonsocial' => 'required|min:1|max:190',
-            'documentounico' => 'required|min:8|max:11|unique:clientes',
+            'documentounico' => 'required|min:8|max:11|unique:clientes,documentounico,NULL,id,deleted_at,NULL',
             'direccion' => 'required|min:1|max:190',
             'email' => 'required|email|unique:clientes,email,NULL,id,deleted_at,NULL',
             'telefono' => 'required|min:6|max:13',

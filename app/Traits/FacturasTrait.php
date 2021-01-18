@@ -52,20 +52,6 @@ trait FacturasTrait
             'ultima' => $facturas->first(),
             'total' => Factura::count()
         ];
-
-        // if ($facturas->count() <= $request->get('limit')) {
-        //     return [
-        //         'facturas' => $facturas,
-        //         'ultima' => $facturas->first(),
-        //         'total' => $facturas->count()
-        //     ];
-        // } else {
-        //     return [
-        //         'facturas' => $facturas->take($request->get('limit', null)),
-        //         'ultima' => $facturas->first(),
-        //         'total' => $facturas->count()
-        //     ];
-        // }
     }
 
     public static function store($request)
