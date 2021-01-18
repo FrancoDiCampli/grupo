@@ -1004,6 +1004,7 @@ export default {
                     this.$store.state.consignaciones.form.detalles = this.detalles;
                     this.$store.state.consignaciones.form.cotizacion = this.cotizacion;
                     this.$store.state.consignaciones.form.fechaCotizacion = this.fechaCotizacion;
+                    this.$store.state.consignaciones.form.tipo = "TRANSFERENCIA";
 
                     localStorage.setItem('cotizacion', this.cotizacion);
                     localStorage.setItem('fechaCotizacion', this.fechaCotizacion);
@@ -1022,7 +1023,6 @@ export default {
 
             this.cotizacion = localStorage.getItem('cotizacion') || null,
             this.fechaCotizacion = localStorage.getItem('fechaCotizacion') || null,
-            this.$store.state.consignaciones.form.tipo = "TRANSFERENCIA";
 
             this.step = 1;
         }
