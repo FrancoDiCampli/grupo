@@ -107,7 +107,7 @@
                                 <v-col cols="10" sm="8">
                                     <v-row justify="space-between">
                                         <h3
-                                            :class="saldo > 0 ? 'red--text' : 'secondary--text'"
+                                            :class="saldo > 0 ? 'error--text' : 'secondary--text'"
                                         >Saldo: {{ saldo | formatCurrency('USD') }}</h3>
                                         <h3 class="secondary--text">
                                             Haber:
