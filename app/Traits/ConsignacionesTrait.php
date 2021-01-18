@@ -18,7 +18,18 @@ trait ConsignacionesTrait
 {
     public static function index($request)
     {
-        $consignaciones = Consignment::orderBy('id', 'DESC')->get();
+        // $consignaciones = Consignment::orderBy('id', 'DESC')->get();
+
+        if (auth()->user()->role->role != 'vendedor') {
+            $consignaciones = Consignment::take($request->get('limit', null))
+                ->orderBy('id', 'DESC')
+                ->get();
+        } else {
+            $consignaciones = Consignment::take($request->get('limit', null))
+                ->orderBy('id', 'DESC')
+                ->where('dependencia', auth()->user()->id)
+                ->get();
+        }
 
         foreach ($consignaciones as $consig) {
             $fecha = new Carbon($consig->fecha);
