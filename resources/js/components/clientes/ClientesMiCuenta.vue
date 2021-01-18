@@ -36,7 +36,7 @@
                             </v-col>
                             <v-col cols="10" sm="8">
                                 <v-row justify="space-between">
-                                    <h3 class="secondary--text">U$D Saldo: {{ saldo | formatCurrency('USD') }}</h3>
+                                    <h3 :class="saldo > 0 ? 'error--text' : 'secondary--text'">U$D Saldo: {{ saldo | formatCurrency('USD') }}</h3>
                                     <h3
                                         class="secondary--text"
                                     >U$D Haber: {{ $store.state.clientes.cliente.haber | formatCUrrency('USD') }}</h3>

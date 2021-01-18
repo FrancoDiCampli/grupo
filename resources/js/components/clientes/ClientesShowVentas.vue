@@ -54,7 +54,7 @@
                                                         >
                                                     </v-list-item>
                                                     <v-list-item
-                                                        v-if="item.numventa == null"
+                                                        v-if="item.numventa == null && checkRole(['superAdmin', 'administrador', 'vendedor'])"
                                                         :to="`/pedidos/editar/${item.id}`"
                                                     >
                                                         <v-list-item-title
@@ -62,7 +62,7 @@
                                                         >
                                                     </v-list-item>
                                                     <v-list-item
-                                                        v-if="item.numventa == null"
+                                                        v-if="item.numventa == null && checkRole(['superAdmin', 'administrador', 'vendedor'])"
                                                         @click="preventSold(item.id)"
                                                     >
                                                         <v-list-item-title>
@@ -70,7 +70,7 @@
                                                         </v-list-item-title>
                                                     </v-list-item>
                                                     <v-list-item
-                                                        v-if="item.numventa == null"
+                                                        v-if="item.numventa == null && checkRole(['superAdmin', 'administrador'])"
                                                         @click="pedidosOpenDeleteDialog(item.id)"
                                                     >
                                                         <v-list-item-title
@@ -126,7 +126,7 @@
                                                 v-model="remitoSelected"
                                                 :value="item.id"
                                                 :disabled="item.todofacturado"
-                                                v-if="checkRole()"
+                                                v-if="checkRole(['superAdmin', 'administrador'])"
                                             ></v-checkbox>
                                         </td>
                                         <td class="hidden-xs-only">
@@ -162,7 +162,7 @@
                                                         >
                                                     </v-list-item>
                                                     <v-list-item
-                                                        v-if="checkDelivery(item)"
+                                                        v-if="checkDelivery(item) && checkRole(['superAdmin', 'administrador', 'vendedor'])"
                                                         @click="delivery(item)"
                                                     >
                                                         <v-list-item-title
@@ -171,7 +171,7 @@
                                                         >
                                                     </v-list-item>
                                                     <v-list-item
-                                                        v-if="remitosCheckDelete(item)"
+                                                        v-if="remitosCheckDelete(item) && checkRole(['superAdmin', 'administrador'])"
                                                         @click="remitosOpenDeleteDialog(item.id)"
                                                     >
                                                         <v-list-item-title
@@ -235,7 +235,7 @@
                                                         >
                                                     </v-list-item>
                                                     <v-list-item
-                                                        v-if="!item.hasPagos"
+                                                        v-if="!item.hasPagos && checkRole(['superAdmin', 'administrador'])"
                                                         @click="facturasOpenDeleteDialog(item.id)"
                                                     >
                                                         <v-list-item-title
@@ -303,6 +303,7 @@
                                                         >
                                                     </v-list-item>
                                                     <v-list-item
+                                                        v-if="checkRole(['superAdmin', 'administrador'])"
                                                         @click="entregasOpenDeleteDialog(item.id)"
                                                     >
                                                         <v-list-item-title
@@ -787,12 +788,9 @@ export default {
             this.entregasDeleteDialog = false;
         },
 
-        checkRole() {
+        checkRole(roles) {
             if(this.$store.state.auth.user) {
-                if(
-                    this.$store.state.auth.user.rol =='superAdmin' || 
-                    this.$store.state.auth.user.rol =='administrador'
-                ) {
+                if(roles.find(e => e == this.$store.state.auth.user.rol)) {
                     return true;
                 } else {
                     return false;
