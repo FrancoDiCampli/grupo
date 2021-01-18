@@ -868,6 +868,7 @@ export default {
                     this.$store.state.devoluciones.form.detalles = this.detalles;
                     this.$store.state.devoluciones.form.cotizacion = this.cotizacion;
                     this.$store.state.devoluciones.form.fechaCotizacion = this.fechaCotizacion;
+                    this.$store.state.devoluciones.form.tipo = 'DEVOLUCIÓN';
 
                     localStorage.setItem('cotizacion', this.cotizacion);
                     localStorage.setItem('fechaCotizacion', this.fechaCotizacion);
@@ -883,10 +884,9 @@ export default {
             this.articuloSelected = {};
             await this.$refs.devolucionesVendedorForm.reset();
             await this.$refs.devolucionesTotalesForm.reset();
-            
+    
             this.cotizacion = localStorage.getItem('cotizacion') || null,
             this.fechaCotizacion = localStorage.getItem('fechaCotizacion') || null,
-            this.$store.state.devoluciones.form.tipo = "DEVOLUCION";
 
             this.step = 1;
             
