@@ -51,7 +51,8 @@ class UsersController extends Controller
         $user = User::find(auth()->user()->id);
         $rol = $user->role_id;
         if ($rol == 1) {
-            $users = User::take($request->get('limit', null))->get();
+            // $users = User::orderBy('name')->take($request->get('limit', null))->get();
+            $users = User::orderBy('name')->get();
             $data = collect();
             foreach ($users as $usuario) {
                 if ($usuario->role_id != null) {
@@ -64,7 +65,8 @@ class UsersController extends Controller
                 $data->push($usuario);
             }
         } else {
-            $users = User::where('id', '!=', 1)->take($request->get('limit', null))->get();
+            // $users = User::orderBy('name')->where('id', '!=', 1)->take($request->get('limit', null))->get();
+            $users = User::orderBy('name')->where('id', '!=', 1)->get();
             $data = collect();
             foreach ($users as $usuario) {
                 if ($usuario->role_id != null) {
@@ -78,9 +80,27 @@ class UsersController extends Controller
             }
         }
 
-        return [
-            'users' => $data,
-            'total' => User::count(),
+        $datos = $data->groupBy('role.role');
+
+        return $usuarios = [
+            'administrador' => [
+                'users' => $datos->all()['administrador']->take($request->get('limit', 10)),
+                'total' => $datos->all()['administrador']->count(),
+            ],
+            'cliente' => [
+                'users' => $datos->all()['cliente']->take($request->get('limit', 10)),
+                'total' => $datos->all()['cliente']->count(),
+            ],
+            'superAdmin' =>
+            [
+                'users' => $datos->all()['superAdmin']->take($request->get('limit', 10)),
+                'total' => $datos->all()['superAdmin']->count(),
+            ],
+            'vendedor' =>
+            [
+                'users' => $datos->all()['vendedor']->take($request->get('limit', 10)),
+                'total' => $datos->all()['vendedor']->count(),
+            ],
         ];
     }
 

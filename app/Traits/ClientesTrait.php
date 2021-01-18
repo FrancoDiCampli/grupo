@@ -293,9 +293,6 @@ trait ClientesTrait
         }
         $recibos = $recibosCol->keyBy('id')->values();
 
-        // $billing = $cliente->facturas; // VENTAS
-        $billing = []; // VENTAS
-
         $ventas = collect();
         foreach ($facturas as $item) {
             if ($item->tipocomprobante != 'IVA') {
@@ -323,7 +320,7 @@ trait ClientesTrait
             $item->fecha = $fec->format('d-m-Y');
         }
 
-        return compact('cliente', 'contactos', 'user', 'facturas', 'ventas', 'entregas', 'pedidos', 'cuentas', 'recibos', 'billing', 'haber');
+        return compact('cliente', 'contactos', 'user', 'facturas', 'ventas', 'entregas', 'pedidos', 'cuentas', 'recibos', 'haber');
     }
 
     public static function resumenCuenta($request)
@@ -421,10 +418,10 @@ trait ClientesTrait
                 $detsVenta = DB::table('articulo_factura')->where('articulo_venta_id', $det['pivot']->id)->get();
                 $detsEntrega = DB::table('articulo_entrega')->where('articulo_venta_id', $det['pivot']->id)->get();
 
-                $detsVenta->sum('cantidad') < $det['pivot']->cantidad ? $fac['todofacturado'] = false : $fac['todofacturado'] = true;
+                $detsVenta->sum('cantidad') < $det['pivot']->cantidad ? $venta['todofacturado'] = false : $venta['todofacturado'] = true;
                 $det['pivot']['cantidadfacturado'] = $detsVenta->sum('cantidad');
 
-                $detsEntrega->sum('cantidad') < $det['pivot']->cantidad ? $fac['todoentregado'] = false : $fac['todoentregado'] = true;
+                $detsEntrega->sum('cantidad') < $det['pivot']->cantidad ? $venta['todoentregado'] = false : $venta['todoentregado'] = true;
                 $det['pivot']['cantidadentregado'] = $detsEntrega->sum('cantidad');
 
                 $det['pivot']['litros'] = $det->litros;
