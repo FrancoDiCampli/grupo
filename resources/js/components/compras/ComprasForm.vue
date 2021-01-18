@@ -42,7 +42,7 @@
                                 <v-col cols="12" class="py-0">
                                     <v-text-field
                                         v-model="searchProveedor"
-                                        :rules="[rules.required]"
+                                        :rules="[rules.required, hasProveedor]"
                                         @keyup="searchProveedorAfter()"
                                         :disabled="disabled.proveedor"
                                         class="search-proveedor-input"
@@ -838,6 +838,14 @@ export default {
             this.searchProveedorTable = false;
             this.disabled.articulo = false;
             this.checkProveedor();
+        },
+
+        hasProveedor() {
+            if(this.searchProveedor && !this.$store.state.compras.form.supplier_id) {
+                return 'Debe seleccionar un proveedor';
+            } else {
+                return true;
+            }
         },
 
         checkProveedor() {

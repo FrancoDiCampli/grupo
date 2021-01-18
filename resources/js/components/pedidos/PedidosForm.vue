@@ -51,7 +51,7 @@
                                 <v-col cols="12" sm="8" class="py-0">
                                     <v-text-field
                                         v-model="searchCliente"
-                                        :rules="[rules.required]"
+                                        :rules="[rules.required, hasCliente]"
                                         @keyup="searchClienteAfter()"
                                         class="search-client-input"
                                         append-icon="fas fa-search"
@@ -215,7 +215,6 @@
                                 <!-- CONDICION PEDIDO -->
                                 <v-col cols="12" sm="6" class="py-0">
                                     <v-text-field
-                                        label="Condición"
                                         placeholder="CUENTA CORRIENTE"
                                         disabled
                                         outlined
@@ -791,7 +790,7 @@ export default {
             required: value => !!value || "Este campo es obligatorio",
             cantidadMaxima: value =>
                 value <= Number(cantidadMaxima) ||
-                "La cantidad no puede superar el stock existente"
+                "La cantidad no puede superar el stock existente",
         },
         // HEADER
         PuntoVenta: null,
@@ -972,6 +971,7 @@ export default {
         searchClienteAfter() {
             this.searchInProcess = true;
             this.searchClienteTable = true;
+            this.clienteId = null;
             if (this.searchCliente != null && this.searchCliente != "") {
                 if (this.searchCliente == "0") {
                     this.searchCliente = "CONSUMIDOR FINAL";
@@ -1023,6 +1023,14 @@ export default {
             this.$store.state.pedidos.form.cliente_id = cliente.id;
             this.clientes = [];
             this.searchClienteTable = false;
+        },
+
+        hasCliente() {
+            if(this.searchCliente && !this.$store.state.pedidos.form.cliente_id) {
+                return 'Debe seleccionar un cliente';
+            } else {
+                return true;
+            }
         },
 
         // ARTICULOS

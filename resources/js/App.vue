@@ -217,7 +217,7 @@
                         style="margin-top: 250px;"
                     ></v-progress-circular>
                 </v-row>
-                <div v-else>
+                <div v-else class="scroll-fix-height">
                     <Errors></Errors>
                     <router-view></router-view>
                 </div>
@@ -302,6 +302,14 @@ export default {
         if (JSON.parse(window.localStorage.getItem("logged"))) {
             this.recoverSession();
         }
+
+        if(window.localStorage.getItem('customTheme')) {
+            let customTheme = JSON.parse(window.localStorage.getItem('customTheme'));
+            this.$vuetify.theme.themes.light = customTheme.light;
+            this.$vuetify.theme.themes.dark = customTheme.dark
+        }
+
+        
     },
 
     methods: {
@@ -401,5 +409,9 @@ body::-webkit-scrollbar-thumb {
             }
         }
     }
+}
+
+.scroll-fix-height {
+    min-height: 101vh;
 }
 </style>

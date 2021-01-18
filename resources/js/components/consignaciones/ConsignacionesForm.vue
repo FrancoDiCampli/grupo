@@ -42,7 +42,7 @@
                                 <v-col cols="9" class="py-0">
                                     <v-text-field
                                         v-model="searchVendedor"
-                                        :rules="[rules.required]"
+                                        :rules="[rules.required, hasVendedor]"
                                         @keyup="searchVendedorAfter()"
                                         class="search-client-input"
                                         append-icon="fas fa-search"
@@ -866,6 +866,14 @@ export default {
             this.searchVendedorTable = false;
         },
 
+        hasVendedor() {
+            if(this.searchVendedor && !this.$store.state.consignaciones.form.vendedor_id) {
+                return 'Debe seleccionar un vendedor';
+            } else {
+                return true;
+            }
+        },
+
         // ARTICULOS
         getArticles: async function() {
             let response = await this.$store.dispatch("articulos/index");
@@ -880,7 +888,7 @@ export default {
                 );
 
                 // Establecer la cantidad maxima a vender
-                cantidadMaxima = Number(Number(articulo.stock) / Number(articulo.stock)).toFixed(0);
+                cantidadMaxima = Number(Number(articulo.stock) / Number(articulo.litros)).toFixed(0);
                 if (this.detalles.length > 0) {
                     let stockExistente = 0;
                     for (let i = 0; i < this.detalles.length; i++) {
@@ -891,6 +899,7 @@ export default {
                         }
                     }
                     cantidadMaxima = cantidadMaxima - stockExistente;
+                   
                 }
 
                 this.articulosPanel = [];
