@@ -5,7 +5,7 @@
             <v-card-title class="py-0 px-2">
                 <v-row class="pa-0 ma-0">
                     <v-col cols="auto" align-self="center"
-                        >Nueva de devolución</v-col
+                        >Nueva devolución</v-col
                     >
                     <v-spacer></v-spacer>
                     <v-col cols="auto">
@@ -173,14 +173,10 @@
                                 <!-- TIPO DE COMPROBANTE -->
                                 <v-col cols="12" sm="6" class="py-0">
                                     <v-text-field
-                                        v-model="
-                                            $store.state.devoluciones.form
-                                                .tipo
-                                        "
+                                        v-model="$store.state.devoluciones.form.comprobanteadherido"
+                                        label="Devolución adherida Nº"
                                         :rules="[rules.required]"
-                                        label="Tipo de comprobante"
                                         outlined
-                                        disabled
                                     ></v-text-field>
                                 </v-col>
                             </v-row>

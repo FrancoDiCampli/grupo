@@ -4,43 +4,57 @@
             <v-card-title>Usuarios</v-card-title>
             <v-divider></v-divider>
             <v-card-text v-if="$store.state.users.users" class="px-0">
-                <v-data-table
-                    hide-default-footer
-                    :headers="headers"
-                    :items="$store.state.users.users.users"
-                    :items-per-page="-1"
-                    :mobile-breakpoint="0"
-                >
-                    <template v-slot:item="item">
-                        <tr>
-                            <td class="hidden-sm-and-down">{{ item.item.name }}</td>
-                            <td>{{ item.item.email }}</td>
-                            <td>{{ item.item.rol }}</td>
-                            <td>
-                                <v-menu offset-y v-if="item.item.id != 1">
-                                    <template v-slot:activator="{ on }">
-                                        <v-btn color="secondary" text icon v-on="on">
-                                            <v-icon size="medium">fas fa-ellipsis-v</v-icon>
-                                        </v-btn>
-                                    </template>
-                                    <v-list>
-                                        <v-list-item @click="edit(item.item)">
-                                            <v-list-item-title>Editar</v-list-item-title>
-                                        </v-list-item>
-                                        <v-list-item
-                                            v-if="item.item.id != $store.state.auth.user.user.id"
-                                            @click="beforeDelete(item.item.id)"
-                                        >
-                                            <v-list-item-title>Eliminar</v-list-item-title>
-                                        </v-list-item>
-                                    </v-list>
-                                </v-menu>
-                                <div v-else></div>
-                            </td>
-                        </tr>
-                    </template>
-                </v-data-table>
-                <slot></slot>
+                <v-expansion-panels>
+                    <v-expansion-panel
+                        v-for="(item, i) in $store.state.users.users"
+                        :key="i"
+                        class="no-shadow"
+                    >
+                        <v-expansion-panel-header @click="setRole(item.total)">
+                            {{ i }}
+                        </v-expansion-panel-header>
+                        <v-expansion-panel-content >
+                            <v-data-table
+                                hide-default-footer
+                                :headers="headers"
+                                :items="item.users"
+                                :items-per-page="-1"
+                                :mobile-breakpoint="0"
+                            >
+                                <template v-slot:item="item">
+                                    <tr>
+                                        <td class="hidden-sm-and-down">{{ item.item.name }}</td>
+                                        <td>{{ item.item.email }}</td>
+                                        <td>{{ item.item.rol }}</td>
+                                        <td>
+                                            <v-menu offset-y v-if="item.item.id != 1">
+                                                <template v-slot:activator="{ on }">
+                                                    <v-btn color="secondary" text icon v-on="on">
+                                                        <v-icon size="medium">fas fa-ellipsis-v</v-icon>
+                                                    </v-btn>
+                                                </template>
+                                                <v-list>
+                                                    <v-list-item @click="edit(item.item)">
+                                                        <v-list-item-title>Editar</v-list-item-title>
+                                                    </v-list-item>
+                                                    <v-list-item
+                                                        v-if="item.item.id != $store.state.auth.user.user.id"
+                                                        @click="beforeDelete(item.item.id)"
+                                                    >
+                                                        <v-list-item-title>Eliminar</v-list-item-title>
+                                                    </v-list-item>
+                                                </v-list>
+                                            </v-menu>
+                                            <div v-else></div>
+                                        </td>
+                                    </tr>
+                                </template>
+                            </v-data-table>
+                            <slot></slot>
+                        </v-expansion-panel-content>
+                    </v-expansion-panel>
+                </v-expansion-panels>
+                
             </v-card-text>
         </v-card>
 
@@ -88,12 +102,17 @@ export default {
             { text: "", sortable: false }
         ],
         userID: null,
-        deleteDialog: false
+        deleteDialog: false,
+        totalRole: null,
     }),
 
     props: ["limit"],
 
     methods: {
+        setRole(total) {
+            this.totalRole = total;
+        },
+
         edit(user) {
             this.$store.dispatch("users/edit", { data: user });
             this.$router.push("users/editar");

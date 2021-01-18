@@ -6,11 +6,11 @@
         <v-container>
             <v-row justify="center">
                 <v-col cols="12" md="10" lg="8">
-                    <UsersIndex>
+                    <UsersIndex ref="UsersIndex">
                         <br />
                         <v-row justify="center" v-if="$store.state.users.users">
                             <v-btn
-                                :disabled="limit >= $store.state.users.users.total"
+                                :disabled="disabledLoadMore"
                                 :loading="$store.state.inProcess"
                                 @click="loadMore()"
                                 color="primary"
@@ -56,9 +56,19 @@ export default {
             });
         },
 
+        disabledLoadMore() {
+            if(this.limit < this.$refs.UsersIndex.totalRole) {
+                return false;
+            } else {
+                return true;
+            }
+        },
+
         loadMore() {
             this.limit += this.limit;
-            this.getUsers();
+            if(this.limit < this.$refs.UsersIndex.totalRole) {
+                this.getUsers();
+            }
         },
 
         loadOnScroll() {
