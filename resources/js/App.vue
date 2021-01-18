@@ -2,7 +2,7 @@
     <v-app :style="{ background: $vuetify.theme.themes[theme].background }">
         <AppBar>
             <template slot="userActions">
-                <v-list-item to="/preferencias">
+                <v-list-item to="/preferencias" v-if="checkRole(['superAdmin', 'administrador', 'vendedor'])">
                     <v-list-item-title>Preferencias</v-list-item-title>
                 </v-list-item>
                 <v-list-item @click="exit()">
@@ -369,6 +369,18 @@ export default {
         navigate(route) {
             this.$router.push(route);
             this.closeSearch();
+        },
+
+        checkRole(roles) {
+            if(this.$store.state.auth.user) {
+                if(roles.find(e => e == this.$store.state.auth.user.rol)) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
         },
 
         exit: async function() {

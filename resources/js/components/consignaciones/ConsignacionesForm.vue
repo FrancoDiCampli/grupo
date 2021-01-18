@@ -39,7 +39,7 @@
                     <v-stepper-content step="1">
                         <v-form ref="consignacionesVendedorForm">
                             <v-row justify="space-around" class="my-1">
-                                <v-col cols="9" class="py-0">
+                                <v-col cols="12" class="py-0">
                                     <v-text-field
                                         v-model="searchVendedor"
                                         :rules="[rules.required, hasVendedor]"
@@ -112,7 +112,7 @@
                                     </v-card>
                                 </v-col>
                                 <!-- FECHA -->
-                                <v-col cols="12" sm="3" class="py-0">
+                                <v-col cols="12" sm="6" class="py-0">
                                     <v-dialog
                                         ref="dialogFecha"
                                         v-model="fechaDialog"
@@ -168,6 +168,15 @@
                                             >
                                         </v-date-picker>
                                     </v-dialog>
+                                </v-col>
+                                <!-- COMPROBANTE ADHERIDO -->
+                                <v-col cols="12" sm="6" class="py-0">
+                                    <v-text-field
+                                        v-model="$store.state.consignaciones.form.comprobanteadherido"
+                                        label="Consignación adherida Nº"
+                                        :rules="[rules.required]"
+                                        outlined
+                                    ></v-text-field>
                                 </v-col>
                             </v-row>
                         </v-form>

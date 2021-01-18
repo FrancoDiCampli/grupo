@@ -1,8 +1,8 @@
 <template>
     <div>
         <v-container>
-            <v-expansion-panels>
-                <v-expansion-panel class="no-shadow">
+            <v-expansion-panels >
+                <v-expansion-panel class="no-shadow" v-if="checkRole(['superAdmin', 'administrador', 'vendedor'])">
                     <v-expansion-panel-header>
                         Notas de pedido
                     </v-expansion-panel-header>

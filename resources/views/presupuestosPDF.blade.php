@@ -197,63 +197,94 @@
                 </div>
             </div>
             <div class="header-left">
-                <h2 class="center">{{$configuracion['nombrefantasia']}}</h2>
-                <p><b>Razón Social: </b>{{$configuracion['razonsocial']}}</p>
-                <p><b>Domicilio Comercial: </b>{{$configuracion['domiciliocomercial']}}</p>
-                <p><b>Condición Frente al IVA: </b>{{$configuracion['condicioniva']}}</p>
+                <h2 class="center">Controller</h2>
+                <p><b>Razón Social: </b>Controller programación y diseño</p>
+                <p><b>Domicilio Comercial: </b>Donovan 430</p>
             </div>
             <div class="v-divider"></div>
             <div class="header-right">
-                <h2 class="center">NOTA DE PEDIDO</h2>
-                <p><b>Punto de Venta: </b>0000{{$configuracion['puntoventa']}}<b> Comprobante adherido: </b>{{$presupuesto->numpresupuesto}}</p>
-                <p><b>Fecha de Emisión: </b>{{$presupuesto->fecha}}</p>
-                <p><b>Cuit: </b>{{$configuracion['cuit']}}</p>
-                <p><b>Ingresos Brutos: </b>{{$configuracion['cuit']}}</p>
-                <p><b>Inicio de Actividades: </b>{{$configuracion['inicioactividades']}}</p>
+                <h2 class="center">PRESUPUESTO</h2>
+                <p><b>Punto de Venta: </b>00001<b> Comprobante adherido: </b>12</p>
+                <p><b>Fecha de Emisión: </b>19/01/2021</p>
             </div>
         </div>
         <br><br>
         <div class="pre-body">
             <br>
-            <p><b>CUIT: </b>{{$cliente->documentounico}}</p>
-            <p><b>Razón Social: </b>{{$cliente->razonsocial}}</p>
-            <p><b>Condición Frente al IVA: </b>{{$cliente->condicioniva}}</p>
-            <p><b>Domicilio: </b>{{$cliente->direccion}}</p>
-            <p><b>Valido Hasta: </b>{{$presupuesto->vencimiento}}</p>
+            <p><b>CUIT: </b>30716517841</p>
+            <p><b>Razón Social: </b>NEA APC SAS</p>
+            <p><b>Condición Frente al IVA: </b>RESPONSABLE INSCRIPTO</p>
+            <p><b>Domicilio: </b>Villa Ángela</p>
+            <p><b>Valido Hasta: </b>18/02/2021</p>
         </div>
         <br>
         <div class="body">
             <table>
                 <tr>
-                    <th>Cod. Producto</th>
-                    <th>Producto</th>
-                    <th>Cantidad</th>
-                    <th>U. Medida</th>
+                    <th>Servicio</th>
+                    <th>Tiempo Des.</th>
                     <th>Precio Unit.</th>
                     <th>Subtotal</th>
                 </tr>
-                @foreach($detalles as $detalle)
                 <tr class="body">
-                    <th>{{$detalle->codarticulo}}</th>
-                    <th>{{$detalle->articulo}}</th>
-                    <th>{{$detalle->cantidad}}</th>
-                    <th>{{$detalle->medida}}</th>
-                    <th>USD {{$detalle->preciounitario}}</th>
-                    <th>USD {{$detalle->subtotal}}</th>
+                    <th>Asignar clientes a vendedores.</th>
+                    <th>30 días</th>
+                    <th>30 U$D</th>
+                    <th>30 U$D</th>
                 </tr>
-                @endforeach
+                <tr class="body">
+                    <th>Añadir acciones en los comprobantes desde la vista de clientes.</th>
+                    <th>30 días</th>
+                    <th>30 U$D</th>
+                    <th>30 U$D</th>
+                </tr>
+                <tr class="body">
+                    <th>Comprobantes por articulos.</th>
+                    <th>30 - 45 días</th>
+                    <th>70 U$D</th>
+                    <th>70 U$D</th>
+                </tr>
+                <tr class="body">
+                    <th>Agregar notas de crédito y debito.</th>
+                    <th>45 - 60 días</th>
+                    <th>100 U$D</th>
+                    <th>100 U$D</th>
+                </tr>
+                <tr class="body">
+                    <th>Añadir referencias a observaciones.</th>
+                    <th>45 - 60 días</th>
+                    <th>100 U$D</th>
+                    <th>100 U$D</th>
+                </tr>
+                <tr class="body">
+                    <th>Realizar pagos totales, parciales y por ventas.</th>
+                    <th>45 - 60 días</th>
+                    <th>100 U$D</th>
+                    <th>100 U$D</th>
+                </tr>
+                <tr class="body">
+                    <th>Añadir retroceso por capas en los menús del sistema.</th>
+                    <th>45 - 60 días</th>
+                    <th>100 U$D</th>
+                    <th>100 U$D</th>
+                </tr>
             </table>
         </div>
         <br>
         <div class="footer">
-            @if($presupuesto->observaciones)
-            <p><b>Observaciones: </b>{{$presupuesto->observaciones}}</p>
-            @endif
+            <p><b>Observaciones: </b>
+                <br>
+                El precio final es el equivalente en pesos a dólares estadounidenses, tipo de cambio vendedor del banco de la Nación Argentina del día del efectivo pago.
+                <br>
+                El pago es sobre el total del presupuesto presentado y se puede realizar en un máximo de dos partes.
+                <br>
+                El pago debe realizarse una vez aprobado el presupuesto, ya sea en su totalidad o en la primera parte del mismo en caso que se desee pagar en dos partes.
+                <br>
+                El tiempo de desarrollo de los servicios presentados NO es acumulativo, por lo tanto el tiempo de desarrollo sobre el total del presupuesto es de 30 a 60 días.
+            </p>
             <div class="details">
-                <p><b>Subtotal: </b>USD {{$presupuesto->subtotal}}</p>
-                <p><b>Bonificación: </b>{{$presupuesto->bonificacion}}%</p>
-                <p><b>Recargo: </b>{{$presupuesto->recargo}}%</p>
-                <p><b>Total: </b>USD {{$presupuesto->total}}</p>
+                <p><b>Subtotal: </b>USD 530</p>
+                <p><b>Total: </b>USD 530</p>
             </div>
         </div>
     </div>
@@ -272,63 +303,94 @@
                 </div>
             </div>
             <div class="header-left">
-                <h2 class="center">{{$configuracion['nombrefantasia']}}</h2>
-                <p><b>Razón Social: </b>{{$configuracion['razonsocial']}}</p>
-                <p><b>Domicilio Comercial: </b>{{$configuracion['domiciliocomercial']}}</p>
-                <p><b>Condición Frente al IVA: </b>{{$configuracion['condicioniva']}}</p>
+                <h2 class="center">Controller</h2>
+                <p><b>Razón Social: </b>Controller programación y diseño</p>
+                <p><b>Domicilio Comercial: </b>Donovan 430</p>
             </div>
             <div class="v-divider"></div>
             <div class="header-right">
-                <h2 class="center">NOTA DE PEDIDO</h2>
-                <p><b>Punto de Venta: </b>0000{{$configuracion['puntoventa']}}<b> Comprobante adherido: </b>{{$presupuesto->numfactura}}</p>
-                <p><b>Fecha de Emisión: </b>{{$presupuesto->fecha}}</p>
-                <p><b>Cuit: </b>{{$configuracion['cuit']}}</p>
-                <p><b>Ingresos Brutos: </b>{{$configuracion['cuit']}}</p>
-                <p><b>Inicio de Actividades: </b>{{$configuracion['inicioactividades']}}</p>
+                <h2 class="center">PRESUPUESTO</h2>
+                <p><b>Punto de Venta: </b>00001<b> Comprobante adherido: </b>12</p>
+                <p><b>Fecha de Emisión: </b>19/01/2021</p>
             </div>
         </div>
         <br><br>
         <div class="pre-body">
             <br>
-            <p><b>CUIT: </b>{{$cliente->documentounico}}</p>
-            <p><b>Razón Social: </b>{{$cliente->razonsocial}}</p>
-            <p><b>Condición Frente al IVA: </b>{{$cliente->condicioniva}}</p>
-            <p><b>Domicilio: </b>{{$cliente->direccion}}</p>
-            <p><b>Condición de Venta: </b>{{$presupuesto->condicionventa}}</p>
+            <p><b>CUIT: </b>30716517841</p>
+            <p><b>Razón Social: </b>NEA APC SAS</p>
+            <p><b>Condición Frente al IVA: </b>RESPONSABLE INSCRIPTO</p>
+            <p><b>Domicilio: </b>Villa Ángela</p>
+            <p><b>Valido Hasta: </b>18/02/2021</p>
         </div>
         <br>
         <div class="body">
             <table>
                 <tr>
-                    <th>Cod. Producto</th>
-                    <th>Producto</th>
-                    <th>Cantidad</th>
-                    <th>U. Medida</th>
+                    <th>Servicio</th>
+                    <th>Tiempo Des.</th>
                     <th>Precio Unit.</th>
                     <th>Subtotal</th>
                 </tr>
-                @foreach($detalles as $detalle)
                 <tr class="body">
-                    <th>{{$detalle->codarticulo}}</th>
-                    <th>{{$detalle->articulo}}</th>
-                    <th>{{$detalle->cantidad}}</th>
-                    <th>{{$detalle->medida}}</th>
-                    <th>USD {{$detalle->preciounitario}}</th>
-                    <th>USD {{$detalle->subtotal}}</th>
+                    <th>Asignar clientes a vendedores.</th>
+                    <th>30 días</th>
+                    <th>30 U$D</th>
+                    <th>30 U$D</th>
                 </tr>
-                @endforeach
+                <tr class="body">
+                    <th>Añadir acciones en los comprobantes desde la vista de clientes.</th>
+                    <th>30 días</th>
+                    <th>30 U$D</th>
+                    <th>30 U$D</th>
+                </tr>
+                <tr class="body">
+                    <th>Comprobantes por articulos.</th>
+                    <th>30 - 45 días</th>
+                    <th>70 U$D</th>
+                    <th>70 U$D</th>
+                </tr>
+                <tr class="body">
+                    <th>Agregar notas de crédito y debito.</th>
+                    <th>45 - 60 días</th>
+                    <th>100 U$D</th>
+                    <th>100 U$D</th>
+                </tr>
+                <tr class="body">
+                    <th>Añadir referencias a observaciones.</th>
+                    <th>45 - 60 días</th>
+                    <th>100 U$D</th>
+                    <th>100 U$D</th>
+                </tr>
+                <tr class="body">
+                    <th>Realizar pagos totales, parciales y por ventas.</th>
+                    <th>45 - 60 días</th>
+                    <th>100 U$D</th>
+                    <th>100 U$D</th>
+                </tr>
+                <tr class="body">
+                    <th>Añadir retroceso por capas en los menús del sistema.</th>
+                    <th>45 - 60 días</th>
+                    <th>100 U$D</th>
+                    <th>100 U$D</th>
+                </tr>
             </table>
         </div>
         <br>
         <div class="footer">
-            @if($presupuesto->observaciones)
-            <p><b>Observaciones: </b>{{$presupuesto->observaciones}}</p>
-            @endif
+            <p><b>Observaciones: </b>
+                <br>
+                El precio final es el equivalente en pesos a dólares estadounidenses, tipo de cambio vendedor del banco de la Nación Argentina del día del efectivo pago.
+                <br>
+                El pago es sobre el total del presupuesto presentado y se puede realizar en un máximo de dos partes.
+                <br>
+                El pago debe realizarse una vez aprobado el presupuesto, ya sea en su totalidad o en la primera parte del mismo en caso que se desee pagar en dos partes.
+                <br>
+                El tiempo de desarrollo de los servicios presentados NO es acumulativo, por lo tanto el tiempo de desarrollo sobre el total del presupuesto es de 30 a 60 días.
+            </p>
             <div class="details">
-                <p><b>Subtotal: </b>USD {{$presupuesto->subtotal}}</p>
-                <p><b>Bonificación: </b>{{$presupuesto->bonificacion}}%</p>
-                <p><b>Recargo: </b>{{$presupuesto->recargo}}%</p>
-                <p><b>Total: </b>USD {{$presupuesto->total}}</p>
+                <p><b>Subtotal: </b>USD 530</p>
+                <p><b>Total: </b>USD 530</p>
             </div>
         </div>
     </div>
