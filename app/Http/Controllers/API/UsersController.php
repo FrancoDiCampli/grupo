@@ -82,26 +82,44 @@ class UsersController extends Controller
 
         $datos = $data->groupBy('role.role');
 
-        return $usuarios = [
-            'administrador' => [
-                'users' => $datos->all()['administrador']->take($request->get('limit', 10)),
-                'total' => $datos->all()['administrador']->count(),
-            ],
-            'cliente' => [
-                'users' => $datos->all()['cliente']->take($request->get('limit', 10)),
-                'total' => $datos->all()['cliente']->count(),
-            ],
-            'superAdmin' =>
-            [
-                'users' => $datos->all()['superAdmin']->take($request->get('limit', 10)),
-                'total' => $datos->all()['superAdmin']->count(),
-            ],
-            'vendedor' =>
-            [
-                'users' => $datos->all()['vendedor']->take($request->get('limit', 10)),
-                'total' => $datos->all()['vendedor']->count(),
-            ],
-        ];
+        if ($user->role_id == 1) {
+            return [
+                'administrador' => [
+                    'users' => $datos->all()['administrador']->take($request->get('limit', 10)),
+                    'total' => $datos->all()['administrador']->count(),
+                ],
+                'cliente' => [
+                    'users' => $datos->all()['cliente']->take($request->get('limit', 10)),
+                    'total' => $datos->all()['cliente']->count(),
+                ],
+                'superAdmin' =>
+                [
+                    'users' => $datos->all()['superAdmin']->take($request->get('limit', 10)),
+                    'total' => $datos->all()['superAdmin']->count(),
+                ],
+                'vendedor' =>
+                [
+                    'users' => $datos->all()['vendedor']->take($request->get('limit', 10)),
+                    'total' => $datos->all()['vendedor']->count(),
+                ],
+            ];
+        } else {
+            return [
+                'administrador' => [
+                    'users' => $datos->all()['administrador']->take($request->get('limit', 10)),
+                    'total' => $datos->all()['administrador']->count(),
+                ],
+                'cliente' => [
+                    'users' => $datos->all()['cliente']->take($request->get('limit', 10)),
+                    'total' => $datos->all()['cliente']->count(),
+                ],
+                'vendedor' =>
+                [
+                    'users' => $datos->all()['vendedor']->take($request->get('limit', 10)),
+                    'total' => $datos->all()['vendedor']->count(),
+                ],
+            ];
+        }
     }
 
     public function store(Request $request)
