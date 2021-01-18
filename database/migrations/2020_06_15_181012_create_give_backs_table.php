@@ -17,6 +17,7 @@ class CreateGiveBacksTable extends Migration
             $table->bigIncrements('id');
             $table->string('tipo');
             $table->string('fecha');
+            $table->string('comprobanteadherido')->nullable();
             $table->text('observaciones')->nullable();
             $table->decimal('bonificacion', 12, 2)->nullable();
             $table->decimal('recargo', 12, 2)->nullable();

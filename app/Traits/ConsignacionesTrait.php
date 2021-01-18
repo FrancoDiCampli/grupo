@@ -18,15 +18,13 @@ trait ConsignacionesTrait
 {
     public static function index($request)
     {
-        // $consignaciones = Consignment::orderBy('id', 'DESC')->get();
-
         if (auth()->user()->role->role != 'vendedor') {
             $consignaciones = Consignment::take($request->get('limit', null))
-                ->orderBy('id', 'DESC')
+                ->orderBy('comprobanteadherido', 'DESC')
                 ->get();
         } else {
             $consignaciones = Consignment::take($request->get('limit', null))
-                ->orderBy('id', 'DESC')
+                ->orderBy('comprobanteadherido', 'DESC')
                 ->where('dependencia', auth()->user()->id)
                 ->get();
         }
@@ -76,9 +74,18 @@ trait ConsignacionesTrait
 
     public static function storeConsignaciones($request)
     {
+        $request->validate([
+            'fecha' => 'required',
+            'comprobanteadherido' => 'required',
+            'fecha' => 'required',
+            'subtotal' => 'required',
+            'total' => 'required',
+        ]);
+
         $data = [
             'tipo' => $request->tipo,
             'fecha' => $request->fecha,
+            'comprobanteadherido' => $request->comprobanteadherido,
             'observaciones' => $request->observaciones,
             'bonificacion' => $request->bonificacion,
             'recargo' => $request->recargo,

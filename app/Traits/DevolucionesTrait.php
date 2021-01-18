@@ -56,9 +56,18 @@ trait DevolucionesTrait
 
     public static function storeDevoluciones($request)
     {
+        $request->validate([
+            'fecha' => 'required',
+            'comprobanteadherido' => 'required',
+            'fecha' => 'required',
+            'subtotal' => 'required',
+            'total' => 'required',
+        ]);
+
         $data = [
             'tipo' => $request->tipo,
             'fecha' => $request->fecha,
+            'comprobanteadherido' => $request->comprobanteadherido,
             'observaciones' => $request->observaciones,
             'bonificacion' => $request->bonificacion,
             'recargo' => $request->recargo,
