@@ -164,7 +164,6 @@ export default {
         },
 
         loadOnScroll() {
-            console.log('asdfasdf');
             if(document.body.scrollTop + document.body.clientHeight >= document.body.scrollHeight) {
                 if(!this.$store.state.inProcess) {
                     this.loadMore();

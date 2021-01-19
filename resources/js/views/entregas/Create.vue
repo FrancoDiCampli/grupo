@@ -56,7 +56,9 @@ export default {
             }
         },
 
-        resetForm() {
+        async resetForm() {
+            await this.$refs.formEntregas.resetForm();
+            this.$refs.CreateEntrega.reset();
             this.$router.push("/entregas");
         },
     },
