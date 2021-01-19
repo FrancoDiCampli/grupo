@@ -143,9 +143,17 @@ trait ArticulosTrait
         $articulo = Articulo::find($id);
         $marca = $articulo->marca->marca;
         $categoria = $articulo->categoria->categoria;
-        $stock = $articulo->inventarios->sum('cantidad');
-        $inventarios = $articulo->inventarios;
+
+        if (auth()->user()->role->role == 'superAdmin' || auth()->user()->role->role == 'administrador') {
+            $stock = $articulo->inventarios->sum('cantidad');
+            $inventarios = $articulo->inventarios;
+        } else {
+            $stock = $articulo->inventarios->where('dependencia', auth()->user()->id)->sum('cantidad');
+            $inventarios = $articulo->inventarios->where('dependencia', auth()->user()->id);
+        }
+
         $aux = collect();
+
         foreach ($inventarios as $inventario) {
             $inv = collect($inventario);
             if ($inventario->supplier_id) {
