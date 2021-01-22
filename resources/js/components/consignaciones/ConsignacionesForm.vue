@@ -858,7 +858,6 @@ export default {
                     buscar: this.searchVendedor
                 })
                 .then(response => {
-                    // console.log(response.data);
                     this.vendedores = response.data.vendedores;
                     this.searchInProcess = false;
                 })

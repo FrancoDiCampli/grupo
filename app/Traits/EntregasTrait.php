@@ -88,8 +88,8 @@ trait EntregasTrait
             $detalles = array(
                 'codarticulo' => $detail['codarticulo'],
                 'articulo' => $detail['articulo'],
-                'cantidad' => $detail['cantidad'],
-                'cantidadLitros' => $detail['litros'] * $detail['cantidad'],
+                'cantidad' => $detail['entregando'],
+                'cantidadLitros' => $detail['litros'] * $detail['entregando'],
                 'medida' => $detail['medida'],
                 'articulo_id' => $detail['articulo_id'],
                 'entrega_id' => $entrega->id,

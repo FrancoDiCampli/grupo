@@ -28,159 +28,160 @@
                 </v-row>
             </v-card-title>
             <v-divider></v-divider>
-            <v-card-text class="pa-8">
-                <v-row justify="space-around" class="my-1">
-                    <!-- CLIENTE -->
-                    <v-col cols="12" class="py-0">
-                        <v-text-field
-                            v-model="$store.state.entregas.form.cliente"
-                            :rules="[rules.required]"
-                            label="Cliente"
-                            outlined
-                            disabled
-                        ></v-text-field>
-                    </v-col>
-                    <!-- FECHA -->
-                    <v-col cols="12" sm="6" class="py-0">
-                        <v-dialog
-                            ref="dialogFecha"
-                            v-model="fechaDialog"
-                            :return-value.sync="
-                                $store.state.entregas.form.fecha
-                            "
-                            persistent
-                            :width="
-                                $vuetify.breakpoint.xsOnly ? '100%' : '300px'
-                            "
-                        >
-                            <template v-slot:activator="{ on }">
-                                <v-text-field
-                                    :value="
-                                        $store.state.entregas.form.fecha
-                                            | formatDate
-                                    "
-                                    @input="
-                                        store ?
-                                        value => (store.state.entregas.form.fecha = value) :
-                                        value => null
-                                    "
-                                    label="Fecha"
-                                    :rules="[rules.required]"
-                                    readonly
-                                    outlined
-                                    v-on="on"
-                                ></v-text-field>
-                            </template>
-                            <v-date-picker
-                                v-model="$store.state.entregas.form.fecha"
-                                scrollable
-                                locale="es"
+                <v-card-text class="pa-8">
+                    <v-row justify="space-around" class="my-1">
+                        <!-- CLIENTE -->
+                        <v-col cols="12" class="py-0">
+                            <v-text-field
+                                v-model="$store.state.entregas.form.cliente"
+                                :rules="[rules.required]"
+                                label="Cliente"
+                                outlined
+                                disabled
+                            ></v-text-field>
+                        </v-col>
+                        <!-- FECHA -->
+                        <v-col cols="12" sm="6" class="py-0">
+                            <v-dialog
+                                ref="dialogFecha"
+                                v-model="fechaDialog"
+                                :return-value.sync="
+                                    $store.state.entregas.form.fecha
+                                "
+                                persistent
+                                :width="
+                                    $vuetify.breakpoint.xsOnly ? '100%' : '300px'
+                                "
                             >
-                                <v-spacer></v-spacer>
-                                <v-btn
-                                    text
-                                    color="primary"
-                                    @click="
-                                        $refs.dialogFecha.save(
+                                <template v-slot:activator="{ on }">
+                                    <v-text-field
+                                        :value="
                                             $store.state.entregas.form.fecha
-                                        )
-                                    "
-                                    >Aceptar</v-btn
-                                >
-                            </v-date-picker>
-                        </v-dialog>
-                    </v-col>
-                    <!-- COMPROBANTE ADHERIDO -->
-                    <v-col cols="12" sm="6" class="py-0">
-                        <v-text-field
-                            v-model="
-                                $store.state.entregas.form.comprobanteadherido
-                            "
-                            label="Entrega adherida Nº"
-                            outlined
-                        ></v-text-field>
-                    </v-col>
-                </v-row>
-
-                <v-row justify="space-around" class="my-1">
-                    <!-- TABLA DETALLES -->
-                    <v-col cols="12" class="py-0 mb-5">
-                        <v-card outlined>
-                            <v-simple-table :key="detailTableKey">
-                                <template v-slot:default>
-                                    <thead>
-                                        <tr>
-                                            <th class="text-left">Articulo</th>
-                                            <th class="text-left">
-                                                Presentación
-                                            </th>
-                                            <th class="text-left">Unidades</th>
-                                            <th></th>
-                                            <th></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr
-                                            v-for="(detalle, index) in detalles"
-                                            :key="index"
-                                        >
-                                            <td>{{ detalle.articulo }}</td>
-                                            <td>{{ detalle.litros }} L.</td>
-                                            <td>
-                                                {{
-                                                    detalle.entregando ||
-                                                        detalle.cantidad -
-                                                            detalle.cantidadentregado
-                                                }}
-                                            </td>
-                                            <td class="px-0">
-                                                <v-btn
-                                                    icon
-                                                    color="secondary"
-                                                    @click="
-                                                        openEditDetailDialog(
-                                                            detalle
-                                                        )
-                                                    "
-                                                >
-                                                    <v-icon size="medium"
-                                                        >fas fa-pen</v-icon
-                                                    >
-                                                </v-btn>
-                                            </td>
-                                            <td>
-                                                <v-btn
-                                                    icon
-                                                    color="secondary"
-                                                    @click="
-                                                        deleteDetail(detalle)
-                                                    "
-                                                >
-                                                    <v-icon size="medium"
-                                                        >fas fa-times</v-icon
-                                                    >
-                                                </v-btn>
-                                            </td>
-                                        </tr>
-                                    </tbody>
+                                                | formatDate
+                                        "
+                                        @input="
+                                            store
+                                                ? value =>
+                                                    (store.state.entregas.form.fecha = value)
+                                                : value => null
+                                        "
+                                        label="Fecha"
+                                        :rules="[rules.required]"
+                                        readonly
+                                        outlined
+                                        v-on="on"
+                                    ></v-text-field>
                                 </template>
-                            </v-simple-table>
-                        </v-card>
-                    </v-col>
-                </v-row>
+                                <v-date-picker
+                                    v-model="$store.state.entregas.form.fecha"
+                                    scrollable
+                                    locale="es"
+                                >
+                                    <v-spacer></v-spacer>
+                                    <v-btn
+                                        text
+                                        color="primary"
+                                        @click="
+                                            $refs.dialogFecha.save(
+                                                $store.state.entregas.form.fecha
+                                            )
+                                        "
+                                        >Aceptar</v-btn
+                                    >
+                                </v-date-picker>
+                            </v-dialog>
+                        </v-col>
+                        <!-- COMPROBANTE ADHERIDO -->
+                        <v-col cols="12" sm="6" class="py-0">
+                            <v-text-field
+                                v-model="
+                                    $store.state.entregas.form.comprobanteadherido
+                                "
+                                label="Entrega adherida Nº"
+                                outlined
+                            ></v-text-field>
+                        </v-col>
+                    </v-row>
 
-                <v-row justify="center" class="my-1">
-                    <v-col cols="12" class="py-0">
-                        <v-textarea
-                            v-model="$store.state.entregas.form.observaciones"
-                            outlined
-                            label="Observaciones"
-                            no-resize
-                        ></v-textarea>
-                    </v-col>
-                    <slot></slot>
-                </v-row>
-            </v-card-text>
+                    <v-row justify="space-around" class="my-1">
+                        <!-- TABLA DETALLES -->
+                        <v-col cols="12" class="py-0 mb-5">
+                            <v-card outlined>
+                                <v-simple-table :key="detailTableKey">
+                                    <template v-slot:default>
+                                        <thead>
+                                            <tr>
+                                                <th class="text-left">Articulo</th>
+                                                <th class="text-left">
+                                                    Presentación
+                                                </th>
+                                                <th class="text-left">Unidades</th>
+                                                <th></th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr
+                                                v-for="(detalle, index) in detalles"
+                                                :key="index"
+                                            >
+                                                <td>{{ detalle.articulo }}</td>
+                                                <td>{{ detalle.litros }} L.</td>
+                                                <td>
+                                                    {{
+                                                        detalle.entregando ||
+                                                            detalle.cantidad -
+                                                                detalle.cantidadentregado
+                                                    }}
+                                                </td>
+                                                <td class="px-0">
+                                                    <v-btn
+                                                        icon
+                                                        color="secondary"
+                                                        @click="
+                                                            openEditDetailDialog(
+                                                                detalle
+                                                            )
+                                                        "
+                                                    >
+                                                        <v-icon size="medium"
+                                                            >fas fa-pen</v-icon
+                                                        >
+                                                    </v-btn>
+                                                </td>
+                                                <td>
+                                                    <v-btn
+                                                        icon
+                                                        color="secondary"
+                                                        @click="
+                                                            deleteDetail(detalle)
+                                                        "
+                                                    >
+                                                        <v-icon size="medium"
+                                                            >fas fa-times</v-icon
+                                                        >
+                                                    </v-btn>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </template>
+                                </v-simple-table>
+                            </v-card>
+                        </v-col>
+                    </v-row>
+
+                    <v-row justify="center" class="my-1">
+                        <v-col cols="12" class="py-0">
+                            <v-textarea
+                                v-model="$store.state.entregas.form.observaciones"
+                                outlined
+                                label="Observaciones"
+                                no-resize
+                            ></v-textarea>
+                        </v-col>
+                        <slot></slot>
+                    </v-row>
+                </v-card-text>
         </v-card>
 
         <v-dialog v-model="editDetailDialog" width="500">
@@ -201,7 +202,7 @@
                             </v-col>
                             <v-col cols="6" class="py-0">
                                 <v-text-field
-                                    v-model="selectedDetail.cantidad"
+                                    v-model="selectedDetail.entregando"
                                     label="Unidades"
                                     outlined
                                     :rules="[
@@ -278,7 +279,10 @@ export default {
         if (this.$store.state.entregas.form.detalles) {
             let detallesForm = this.$store.state.entregas.form.detalles;
             for (let i = 0; i < detallesForm.length; i++) {
-                if(detallesForm[i].disponible >= (detallesForm[i].cantidad - detallesForm[i].cantidadentregado)) {
+                if (
+                    detallesForm[i].disponible >=
+                    detallesForm[i].cantidad - detallesForm[i].cantidadentregado
+                ) {
                     this.detalles.push(detallesForm[i]);
                 }
             }
@@ -314,14 +318,16 @@ export default {
             entregaMaxima = detail.cantidad - detail.cantidadentregado;
             stockDisponible = detail.disponible;
             let presentacion = detail.cantidadLitros / detail.cantidad;
+            let entregando = detail.cantidad - detail.cantidadentregado
             this.selectedDetail = Object.assign({}, detail);
+            this.selectedDetail.entregando = entregando;
             this.selectedDetail.presentacion = presentacion;
             this.editDetailDialog = true;
         },
 
         editDetailControl() {
             this.selectedDetail.cantidadLitros =
-                this.selectedDetail.cantidad * this.selectedDetail.presentacion;
+                this.selectedDetail.entregando * this.selectedDetail.presentacion;
         },
 
         editDetail() {
@@ -332,7 +338,7 @@ export default {
             );
 
             this.detalles[index] = this.selectedDetail;
-            this.detalles[index].entregando = this.selectedDetail.cantidad;
+            this.detalles[index].entregando = this.selectedDetail.entregando;
             this.selectedDetail = {};
             this.editDetailDialog = false;
             this.detailTableKey += 1;
@@ -347,6 +353,11 @@ export default {
         setData() {
             this.$store.state.entregas.form.detalles = this.detalles;
             return true;
+        },
+
+        resetForm() {
+            this.detalles = [];
+            this.selectedDetail = {};
         }
     }
 };
