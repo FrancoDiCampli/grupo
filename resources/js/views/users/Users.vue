@@ -65,8 +65,9 @@ export default {
         },
 
         loadMore() {
-            this.limit += this.limit;
+            
             if(this.limit < this.$refs.UsersIndex.totalRole) {
+                this.limit += 10;
                 this.getUsers();
             }
         },

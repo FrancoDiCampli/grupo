@@ -50,7 +50,7 @@ export default {
         },
 
         loadMore: async function() {
-            this.limit += this.limit;
+            this.limit += 10;
             await this.getPresupuestos();
         }
     }

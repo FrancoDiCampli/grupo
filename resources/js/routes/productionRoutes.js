@@ -155,7 +155,7 @@ export default new Router({
             component: PedidosShow,
             props: true,
             meta: {
-                rol: ["superAdmin", "administrador", 'vendedor'],
+                rol: ["superAdmin", "administrador", 'vendedor', 'cliente'],
                 redirect: "welcome"
             }
         },
@@ -176,7 +176,7 @@ export default new Router({
             component: RemitosShow,
             props: true,
             meta: {
-                rol: ["superAdmin", "administrador", 'vendedor'],
+                rol: ["superAdmin", "administrador", 'vendedor', 'cliente'],
                 redirect: "welcome"
             }
         },
@@ -206,7 +206,7 @@ export default new Router({
             component: FacturasShow,
             props: true,
             meta: {
-                rol: ["superAdmin", "administrador"],
+                rol: ["superAdmin", "administrador", 'cliente'],
                 redirect: "welcome"
             }
         },
@@ -236,7 +236,7 @@ export default new Router({
             component: EntregasShow,
             props: true,
             meta: {
-                rol: ["superAdmin", "administrador", 'vendedor'],
+                rol: ["superAdmin", "administrador", 'vendedor', 'cliente'],
                 redirect: "welcome"
             }
         },

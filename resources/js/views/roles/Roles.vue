@@ -49,7 +49,7 @@ export default {
         },
 
         loadMore() {
-            this.limit += this.limit;
+            this.limit += 10;
             this.getRoles();
         }
     }

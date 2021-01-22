@@ -41,5 +41,11 @@ class RolesTableSeeder extends Seeder
             'permission' => $permissionsCliente['permissions'],
             'description' => $permissionsCliente['descriptions']
         ]);
+
+        Role::create([
+            'role' => 'distribuidor',
+            'permission' => $permissionsCliente['permissions'],
+            'description' => $permissionsCliente['descriptions']
+        ]);
     }
 }

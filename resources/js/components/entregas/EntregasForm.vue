@@ -184,13 +184,13 @@
                 </v-card-text>
         </v-card>
 
-        <v-dialog v-model="editDetailDialog" width="500">
+        <v-dialog v-model="editDetailDialog" width="500" persistent>
             <v-card>
                 <v-card-title>Editar detalle</v-card-title>
                 <v-divider></v-divider>
                 <br />
                 <v-card-text>
-                    <v-form @submit.prevent="editDetail">
+                    <v-form @submit.prevent="editDetail" ref="editDetailDialogForm">
                         <v-row justify="center">
                             <v-col cols="6" class="py-0">
                                 <v-text-field
@@ -331,17 +331,20 @@ export default {
         },
 
         editDetail() {
-            let index = this.detalles.indexOf(
-                this.detalles.find(
-                    element => element.id == this.selectedDetail.id
-                )
-            );
+            if(this.$refs.editDetailDialogForm.validate()) {
+                let index = this.detalles.indexOf(
+                    this.detalles.find(
+                        element => element.id == this.selectedDetail.id
+                    )
+                );
 
-            this.detalles[index] = this.selectedDetail;
-            this.detalles[index].entregando = this.selectedDetail.entregando;
-            this.selectedDetail = {};
-            this.editDetailDialog = false;
-            this.detailTableKey += 1;
+                this.detalles[index] = this.selectedDetail;
+                this.detalles[index].entregando = this.selectedDetail.entregando;
+                this.selectedDetail = {};
+                this.editDetailDialog = false;
+                this.detailTableKey += 1;
+            }
+            
         },
 
         deleteDetail(detalle) {
