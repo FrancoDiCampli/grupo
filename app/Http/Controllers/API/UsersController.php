@@ -83,7 +83,7 @@ class UsersController extends Controller
         $datos = $data->groupBy('role.role');
 
         if ($user->role_id == 1) {
-            return [
+            return response()->json([
                 'administrador' => [
                     'users' => $datos->all()['administrador']->take($request->get('limit', 10)),
                     'total' => $datos->all()['administrador']->count(),
@@ -91,6 +91,10 @@ class UsersController extends Controller
                 'cliente' => [
                     'users' => $datos->all()['cliente']->take($request->get('limit', 10)),
                     'total' => $datos->all()['cliente']->count(),
+                ],
+                'distribuidor' => [
+                    'users' => $datos->all()['distribuidor']->take($request->get('limit', 10)),
+                    'total' => $datos->all()['distribuidor']->count(),
                 ],
                 'superAdmin' =>
                 [
@@ -102,9 +106,9 @@ class UsersController extends Controller
                     'users' => $datos->all()['vendedor']->take($request->get('limit', 10)),
                     'total' => $datos->all()['vendedor']->count(),
                 ],
-            ];
+            ]);
         } else {
-            return [
+            return response()->json([
                 'administrador' => [
                     'users' => $datos->all()['administrador']->take($request->get('limit', 10)),
                     'total' => $datos->all()['administrador']->count(),
@@ -113,12 +117,16 @@ class UsersController extends Controller
                     'users' => $datos->all()['cliente']->take($request->get('limit', 10)),
                     'total' => $datos->all()['cliente']->count(),
                 ],
+                'distribuidor' => [
+                    'users' => $datos->all()['distribuidor']->take($request->get('limit', 10)),
+                    'total' => $datos->all()['distribuidor']->count(),
+                ],
                 'vendedor' =>
                 [
                     'users' => $datos->all()['vendedor']->take($request->get('limit', 10)),
                     'total' => $datos->all()['vendedor']->count(),
                 ],
-            ];
+            ]);
         }
     }
 
@@ -141,7 +149,7 @@ class UsersController extends Controller
 
         if ($request->password == $request->password_confirm) {
             $attributes['password'] = bcrypt($attributes['password']);
-            $attributes['role_id'] = $request->get('role_id', 3);
+            $attributes['role_id'] = $request->get('role_id');
             User::create($attributes);
         }
     }
