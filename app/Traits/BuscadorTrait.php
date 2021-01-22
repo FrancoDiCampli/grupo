@@ -13,15 +13,15 @@ trait BuscadorTrait
     {
         $buscar = $request->get('buscar');
 
-        $auxClientes = Cliente::orWhere('razonsocial', 'LIKE', "%$buscar%")
+        $auxClientes = Cliente::select('id', 'razonsocial')->orWhere('razonsocial', 'LIKE', "%$buscar%")
             ->orWhere('documentounico', 'LIKE', "%$buscar%")
             ->get();
 
-        $auxProveedores = Supplier::orWhere('razonsocial', 'LIKE', "%$buscar%")
+        $auxProveedores = Supplier::select('id', 'razonsocial')->orWhere('razonsocial', 'LIKE', "%$buscar%")
             ->orWhere('cuit', 'LIKE', "%$buscar%")
             ->get();
 
-        $auxArticulos = Articulo::orWhere('articulo', 'LIKE', "%$buscar%")
+        $auxArticulos = Articulo::select('id', 'articulo')->orWhere('articulo', 'LIKE', "%$buscar%")
             ->orWhere('codarticulo', "%$buscar%")
             ->get();
 
@@ -42,34 +42,37 @@ trait BuscadorTrait
 
         switch (auth()->user()->role->role) {
             case 'superAdmin':
-                return [
-                    'clientes' => $auxClientes->where('distribuidor', false),
-                    'proveedores' => $auxProveedores,
-                    'articulos' => $auxArticulos,
-                    'distribuidores' => $distribuidores->flatten(),
-                    'vendedores' => $vendedores->flatten()
-                ];
+                response()->json(
+                    [
+                        'clientes' => $auxClientes->where('distribuidor', false),
+                        'proveedores' => $auxProveedores,
+                        'articulos' => $auxArticulos,
+                        'distribuidores' => $distribuidores->flatten(),
+                        'vendedores' => $vendedores->flatten()
+                    ]
+                );
+
                 break;
 
             case 'administrador':
-                return [
+                return response()->json([
                     'clientes' => $auxClientes->where('distribuidor', false),
                     'proveedores' => $auxProveedores,
                     'articulos' => $auxArticulos,
                     'distribuidores' => $distribuidores->flatten(),
                     'vendedores' => $vendedores->flatten()
-                ];
+                ]);
                 break;
 
             case 'vendedor':
-                // $user = User::find(auth()->user()->id);
-                // $clientes = $user->clientes()->where('razonsocial', 'LIKE', "%$buscar%")
-                //     ->get()
-                //     ->where('distribuidor', false);
-                return [
-                    'clientes' => $auxClientes->where('distribuidor', false),
+                $user = User::find(auth()->user()->id);
+                $clientes = $user->clientes()->where('razonsocial', 'LIKE', "%$buscar%")
+                    ->get()
+                    ->where('distribuidor', false);
+                return response()->json([
+                    'clientes' => $clientes->where('distribuidor', false),
                     'articulos' => $auxArticulos
-                ];
+                ]);
                 break;
         }
     }
