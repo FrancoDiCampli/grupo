@@ -2,18 +2,13 @@
 
 namespace App\Traits;
 
-use App\Pago;
 use App\Role;
 use App\User;
-use App\Venta;
 use App\Cliente;
 use Carbon\Carbon;
 use App\Inventario;
-use App\Cuentacorriente;
-use App\Traits\FotosTrait;
 use App\Traits\RecibosTrait;
 use App\Traits\ContactosTrait;
-use App\Notifications\Verificar;
 use App\Traits\FormasDePagoTrait;
 use Illuminate\Support\Facades\DB;
 
@@ -23,22 +18,22 @@ trait ClientesTrait
     {
         $distribuidores = collect();
         if (auth()->user()->role->role != 'vendedor') {
-            $clientes = Cliente::orderBy('razonsocial', 'asc')
+            $clientes = Cliente::select(['id', 'razonsocial', 'documentounico', 'condicioniva'])->orderBy('razonsocial', 'asc')
                 ->where('documentounico', '<>', 0)
                 ->where('distribuidor', false);
 
-            $distribuidores = Cliente::orderBy('razonsocial', 'asc')
+            $distribuidores = Cliente::select(['id', 'razonsocial', 'documentounico', 'condicioniva'])->orderBy('razonsocial', 'asc')
                 ->where('documentounico', '<>', 0)
                 ->where('distribuidor', true)
                 ->get();
         } else {
-            $clientes = Cliente::orderBy('razonsocial', 'asc')
+            $clientes = Cliente::select(['id', 'razonsocial', 'documentounico', 'condicioniva'])->orderBy('razonsocial', 'asc')
                 ->where('documentounico', '<>', 0)
                 ->where('user_id', auth()->user()->id);
         }
 
         if ($clientes->count() <= $request->get('limit')) {
-            return [
+            return response()->json([
                 'clientes' => [
                     'clientes' => $clientes->get(),
                     'total' => $clientes->count()
@@ -47,9 +42,9 @@ trait ClientesTrait
                     'distribuidores' => $distribuidores,
                     'total' => $distribuidores->count()
                 ]
-            ];
+            ]);
         } else {
-            return [
+            return response()->json([
                 'clientes' => [
                     'clientes' => $clientes->take($request->get('limit', null))->get(),
                     'total' => $clientes->count()
@@ -58,13 +53,12 @@ trait ClientesTrait
                     'distribuidores' => $distribuidores->take($request->get('limit', null)),
                     'total' => $distribuidores->count()
                 ]
-            ];
+            ]);
         }
     }
 
     public static function store($request)
     {
-        // $foto = FotosTrait::store($request, $ubicacion = 'clientes');
         $isDistributor = false;
 
         if ($request['tipo'] == 'distribuidor') {
@@ -73,7 +67,6 @@ trait ClientesTrait
 
         $atributos = $request->validated();
 
-        // $atributos['foto'] = $foto;
         $atributos['user_id'] = auth()->user()->id;
         $atributos['observaciones'] = $request['observaciones'];
         $atributos['distribuidor'] = $isDistributor;
@@ -94,6 +87,11 @@ trait ClientesTrait
 
     public static function crearUsuario($request)
     {
+        $role = 'cliente';
+        if ($request['tipo'] == 'distribuidor') {
+            $role = 'distribuidor';
+        }
+
         $request->validate(
             [
                 'email' => 'required|email|unique:users,email,NULL,id,deleted_at,NULL',
@@ -108,7 +106,7 @@ trait ClientesTrait
         );
 
         if ($request->password == $request->confirm_password) {
-            $rol = Role::where('role', 'cliente')->get()->first();
+            $rol = Role::where('role', $role)->get()->first();
 
             return $user = User::create([
                 'name' => $request['razonsocial'],
