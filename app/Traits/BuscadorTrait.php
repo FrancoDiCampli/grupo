@@ -42,26 +42,25 @@ trait BuscadorTrait
 
         switch (auth()->user()->role->role) {
             case 'superAdmin':
-                response()->json(
-                    [
-                        'clientes' => $auxClientes->where('distribuidor', false),
-                        'proveedores' => $auxProveedores,
-                        'articulos' => $auxArticulos,
-                        'distribuidores' => $distribuidores->flatten(),
-                        'vendedores' => $vendedores->flatten()
-                    ]
-                );
-
-                break;
-
-            case 'administrador':
-                return response()->json([
+                return [
                     'clientes' => $auxClientes->where('distribuidor', false),
                     'proveedores' => $auxProveedores,
                     'articulos' => $auxArticulos,
                     'distribuidores' => $distribuidores->flatten(),
                     'vendedores' => $vendedores->flatten()
-                ]);
+                ];
+
+                break;
+
+            case 'administrador':
+                return [
+                    'clientes' => $auxClientes->where('distribuidor', false),
+                    'proveedores' => $auxProveedores,
+                    'articulos' => $auxArticulos,
+                    'distribuidores' => $distribuidores->flatten(),
+                    'vendedores' => $vendedores->flatten()
+                ];
+
                 break;
 
             case 'vendedor':
