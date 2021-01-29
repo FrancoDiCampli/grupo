@@ -91,6 +91,9 @@
                                 </v-avatar>
                                 <br />
                                 <v-col cols="12">
+                                    <h3 class="text-center secondary--text my-2">
+                                        {{ $store.state.clientes.cliente.cliente.distribuidor ? 'Distribuidor': 'Cliente'}}
+                                    </h3>
                                     <h1 class="text-center secondary--text">
                                         {{
                                         $store.state.clientes.cliente

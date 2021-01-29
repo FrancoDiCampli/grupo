@@ -60,7 +60,7 @@
                                                 </span>
                                             </v-tooltip>
                                         </td>
-                                        <td class="hidden-sm-and-down">   
+                                        <td class="hidden-sm-and-down" v-if="checkRole()">   
                                             <v-tooltip top>
                                                 <template v-slot:activator="{ on, attrs }">
                                                     <v-icon 
@@ -119,7 +119,7 @@
                                                         >
                                                     </v-list-item>
                                                     <v-list-item
-                                                        v-if="checkOptions(item)"
+                                                        v-if="checkOptions(item) && checkRole()"
                                                         @click="openDeleteDialog(item.id)"
                                                     >
                                                         <v-list-item-title

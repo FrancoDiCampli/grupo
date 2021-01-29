@@ -51,6 +51,7 @@
                                                         >
                                                     </v-list-item>
                                                     <v-list-item
+                                                        v-if="checkRole()"
                                                         @click="openDeleteDialog(item.id)"
                                                     >
                                                         <v-list-item-title
@@ -193,7 +194,22 @@ export default {
             this.inProcess = false;
             this.getEntregas();
             this.deleteDialog = false;
-        }
+        },
+
+        checkRole() {
+            if(this.$store.state.auth.user) {
+                if(
+                    this.$store.state.auth.user.rol =='superAdmin' || 
+                    this.$store.state.auth.user.rol =='administrador'
+                ) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        },
     },
 };
 </script>
