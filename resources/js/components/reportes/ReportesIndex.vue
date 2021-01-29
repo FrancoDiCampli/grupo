@@ -48,7 +48,7 @@
                 <v-card shaped outlined :loading="process">
                     <v-card-text class="pa-0">
                         <div
-                            @click="exportarVentas()"
+                            @click="exportarCompras()"
                             class="print-button excel"
                         >
                             <v-icon>fas fa-file-excel</v-icon>
@@ -66,7 +66,7 @@
                 <v-card shaped outlined :loading="process">
                     <v-card-text class="pa-0">
                         <div
-                            @click="exportarVentas()"
+                            @click="exportarArticulos()"
                             class="print-button excel"
                         >
                             <v-icon>fas fa-file-excel</v-icon>

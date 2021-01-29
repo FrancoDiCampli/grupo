@@ -173,39 +173,41 @@ trait EntregasTrait
 
     public static function delete($id)
     {
-        $entrega = Entrega::findOrFail($id);
+        if (auth()->user()->role->role == 'superAdmin' || auth()->user()->role->role == 'administrador') {
+            $entrega = Entrega::findOrFail($id);
 
-        $detalles = collect($entrega->articulos);
-        $pivot = collect();
-        $inventarios = collect();
-        foreach ($detalles as $art) {
-            $pivot = $pivot->push($art->pivot);
-        }
-
-        foreach ($pivot as $piv) {
-            $art = Articulo::findOrFail($piv->articulo_id);
-            $aux = collect($art->inventarios);
-            foreach ($aux as $a) {
-                $inventarios = $inventarios->push($a);
+            $detalles = collect($entrega->articulos);
+            $pivot = collect();
+            $inventarios = collect();
+            foreach ($detalles as $art) {
+                $pivot = $pivot->push($art->pivot);
             }
-        }
-        // SE REESTABLECE LA CANTIDAD EN LOS INVENTARIOS
-        try {
-            DB::transaction(function () use ($inventarios, $entrega) {
-                static::reestablecerInventarios($inventarios, $entrega);
-                $entrega->articulos->map(function ($detalle) {
-                    return auth()->user()->notifications()
-                        ->where('data->action', 'articulos/show/' . $detalle['id'])
-                        ->whereRead_at(null)
-                        ->delete();
+
+            foreach ($pivot as $piv) {
+                $art = Articulo::findOrFail($piv->articulo_id);
+                $aux = collect($art->inventarios);
+                foreach ($aux as $a) {
+                    $inventarios = $inventarios->push($a);
+                }
+            }
+            // SE REESTABLECE LA CANTIDAD EN LOS INVENTARIOS
+            try {
+                DB::transaction(function () use ($inventarios, $entrega) {
+                    static::reestablecerInventarios($inventarios, $entrega);
+                    $entrega->articulos->map(function ($detalle) {
+                        return auth()->user()->notifications()
+                            ->where('data->action', 'articulos/show/' . $detalle['id'])
+                            ->whereRead_at(null)
+                            ->delete();
+                    });
+                    $entrega->articulos()->detach();
+                    $entrega->delete();
                 });
-                $entrega->articulos()->detach();
-                $entrega->delete();
-            });
-            return response()->json('Entrega Anulada');
-        } catch (\Throwable $th) {
-            throw $th;
-        }
+                return response()->json('Entrega Anulada');
+            } catch (\Throwable $th) {
+                throw $th;
+            }
+        } else abort(403, 'Acceso Denegado');
     }
 
     public static function reestablecerInventarios($inventarios, $entrega)

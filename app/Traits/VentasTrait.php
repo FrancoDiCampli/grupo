@@ -251,45 +251,47 @@ trait VentasTrait
 
     public static function delete($id)
     {
-        $venta = Venta::findOrFail($id);
-        $sePuede = true;
+        if (auth()->user()->role->role == 'superAdmin' || auth()->user()->role->role == 'administrador') {
+            $venta = Venta::findOrFail($id);
+            $sePuede = true;
 
-        if (!$venta->numfactura) {
-            if ($venta->cuenta) {
-                count($venta->cuenta->pagos) == 0 ? $sePuede = true : $sePuede = false;
-            } else {
-                $sePuede = true;
-            }
-        } else {
-            $sePuede = false;
-        }
-
-        if ($sePuede) {
-            DB::transaction(function () use ($venta) {
+            if (!$venta->numfactura) {
                 if ($venta->cuenta) {
-                    $venta->cuenta->movimientos->each->delete();
-                    $venta->cuenta->delete();
+                    count($venta->cuenta->pagos) == 0 ? $sePuede = true : $sePuede = false;
+                } else {
+                    $sePuede = true;
                 }
+            } else {
+                $sePuede = false;
+            }
 
-                // Eliminar entregas
-                if ($venta->entregas) {
-                    static::reestablecerInventarios($venta->entregas);
-                }
+            if ($sePuede) {
+                DB::transaction(function () use ($venta) {
+                    if ($venta->cuenta) {
+                        $venta->cuenta->movimientos->each->delete();
+                        $venta->cuenta->delete();
+                    }
 
-                // Eliminar facturas
-                if ($venta->facturas) {
-                    static::descontarIVA($venta->facturas);
-                }
+                    // Eliminar entregas
+                    if ($venta->entregas) {
+                        static::reestablecerInventarios($venta->entregas);
+                    }
 
-                $venta->pedido->numventa = null;
-                $venta->pedido->touch();
-                // $venta->articulos()->detach();
-                $venta->delete();
-            });
-            return response()->json('Venta Anulada');
-        } else {
-            return response()->json('No es posible anular la venta');
-        }
+                    // Eliminar facturas
+                    if ($venta->facturas) {
+                        static::descontarIVA($venta->facturas);
+                    }
+
+                    $venta->pedido->numventa = null;
+                    $venta->pedido->touch();
+                    // $venta->articulos()->detach();
+                    $venta->delete();
+                });
+                return response()->json('Venta Anulada');
+            } else {
+                return response()->json('No es posible anular la venta');
+            }
+        } else abort(403, 'Acceso Denegado');
     }
 
     public static function reestablecerInventarios($entregas)
