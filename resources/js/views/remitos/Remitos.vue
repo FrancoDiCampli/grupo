@@ -21,7 +21,7 @@
 
         <v-container>
             <v-row justify="center">
-                <v-col cols="12" md="10" lg="8">
+                <v-col cols="12" md="10">
                     <v-card shaped outlined :loading="$store.state.inProcess">
                         <v-card-title>Remitos</v-card-title>
                         <v-divider></v-divider>
@@ -395,4 +395,6 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+
+</style>
