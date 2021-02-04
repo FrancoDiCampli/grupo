@@ -70,6 +70,7 @@ const actions = {
     },
 
     save({ state, commit, dispatch }) {
+        console.log(state.form);
         return new Promise((resolve, reject) => {
             axios
                 .post("/api/entregas", state.form)

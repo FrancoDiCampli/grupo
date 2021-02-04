@@ -283,6 +283,7 @@ export default {
                     detallesForm[i].disponible >=
                     detallesForm[i].cantidad - detallesForm[i].cantidadentregado
                 ) {
+                    detallesForm[i].entragando = detallesForm[i].cantidad - detallesForm[i].cantidadentregado;
                     this.detalles.push(detallesForm[i]);
                 }
             }

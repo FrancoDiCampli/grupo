@@ -288,7 +288,7 @@ export default {
                     cliente: item.cliente.razonsocial,
                     cliente_id: item.cliente.id,
                     venta_id: item.id,
-                    fecha: moment(item.fecha, 'YYYY-MM-DD').format('YYYY-MM-DD'),
+                    fecha: item.fecha,
                     comprobanteadherido: item.comprobanteadherido
                 })
                 .then(() => {
