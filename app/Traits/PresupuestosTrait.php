@@ -44,7 +44,7 @@ trait PresupuestosTrait
     {
         $request->validate(
             [
-                'pedidoadherido' => 'required|unique:presupuestos,comprobanteadherido,NULL,id,deleted_at,NULL'
+                'pedidoadherido' => 'nullable|unique:presupuestos,comprobanteadherido,NULL,id,deleted_at,NULL'
             ],
             [
                 'pedidoadherido.unique' => 'El valor del campo Nota de pedido adherida Nº ya está en uso.',
