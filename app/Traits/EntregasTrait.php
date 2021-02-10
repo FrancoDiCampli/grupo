@@ -36,13 +36,13 @@ trait EntregasTrait
         if ($entregas->count() <= $request->get('limit')) {
             return [
                 'entregas' => $entregas,
-                'ultimo' => $entregas->first(),
+                'ultimo' => Entrega::all(['id', 'numentrega'])->last(),
                 'total' => $entregas->count(),
             ];
         } else {
             return [
                 'entregas' => $entregas->take($request->get('limit', null)),
-                'ultimo' => $entregas->first(),
+                'ultimo' => Entrega::all(['id', 'numentrega'])->last(),
                 'total' => $entregas->count(),
             ];
         }

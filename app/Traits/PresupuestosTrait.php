@@ -35,7 +35,7 @@ trait PresupuestosTrait
 
         return response()->json([
             'presupuestos' => $presupuestos,
-            'ultimo' => $presupuestos->first(),
+            'ultimo' => Presupuesto::all(['id', 'numpresupuesto'])->last(),
             'total' => Presupuesto::whereNull('numventa')->count(),
         ]);
     }
