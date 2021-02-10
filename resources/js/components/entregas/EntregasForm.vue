@@ -283,7 +283,7 @@ export default {
                     detallesForm[i].disponible >=
                     detallesForm[i].cantidad - detallesForm[i].cantidadentregado
                 ) {
-                    detallesForm[i].entragando = detallesForm[i].cantidad - detallesForm[i].cantidadentregado;
+                    detallesForm[i].entregando = detallesForm[i].cantidad - detallesForm[i].cantidadentregado;
                     this.detalles.push(detallesForm[i]);
                 }
             }
@@ -307,8 +307,8 @@ export default {
             });
             this.PuntoVenta = data.puntoventa;
             let response = await this.$store.dispatch("entregas/index");
-            if (response.ultima) {
-                this.NumComprobante = Number(response.ultima.numentrega) + 1;
+            if (response.ultimo) {
+                this.NumComprobante = Number(response.ultimo.numentrega) + 1;
             } else {
                 this.NumComprobante = data.numentrega;
             }
