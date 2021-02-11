@@ -26,8 +26,8 @@ trait EntregasTrait
         $entregas = collect();
 
         foreach ($ents as $ent) {
-            $fecha = new Carbon($ent->fecha);
-            $ent->fecha = $fecha->format('d-m-Y');
+            // $fecha = new Carbon($ent->fecha);
+            // $ent->fecha = $fecha->format('d-m-Y');
             $ent->cliente = Cliente::withTrashed()->find($ent->cliente_id);;
             $ent = collect($ent);
             $entregas->push($ent);
