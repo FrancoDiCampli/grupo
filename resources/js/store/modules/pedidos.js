@@ -88,7 +88,6 @@ const actions = {
 
     edit: async function({ commit, dispatch }, params) {
         let pedido = await dispatch("show", params);
-        console.log(pedido);
         let newForm = {
             id: pedido.presupuesto.id,
             bonificacion: pedido.presupuesto.bonificacion,

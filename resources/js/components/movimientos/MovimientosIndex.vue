@@ -76,6 +76,12 @@
                                                         .name
                                                         }}
                                                     </p>
+                                                    <p v-if="move.inventario.observaciones">
+                                                        <b>Observaciones:</b>
+                                                        {{
+                                                        move.inventario.observaciones
+                                                        }}
+                                                    </p>
                                                 </div>
                                             </div>
                                         </v-timeline-item>
@@ -150,7 +156,8 @@
 export default {
     data: () => ({
         filterMenu: false
-    })
+    }),
+
 };
 </script>
 
