@@ -25,8 +25,8 @@ trait ComprasTrait
         $remitos = collect();
 
         foreach ($rems as $rem) {
-            $fecha = new Carbon($rem->fecha);
-            $rem->fecha = $fecha->format('d-m-Y');
+            // $fecha = new Carbon($rem->fecha);
+            // $rem->fecha = $fecha->format('d-m-Y');
             $rem->proveedor = Supplier::withTrashed()->find($rem->supplier_id);
             $rem = collect($rem);
             $remitos->push($rem);
@@ -140,7 +140,7 @@ trait ComprasTrait
         return Compra::create([
             "ptoventa" => $atributos['puntoventa'] * 1,
             "numcompra" => $atributos['numcompra'] * 1,
-            "fecha" => now()->format('Ymd'),
+            "fecha" => now()->format('Y-m-d'),
             'fechaCompra' => $atributos['fecha'],
             "recargo" => $atributos['recargo'] * 1,
             "bonificacion" => $atributos['bonificacion'] * 1,
@@ -156,8 +156,8 @@ trait ComprasTrait
     {
         $configuracion = ConfiguracionTrait::configuracion();
         $remito = Compra::find($id);
-        $fecha = new Carbon($remito->fecha);
-        $remito->fecha = $fecha->format('d-m-Y');
+        // $fecha = new Carbon($remito->fecha);
+        // $remito->fecha = $fecha->format('d-m-Y');
         $proveedor = Supplier::withTrashed()->find($remito->supplier_id);
         $detalles = DB::table('articulo_compra')->where('compra_id', $remito->id)->get();
 

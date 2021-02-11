@@ -47,10 +47,10 @@ trait SuppliersTrait
         $supplier = Supplier::find($id);
         $contactos = ContactosTrait::contactos($supplier);
         $remitos = $supplier->remitos;
-        foreach ($remitos as $remito) {
-            $fecha = new Carbon($remito->fecha);
-            $remito->fecha = $fecha->format('d-m-Y');
-        }
+        // foreach ($remitos as $remito) {
+        //     $fecha = new Carbon($remito->fecha);
+        //     $remito->fecha = $fecha->format('d-m-Y');
+        // }
 
         return ['proveedor' => $supplier, 'remitos' => $remitos, 'contactos' => $contactos];
     }

@@ -17,7 +17,7 @@ trait RecibosTrait
         } else $numrecibo = Recibo::all()->last()->numrecibo + 1;
 
         return  Recibo::create([
-            'fecha' => now()->format('Ymd'),
+            'fecha' => now()->format('Y-m-d'),
             'total' => $total,
             'numrecibo' => $numrecibo
         ]);
@@ -27,15 +27,15 @@ trait RecibosTrait
     {
         $configuracion = ConfiguracionTrait::configuracion();
         $recibo = Recibo::find($id);
-        $fecha = new Carbon($recibo->fecha);
-        $recibo->fecha = $fecha->format('d-m-Y');
+        // $fecha = new Carbon($recibo->fecha);
+        // $recibo->fecha = $fecha->format('d-m-Y');
         $pagos = $recibo->pagos;
         $cliente = null;
         $cotizacion = null;
         $fechaCotizacion = null;
         foreach ($pagos as $pay) {
-            $fecha = new Carbon($pay->fecha);
-            $pay->fecha = $fecha->format('d-m-Y');
+            // $fecha = new Carbon($pay->fecha);
+            // $pay->fecha = $fecha->format('d-m-Y');
             $pay['cuenta'] = $pay->ctacte;
             $pay['factura'] = $pay->ctacte->factura;
             $pays = FormasDePagoTrait::verPagos([$pay]); // el parametro debe ser array
@@ -46,7 +46,8 @@ trait RecibosTrait
         }
         $recibo['cotizacion'] = $cotizacion;
         $fechaCot = new Carbon($fechaCotizacion);
-        $recibo['fecha_cotizacion'] = $fechaCot->format('d-m-Y');
+        // $recibo['fecha_cotizacion'] = $fechaCot->format('d-m-Y');
+        $recibo['fecha_cotizacion'] = $fechaCot;
 
         return [
             'configuracion' => $configuracion,
