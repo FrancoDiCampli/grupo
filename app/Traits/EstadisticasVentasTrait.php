@@ -138,7 +138,7 @@ trait EstadisticasVentasTrait
         // Fin Clientes
 
         $ventas = [
-            'fechas' => ['desde' => $desde->format('Y-m-d'), 'hasta' => $hasta->format('Y-m-d')],
+            'fechas' => ['desde' => $desde, 'hasta' => $hasta],
             'ventasFecha' => $facturas,
             'ventasFechaChart' => $ventasFechasChart,
             'total' => count(Venta::all()),

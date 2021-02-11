@@ -26,9 +26,8 @@ trait PresupuestosTrait
         foreach ($pres as $pre) {
             $venta = Venta::find($pre->numventa);
             $venta ? $pre['venta'] = true : $pre['venta'] = false;
-            // $fecha = new Carbon($pre->fecha);
-            // $pre->fecha = $fecha->format('d-m-Y');
-            $pre->cliente = Cliente::withTrashed()->find($pre->cliente_id);;
+
+            $pre->cliente = Cliente::withTrashed()->find($pre->cliente_id);
             $pre = collect($pre);
             $presupuestos->push($pre);
         }
@@ -128,7 +127,7 @@ trait PresupuestosTrait
                 'fechaCotizacion' => $factura['fechaCotizacion'],
                 'articulo_id' => $detail['articulo_id'] ?? $detail['id'],
                 'venta_id' => $factura->id,
-                'created_at' => now()->format('Ymd'),
+                'created_at' => now()->format('Y-m-d'),
             );
             $det[] = $detalles;
         }
@@ -282,7 +281,7 @@ trait PresupuestosTrait
                 'fechaCotizacion' => $detail['fechaCotizacion'],
                 'articulo_id' => $detail['articulo_id'],
                 'venta_id' => $venta->id,
-                'created_at' => now()->format('Ymd'),
+                'created_at' => now()->format('Y-m-d'),
             );
             $det[] = $detalles;
         }

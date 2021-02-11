@@ -161,7 +161,7 @@ trait VentasTrait
                 'fechaCotizacion' => $detail['fechaCotizacion'],
                 'articulo_id' => $detail['id'],
                 'venta_id' => $factura->id,
-                'created_at' => now()->format('Ymd'),
+                'created_at' => now()->format('Y-m-d'),
             );
             $det[] = $detalles;
         }

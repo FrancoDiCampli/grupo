@@ -32,7 +32,7 @@ trait FormasDePagoTrait
                 $haber = Credito::create([
                     'pesos' => $pay['pesos'] * 1,
                     'dolares' => $pay['dolares'] * 1,
-                    'fecha' => now()->format('Ymd'),
+                    'fecha' => now()->format('Y-m-d'),
                     'fecha_cotizacion' => $pay['fecha_cotizacion'],
                     'cotizacion' => $pay['cotizacion'],
                 ]);
