@@ -26,7 +26,7 @@ trait CuentasCorrientesTrait
                     // PAGO PARCIAL
                     if ($pay['dolares'] < $cuenta->saldo) {
                         $cuenta->saldo = $cuenta->saldo - $pay['dolares'];
-                        $cuenta->ultimopago = now()->format('Ymd');
+                        $cuenta->ultimopago = now()->format('Y-m-d');
                         $cuenta->update();
                         $total = $total + $pay['dolares'];
 
@@ -40,7 +40,7 @@ trait CuentasCorrientesTrait
                         // PAGO TOTAL
                         $cuenta->saldo = 0;
                         $factura = Venta::find($cuenta->venta_id);
-                        $cuenta->ultimopago = now()->format('Ymd');
+                        $cuenta->ultimopago = now()->format('Y-m-d');
                         $cuenta->estado = 'CANCELADA';
                         $cuenta->update();
                         // $factura->pagada = true;
@@ -58,7 +58,7 @@ trait CuentasCorrientesTrait
                         $total = $total + $pay['dolares'];
                         $cuenta->saldo = 0;
                         $factura = Venta::find($cuenta->venta_id);
-                        $cuenta->ultimopago = now()->format('Ymd');
+                        $cuenta->ultimopago = now()->format('Y-m-d');
                         $cuenta->estado = 'CANCELADA';
                         $cuenta->update();
                         // $factura->pagada = true;
@@ -115,7 +115,7 @@ trait CuentasCorrientesTrait
         return Pago::create([
             'ctacte_id' => $cuenta->id,
             'importe' => $pago,
-            'fecha' => now()->format('Ymd'),
+            'fecha' => now()->format('Y-m-d'),
             'numpago' => $numPago,
             'referencia' => $referencia
         ]);

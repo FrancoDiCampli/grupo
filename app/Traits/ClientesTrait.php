@@ -155,12 +155,12 @@ trait ClientesTrait
     {
         $facturas = $cliente->facturas;
 
-        if (count($facturas) > 0) {
-            foreach ($facturas as $factura) {
-                $fecha = new Carbon($factura->fecha);
-                $factura->fecha = $fecha->format('d-m-Y');
-            }
-        }
+        // if (count($facturas) > 0) {
+        //     foreach ($facturas as $factura) {
+        //         $fecha = new Carbon($factura->fecha);
+        //         $factura->fecha = $fecha->format('d-m-Y');
+        //     }
+        // }
 
         $cuentas = collect();
 
@@ -212,10 +212,10 @@ trait ClientesTrait
         $ordenados = collect($cliente->facturas);
         $order = $ordenados->sortByDesc('id');
         $facturas = $order->values()->all();
-        foreach ($facturas as $factura) {
-            $fecha = new Carbon($factura->fecha);
-            $factura->fecha = $fecha->format('d-m-Y');
-        }
+        // foreach ($facturas as $factura) {
+        //     $fecha = new Carbon($factura->fecha);
+        //     $factura->fecha = $fecha->format('d-m-Y');
+        // }
         $cuentas = collect();
 
         if (count($facturas) > 0) {
@@ -232,11 +232,11 @@ trait ClientesTrait
             for ($i = 0; $i < count($cuentas); $i++) {
                 $cuentas[$i]['numfactura'] = $cuentas[$i]->factura['numfactura'];
                 $alta = new Carbon($cuentas[$i]['alta']);
-                $cuentas[$i]['alta'] = $alta->format('d-m-Y');
+                // $cuentas[$i]['alta'] = $alta->format('d-m-Y');
 
                 if ($cuentas[$i]['ultimopago'] != null) {
-                    $ultimo = new Carbon($cuentas[$i]['ultimopago']);
-                    $cuentas[$i]['ultimopago'] = $ultimo->format('d-m-Y');
+                    // $ultimo = new Carbon($cuentas[$i]['ultimopago']);
+                    // $cuentas[$i]['ultimopago'] = $ultimo->format('d-m-Y');
                 }
 
                 $cuentas[$i]['movimientos'] = $cuentas[$i]->movimientos;
@@ -262,8 +262,8 @@ trait ClientesTrait
 
                 $cuentas[$i]['pagos'] = $pagos;
                 foreach ($cuentas[$i]['pagos'] as $key) {
-                    $fec = new Carbon($key->fecha);
-                    $key->fecha = $fec->format('d-m-Y');
+                    // $fec = new Carbon($key->fecha);
+                    // $key->fecha = $fec->format('d-m-Y');
                     $pays = FormasDePagoTrait::verPagos([$key]); // el parametro debe ser array
                     $key['forma'] = $pays;
                 }
@@ -285,8 +285,8 @@ trait ClientesTrait
         }
         $recibosCol = collect();
         foreach ($auxRecibos as $rec) {
-            $fecha = new Carbon($rec[0]->fecha);
-            $rec[0]->fecha = $fecha->format('d-m-Y');
+            // $fecha = new Carbon($rec[0]->fecha);
+            // $rec[0]->fecha = $fecha->format('d-m-Y');
             $recibosCol->push($rec[0]);
         }
         $recibos = $recibosCol->keyBy('id')->values();
@@ -301,22 +301,22 @@ trait ClientesTrait
         $ventas = static::detallesVentas($ventas);
 
         $facturas = $cliente->invoices; // FACTURAS
-        foreach ($facturas as $item) {
-            $fec = new Carbon($item->fecha);
-            $item->fecha = $fec->format('d-m-Y');
-        }
+        // foreach ($facturas as $item) {
+        //     $fec = new Carbon($item->fecha);
+        //     $item->fecha = $fec->format('d-m-Y');
+        // }
 
         $entregas = $cliente->entregas; // ENTREGAS
-        foreach ($entregas as $item) {
-            $fec = new Carbon($item->fecha);
-            $item->fecha = $fec->format('d-m-Y');
-        }
+        // foreach ($entregas as $item) {
+        //     $fec = new Carbon($item->fecha);
+        //     $item->fecha = $fec->format('d-m-Y');
+        // }
 
         $pedidos = $cliente->pedidos;
-        foreach ($pedidos as $item) {
-            $fec = new Carbon($item->fecha);
-            $item->fecha = $fec->format('d-m-Y');
-        }
+        // foreach ($pedidos as $item) {
+        //     $fec = new Carbon($item->fecha);
+        //     $item->fecha = $fec->format('d-m-Y');
+        // }
 
         return compact('cliente', 'contactos', 'user', 'facturas', 'ventas', 'entregas', 'pedidos', 'cuentas', 'recibos', 'haber');
     }
@@ -360,22 +360,24 @@ trait ClientesTrait
         $haberAnterior = $flattenAH->sum('importe');
         $saldoAnterior = $haberAnterior - $debeAnterior;
 
-        $flattenD->map(function ($item) {
-            $fec = new Carbon($item->fecha);
-            $item->fecha = $fec->format('d-m-Y');
-        });
+        // $flattenD->map(function ($item) {
+        //     $fec = new Carbon($item->fecha);
+        //     $item->fecha = $fec->format('d-m-Y');
+        // });
         $sortedD = $flattenD->sort();
 
-        $flattenH->map(function ($item) {
-            $fec = new Carbon($item->fecha);
-            $item->fecha = $fec->format('d-m-Y');
-        });
+        // $flattenH->map(function ($item) {
+        //     $fec = new Carbon($item->fecha);
+        //     $item->fecha = $fec->format('d-m-Y');
+        // });
         $sortedH = $flattenH->sort();
 
         return [
             'cliente' => $cliente,
-            'desde' => $desde->format('d-m-Y'),
-            'hasta' => $hasta->format('d-m-Y'),
+            // 'desde' => $desde->format('d-m-Y'),
+            'desde' => $desde,
+            // 'hasta' => $hasta->format('d-m-Y'),
+            'hasta' => $hasta,
             'cuentas' => $sortedD->values()->all(),
             'pagos' => $sortedH->values()->all(),
             'debe' => number_format($debe, 2, ',', '.'),
@@ -389,8 +391,8 @@ trait ClientesTrait
     {
         $auxVentas = collect();
         foreach ($ventas as $venta) {
-            $fecha = new Carbon($venta->fecha);
-            $venta->fecha = $fecha->format('d-m-Y');
+            // $fecha = new Carbon($venta->fecha);
+            // $venta->fecha = $fecha->format('d-m-Y');
             $venta->cliente = Cliente::withTrashed()->find($venta->cliente_id);
             // $fac->forma;
             // $pagos = FormasDePagoTrait::verPagos($fac);
