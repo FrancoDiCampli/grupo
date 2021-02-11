@@ -228,7 +228,7 @@
 
 <script>
 import ClickOutside from "v-click-outside";
-
+import dayjs from 'dayjs';
 import AppBar from "./components/AppBar";
 import Errors from "./components/Errors";
 
@@ -309,6 +309,11 @@ export default {
             this.$vuetify.theme.themes.dark = customTheme.dark
         }
 
+        let fechaCotizacion = window.localStorage.getItem('fechaCotizacion');
+        if(fechaCotizacion == 'null') {
+            window.localStorage.removeItem('fechaCotizacion');
+            window.localStorage.removeItem('cotizacion');
+        }
         
     },
 

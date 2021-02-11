@@ -151,6 +151,7 @@
                                         <v-tab-item
                                             style="background: white !important;"
                                         >
+                                        <br>
                                             <ArticulosShowInventarios></ArticulosShowInventarios>
                                         </v-tab-item>
                                     </v-tabs>

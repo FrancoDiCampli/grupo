@@ -151,7 +151,7 @@
                             <p>
                                 <b>Diferido:</b>
                             </p>
-                            <p>{{ cheque.fechacobro }}</p>
+                            <p>{{ cheque.fechacobro | formatDate }}</p>
                         </v-col>
                         <v-col cols="12" sm="6" class="py-0">
                             <p>

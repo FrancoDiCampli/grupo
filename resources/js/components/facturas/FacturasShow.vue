@@ -63,7 +63,7 @@
                                     <b>Fecha de emisión:</b>
                                     {{
                                     $store.state.facturas.factura.factura
-                                    .fecha
+                                    .fecha | formatDate
                                     }}
                                 </p>
                                 <p>
@@ -195,7 +195,7 @@
                                         <b>Fecha:</b>
                                         {{
                                         $store.state.facturas.factura.factura
-                                        .fechaCotizacion
+                                        .fechaCotizacion | formatDate
                                         }}
                                     </p>
                                     <p>
