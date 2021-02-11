@@ -9,6 +9,10 @@ trait InventariosAdmin
 {
     public static function actualizarCasaCentral($actualizar, $data)
     {
+        if ($data['observaciones']) {
+            $aux = $data['observaciones'];
+        } else $aux = null;
+
         switch ($data['movimiento']) {
             case 'INCREMENTO':
                 $actualizar->cantidad += $data['cantidad'];
@@ -20,6 +24,7 @@ trait InventariosAdmin
                     'inventario_id' => $actualizar->id,
                     'cantidad' => $data['cantidad'],
                     'cantidadlitros' => $data['cantidadlitros'],
+                    'observaciones' => $aux,
                     'fecha' => now(),
                     'user_id' => auth()->user()->id
                 ]);
@@ -35,6 +40,7 @@ trait InventariosAdmin
                     'inventario_id' => $actualizar->id,
                     'cantidad' => $data['cantidad'],
                     'cantidadlitros' => $data['cantidadlitros'],
+                    'observaciones' => $aux,
                     'fecha' => now(),
                     'user_id' => auth()->user()->id
                 ]);
@@ -50,6 +56,7 @@ trait InventariosAdmin
                     'inventario_id' => $actualizar->id,
                     'cantidad' => $data['cantidad'],
                     'cantidadlitros' => $data['cantidadlitros'],
+                    'observaciones' => $aux,
                     'fecha' => now(),
                     'user_id' => auth()->user()->id
                 ]);
@@ -65,6 +72,7 @@ trait InventariosAdmin
                     'inventario_id' => $actualizar->id,
                     'cantidad' => $data['cantidad'],
                     'cantidadlitros' => $data['cantidadlitros'],
+                    'observaciones' => $aux,
                     'fecha' => now(),
                     'user_id' => auth()->user()->id
                 ]);
@@ -129,11 +137,17 @@ trait InventariosAdmin
     public static function movimientoAlta($inventario, $request)
     {
         $data = $request;
+
+        if ($data['observaciones']) {
+            $aux = $data['observaciones'];
+        } else $aux = null;
+
         $move = Movimiento::create([
             'tipo' => 'ALTA',
             'inventario_id' => $inventario->id,
             'cantidad' => $data['cantidad'],
             'cantidadlitros' => $data['cantidadlitros'],
+            'observaciones' => $aux,
             'fecha' => now(),
             'user_id' => auth()->user()->id
         ]);
@@ -141,12 +155,17 @@ trait InventariosAdmin
 
     public static function movimientoAltaConsignacion($inventario, $data)
     {
+        if ($data['observaciones']) {
+            $aux = $data['observaciones'];
+        } else $aux = null;
+
         $move = Movimiento::create([
             'tipo' => 'ALTA X CONSIGNACION',
             'inventario_id' => $inventario->id,
             'origen' => $data['inventario_id'],
             'cantidad' => $data['cantidad'],
             'cantidadlitros' => $data['cantidadlitros'],
+            'observaciones' => $aux,
             'fecha' => now(),
             'user_id' => auth()->user()->id
         ]);
@@ -154,11 +173,16 @@ trait InventariosAdmin
 
     public static function movimientoBajaConsignacion($data)
     {
+        if ($data['observaciones']) {
+            $aux = $data['observaciones'];
+        } else $aux = null;
+
         $move = Movimiento::create([
             'tipo' => 'BAJA X CONSIGNACION',
             'inventario_id' => $data['inventario_id'],
             'cantidad' => $data['cantidad'],
             'cantidadlitros' => $data['cantidadlitros'],
+            'observaciones' => $aux,
             'fecha' => now(),
             'user_id' => auth()->user()->id
         ]);
@@ -166,11 +190,16 @@ trait InventariosAdmin
 
     public static function movimientoBajaDevolucion($data)
     {
+        if ($data['observaciones']) {
+            $aux = $data['observaciones'];
+        } else $aux = null;
+
         $move = Movimiento::create([
             'tipo' => 'BAJA X DEVOLUCION',
             'inventario_id' => $data['inventario_id'],
             'cantidad' => $data['cantidad'],
             'cantidadlitros' => $data['cantidadlitros'],
+            'observaciones' => $aux,
             'fecha' => now(),
             'user_id' => auth()->user()->id
         ]);
@@ -178,12 +207,17 @@ trait InventariosAdmin
 
     public static function movimientoAltaDevolucion($data)
     {
+        if ($data['observaciones']) {
+            $aux = $data['observaciones'];
+        } else $aux = null;
+
         $move = Movimiento::create([
             'tipo' => 'ALTA X DEVOLUCION',
             'inventario_id' => $data['inventario_id'],
             'cantidad' => $data['cantidad'],
             'cantidadlitros' => $data['cantidadlitros'],
             'origen' => $data['origen'],
+            'observaciones' => $aux,
             'fecha' => now(),
             'user_id' => auth()->user()->id
         ]);
@@ -191,11 +225,16 @@ trait InventariosAdmin
 
     public static function movimientoIncrementoConsignacion($data)
     {
+        if ($data['observaciones']) {
+            $aux = $data['observaciones'];
+        } else $aux = null;
+
         $move = Movimiento::create([
             'tipo' => 'INCREMENTO X CONSIGNACION',
             'inventario_id' => $data['inventario_id'],
             'cantidad' => $data['cantidad'],
             'cantidadlitros' => $data['cantidadlitros'],
+            'observaciones' => $aux,
             'fecha' => now(),
             'user_id' => auth()->user()->id
         ]);
