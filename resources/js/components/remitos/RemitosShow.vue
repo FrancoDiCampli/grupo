@@ -206,7 +206,7 @@
                                         <b>Fecha:</b>
                                         {{
                                         $store.state.remitos.venta.factura
-                                        .fechaCotizacion
+                                        .fechaCotizacion | formatDate
                                         }}
                                     </p>
                                     <p>

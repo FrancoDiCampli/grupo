@@ -36,7 +36,7 @@
                                             :key="index"
                                         >
                                             <td>{{ movimiento.importe | formatCurrency('USD') }}</td>
-                                            <td>{{ movimiento.fecha }}</td>
+                                            <td>{{ movimiento.fecha | formatDate }}</td>
                                             <td>{{ movimiento.tipo }}</td>
                                         </tr>
                                     </tbody>

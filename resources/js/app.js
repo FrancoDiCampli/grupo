@@ -5,7 +5,6 @@ import App from "./App.vue";
 // Production routes
 import router from "./routes/productionRoutes";
 import store from "./store/store";
-import moment from "moment";
 import dayjs from 'dayjs';
 
 // Axios
@@ -35,7 +34,7 @@ Vue.prototype.$user.set({
 // DATE FILTER
 Vue.filter("formatDate", function(value) {
     if (value) {
-        return moment(String(value)).format("DD-MM-YYYY");
+        return dayjs(String(value)).format("DD-MM-YYYY");
     }
 });
 

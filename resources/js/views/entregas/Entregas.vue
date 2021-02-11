@@ -22,7 +22,7 @@
                                             }}
                                         </td>
                                         <td>{{ item.cliente.razonsocial }}</td>
-                                        <td>{{ item.fecha }}</td>
+                                        <td>{{ item.fecha | formatDate }}</td>
                                         <td>
                                             <v-menu offset-y>
                                                 <template v-slot:activator="{ on }">

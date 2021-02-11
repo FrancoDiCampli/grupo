@@ -152,7 +152,7 @@
                                     v-for="(item, index) in cuenta.cuentas"
                                     :key="index"
                                 >
-                                    <td>{{ item.fecha }}</td>
+                                    <td>{{ item.fecha | formatDate }}</td>
                                     <td>{{ item.tipo }}</td>
                                     <td>{{ item.importe | formatCurrency('USD') }}</td>
                                 </tr>
@@ -186,7 +186,7 @@
                                     v-for="(item, index) in cuenta.pagos"
                                     :key="index"
                                 >
-                                    <td>{{ item.fecha }}</td>
+                                    <td>{{ item.fecha | formatDate }}</td>
                                     <td>
                                         {{ item.tipo }}
                                     </td>

@@ -18,7 +18,7 @@
                                 :key="index"
                             >
                                 <td>{{ remito.numcompra }}</td>
-                                <td>{{ remito.fecha }}</td>
+                                <td>{{ remito.fecha | formatDate }}</td>
                                 <td>{{ remito.total }}</td>
                                 <td>
                                     <v-menu offset-y>

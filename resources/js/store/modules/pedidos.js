@@ -1,4 +1,4 @@
-import moment from "moment";
+
 
 const state = {
     pedidos: null,
@@ -88,6 +88,7 @@ const actions = {
 
     edit: async function({ commit, dispatch }, params) {
         let pedido = await dispatch("show", params);
+        console.log(pedido);
         let newForm = {
             id: pedido.presupuesto.id,
             bonificacion: pedido.presupuesto.bonificacion,
@@ -98,7 +99,7 @@ const actions = {
             confirmacion: pedido.presupuesto.numventa ? true : false,
             cotizacion: pedido.presupuesto.cotizacion,
             detalles: pedido.detalles,
-            fecha: moment(String(pedido.presupuesto.fecha)),
+            fecha: pedido.presupuesto.fecha,
             fechaCotizacion: pedido.presupuesto.fechaCotizacion,
             pedidoadherido: pedido.presupuesto.comprobanteadherido,
             observaciones: pedido.presupuesto.observaciones,

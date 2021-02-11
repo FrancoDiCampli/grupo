@@ -26,8 +26,8 @@ trait EntregasTrait
         $entregas = collect();
 
         foreach ($ents as $ent) {
-            $fecha = new Carbon($ent->fecha);
-            $ent->fecha = $fecha->format('d-m-Y');
+            // $fecha = new Carbon($ent->fecha);
+            // $ent->fecha = $fecha->format('d-m-Y');
             $ent->cliente = Cliente::withTrashed()->find($ent->cliente_id);;
             $ent = collect($ent);
             $entregas->push($ent);
@@ -36,13 +36,13 @@ trait EntregasTrait
         if ($entregas->count() <= $request->get('limit')) {
             return [
                 'entregas' => $entregas,
-                'ultimo' => $entregas->first(),
+                'ultimo' => Entrega::all(['id', 'numentrega'])->last(),
                 'total' => $entregas->count(),
             ];
         } else {
             return [
                 'entregas' => $entregas->take($request->get('limit', null)),
-                'ultimo' => $entregas->first(),
+                'ultimo' => Entrega::all(['id', 'numentrega'])->last(),
                 'total' => $entregas->count(),
             ];
         }

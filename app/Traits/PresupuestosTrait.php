@@ -26,8 +26,8 @@ trait PresupuestosTrait
         foreach ($pres as $pre) {
             $venta = Venta::find($pre->numventa);
             $venta ? $pre['venta'] = true : $pre['venta'] = false;
-            $fecha = new Carbon($pre->fecha);
-            $pre->fecha = $fecha->format('d-m-Y');
+            // $fecha = new Carbon($pre->fecha);
+            // $pre->fecha = $fecha->format('d-m-Y');
             $pre->cliente = Cliente::withTrashed()->find($pre->cliente_id);;
             $pre = collect($pre);
             $presupuestos->push($pre);
@@ -35,7 +35,7 @@ trait PresupuestosTrait
 
         return response()->json([
             'presupuestos' => $presupuestos,
-            'ultimo' => $presupuestos->first(),
+            'ultimo' => Presupuesto::all(['id', 'numpresupuesto'])->last(),
             'total' => Presupuesto::whereNull('numventa')->count(),
         ]);
     }
@@ -44,7 +44,7 @@ trait PresupuestosTrait
     {
         $request->validate(
             [
-                'pedidoadherido' => 'required|unique:presupuestos,comprobanteadherido,NULL,id,deleted_at,NULL'
+                'pedidoadherido' => 'nullable|unique:presupuestos,comprobanteadherido,NULL,id,deleted_at,NULL'
             ],
             [
                 'pedidoadherido.unique' => 'El valor del campo Nota de pedido adherida Nº ya está en uso.',
@@ -226,8 +226,8 @@ trait PresupuestosTrait
     {
         $configuracion = ConfiguracionTrait::configuracion();
         $presupuesto = Presupuesto::find($id);
-        $fecha = new Carbon($presupuesto->fecha);
-        $presupuesto->fecha = $fecha->format('d-m-Y');
+        // $fecha = new Carbon($presupuesto->fecha);
+        // $presupuesto->fecha = $fecha->format('d-m-Y');
         $cliente = Cliente::withTrashed()->find($presupuesto->cliente_id);
         $detalles = DB::table('articulo_presupuesto')->where('presupuesto_id', $presupuesto->id)->get();
 

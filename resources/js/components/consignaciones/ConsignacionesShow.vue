@@ -59,7 +59,7 @@
                                     <b>Fecha de emisión:</b>
                                     {{
                                     $store.state.consignaciones.consignacion.consignacion
-                                    .fecha
+                                    .fecha | formatDate
                                     }}
                                 </p>
                                 <p>

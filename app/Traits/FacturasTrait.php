@@ -39,8 +39,8 @@ trait FacturasTrait
                 }
             }
 
-            $fecha = new Carbon($fac->fecha);
-            $fac->fecha = $fecha->format('d-m-Y');
+            // $fecha = new Carbon($fac->fecha);
+            // $fac->fecha = $fecha->format('d-m-Y');
             $fac->cliente = Cliente::withTrashed()->find($fac->cliente_id);
             $fac['hasPagos'] = $pagos;
             $fac = collect($fac);
@@ -49,7 +49,7 @@ trait FacturasTrait
 
         return [
             'facturas' => $facturas,
-            'ultima' => $facturas->first(),
+            'ultima' => Factura::all(['id', 'numfactura'])->last(),
             'total' => Factura::count()
         ];
     }
@@ -147,10 +147,10 @@ trait FacturasTrait
         foreach ($factura->articulos as $det) {
             $detalles->push($det['pivot']);
         }
-        $fecha = new Carbon($factura->fecha);
-        $factura->fecha = $fecha->format('d-m-Y');
-        $fechaCot = new Carbon($factura->fechaCotizacion);
-        $factura->fechaCotizacion = $fechaCot->format('d-m-Y');
+        // $fecha = new Carbon($factura->fecha);
+        // $factura->fecha = $fecha->format('d-m-Y');
+        // $fechaCot = new Carbon($factura->fechaCotizacion);
+        // $factura->fechaCotizacion = $fechaCot->format('d-m-Y');
         $cliente = Cliente::withTrashed()->find($factura->cliente_id);
 
         return [

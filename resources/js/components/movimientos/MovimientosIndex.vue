@@ -36,7 +36,7 @@
                                             right
                                             small
                                         >
-                                            <template v-slot:opposite>{{ move.fecha }}</template>
+                                            <template v-slot:opposite>{{ move.fecha | formatDate }}</template>
                                             <div>
                                                 <h2>{{ move.tipo }}</h2>
                                                 <v-divider></v-divider>
@@ -103,7 +103,7 @@
                                             right
                                             small
                                         >
-                                            <template v-slot:opposite>{{ move.fecha }}</template>
+                                            <template v-slot:opposite>{{ move.fecha | formatDate }}</template>
                                             <div>
                                                 <h2>{{ move.tipo }}</h2>
                                                 <v-divider></v-divider>

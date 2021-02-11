@@ -65,7 +65,7 @@
                                 <p>
                                     <b>Fecha de emisión:</b>
                                     {{
-                                        $store.state.compras.compra.remito.fecha
+                                        $store.state.compras.compra.remito.fecha | formatDate
                                     }}
                                 </p>
                                 <p>

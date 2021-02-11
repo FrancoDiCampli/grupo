@@ -148,7 +148,7 @@
                                         <v-date-picker
                                             v-model="
                                                 $store.state.consignaciones.form
-                                                    .fecha
+                                                    .fecha 
                                             "
                                             scrollable
                                             locale="es"
