@@ -6,6 +6,7 @@ import App from "./App.vue";
 import router from "./routes/productionRoutes";
 import store from "./store/store";
 import moment from "moment";
+import dayjs from 'dayjs';
 
 // Axios
 window.axios = require("axios");

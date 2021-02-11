@@ -25,6 +25,7 @@
     },
     "dependencies": {
         "@fortawesome/fontawesome-free": "^5.15.2",
+        "dayjs": "^1.10.4",
         "echarts": "^4.9.0",
         "moment": "^2.29.1",
         "v-charts": "^1.19.0",

@@ -1,3 +1,5 @@
+import moment from "moment";
+
 const state = {
     pedidos: null,
     pedido: null,
@@ -96,7 +98,7 @@ const actions = {
             confirmacion: pedido.presupuesto.numventa ? true : false,
             cotizacion: pedido.presupuesto.cotizacion,
             detalles: pedido.detalles,
-            fecha: pedido.presupuesto.fecha,
+            fecha: moment(String(pedido.presupuesto.fecha)),
             fechaCotizacion: pedido.presupuesto.fechaCotizacion,
             pedidoadherido: pedido.presupuesto.comprobanteadherido,
             observaciones: pedido.presupuesto.observaciones,
