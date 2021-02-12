@@ -146,6 +146,7 @@ trait ConsignacionesTrait
                     'cantidadlitros' => $cantidad * $litros,
                     'articulo_id' => $articulo_id,
                     'dependencia' => $dependencia_id,
+                    'observaciones' => $request->observaciones
                 ];
 
                 if ($data['cantidad'] <= $origen['cantidad']) {

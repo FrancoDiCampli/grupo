@@ -119,7 +119,8 @@ trait DevolucionesTrait
                 $data = [
                     'inventario_id' => $detalle['inventarios']['id'],
                     'cantidad' => $detalle['cantidad'],
-                    'cantidadlitros' => $detalle['litros']
+                    'cantidadlitros' => $detalle['litros'],
+                    'observaciones' => $request->observaciones
                 ];
 
                 if ($detalle['cantidad'] <= $detalle['inventarios']['cantidad'] && $detalle['litros'] <= $detalle['inventarios']['cantidadlitros']) {
