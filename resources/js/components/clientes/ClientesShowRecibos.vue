@@ -54,7 +54,7 @@
                                     </p>
                                     <p>
                                         <b>Fecha de Emisión:</b>
-                                        {{ recibo.recibo.fecha }}
+                                        {{ recibo.recibo.fecha | formatDate }}
                                     </p>
                                     <p>
                                         <b>Cuit:</b>
@@ -109,7 +109,7 @@
                                                 >
                                                     <th>{{ pago.numpago }}</th>
                                                     <th>{{ pago.importe | formatCurrency('USD') }}</th>
-                                                    <th>{{ pago.fecha }}</th>
+                                                    <th>{{ pago.fecha | formatDate }}</th>
                                                     <th>{{ pago.forma[0] }}</th>
                                                     <th>
                                                         $
@@ -132,7 +132,7 @@
                                         </p>
                                         <p>
                                             <b>Fecha Cotización:</b>
-                                            {{ recibo.recibo.fecha_cotizacion }}
+                                            {{ recibo.recibo.fecha_cotizacion | formatDate }}
                                         </p>
                                         <v-divider></v-divider>
                                         <br />

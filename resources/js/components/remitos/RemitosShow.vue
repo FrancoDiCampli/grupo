@@ -70,7 +70,7 @@
                                 <p>
                                     <b>Fecha de emisión:</b>
                                     {{
-                                    $store.state.remitos.venta.factura.fecha
+                                    $store.state.remitos.venta.factura.fecha | formatDate
                                     }}
                                 </p>
                                 <p>
@@ -206,7 +206,7 @@
                                         <b>Fecha:</b>
                                         {{
                                         $store.state.remitos.venta.factura
-                                        .fechaCotizacion
+                                        .fechaCotizacion | formatDate
                                         }}
                                     </p>
                                     <p>

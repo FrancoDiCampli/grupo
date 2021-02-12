@@ -20,7 +20,7 @@
                         <tr>
                             <td>{{ item.id }}</td>
                             <td>{{ item.dependencia.name }}</td>
-                            <td class="hidden-xs-only">{{ item.fecha }}</td>
+                            <td class="hidden-xs-only">{{ item.fecha | formatDate }}</td>
                             <td>
                                 <v-menu offset-y>
                                     <template v-slot:activator="{ on }">

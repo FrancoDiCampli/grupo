@@ -105,7 +105,7 @@ trait EstadisticasComprasTrait
         // Fin Proveedores
 
         $compras = [
-            'fechas' => ['desde' => $desde->format('Y-m-d'), 'hasta' => $hasta->format('Y-m-d')],
+            'fechas' => ['desde' => $desde, 'hasta' => $hasta],
             'comprasFecha' => $remitos,
             'comprasFechasChart' => $comprasFechasChart,
             'proveedores' => $proveedores,

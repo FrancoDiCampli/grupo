@@ -44,7 +44,7 @@
                                 
                             </td>
                             <td>{{ item.cliente.razonsocial }}</td>
-                            <td class="hidden-xs-only">{{ item.fecha }}</td>
+                            <td class="hidden-xs-only">{{ item.fecha | formatDate }}</td>
                             <td>{{ item.total | formatCurrency('USD') }}</td>
                             <td>
                                 <v-menu offset-y>

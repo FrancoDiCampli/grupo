@@ -82,7 +82,7 @@
                                 <p>
                                     <b>Fecha de emisión:</b>
                                     {{
-                                    $store.state.pedidos.pedido.pedido.fecha
+                                    $store.state.pedidos.pedido.pedido.fecha | formatDate
                                     }}
                                 </p>
                                 <p>

@@ -386,7 +386,7 @@ export default new Router({
             name: "consignaciones",
             component: Consignaciones,
             meta: {
-                rol: ["superAdmin", "administrador"],
+                rol: ["superAdmin", "administrador", 'vendedor'],
                 redirect: "welcome"
             }
         },
@@ -405,7 +405,7 @@ export default new Router({
             component: ConsignacionesShow,
             props: true,
             meta: {
-                rol: ["superAdmin", "administrador"],
+                rol: ["superAdmin", "administrador", 'vendedor'],
                 redirect: "welcome"
             }
         },
@@ -416,7 +416,7 @@ export default new Router({
             name: "devoluciones",
             component: Devoluciones,
             meta: {
-                rol: ["superAdmin", "administrador"],
+                rol: ["superAdmin", "administrador", 'vendedor'],
                 redirect: "welcome"
             }
         },
@@ -435,7 +435,7 @@ export default new Router({
             component: DevolucionesShow,
             props: true,
             meta: {
-                rol: ["superAdmin", "administrador"],
+                rol: ["superAdmin", "administrador", 'vendedor'],
                 redirect: "welcome"
             }
         },

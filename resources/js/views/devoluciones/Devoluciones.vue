@@ -12,6 +12,7 @@
                     large
                     v-on="on"
                     to="devoluciones/nueva"
+                    v-if="checkRole()"
                 >
                     <v-icon>fas fa-plus</v-icon>
                 </v-btn>
@@ -70,6 +71,21 @@ export default {
                 if(!this.$store.state.inProcess) {
                     this.loadMore();
                 }
+            }
+        },
+
+        checkRole() {
+            if(this.$store.state.auth.user) {
+                if(
+                    this.$store.state.auth.user.rol =='superAdmin' || 
+                    this.$store.state.auth.user.rol =='administrador'
+                ) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
             }
         },
     }

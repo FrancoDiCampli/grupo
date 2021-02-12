@@ -30,8 +30,8 @@ trait VentasTrait
         $facturas = collect();
 
         foreach ($facs as $fac) {
-            $fecha = new Carbon($fac->fecha);
-            $fac->fecha = $fecha->format('d-m-Y');
+            // $fecha = new Carbon($fac->fecha);
+            // $fac->fecha = $fecha->format('d-m-Y');
             $fac->cliente = Cliente::withTrashed()->find($fac->cliente_id);
             // $fac->forma;
             // $pagos = FormasDePagoTrait::verPagos($fac);
@@ -77,14 +77,14 @@ trait VentasTrait
         $eliminadas = Venta::onlyTrashed()->get();
 
         foreach ($eliminadas as $eliminada) {
-            $dateFac = new Carbon($eliminada->fecha);
-            $eliminada->fecha = $dateFac->format('d-m-Y');
+            // $dateFac = new Carbon($eliminada->fecha);
+            // $eliminada->fecha = $dateFac->format('d-m-Y');
             $eliminada->cliente;
         }
 
         return [
             'ventas' => $facturas,
-            'ultima' => $facturas->first(),
+            'ultima' => Venta::all(['id', 'numventa'])->last(),
             'total' => Venta::count(),
             'eliminadas' => $eliminadas
         ];
@@ -161,7 +161,7 @@ trait VentasTrait
                 'fechaCotizacion' => $detail['fechaCotizacion'],
                 'articulo_id' => $detail['id'],
                 'venta_id' => $factura->id,
-                'created_at' => now()->format('Ymd'),
+                'created_at' => now()->format('Y-m-d'),
             );
             $det[] = $detalles;
         }
@@ -199,10 +199,10 @@ trait VentasTrait
         $factura = Venta::find($id);
         // $formas = $factura->formasPago;
         // $aux = FormasDePagoTrait::verPagosVenta($formas);
-        $fecha = new Carbon($factura->fecha);
-        $fechaCot = new Carbon($factura->fechaCotizacion);
-        $factura->fecha = $fecha->format('d-m-Y');
-        $factura->fechaCotizacion = $fechaCot->format('d-m-Y');
+        // $fecha = new Carbon($factura->fecha);
+        // $fechaCot = new Carbon($factura->fechaCotizacion);
+        // $factura->fecha = $fecha->format('d-m-Y');
+        // $factura->fechaCotizacion = $fechaCot->format('d-m-Y');
         $cliente = Cliente::withTrashed()->find($factura->cliente_id);
         $detalles = DB::table('articulo_venta')->where('venta_id', $factura->id)->get();
         return [

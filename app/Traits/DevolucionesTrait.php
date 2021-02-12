@@ -29,8 +29,8 @@ trait DevolucionesTrait
         }
 
         foreach ($devoluciones as $devolu) {
-            $fecha = new Carbon($devolu->fecha);
-            $devolu->fecha = $fecha->format('d-m-Y');
+            // $fecha = new Carbon($devolu->fecha);
+            // $devolu->fecha = $fecha->format('d-m-Y');
             $devolu->dependencia = User::find($devolu->dependencia);
         }
 
@@ -119,7 +119,8 @@ trait DevolucionesTrait
                 $data = [
                     'inventario_id' => $detalle['inventarios']['id'],
                     'cantidad' => $detalle['cantidad'],
-                    'cantidadlitros' => $detalle['litros']
+                    'cantidadlitros' => $detalle['litros'],
+                    'observaciones' => $request->observaciones
                 ];
 
                 if ($detalle['cantidad'] <= $detalle['inventarios']['cantidad'] && $detalle['litros'] <= $detalle['inventarios']['cantidadlitros']) {
@@ -174,8 +175,8 @@ trait DevolucionesTrait
         $configuracion = ConfiguracionTrait::configuracion();
         $devolucion = GiveBack::find($id);
         $dependencia = User::find($devolucion->dependencia);
-        $fecha = new Carbon($devolucion->fecha);
-        $devolucion->fecha = $fecha->format('d-m-Y');
+        // $fecha = new Carbon($devolucion->fecha);
+        // $devolucion->fecha = $fecha->format('d-m-Y');
         $detalles = DB::table('articulo_give_back')->where('give_back_id', $devolucion->id)->get();
 
         return [

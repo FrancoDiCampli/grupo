@@ -1,11 +1,21 @@
 import Vue from "vue";
 import App from "./App.vue";
+
+import store from "./store/store";
+import dayjs from 'dayjs';
+
+// ROUTES
 // Local routes
 // import router from "./routes/router";
 // Production routes
 import router from "./routes/productionRoutes";
-import store from "./store/store";
-import moment from "moment";
+// Eliminar error  "Redirected when going from "/routeA" to "/routeB" via a navigation guard."
+import RouterFix from 'vue-router'
+const originalPush = RouterFix.prototype.push
+RouterFix.prototype.push = function push(location, onResolve, onReject) {
+  if (onResolve || onReject) return originalPush.call(this, location, onResolve, onReject)
+  return originalPush.call(this, location).catch(err => err)
+}
 
 // Axios
 window.axios = require("axios");
@@ -34,7 +44,7 @@ Vue.prototype.$user.set({
 // DATE FILTER
 Vue.filter("formatDate", function(value) {
     if (value) {
-        return moment(String(value)).format("DD-MM-YYYY");
+        return dayjs(String(value)).format("DD-MM-YYYY");
     }
 });
 

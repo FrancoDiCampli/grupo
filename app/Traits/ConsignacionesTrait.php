@@ -30,8 +30,8 @@ trait ConsignacionesTrait
         }
 
         foreach ($consignaciones as $consig) {
-            $fecha = new Carbon($consig->fecha);
-            $consig->fecha = $fecha->format('d-m-Y');
+            // $fecha = new Carbon($consig->fecha);
+            // $consig->fecha = $fecha->format('d-m-Y');
             $consig->dependencia = User::find($consig->dependencia);
         }
 
@@ -60,8 +60,8 @@ trait ConsignacionesTrait
         $configuracion = ConfiguracionTrait::configuracion();
         $consignacion = Consignment::find($id);
         $dependencia = User::find($consignacion->dependencia);
-        $fecha = new Carbon($consignacion->fecha);
-        $consignacion->fecha = $fecha->format('d-m-Y');
+        // $fecha = new Carbon($consignacion->fecha);
+        // $consignacion->fecha = $fecha->format('d-m-Y');
         $detalles = DB::table('articulo_consignment')->where('consignment_id', $consignacion->id)->get();
 
         return [
@@ -146,6 +146,7 @@ trait ConsignacionesTrait
                     'cantidadlitros' => $cantidad * $litros,
                     'articulo_id' => $articulo_id,
                     'dependencia' => $dependencia_id,
+                    'observaciones' => $request->observaciones
                 ];
 
                 if ($data['cantidad'] <= $origen['cantidad']) {

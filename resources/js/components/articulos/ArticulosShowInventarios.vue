@@ -318,7 +318,8 @@ export default {
 
     methods: {
         checkStock() {
-            if (this.$store.state.articulos.articulo.stock <= 0) {
+            console.log(this.$store.state.articulos.articulo);
+            if (this.$store.state.articulos.articulo.inventarios.lenght <= 0) {
                 this.$store.state.inventarios.form.movimiento = "ALTA";
                 this.disabled.movimiento = true;
                 this.disabled.lote = true;

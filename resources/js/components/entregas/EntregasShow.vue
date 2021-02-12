@@ -66,7 +66,7 @@
                                     <b>Fecha de emisión:</b>
                                     {{
                                     $store.state.entregas.entrega.entrega
-                                    .fecha
+                                    .fecha | formatDate
                                     }}
                                 </p>
                                 <p>

@@ -11,7 +11,7 @@
                 <template v-slot:item="{item}">
                     <tr>
                         <td>{{item.numrecibo}}</td>
-                        <td>{{item.fecha}}</td>
+                        <td>{{item.fecha | formatDate }}</td>
                         <td>{{item.total | formatCurrency('USD') }}</td>
                         <td>
                             <v-menu offset-y>

@@ -24,7 +24,7 @@
                                             }}
                                             
                                         </td>
-                                        <td class="hidden-xs-only">{{ item.fecha }}</td>
+                                        <td class="hidden-xs-only">{{ item.fecha | formatDate }}</td>
                                         <td>{{ item.total | formatCurrency('USD') }}</td>
                                         <td>
                                             <v-menu offset-y>
@@ -133,7 +133,7 @@
                                             {{ item.comprobanteadherido || item.numventa }}
                                         </td>
                                         <td>{{ item.total | formatCurrency('USD') }}</td>
-                                        <td class="hidden-sm-and-down">{{ item.fecha }}</td>
+                                        <td class="hidden-sm-and-down">{{ item.fecha | formatDate }}</td>
                                         <td>
                                             <v-menu offset-y>
                                                 <template v-slot:activator="{ on }">
@@ -210,7 +210,7 @@
                                                 item.comprobanteadherido || item.numfactura
                                             }}
                                         </td>
-                                        <td class="hidden-xs-only">{{ item.fecha }}</td>
+                                        <td class="hidden-xs-only">{{ item.fecha | formatDate }}</td>
                                         <td>{{ item.total | formatCurrency('USD') }}</td>
                                         <td>
                                             <v-menu offset-y>
@@ -274,7 +274,7 @@
                                                 item.comprobanteadherido || item.numentrega
                                             }}
                                         </td>
-                                        <td>{{ item.fecha }}</td>
+                                        <td>{{ item.fecha | formatDate }}</td>
                                         <td>
                                             <v-menu offset-y>
                                                 <template v-slot:activator="{ on }">

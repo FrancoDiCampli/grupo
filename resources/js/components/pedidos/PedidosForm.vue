@@ -146,13 +146,12 @@
                                     </v-card>
                                 </v-col>
                                 <!-- FECHA -->
+
                                 <v-col cols="12" sm="4" class="py-0">
                                     <v-dialog
                                         ref="dialogFecha"
                                         v-model="fechaDialog"
-                                        :return-value.sync="
-                                            $store.state.pedidos.form.fecha
-                                        "
+                                        :return-value.sync="$store.state.pedidos.form.fecha"
                                         persistent
                                         :width="
                                             $vuetify.breakpoint.xsOnly
@@ -167,9 +166,10 @@
                                                         .fecha | formatDate
                                                 "
                                                 @input="
-                                                    store ?
-                                                    value => (store.state.pedidos.form.fecha = value) :
-                                                    value => null
+                                                    store
+                                                        ? value =>
+                                                              (store.state.pedidos.form.fecha = value)
+                                                        : value => null
                                                 "
                                                 label="Fecha"
                                                 :rules="[rules.required]"
@@ -790,7 +790,7 @@ export default {
             required: value => !!value || "Este campo es obligatorio",
             cantidadMaxima: value =>
                 value <= Number(cantidadMaxima) ||
-                "La cantidad no puede superar el stock existente",
+                "La cantidad no puede superar el stock existente"
         },
         // HEADER
         PuntoVenta: null,
@@ -804,8 +804,8 @@ export default {
         articulos: [],
         articuloSelected: {},
         // COTIZACION
-        cotizacion: localStorage.getItem('cotizacion') || null,
-        fechaCotizacion: localStorage.getItem('fechaCotizacion') || null,
+        cotizacion: localStorage.getItem("cotizacion") || null,
+        fechaCotizacion: localStorage.getItem("fechaCotizacion") || null,
         dialogCotizacion: false,
         // DETALLES
         detalles: [],
@@ -1005,8 +1005,12 @@ export default {
                     for (let i = 0; i < responseClientes.length; i++) {
                         this.clientes.push(responseClientes[i]);
                     }
-                    if(responseDistribuidores) {
-                        for (let i = 0; i < responseDistribuidores.length; i++) {
+                    if (responseDistribuidores) {
+                        for (
+                            let i = 0;
+                            i < responseDistribuidores.length;
+                            i++
+                        ) {
                             this.clientes.push(responseDistribuidores[i]);
                         }
                     }
@@ -1026,8 +1030,11 @@ export default {
         },
 
         hasCliente() {
-            if(this.searchCliente && !this.$store.state.pedidos.form.cliente_id) {
-                return 'Debe seleccionar un cliente';
+            if (
+                this.searchCliente &&
+                !this.$store.state.pedidos.form.cliente_id
+            ) {
+                return "Debe seleccionar un cliente";
             } else {
                 return true;
             }
@@ -1160,8 +1167,11 @@ export default {
                     this.$store.state.pedidos.form.fechaCotizacion = this.fechaCotizacion;
                     this.$store.state.pedidos.form.numpedido = this.NumComprobante;
 
-                    localStorage.setItem('cotizacion', this.cotizacion);
-                    localStorage.setItem('fechaCotizacion', this.fechaCotizacion);
+                    localStorage.setItem("cotizacion", this.cotizacion);
+                    localStorage.setItem(
+                        "fechaCotizacion",
+                        this.fechaCotizacion
+                    );
 
                     return true;
                 }
@@ -1175,10 +1185,10 @@ export default {
             await this.$refs.pedidosClienteForm.reset();
             await this.$refs.pedidosTotalesForm.reset();
 
-            this.cotizacion = localStorage.getItem('cotizacion') || null,
-            this.fechaCotizacion = localStorage.getItem('fechaCotizacion') || null,
-
-            this.step = 1;
+            (this.cotizacion = localStorage.getItem("cotizacion") || null),
+                (this.fechaCotizacion =
+                    localStorage.getItem("fechaCotizacion") || null),
+                (this.step = 1);
         }
     }
 };

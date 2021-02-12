@@ -36,7 +36,7 @@
                                             right
                                             small
                                         >
-                                            <template v-slot:opposite>{{ move.fecha }}</template>
+                                            <template v-slot:opposite>{{ move.fecha | formatDate }}</template>
                                             <div>
                                                 <h2>{{ move.tipo }}</h2>
                                                 <v-divider></v-divider>
@@ -76,6 +76,12 @@
                                                         .name
                                                         }}
                                                     </p>
+                                                    <p v-if="move.inventario.observaciones">
+                                                        <b>Observaciones:</b>
+                                                        {{
+                                                        move.inventario.observaciones
+                                                        }}
+                                                    </p>
                                                 </div>
                                             </div>
                                         </v-timeline-item>
@@ -103,7 +109,7 @@
                                             right
                                             small
                                         >
-                                            <template v-slot:opposite>{{ move.fecha }}</template>
+                                            <template v-slot:opposite>{{ move.fecha | formatDate }}</template>
                                             <div>
                                                 <h2>{{ move.tipo }}</h2>
                                                 <v-divider></v-divider>
@@ -150,7 +156,8 @@
 export default {
     data: () => ({
         filterMenu: false
-    })
+    }),
+
 };
 </script>
 

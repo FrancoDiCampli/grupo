@@ -127,7 +127,7 @@
                             <p>
                                 <b>Fecha de cotización:</b>
                             </p>
-                            <p>{{ cheque.fecha_cotizacion }}</p>
+                            <p>{{ cheque.fecha_cotizacion | formatDate }}</p>
                         </v-col>
                         <v-col cols="12" sm="6" class="py-0">
                             <p>
@@ -145,13 +145,13 @@
                             <p>
                                 <b>Recibido:</b>
                             </p>
-                            <p>{{ cheque.fecharecibido }}</p>
+                            <p>{{ cheque.fecharecibido | formatDate }}</p>
                         </v-col>
                         <v-col cols="12" sm="6" class="py-0">
                             <p>
                                 <b>Diferido:</b>
                             </p>
-                            <p>{{ cheque.fechacobro }}</p>
+                            <p>{{ cheque.fechacobro | formatDate }}</p>
                         </v-col>
                         <v-col cols="12" sm="6" class="py-0">
                             <p>
@@ -180,7 +180,7 @@
 </template>
 
 <script>
-import moment, { now } from "moment";
+import dayjs, { now } from "dayjs";
 
 export default {
     data: () => ({
@@ -193,7 +193,7 @@ export default {
         ],
         cheque: null,
         chequeDialog: false,
-        calendarValue: moment().format("YYYY-MM-DD"),
+        calendarValue: dayjs().format("YYYY-MM-DD"),
         events: []
     }),
 
@@ -201,7 +201,7 @@ export default {
 
     computed: {
         latinDate() {
-            return moment(this.calendarValue)
+            return dayjs(this.calendarValue)
                 .locale("es")
                 .format("MMMM YYYY");
         }
@@ -221,12 +221,12 @@ export default {
         },
 
         daysDiff(endDate) {
-            let today = moment()
+            let today = dayjs()
                 .format("YYYY-MM-DD")
                 .toString();
-            let start = moment(today, "YYYY-MM-DD");
-            let end = moment(endDate, "YYYY-MM-DD");
-            let diff = moment.duration(start.diff(end)).asDays() * -1;
+            let start = dayjs(today, "YYYY-MM-DD");
+            let end = dayjs(endDate, "YYYY-MM-DD");
+            let diff = start.diff(end, 'days') * -1;
 
             if (diff > 0) {
                 return `En ${diff} Días`;

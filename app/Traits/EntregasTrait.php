@@ -26,8 +26,8 @@ trait EntregasTrait
         $entregas = collect();
 
         foreach ($ents as $ent) {
-            $fecha = new Carbon($ent->fecha);
-            $ent->fecha = $fecha->format('d-m-Y');
+            // $fecha = new Carbon($ent->fecha);
+            // $ent->fecha = $fecha->format('d-m-Y');
             $ent->cliente = Cliente::withTrashed()->find($ent->cliente_id);;
             $ent = collect($ent);
             $entregas->push($ent);
@@ -110,7 +110,7 @@ trait EntregasTrait
             "numentrega" => $numentrega + 1,
             "comprobanteadherido" => $atributos['comprobanteadherido'],
             "cuit" => $atributos['cuit'],
-            "fecha" => now()->format('Ymd'),
+            "fecha" => now()->format('Y-m-d'),
             "observaciones" => $atributos['observaciones'],
             "cliente_id" => $atributos['cliente_id'],
             "user_id" => auth()->user()->id,
@@ -126,8 +126,8 @@ trait EntregasTrait
         foreach ($entrega->articulos as $det) {
             $detalles->push($det['pivot']);
         }
-        $fecha = new Carbon($entrega->fecha);
-        $entrega->fecha = $fecha->format('d-m-Y');
+        // $fecha = new Carbon($entrega->fecha);
+        // $entrega->fecha = $fecha->format('d-m-Y');
         $cliente = Cliente::withTrashed()->find($entrega->cliente_id);
         return [
             'configuracion' => $configuracion,
