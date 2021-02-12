@@ -198,14 +198,14 @@
             </div>
             <div class="header-left">
                 <h2 class="center">Controller</h2>
-                <p><b>Razón Social: </b>Controller programación y diseño</p>
+                <p><b>Razón Social: </b>Controller Programación y Diseño</p>
                 <p><b>Domicilio Comercial: </b>Donovan 430</p>
             </div>
             <div class="v-divider"></div>
             <div class="header-right">
-                <h2 class="center">PRESUPUESTO</h2>
-                <p><b>Punto de Venta: </b>00001<b> Comprobante adherido: </b>12</p>
-                <p><b>Fecha de Emisión: </b>19/01/2021</p>
+                <h2 class="center">Presupuesto</h2>
+                <p><b>Punto de Venta: </b>00001<b> Comprobante adherido: </b>13</p>
+                <p><b>Fecha de Emisión: </b>22/01/2021</p>
             </div>
         </div>
         <br><br>
@@ -215,15 +215,15 @@
             <p><b>Razón Social: </b>NEA APC SAS</p>
             <p><b>Condición Frente al IVA: </b>RESPONSABLE INSCRIPTO</p>
             <p><b>Domicilio: </b>Villa Ángela</p>
-            <p><b>Valido Hasta: </b>18/02/2021</p>
+            <p><b>Valido Hasta: </b>22/02/2021</p>
         </div>
         <br>
         <div class="body">
             <table>
                 <tr>
                     <th>Servicio</th>
-                    <th>Tiempo Des.</th>
-                    <th>Precio Unit.</th>
+                    <th>Tiempo Des</th>
+                    <th>Precio Unit</th>
                     <th>Subtotal</th>
                 </tr>
                 <tr class="body">
@@ -251,19 +251,13 @@
                     <th>100 U$D</th>
                 </tr>
                 <tr class="body">
-                    <th>Añadir referencias a observaciones.</th>
+                    <th>Añadir referencias a observaciones</th>
                     <th>45 - 60 días</th>
                     <th>100 U$D</th>
                     <th>100 U$D</th>
                 </tr>
                 <tr class="body">
-                    <th>Realizar pagos totales, parciales y por ventas.</th>
-                    <th>45 - 60 días</th>
-                    <th>100 U$D</th>
-                    <th>100 U$D</th>
-                </tr>
-                <tr class="body">
-                    <th>Añadir retroceso por capas en los menús del sistema.</th>
+                    <th>Realizar pagos totales, parciales y por ventas</th>
                     <th>45 - 60 días</th>
                     <th>100 U$D</th>
                     <th>100 U$D</th>
@@ -281,10 +275,12 @@
                 El pago debe realizarse una vez aprobado el presupuesto, ya sea en su totalidad o en la primera parte del mismo en caso que se desee pagar en dos partes.
                 <br>
                 El tiempo de desarrollo de los servicios presentados NO es acumulativo, por lo tanto el tiempo de desarrollo sobre el total del presupuesto es de 30 a 60 días.
+                <br>
+                Si desea conocer con más detalle cada uno de los servicios del presupuesto, puede consultar las tarjetas adjuntas en trello. https://trello.com/b/BVfX2Wil/grupo-apc-servicio-t%C3%A9cnico
             </p>
             <div class="details">
-                <p><b>Subtotal: </b>USD 530</p>
-                <p><b>Total: </b>USD 530</p>
+                <p><b>Subtotal: </b>U$D 430</p>
+                <p><b>Total: </b>U$D 430</p>
             </div>
         </div>
     </div>
@@ -304,14 +300,14 @@
             </div>
             <div class="header-left">
                 <h2 class="center">Controller</h2>
-                <p><b>Razón Social: </b>Controller programación y diseño</p>
+                <p><b>Razón Social: </b>Controller Programación y Diseño</p>
                 <p><b>Domicilio Comercial: </b>Donovan 430</p>
             </div>
             <div class="v-divider"></div>
             <div class="header-right">
-                <h2 class="center">PRESUPUESTO</h2>
-                <p><b>Punto de Venta: </b>00001<b> Comprobante adherido: </b>12</p>
-                <p><b>Fecha de Emisión: </b>19/01/2021</p>
+                <h2 class="center">Presupuesto</h2>
+                <p><b>Punto de Venta: </b>00001<b> Comprobante adherido: </b>13</p>
+                <p><b>Fecha de Emisión: </b>22/01/2021</p>
             </div>
         </div>
         <br><br>
@@ -321,15 +317,15 @@
             <p><b>Razón Social: </b>NEA APC SAS</p>
             <p><b>Condición Frente al IVA: </b>RESPONSABLE INSCRIPTO</p>
             <p><b>Domicilio: </b>Villa Ángela</p>
-            <p><b>Valido Hasta: </b>18/02/2021</p>
+            <p><b>Valido Hasta: </b>22/02/2021</p>
         </div>
         <br>
         <div class="body">
             <table>
                 <tr>
                     <th>Servicio</th>
-                    <th>Tiempo Des.</th>
-                    <th>Precio Unit.</th>
+                    <th>Tiempo Des</th>
+                    <th>Precio Unit</th>
                     <th>Subtotal</th>
                 </tr>
                 <tr class="body">
@@ -357,19 +353,13 @@
                     <th>100 U$D</th>
                 </tr>
                 <tr class="body">
-                    <th>Añadir referencias a observaciones.</th>
+                    <th>Añadir referencias a observaciones</th>
                     <th>45 - 60 días</th>
                     <th>100 U$D</th>
                     <th>100 U$D</th>
                 </tr>
                 <tr class="body">
-                    <th>Realizar pagos totales, parciales y por ventas.</th>
-                    <th>45 - 60 días</th>
-                    <th>100 U$D</th>
-                    <th>100 U$D</th>
-                </tr>
-                <tr class="body">
-                    <th>Añadir retroceso por capas en los menús del sistema.</th>
+                    <th>Realizar pagos totales, parciales y por ventas</th>
                     <th>45 - 60 días</th>
                     <th>100 U$D</th>
                     <th>100 U$D</th>
@@ -387,10 +377,12 @@
                 El pago debe realizarse una vez aprobado el presupuesto, ya sea en su totalidad o en la primera parte del mismo en caso que se desee pagar en dos partes.
                 <br>
                 El tiempo de desarrollo de los servicios presentados NO es acumulativo, por lo tanto el tiempo de desarrollo sobre el total del presupuesto es de 30 a 60 días.
+                <br>
+                Si desea conocer con más detalle cada uno de los servicios del presupuesto, puede consultar las tarjetas adjuntas en trello. https://trello.com/b/BVfX2Wil/grupo-apc-servicio-t%C3%A9cnico
             </p>
             <div class="details">
-                <p><b>Subtotal: </b>USD 530</p>
-                <p><b>Total: </b>USD 530</p>
+                <p><b>Subtotal: </b>U$D 430</p>
+                <p><b>Total: </b>U$D 430</p>
             </div>
         </div>
     </div>

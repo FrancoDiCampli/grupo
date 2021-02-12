@@ -296,7 +296,7 @@ export default {
 
         print() {
             let id = this.$store.state.remitos.venta.factura.id;
-            this.$store.dispatch("PDF/printRemito", { id: id });
+            this.$store.dispatch("PDF/printVenta", { id: id });
         }
     }
 };
