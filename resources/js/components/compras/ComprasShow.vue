@@ -15,7 +15,7 @@
                         </div>
                         <v-row>
                             <v-col cols="12">
-                                <h2 class="text-center mb-3">REMITO COMPRA</h2>
+                                <h2 class="text-center my-3">REMITO COMPRA</h2>
                                 <v-divider></v-divider>
                             </v-col>
 

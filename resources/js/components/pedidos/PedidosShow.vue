@@ -31,7 +31,7 @@
 
                         <v-row>
                             <v-col cols="12">
-                                <h2 class="text-center mb-3">NOTA DE PEDIDO</h2>
+                                <h2 class="text-center my-3">NOTA DE PEDIDO</h2>
                                 <v-divider></v-divider>
                             </v-col>
                             <v-col cols="12" sm="6" class="header-left">
@@ -72,13 +72,21 @@
                                     .configuracion.puntoventa
                                     }}
                                 </p>
-                                <p>
-                                    <b>Comprobante adherido</b>
-                                    {{
-                                    $store.state.pedidos.pedido.pedido
-                                    .comprobanteadherido
-                                    }}
-                                </p>
+                                <div v-if="$store.state.pedidos.pedido.pedido.comprobanteadherido">
+                                    <p>
+                                        <b>Comprobante adherido</b>
+                                        {{
+                                        $store.state.pedidos.pedido.pedido
+                                        .comprobanteadherido
+                                        }}
+                                    </p>
+                                </div>
+                                <div v-else>
+                                    <p>
+                                        <b>N° Comprobante:</b>
+                                        {{ $store.state.pedidos.pedido.pedido.id }}
+                                    </p>
+                                </div>
                                 <p>
                                     <b>Fecha de emisión:</b>
                                     {{
