@@ -31,7 +31,7 @@ trait MovimientosTrait
         foreach ($movimientos as $move) {
             $fecha = new Carbon($move->fecha);
             $coleccion = collect();
-            $coleccion->put('fecha', $fecha->format('d-m-Y H:i'));
+            $coleccion->put('fecha', $fecha);
             $coleccion->put('tipo', $move->tipo);
             $coleccion->put('cantidad', $move->cantidad);
             $coleccion->put('user', $move->user);
@@ -84,7 +84,7 @@ trait MovimientosTrait
         foreach ($movimientosCuentas as $move) {
             $fecha = new Carbon($move->fecha);
             $coleccion = collect();
-            $coleccion->put('fecha', $fecha->format('d-m-Y H:i'));
+            $coleccion->put('fecha', $fecha);
             $coleccion->put('tipo', $move->tipo);
             $coleccion->put('importe', $move->importe);
             $coleccion->put('user', $move->user);
